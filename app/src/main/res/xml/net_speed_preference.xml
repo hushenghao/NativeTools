@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/label_net_speed">
+
+    <SwitchPreference
+        android:key="net_speed_status"
+        android:summaryOff="@string/switch_off"
+        android:summaryOn="@string/switch_on"
+        android:title="@string/label_net_speed"
+        app:iconSpaceReserved="false" />
+
+    <DropDownPreference
+        android:key="net_speed_interval"
+        app:entries="@array/net_speed_interval"
+        app:entryValues="@array/net_speed_interval_value"
+        app:iconSpaceReserved="false"
+        app:defaultValue="1000"
+        app:title="@string/label_net_speed_interval"
+        app:useSimpleSummaryProvider="true" />
+
+    <SwitchPreference
+        android:key="net_speed_locked_hide"
+        app:iconSpaceReserved="false"
+        app:summary="@string/summary_net_speed_locked_hide"
+        app:title="@string/label_net_speed_locked_hide" />
+
+    <SwitchPreference
+        android:key="net_speed_notify_clickable"
+        app:defaultValue="true"
+        app:iconSpaceReserved="false"
+        app:summary="@string/summary_net_speed_notify_clickable"
+        app:title="@string/label_net_speed_notify_clickable" />
+</PreferenceScreen>

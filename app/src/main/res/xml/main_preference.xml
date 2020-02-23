@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/app_name">
+
+    <PreferenceScreen
+        android:summary="@string/summary_net_speed"
+        android:title="@string/label_net_speed"
+        android:fragment="com.dede.nativetools.ui.netspeed.NetSpeedFragment"
+        app:icon="@drawable/ic_net_speed" />
+
+    <Preference
+        android:summary="@string/summary_proxy"
+        android:title="@string/label_proxy"
+        app:icon="@drawable/ic_wifi_proxy" />
+
+    <Preference
+        android:title="@string/label_about"
+        app:allowDividerAbove="true" />
+</PreferenceScreen>
