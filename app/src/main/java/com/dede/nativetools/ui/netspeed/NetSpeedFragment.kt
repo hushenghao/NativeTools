@@ -58,6 +58,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         } else {
             context!!.unbindService(this)
             context!!.stopService(intent)
+            netSpeedBinder = null
         }
     }
 

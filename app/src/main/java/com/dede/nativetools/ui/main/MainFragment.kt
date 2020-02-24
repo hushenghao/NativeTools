@@ -1,8 +1,6 @@
 package com.dede.nativetools.ui.main
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.preference.PreferenceFragmentCompat
 import com.dede.nativetools.R
 
