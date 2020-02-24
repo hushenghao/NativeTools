@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.preference.PreferenceManager
 import com.dede.nativetools.ui.netspeed.NetSpeedFragment
 
@@ -20,7 +21,11 @@ class LauncherReceiver : BroadcastReceiver() {
         ) {
             if (preference.getBoolean(NetSpeedFragment.KEY_NET_SPEED_STATUS, false)) {
                 val intent = NetSpeedFragment.createServiceIntent(context, preference)
-                context.startForegroundService(intent)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(intent)
+                } else {
+                    context.startService(intent)
+                }
             }
         }
     }
