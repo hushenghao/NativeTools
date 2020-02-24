@@ -12,23 +12,23 @@
 
     <DropDownPreference
         android:key="net_speed_interval"
+        app:defaultValue="1000"
         app:entries="@array/net_speed_interval"
         app:entryValues="@array/net_speed_interval_value"
         app:iconSpaceReserved="false"
-        app:defaultValue="1000"
         app:title="@string/label_net_speed_interval"
         app:useSimpleSummaryProvider="true" />
 
     <SwitchPreference
         android:key="net_speed_locked_hide"
+        android:title="@string/label_net_speed_locked_hide"
         app:iconSpaceReserved="false"
-        app:summary="@string/summary_net_speed_locked_hide"
-        app:title="@string/label_net_speed_locked_hide" />
+        app:summary="@string/summary_net_speed_locked_hide" />
 
     <SwitchPreference
         android:key="net_speed_notify_clickable"
+        android:title="@string/label_net_speed_notify_clickable"
         app:defaultValue="true"
         app:iconSpaceReserved="false"
-        app:summary="@string/summary_net_speed_notify_clickable"
-        app:title="@string/label_net_speed_notify_clickable" />
+        app:summary="@string/summary_net_speed_notify_clickable" />
 </PreferenceScreen>

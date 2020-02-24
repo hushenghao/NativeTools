@@ -23,9 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".ui.netspeed.NetSpeedService"
             android:exported="false" />
+
         <receiver android:name=".ui.LauncherReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

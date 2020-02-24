@@ -13,7 +13,6 @@ import android.text.format.Formatter
 import android.util.Log
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
-import java.lang.Exception
 
 
 class NetSpeedService : Service() {
@@ -61,7 +60,6 @@ class NetSpeedService : Service() {
         override fun run() {
             val notify = createNotification()
             notificationManager.notify(NOTIFY_ID, notify)
-            startForeground(NOTIFY_ID, notify)
 
             handler.postDelayed(this, interval.toLong())
         }
@@ -76,12 +74,16 @@ class NetSpeedService : Service() {
         resume()
     }
 
+    /**
+     * 锁屏时隐藏
+     */
     fun lockedHide(hide: Boolean) {
         if (hide) {
             if (receiver == null) {
                 receiver = LockedHideReceiver()
             }
             val intentFilter = IntentFilter()
+            intentFilter.addAction(Intent.ACTION_SCREEN_ON)// 打开屏幕
             intentFilter.addAction(Intent.ACTION_SCREEN_OFF)// 关闭屏幕
             intentFilter.addAction(Intent.ACTION_USER_PRESENT)// 解锁
             registerReceiver(receiver, intentFilter)
@@ -93,7 +95,12 @@ class NetSpeedService : Service() {
 
     private var receiver: BroadcastReceiver? = null
 
+    /**
+     * 恢复指示器
+     */
     private fun resume() {
+        handler.removeCallbacks(notifyRunnable)
+
         val notify = createNotification()
         startForeground(NOTIFY_ID, notify)
 
@@ -102,11 +109,17 @@ class NetSpeedService : Service() {
         handler.post(notifyRunnable)
     }
 
-    private fun pause() {
+    /**
+     * 暂停指示器
+     */
+    private fun pause(stopForeground: Boolean = true) {
         handler.removeCallbacks(notifyRunnable)
-        notificationManager.cancel(NOTIFY_ID)
-
-        stopForeground(true)
+        if (stopForeground) {
+            notificationManager.cancel(NOTIFY_ID)
+            stopForeground(true)
+        } else {
+            startForeground(NOTIFY_ID, createNotification())
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -197,15 +210,29 @@ class NetSpeedService : Service() {
         super.onDestroy()
     }
 
+    /**
+     * 接收解锁、熄屏、亮屏广播
+     */
     private inner class LockedHideReceiver : BroadcastReceiver() {
+
+        private val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+
         override fun onReceive(context: Context?, intent: Intent?) {
             Log.i("LockedHideReceiver", intent?.action ?: "null")
             when (intent?.action) {
+                Intent.ACTION_SCREEN_ON -> {
+                    // 屏幕打开
+                    if (keyguardManager.isDeviceLocked || keyguardManager.isKeyguardLocked) {
+                        pause()// 已锁定时隐藏，临时关闭前台服务关闭通知（会降低进程优先级）
+                    } else {
+                        resume()// 未锁定时显示
+                    }
+                }
                 Intent.ACTION_SCREEN_OFF -> {
-                    pause()
+                    pause(false)// 关闭屏幕时显示，只保留服务保活
                 }
                 Intent.ACTION_USER_PRESENT -> {
-                    resume()
+                    resume()// 解锁后显示
                 }
             }
         }
