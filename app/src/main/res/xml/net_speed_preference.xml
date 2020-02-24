@@ -19,6 +19,21 @@
         app:title="@string/label_net_speed_interval"
         app:useSimpleSummaryProvider="true" />
 
+    <DropDownPreference
+        android:key="net_speed_mode"
+        app:defaultValue="0"
+        app:entries="@array/net_speed_mode"
+        app:entryValues="@array/net_speed_mode_value"
+        app:iconSpaceReserved="false"
+        app:title="@string/label_net_speed_mode"
+        app:useSimpleSummaryProvider="true" />
+
+    <SwitchPreference
+        android:key="net_speed_auto_start"
+        android:title="@string/label_net_speed_auto_start"
+        app:iconSpaceReserved="false"
+        app:summary="@string/summary_net_speed_auto_start" />
+
     <SwitchPreference
         android:key="net_speed_locked_hide"
         android:title="@string/label_net_speed_locked_hide"

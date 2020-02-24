@@ -41,4 +41,37 @@ object NetUtil {
         }
         return arrayOf(format, unit)
     }
+
+    fun formatNetSize(size: Long): String {
+        var speed = size.toDouble()
+        var unit = "b"
+        if (speed > 999) {
+            speed /= 1024.0
+            unit = "k"
+        }
+        if (speed > 999) {
+            speed /= 1024.0
+            unit = "m"
+        }
+        if (speed > 999) {
+            speed /= 1024.0
+            unit = "g"
+        }
+        if (speed > 999) {
+            speed /= 1024.0
+            unit = "t"
+        }
+        if (speed > 999) {
+            speed /= 1024.0
+            unit = "p"
+        }
+        val numberFormat = NumberFormat.getInstance()
+        numberFormat.maximumFractionDigits = 1 //小数点一位
+        var format = numberFormat.format(speed)
+        val length = format.length
+        if (length >= 4) { //100.2
+            format = format.substring(0, length - 2)
+        }
+        return format + unit
+    }
 }

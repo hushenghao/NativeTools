@@ -30,6 +30,10 @@ class NetSpeedService : Service() {
         fun setLockHide(hide: Boolean) {
             service.lockedHide(hide)
         }
+
+        fun setMode(mode: String) {
+            service.mode = mode
+        }
     }
 
     companion object {
@@ -39,7 +43,12 @@ class NetSpeedService : Service() {
         const val EXTRA_INTERVAL = "extra_interval"
         const val EXTRA_LOCKED_HIDE = "extra_locked_hide"
         const val EXTRA_NOFITY_CLICKABLE = "extra_nofity_clickable"
+        const val EXTRA_MODE = "extra_mode"
         const val DEFAULT_INTERVAL = 1000
+
+        const val MODE_DOWN = "0"
+        const val MODE_ALL = "1"
+        const val MODE_UP = "2"
     }
 
     private val notificationManager by lazy {
@@ -53,6 +62,7 @@ class NetSpeedService : Service() {
 
     internal var interval = DEFAULT_INTERVAL
     internal var notifyClickable = true
+    internal var mode = MODE_DOWN
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -129,6 +139,7 @@ class NetSpeedService : Service() {
             }
             this.interval = intent.getIntExtra(EXTRA_INTERVAL, DEFAULT_INTERVAL)
             this.notifyClickable = intent.getBooleanExtra(EXTRA_NOFITY_CLICKABLE, true)
+            this.mode = intent.getStringExtra(EXTRA_MODE) ?: MODE_DOWN
         }
         return super.onStartCommand(intent, flags, startId)
     }
@@ -171,22 +182,20 @@ class NetSpeedService : Service() {
         val downloadSpeedStr: String = Formatter.formatFileSize(this, downloadSpeed)
         val uploadSpeedStr: String = Formatter.formatFileSize(this, uploadSpeed)
 
-        builder.setContentTitle(getString(R.string.label_net_speed))
-            .setContentText(
-                getString(
-                    R.string.notify_net_speed_msg,
-                    downloadSpeedStr,
-                    uploadSpeedStr
-                )
+        builder.setContentText(
+            getString(
+                R.string.notify_net_speed_msg,
+                downloadSpeedStr,
+                uploadSpeedStr
             )
+        )
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_PRIVATE)
-            .setBadgeIconType(Notification.BADGE_ICON_NONE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder.setBadgeIconType(Notification.BADGE_ICON_NONE)
+        }
 
-        val split: Array<String> = NetUtil.formatNetSpeed(downloadSpeed)
-        val icon = Icon.createWithBitmap(
-            NetTextIconFactory.createSingleIcon(split[0], split[1])
-        )
+        val icon = createIcon(downloadSpeed, uploadSpeed)
         builder.setSmallIcon(icon)
 
         if (notifyClickable) {
@@ -200,6 +209,25 @@ class NetSpeedService : Service() {
         }
 
         return builder.build()
+    }
+
+    private fun createIcon(downloadSpeed: Long, uploadSpeed: Long): Icon {
+        val bitmap = when (mode) {
+            MODE_ALL -> {
+                val down = NetUtil.formatNetSize(downloadSpeed)
+                val up = NetUtil.formatNetSize(uploadSpeed)
+                NetTextIconFactory.createDoubleIcon(up, down)
+            }
+            MODE_UP -> {
+                val upSplit: Array<String> = NetUtil.formatNetSpeed(uploadSpeed)
+                NetTextIconFactory.createSingleIcon(upSplit[0], upSplit[1])
+            }
+            else -> {
+                val downSplit: Array<String> = NetUtil.formatNetSpeed(downloadSpeed)
+                NetTextIconFactory.createSingleIcon(downSplit[0], downSplit[1])
+            }
+        }
+        return Icon.createWithBitmap(bitmap)
     }
 
     override fun onDestroy() {

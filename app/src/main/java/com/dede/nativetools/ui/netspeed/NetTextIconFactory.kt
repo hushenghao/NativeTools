@@ -17,7 +17,7 @@ object NetTextIconFactory {
      * @param text2 单位
      * @return bitmap
      */
-    fun createSingleIcon(text1: String?, text2: String?): Bitmap {
+    fun createSingleIcon(text1: String, text2: String): Bitmap {
         val bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
         val paint = Paint()
         paint.isAntiAlias = true
@@ -26,13 +26,13 @@ object NetTextIconFactory {
         paint.textAlign = Paint.Align.CENTER
         paint.color = Color.WHITE
         var fontMetrics = paint.fontMetrics
-        val textY = (abs(fontMetrics.top) - fontMetrics.descent + .5).toInt()
+        val textY = abs(fontMetrics.top) - fontMetrics.descent
         val canvas = Canvas(bitmap)
-        canvas.drawText(text1!!, 50f, textY + 5.toFloat(), paint)
+        canvas.drawText(text1, 50f, textY, paint)
         paint.textSize = 40f
         fontMetrics = paint.fontMetrics
-        val text2Y = (abs(fontMetrics.top) - fontMetrics.descent + .5).toInt()
-        canvas.drawText(text2!!, 50f, textY + 5 + text2Y + 10.toFloat(), paint)
+        val text2Y = abs(fontMetrics.top) - fontMetrics.descent
+        canvas.drawText(text2, 50f, textY + text2Y + 12f, paint)
         return bitmap
     }
 
@@ -43,22 +43,22 @@ object NetTextIconFactory {
      * @param text2 下行网速
      * @return bitmap
      */
-    fun createDoubleIcon(text1: String?, text2: String?): Bitmap {
+    fun createDoubleIcon(text1: String, text2: String): Bitmap {
         val bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
         val paint = Paint()
         paint.isAntiAlias = true
-        paint.textSize = 50f
+        paint.textSize = 43f
         paint.typeface = Typeface.DEFAULT_BOLD
         paint.textAlign = Paint.Align.CENTER
         paint.color = Color.WHITE
         var fontMetrics = paint.fontMetrics
-        val textY = (abs(fontMetrics.top) - fontMetrics.descent + .5).toInt()
+        val textY = abs(fontMetrics.top) - fontMetrics.descent
         val canvas = Canvas(bitmap)
-        canvas.drawText(text1!!, 50f, textY + 5.toFloat(), paint)
-        paint.textSize = 50f
+        canvas.drawText(text1, 50f, textY + 5, paint)
+        paint.textSize = 43f
         fontMetrics = paint.fontMetrics
-        val text2Y = (abs(fontMetrics.top) - fontMetrics.descent + .5).toInt()
-        canvas.drawText(text2!!, 50f, textY + 5 + text2Y + 10.toFloat(), paint)
+        val text2Y = abs(fontMetrics.top) - fontMetrics.descent
+        canvas.drawText(text2, 50f, textY + text2Y + 20f, paint)
         return bitmap
     }
 }

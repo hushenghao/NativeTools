@@ -17,6 +17,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         const val KEY_NET_SPEED_INTERVAL = "net_speed_interval"
         const val KEY_NET_SPEED_LOCKED_HIDE = "net_speed_locked_hide"
         const val KEY_NET_SPEED_NOTIFY_CLICKABLE = "net_speed_notify_clickable"
+        const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
+        const val KEY_NET_SPEED_MODE = "net_speed_mode"
 
         fun createServiceIntent(context: Context, preferences: SharedPreferences): Intent? {
             val intent = Intent(context, NetSpeedService::class.java)
@@ -25,9 +27,11 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                     .safeInt(NetSpeedService.DEFAULT_INTERVAL)
             val lockedHide = preferences.getBoolean(KEY_NET_SPEED_LOCKED_HIDE, false)
             val clickable = preferences.getBoolean(KEY_NET_SPEED_NOTIFY_CLICKABLE, true)
+            val mode = preferences.getString(KEY_NET_SPEED_MODE, NetSpeedService.MODE_DOWN)
             intent.putExtra(NetSpeedService.EXTRA_INTERVAL, interval)
             intent.putExtra(NetSpeedService.EXTRA_LOCKED_HIDE, lockedHide)
             intent.putExtra(NetSpeedService.EXTRA_NOFITY_CLICKABLE, clickable)
+            intent.putExtra(NetSpeedService.EXTRA_MODE, mode)
             return intent
         }
     }
@@ -103,6 +107,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
                 val notifyClickable = sharedPreferences.getBoolean(key, false)
                 netSpeedBinder?.setNotifyClickable(notifyClickable)
+            }
+            KEY_NET_SPEED_MODE -> {
+                val mode = sharedPreferences.getString(key, NetSpeedService.MODE_DOWN)
+                netSpeedBinder?.setMode(mode ?: NetSpeedService.MODE_DOWN)
             }
         }
     }

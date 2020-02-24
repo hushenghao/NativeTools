@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">原生工具箱</string>
+    <string name="app_name">网速指示器</string>
     <string name="notify_net_speed_msg">下载：%s/s\t\t\t上传：%s/s</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
@@ -8,30 +8,39 @@
     <string name="label_net_speed_interval">刷新间隔</string>
     <string name="label_net_speed_locked_hide">隐藏锁屏通知</string>
     <string name="label_net_speed_notify_clickable">通知可被点击</string>
-    <string name="label_proxy">WLAN代理</string>
-    <string name="label_about">关于</string>
+    <string name="label_net_speed_mode">显示模式</string>
+    <string name="label_net_speed_auto_start">开机自启</string>
 
     <string name="summary_net_speed">在状态栏显示当前网速</string>
     <string name="summary_net_speed_locked_hide">有可能会使当前应用的进程更容易被杀死</string>
-    <string name="summary_proxy">WLAN代理设置</string>
     <string name="summary_net_speed_notify_clickable">点击通知打开应用设置界面</string>
+    <string name="summary_net_speed_auto_start">跟随系统启动后台服务</string>
 
     <string-array name="net_speed_interval">
-        <item>300 ms</item>
         <item>500 ms</item>
         <item>800 ms</item>
         <item>1000 ms</item>
         <item>1500 ms</item>
         <item>2000 ms</item>
-        <item>5000 ms</item>
+        <item>3000 ms</item>
     </string-array>
     <string-array name="net_speed_interval_value">
-        <item>300</item>
         <item>500</item>
         <item>800</item>
         <item>1000</item>
         <item>1500</item>
         <item>2000</item>
-        <item>5000</item>
+        <item>3000</item>
+    </string-array>
+
+    <string-array name="net_speed_mode">
+        <item>仅下载</item>
+        <item>上传 + 下载</item>
+        <item>仅上传</item>
+    </string-array>
+    <string-array name="net_speed_mode_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 </resources>
