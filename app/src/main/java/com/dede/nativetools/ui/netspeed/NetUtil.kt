@@ -10,71 +10,104 @@ import kotlin.math.roundToInt
  */
 object NetUtil {
 
-    fun formatNetSpeed(downloadSpeed: Long): Array<String> {
-        var speed = downloadSpeed.toDouble()
-        var unit = "B/s"
-        if (speed > 999) {
-            speed /= 1024.0
-            unit = "Kb/s"
+    private const val UNIT = 1024
+    private const val THRESHOLD = 900
+
+    fun formatNetSpeedStr(speedByte: Long): String {
+        var speed = speedByte.toDouble()
+        var suffix = "B/s"
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Kb/s"
         }
-        if (speed > 999) {
-            speed /= 1024.0
-            unit = "Mb/s"
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Mb/s"
         }
-        if (speed > 999) {
-            speed /= 1024.0
-            unit = "Gb/s"
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Gb/s"
         }
-        if (speed > 999) {
-            speed /= 1024.0
-            unit = "Tb/s"
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Tb/s"
         }
-        if (speed > 999) {
-            speed /= 1024.0
-            unit = "Pb/s"
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Pb/s"
+        }
+        val speedStr = BigDecimal(speed)
+            .setScale(2, BigDecimal.ROUND_HALF_UP)
+            .stripTrailingZeros()
+            .toPlainString()
+        return speedStr + suffix
+    }
+
+    fun formatNetSpeed(speedByte: Long): Array<String> {
+        var speed = speedByte.toDouble()
+        var suffix = "B/s"
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Kb/s"
+        }
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Mb/s"
+        }
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Gb/s"
+        }
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Tb/s"
+        }
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Pb/s"
         }
         val format = when {
-            speed >= 100 -> { //100.2
+            speed >= 100 -> { //100.2 -> 100
                 speed.roundToInt().toString()
             }
-            speed >= 10 -> {//10.22
+            speed >= 10 -> {//10.22 -> 10.2
                 BigDecimal(speed)
                     .setScale(1, BigDecimal.ROUND_HALF_UP)
                     .stripTrailingZeros()
                     .toPlainString()
             }
-            else -> {// 1.22
+            else -> {// 1.223 -> 1.22
                 BigDecimal(speed)
                     .setScale(2, BigDecimal.ROUND_HALF_UP)
                     .stripTrailingZeros()
                     .toPlainString()
             }
         }
-        return arrayOf(format, unit)
+        return arrayOf(format, suffix)
     }
 
-    fun formatNetSize(size: Long): String {
-        var speed = size.toDouble()
-        var unit = "b"
-        if (speed > 999) {
-            speed /= 1024.0
-            unit = "k"
+    fun formatNetSize(speedByte: Long): String {
+        var speed = speedByte.toDouble()
+        var suffix = "B/s"
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Kb/s"
         }
-        if (speed > 999) {
-            speed /= 1024.0
-            unit = "m"
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Mb/s"
         }
-        if (speed > 999) {
-            speed /= 1024.0
-            unit = "g"
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Gb/s"
         }
-        if (speed > 999) {
-            speed /= 1024.0
-            unit = "t"
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Tb/s"
         }
-        if (speed > 999) {
-            speed /= 1024.0
-            unit = "p"
+        if (speed > THRESHOLD) {
+            speed /= UNIT
+            suffix = "Pb/s"
         }
         val format = when {
             speed >= 10 -> { //10.2
@@ -87,6 +120,6 @@ object NetUtil {
                     .toPlainString()
             }
         }
-        return format + unit
+        return format + suffix
     }
 }

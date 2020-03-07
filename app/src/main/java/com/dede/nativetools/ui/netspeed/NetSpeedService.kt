@@ -9,7 +9,6 @@ import android.content.IntentFilter
 import android.graphics.drawable.Icon
 import android.net.TrafficStats
 import android.os.*
-import android.text.format.Formatter
 import android.util.Log
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
@@ -179,16 +178,18 @@ class NetSpeedService : Service() {
                 .setSound(null)
         }
 
-        val downloadSpeedStr: String = Formatter.formatFileSize(this, downloadSpeed)
-        val uploadSpeedStr: String = Formatter.formatFileSize(this, uploadSpeed)
+        // android.text.format.Formatter.formatFileSize(android.content.Context, long)
+        // 8.0以后使用的单位是1000，非1024
+        val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(downloadSpeed)
+        val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(uploadSpeed)
 
         builder.setContentText(
-            getString(
-                R.string.notify_net_speed_msg,
-                downloadSpeedStr,
-                uploadSpeedStr
+                getString(
+                    R.string.notify_net_speed_msg,
+                    downloadSpeedStr,
+                    uploadSpeedStr
+                )
             )
-        )
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_PRIVATE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
