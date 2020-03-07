@@ -19,20 +19,20 @@ object NetTextIconFactory {
      */
     fun createSingleIcon(text1: String, text2: String): Bitmap {
         val bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
-        val paint = Paint()
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.isAntiAlias = true
-        paint.textSize = 60f
+        paint.textSize = 53f
         paint.typeface = Typeface.DEFAULT_BOLD
         paint.textAlign = Paint.Align.CENTER
         paint.color = Color.WHITE
         var fontMetrics = paint.fontMetrics
         val textY = abs(fontMetrics.top) - fontMetrics.descent
         val canvas = Canvas(bitmap)
-        canvas.drawText(text1, 50f, textY, paint)
+        canvas.drawText(text1, 50f, textY + 3, paint)
         paint.textSize = 40f
         fontMetrics = paint.fontMetrics
         val text2Y = abs(fontMetrics.top) - fontMetrics.descent
-        canvas.drawText(text2, 50f, textY + text2Y + 12f, paint)
+        canvas.drawText(text2, 50f, textY + text2Y + 13f, paint)
         return bitmap
     }
 
@@ -45,9 +45,9 @@ object NetTextIconFactory {
      */
     fun createDoubleIcon(text1: String, text2: String): Bitmap {
         val bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
-        val paint = Paint()
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.isAntiAlias = true
-        paint.textSize = 43f
+        paint.textSize = 44f
         paint.typeface = Typeface.DEFAULT_BOLD
         paint.textAlign = Paint.Align.CENTER
         paint.color = Color.WHITE
@@ -55,10 +55,10 @@ object NetTextIconFactory {
         val textY = abs(fontMetrics.top) - fontMetrics.descent
         val canvas = Canvas(bitmap)
         canvas.drawText(text1, 50f, textY + 5, paint)
-        paint.textSize = 43f
+        paint.textSize = 44f
         fontMetrics = paint.fontMetrics
         val text2Y = abs(fontMetrics.top) - fontMetrics.descent
-        canvas.drawText(text2, 50f, textY + text2Y + 20f, paint)
+        canvas.drawText(text2, 50f, textY + text2Y + 21f, paint)
         return bitmap
     }
 }

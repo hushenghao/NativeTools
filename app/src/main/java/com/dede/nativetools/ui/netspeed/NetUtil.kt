@@ -1,7 +1,8 @@
 package com.dede.nativetools.ui.netspeed
 
 
-import java.text.NumberFormat
+import java.math.BigDecimal
+import kotlin.math.roundToInt
 
 
 /**
@@ -32,12 +33,22 @@ object NetUtil {
             speed /= 1024.0
             unit = "Pb/s"
         }
-        val numberFormat = NumberFormat.getInstance()
-        numberFormat.maximumFractionDigits = 1 //小数点一位
-        var format = numberFormat.format(speed)
-        val length = format.length
-        if (length >= 4) { //100.2
-            format = format.substring(0, length - 2)
+        val format = when {
+            speed >= 100 -> { //100.2
+                speed.roundToInt().toString()
+            }
+            speed >= 10 -> {//10.22
+                BigDecimal(speed)
+                    .setScale(1, BigDecimal.ROUND_HALF_UP)
+                    .stripTrailingZeros()
+                    .toPlainString()
+            }
+            else -> {// 1.22
+                BigDecimal(speed)
+                    .setScale(2, BigDecimal.ROUND_HALF_UP)
+                    .stripTrailingZeros()
+                    .toPlainString()
+            }
         }
         return arrayOf(format, unit)
     }
@@ -65,12 +76,16 @@ object NetUtil {
             speed /= 1024.0
             unit = "p"
         }
-        val numberFormat = NumberFormat.getInstance()
-        numberFormat.maximumFractionDigits = 1 //小数点一位
-        var format = numberFormat.format(speed)
-        val length = format.length
-        if (length >= 4) { //100.2
-            format = format.substring(0, length - 2)
+        val format = when {
+            speed >= 10 -> { //10.2
+                speed.roundToInt().toString()
+            }
+            else -> {// 1.2
+                BigDecimal(speed)
+                    .setScale(1, BigDecimal.ROUND_HALF_UP)
+                    .stripTrailingZeros()
+                    .toPlainString()
+            }
         }
         return format + unit
     }
