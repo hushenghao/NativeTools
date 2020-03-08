@@ -20,6 +20,8 @@
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
 
+                <!-- 重载tile长按事件 -->
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -27,6 +29,15 @@
         <service
             android:name=".ui.netspeed.NetSpeedService"
             android:exported="false" />
+        <service
+            android:name=".ui.netspeed.NetTileService"
+            android:icon="@drawable/ic_net_tile"
+            android:label="@string/label_net_speed"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
 
         <receiver android:name=".ui.LauncherReceiver">
             <intent-filter>
