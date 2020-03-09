@@ -70,15 +70,9 @@ object NetUtil {
             speed >= 100 -> { //100.2 -> 100
                 speed.roundToInt().toString()
             }
-            speed >= 10 -> {//10.22 -> 10.2
+            else -> {//10.22 -> 10.2
                 BigDecimal(speed)
                     .setScale(1, BigDecimal.ROUND_HALF_UP)
-                    .stripTrailingZeros()
-                    .toPlainString()
-            }
-            else -> {// 1.223 -> 1.22
-                BigDecimal(speed)
-                    .setScale(2, BigDecimal.ROUND_HALF_UP)
                     .stripTrailingZeros()
                     .toPlainString()
             }
@@ -88,26 +82,26 @@ object NetUtil {
 
     fun formatNetSize(speedByte: Long): String {
         var speed = speedByte.toDouble()
-        var suffix = "B/s"
+        var suffix = "B"
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Kb/s"
+            suffix = "K"
         }
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Mb/s"
+            suffix = "M"
         }
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Gb/s"
+            suffix = "G"
         }
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Tb/s"
+            suffix = "T"
         }
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Pb/s"
+            suffix = "P"
         }
         val format = when {
             speed >= 10 -> { //10.2

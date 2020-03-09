@@ -77,10 +77,10 @@ class NetTileService : TileService(), Handler.Callback, Runnable {
             NetTextIconFactory.createSingleIcon(downSplit[0], downSplit[1])
         )
         val span = SpannableStringBuilder()
-            .append("⇃ ", StyleSpan(Typeface.BOLD), Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+            .append("⇃", StyleSpan(Typeface.BOLD), Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
             .append(downloadSpeedStr)
             .append("\t")
-            .append("↿ ", StyleSpan(Typeface.BOLD), Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+            .append("↿", StyleSpan(Typeface.BOLD), Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
             .append(uploadSpeedStr)
         tile.label = span
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
