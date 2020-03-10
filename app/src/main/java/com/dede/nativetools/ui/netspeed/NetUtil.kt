@@ -67,12 +67,18 @@ object NetUtil {
             suffix = "Pb/s"
         }
         val format = when {
-            speed >= 100 -> { //100.2 -> 100
+            speed >= 100 -> { // 100.2 -> 100
                 speed.roundToInt().toString()
             }
-            else -> {//10.22 -> 10.2
+            speed >= 10 -> {// 10.22 -> 10.2
                 BigDecimal(speed)
                     .setScale(1, BigDecimal.ROUND_HALF_UP)
+                    .stripTrailingZeros()
+                    .toPlainString()
+            }
+            else -> {// 0.223 -> 0.22
+                BigDecimal(speed)
+                    .setScale(2, BigDecimal.ROUND_HALF_UP)
                     .stripTrailingZeros()
                     .toPlainString()
             }
@@ -104,7 +110,7 @@ object NetUtil {
             suffix = "P"
         }
         val format = when {
-            speed >= 10 -> { //10.2
+            speed >= 10 -> { // 10.2
                 speed.roundToInt().toString()
             }
             else -> {// 1.2
