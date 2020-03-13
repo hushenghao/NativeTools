@@ -184,14 +184,14 @@ class NetSpeedService : Service() {
         val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(uploadSpeed)
 
         builder.setContentText(
-                getString(
-                    R.string.notify_net_speed_msg,
-                    downloadSpeedStr,
-                    uploadSpeedStr
-                )
+            getString(
+                R.string.notify_net_speed_msg,
+                downloadSpeedStr,
+                uploadSpeedStr
             )
+        )
             .setAutoCancel(false)
-            .setVisibility(Notification.VISIBILITY_PRIVATE)
+            .setVisibility(Notification.VISIBILITY_SECRET)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setBadgeIconType(Notification.BADGE_ICON_NONE)
         }
