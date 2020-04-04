@@ -32,11 +32,11 @@ object NetTextIconFactory {
         val textY = abs(fontMetrics.top) - fontMetrics.descent
         val canvas = Canvas(bitmap)
         canvas.scale(scale, scale, 50f, 50f)
-        canvas.drawText(text1, 50f, textY + 3, paint)
-        paint.textSize = 40f
+        canvas.drawText(text1, 50f, textY + 6, paint)
+        paint.textSize = 39f
         fontMetrics = paint.fontMetrics
         val text2Y = abs(fontMetrics.top) - fontMetrics.descent
-        canvas.drawText(text2, 50f, textY + text2Y + 13f, paint)
+        canvas.drawText(text2, 50f, textY + text2Y + 15f, paint)
         return bitmap
     }
 
