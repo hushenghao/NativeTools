@@ -28,6 +28,14 @@
         app:title="@string/label_net_speed_mode"
         app:useSimpleSummaryProvider="true" />
 
+    <com.dede.nativetools.ui.netspeed.MySeekBarPreference
+        android:key="net_speed_scale"
+        android:max="110"
+        android:title="图标缩放"
+        app:icon="@drawable/shape_icon_mask"
+        app:min="75"
+        app:showSeekBarValue="true" />
+
     <SwitchPreference
         android:key="net_speed_auto_start"
         android:title="@string/label_net_speed_auto_start"

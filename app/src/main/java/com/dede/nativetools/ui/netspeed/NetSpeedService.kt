@@ -33,6 +33,10 @@ class NetSpeedService : Service() {
         fun setMode(mode: String) {
             service.mode = mode
         }
+
+        fun setScale(scale: Float) {
+            service.scale = scale
+        }
     }
 
     companion object {
@@ -43,7 +47,9 @@ class NetSpeedService : Service() {
         const val EXTRA_LOCKED_HIDE = "extra_locked_hide"
         const val EXTRA_NOFITY_CLICKABLE = "extra_nofity_clickable"
         const val EXTRA_MODE = "extra_mode"
+        const val EXTRA_SCALE = "extra_scale"
         const val DEFAULT_INTERVAL = 1000
+        const val DEFAULT_SCALE = 1f
 
         const val MODE_DOWN = "0"
         const val MODE_ALL = "1"
@@ -62,6 +68,7 @@ class NetSpeedService : Service() {
     internal var interval = DEFAULT_INTERVAL
     internal var notifyClickable = true
     internal var mode = MODE_DOWN
+    internal var scale: Float = DEFAULT_SCALE
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -139,6 +146,7 @@ class NetSpeedService : Service() {
             this.interval = intent.getIntExtra(EXTRA_INTERVAL, DEFAULT_INTERVAL)
             this.notifyClickable = intent.getBooleanExtra(EXTRA_NOFITY_CLICKABLE, true)
             this.mode = intent.getStringExtra(EXTRA_MODE) ?: MODE_DOWN
+            this.scale = intent.getFloatExtra(EXTRA_SCALE, DEFAULT_SCALE)
         }
         return super.onStartCommand(intent, flags, startId)
     }
@@ -184,12 +192,12 @@ class NetSpeedService : Service() {
         val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(uploadSpeed)
 
         builder.setContentText(
-            getString(
-                R.string.notify_net_speed_msg,
-                downloadSpeedStr,
-                uploadSpeedStr
+                getString(
+                    R.string.notify_net_speed_msg,
+                    downloadSpeedStr,
+                    uploadSpeedStr
+                )
             )
-        )
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_SECRET)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -217,15 +225,15 @@ class NetSpeedService : Service() {
             MODE_ALL -> {
                 val down = NetUtil.formatNetSize(downloadSpeed)
                 val up = NetUtil.formatNetSize(uploadSpeed)
-                NetTextIconFactory.createDoubleIcon(up, down)
+                NetTextIconFactory.createDoubleIcon(up, down, scale)
             }
             MODE_UP -> {
                 val upSplit: Array<String> = NetUtil.formatNetSpeed(uploadSpeed)
-                NetTextIconFactory.createSingleIcon(upSplit[0], upSplit[1])
+                NetTextIconFactory.createSingleIcon(upSplit[0], upSplit[1], scale)
             }
             else -> {
                 val downSplit: Array<String> = NetUtil.formatNetSpeed(downloadSpeed)
-                NetTextIconFactory.createSingleIcon(downSplit[0], downSplit[1])
+                NetTextIconFactory.createSingleIcon(downSplit[0], downSplit[1], scale)
             }
         }
         return Icon.createWithBitmap(bitmap)

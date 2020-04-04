@@ -1,11 +1,16 @@
 package com.dede.nativetools.ui.netspeed
 
 import android.content.*
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.IBinder
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import androidx.preference.SeekBarPreference
 import com.dede.nativetools.R
+import com.dede.nativetools.ui.netspeed.NetSpeedService.Companion.MODE_ALL
 import com.dede.nativetools.util.safeInt
 
 class NetSpeedFragment : PreferenceFragmentCompat(),
@@ -19,6 +24,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         const val KEY_NET_SPEED_NOTIFY_CLICKABLE = "net_speed_notify_clickable"
         const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
         const val KEY_NET_SPEED_MODE = "net_speed_mode"
+        const val KEY_NET_SPEED_SCALE = "net_speed_scale"
+
+        private const val DEFAULT_SCALE_INT = 100
+        private const val SCALE_DIVISOR = 100f
 
         fun createServiceIntent(context: Context, preferences: SharedPreferences): Intent? {
             val intent = Intent(context, NetSpeedService::class.java)
@@ -28,10 +37,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             val lockedHide = preferences.getBoolean(KEY_NET_SPEED_LOCKED_HIDE, false)
             val clickable = preferences.getBoolean(KEY_NET_SPEED_NOTIFY_CLICKABLE, true)
             val mode = preferences.getString(KEY_NET_SPEED_MODE, NetSpeedService.MODE_DOWN)
+            val scaleInt = preferences.getInt(KEY_NET_SPEED_SCALE, DEFAULT_SCALE_INT)
             intent.putExtra(NetSpeedService.EXTRA_INTERVAL, interval)
             intent.putExtra(NetSpeedService.EXTRA_LOCKED_HIDE, lockedHide)
             intent.putExtra(NetSpeedService.EXTRA_NOFITY_CLICKABLE, clickable)
             intent.putExtra(NetSpeedService.EXTRA_MODE, mode)
+            intent.putExtra(NetSpeedService.EXTRA_SCALE, scaleInt / SCALE_DIVISOR)
             return intent
         }
     }
@@ -66,8 +77,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
     }
 
+    private lateinit var scaleSeekBarPreference: SeekBarPreference
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.net_speed_preference)
+        scaleSeekBarPreference = findPreference(KEY_NET_SPEED_SCALE)!!
+        modeOrScaleChange()
     }
 
     private var netSpeedBinder: NetSpeedService.NetSpeedBinder? = null
@@ -108,11 +123,31 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 val notifyClickable = sharedPreferences.getBoolean(key, false)
                 netSpeedBinder?.setNotifyClickable(notifyClickable)
             }
-            KEY_NET_SPEED_MODE -> {
-                val mode = sharedPreferences.getString(key, NetSpeedService.MODE_DOWN)
-                netSpeedBinder?.setMode(mode ?: NetSpeedService.MODE_DOWN)
+            KEY_NET_SPEED_MODE, KEY_NET_SPEED_SCALE -> {
+                modeOrScaleChange()
             }
         }
+    }
+
+    private fun modeOrScaleChange() {
+        val scaleInt = preference.getInt(KEY_NET_SPEED_SCALE, DEFAULT_SCALE_INT)
+        val mode = preference.getString(KEY_NET_SPEED_MODE, NetSpeedService.MODE_DOWN)
+        val scale = scaleInt / SCALE_DIVISOR
+        netSpeedBinder?.setScale(scale)
+        netSpeedBinder?.setMode(mode ?: NetSpeedService.MODE_DOWN)
+
+        val bitmap = when (mode) {
+            MODE_ALL -> {
+                NetTextIconFactory.createDoubleIcon("888M", "888M", scale)
+            }
+            else -> {
+                NetTextIconFactory.createSingleIcon("88.8", "Mb/s", scale)
+            }
+        }
+        val bitmapDrawable = BitmapDrawable(resources, bitmap)
+        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.shape_icon_mask)
+        val layerDrawable = LayerDrawable(arrayOf(drawable, bitmapDrawable))
+        scaleSeekBarPreference.icon = layerDrawable
     }
 
     override fun onDestroy() {
