@@ -29,6 +29,7 @@
         app:useSimpleSummaryProvider="true" />
 
     <com.dede.nativetools.ui.netspeed.MySeekBarPreference
+        android:defaultValue="100"
         android:key="net_speed_scale"
         android:max="110"
         android:title="图标缩放"
