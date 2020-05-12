@@ -2,16 +2,19 @@ package com.dede.nativetools.ui.netspeed
 
 
 import android.app.*
+import android.app.usage.NetworkStatsManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.Icon
+import android.net.ConnectivityManager
 import android.net.TrafficStats
 import android.os.*
 import android.util.Log
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
+import java.util.*
 
 
 class NetSpeedService : Service() {
@@ -45,7 +48,7 @@ class NetSpeedService : Service() {
 
         const val EXTRA_INTERVAL = "extra_interval"
         const val EXTRA_LOCKED_HIDE = "extra_locked_hide"
-        const val EXTRA_NOFITY_CLICKABLE = "extra_nofity_clickable"
+        const val EXTRA_NOTIFY_CLICKABLE = "extra_notify_clickable"
         const val EXTRA_MODE = "extra_mode"
         const val EXTRA_SCALE = "extra_scale"
         const val DEFAULT_INTERVAL = 1000
@@ -144,7 +147,7 @@ class NetSpeedService : Service() {
                 lockedHide(true)
             }
             this.interval = intent.getIntExtra(EXTRA_INTERVAL, DEFAULT_INTERVAL)
-            this.notifyClickable = intent.getBooleanExtra(EXTRA_NOFITY_CLICKABLE, true)
+            this.notifyClickable = intent.getBooleanExtra(EXTRA_NOTIFY_CLICKABLE, true)
             this.mode = intent.getStringExtra(EXTRA_MODE) ?: MODE_DOWN
             this.scale = intent.getFloatExtra(EXTRA_SCALE, DEFAULT_SCALE)
         }
@@ -191,13 +194,9 @@ class NetSpeedService : Service() {
         val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(downloadSpeed)
         val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(uploadSpeed)
 
-        builder.setContentText(
-                getString(
-                    R.string.notify_net_speed_msg,
-                    downloadSpeedStr,
-                    uploadSpeedStr
-                )
-            )
+        val contentStr = getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
+        builder.setSubText(getTodayRx())
+            .setContentText(contentStr)
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_SECRET)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -218,6 +217,36 @@ class NetSpeedService : Service() {
         }
 
         return builder.build()
+    }
+
+    private fun getTodayRx(): String? {
+        if (!NetUtil.checkAppOps(this)) {
+            return null
+        }
+        val networkStatsManager =
+            getSystemService(Context.NETWORK_STATS_SERVICE) as NetworkStatsManager
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        val current = System.currentTimeMillis()
+        val wifiBucket = networkStatsManager.querySummaryForDevice(
+            ConnectivityManager.TYPE_WIFI,
+            null,
+            calendar.timeInMillis,
+            current
+        )
+        val mobileBucket = networkStatsManager.querySummaryForDevice(
+            ConnectivityManager.TYPE_MOBILE,
+            null,
+            calendar.timeInMillis,
+            current
+        )
+        return getString(
+            R.string.notify_net_speed_sub,
+            NetUtil.formatNetSize(wifiBucket.rxBytes + mobileBucket.rxBytes)
+        )
     }
 
     private fun createIcon(downloadSpeed: Long, uploadSpeed: Long): Icon {

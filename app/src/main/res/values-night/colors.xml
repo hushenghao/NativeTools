@@ -1,0 +1,7 @@
+<resources>
+
+    <color name="appPrimary">#121212</color>
+    <color name="appAccent">#D81B60</color>
+    <color name="maskBgColor">@android:color/black</color>
+
+</resources>

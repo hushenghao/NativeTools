@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">网速指示器</string>
     <string name="notify_net_speed_msg">下载：%s\t\t\t上传：%s</string>
+    <string name="notify_net_speed_sub">今日%s</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
 
@@ -15,6 +16,11 @@
     <string name="summary_net_speed_locked_hide">锁屏时默认会隐藏通知。如果无效时才需开启当前选项，开启后会使当前应用的进程更容易被杀死</string>
     <string name="summary_net_speed_notify_clickable">点击通知打开应用设置界面</string>
     <string name="summary_net_speed_auto_start">跟随系统启动后台服务</string>
+    <string name="usage_states_title">使用情况访问授权</string>
+    <string name="usage_stats_msg">统计每日流量使用情况时需要允许使用情况访问权限</string>
+    <string name="cancel">取消</string>
+    <string name="access">去授权</string>
+    <string name="dont_ask">不再提示</string>
 
     <string-array name="net_speed_interval">
         <item>500 ms</item>

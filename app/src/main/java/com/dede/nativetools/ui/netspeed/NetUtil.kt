@@ -1,6 +1,9 @@
 package com.dede.nativetools.ui.netspeed
 
 
+import android.app.AppOpsManager
+import android.content.Context
+import android.os.Process
 import java.math.BigDecimal
 import kotlin.math.roundToInt
 
@@ -76,6 +79,9 @@ object NetUtil {
                     .stripTrailingZeros()
                     .toPlainString()
             }
+            speed <= 0.0 -> {
+                "0"
+            }
             else -> {// 0.223 -> 0.22
                 BigDecimal(speed)
                     .setScale(2, BigDecimal.ROUND_HALF_UP)
@@ -113,6 +119,9 @@ object NetUtil {
             speed >= 10 -> { // 10.2
                 speed.roundToInt().toString()
             }
+            speed <= 0.0 -> {
+                "0"
+            }
             else -> {// 1.2
                 BigDecimal(speed)
                     .setScale(1, BigDecimal.ROUND_HALF_UP)
@@ -121,5 +130,16 @@ object NetUtil {
             }
         }
         return format + suffix
+    }
+
+    fun checkAppOps(context: Context): Boolean {
+        val appOpsManager =
+            context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val result = appOpsManager.checkOpNoThrow(
+            AppOpsManager.OPSTR_GET_USAGE_STATS,
+            Process.myUid(),
+            context.packageName
+        )
+        return result == AppOpsManager.MODE_ALLOWED
     }
 }

@@ -3,6 +3,7 @@ package com.dede.nativetools
 import android.app.Application
 import android.content.Context
 import com.dede.nativetools.ui.LauncherReceiver
+import com.dede.nativetools.ui.netspeed.NetTextIconFactory
 
 class NativeToolsApp : Application() {
 
@@ -20,6 +21,7 @@ class NativeToolsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        NetTextIconFactory.init(this)
         LauncherReceiver.launcher(this)
     }
 }
