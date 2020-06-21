@@ -10,8 +10,8 @@ import kotlin.math.abs
  * 通知栏网速图标工厂
  */
 object NetTextIconFactory {
-    var ICON_SIZE = 72
-        private set
+
+    private var ICON_SIZE = 72
 
     fun init(context: Context) {
         val dpi = context.resources.displayMetrics.densityDpi

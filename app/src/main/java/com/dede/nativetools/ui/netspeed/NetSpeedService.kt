@@ -2,19 +2,16 @@ package com.dede.nativetools.ui.netspeed
 
 
 import android.app.*
-import android.app.usage.NetworkStatsManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.Icon
-import android.net.ConnectivityManager
-import android.net.TrafficStats
 import android.os.*
 import android.util.Log
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
-import java.util.*
+import kotlin.properties.Delegates
 
 
 class NetSpeedService : Service() {
@@ -65,10 +62,10 @@ class NetSpeedService : Service() {
 
     private val binder = NetSpeedBinder(this)
 
-    private var rxBytes: Long = 0
-    private var txBytes: Long = 0
-
-    internal var interval = DEFAULT_INTERVAL
+    private val speed = Speed()
+    internal var interval: Int by Delegates.observable(DEFAULT_INTERVAL) { _, _, new ->
+        speed.interval = new
+    }
     internal var notifyClickable = true
     internal var mode = MODE_DOWN
     internal var scale: Float = DEFAULT_SCALE
@@ -120,11 +117,10 @@ class NetSpeedService : Service() {
     private fun resume() {
         handler.removeCallbacks(notifyRunnable)
 
+        speed.reset()
         val notify = createNotification()
         startForeground(NOTIFY_ID, notify)
 
-        rxBytes = TrafficStats.getTotalRxBytes()
-        txBytes = TrafficStats.getTotalTxBytes()
         handler.post(notifyRunnable)
     }
 
@@ -155,31 +151,24 @@ class NetSpeedService : Service() {
     }
 
     private fun createChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = notificationManager.getNotificationChannel(CHANNEL_ID)
-            if (channel == null) {
-                val notificationChannel = NotificationChannel(
-                    CHANNEL_ID,
-                    getString(R.string.label_net_speed),
-                    NotificationManager.IMPORTANCE_LOW
-                )
-                notificationChannel.setShowBadge(false)
-                notificationChannel.setSound(null, null)
-                notificationManager.createNotificationChannel(notificationChannel)
-            }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return
         }
+        val channel = notificationManager.getNotificationChannel(CHANNEL_ID)
+        if (channel != null)
+            return
+
+        val notificationChannel = NotificationChannel(
+            CHANNEL_ID,
+            getString(R.string.label_net_speed),
+            NotificationManager.IMPORTANCE_LOW
+        )
+        notificationChannel.setShowBadge(false)
+        notificationChannel.setSound(null, null)
+        notificationManager.createNotificationChannel(notificationChannel)
     }
 
     private fun createNotification(): Notification {
-        val rxBytes = TrafficStats.getTotalRxBytes()
-        val txBytes = TrafficStats.getTotalTxBytes()
-        val downloadSpeed = ((rxBytes - this.rxBytes) * 1f / interval * 1000 + .5).toLong()
-        val uploadSpeed = ((txBytes - this.txBytes) * 1f / interval * 1000 + .5).toLong()
-
-        this.txBytes = txBytes
-        this.rxBytes = rxBytes
-
-
         createChannel()
 
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -189,13 +178,15 @@ class NetSpeedService : Service() {
                 .setSound(null)
         }
 
+        val downloadSpeed = speed.getRxSpeed()
+        val uploadSpeed = speed.getTxSpeed()
         // android.text.format.Formatter.formatFileSize(android.content.Context, long)
         // 8.0以后使用的单位是1000，非1024
         val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(downloadSpeed)
         val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(uploadSpeed)
 
         val contentStr = getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
-        builder.setSubText(getTodayRx())
+        builder.setSubText(NetUtil.getTodayRx(this))
             .setContentText(contentStr)
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_SECRET)
@@ -217,36 +208,6 @@ class NetSpeedService : Service() {
         }
 
         return builder.build()
-    }
-
-    private fun getTodayRx(): String? {
-        if (!NetUtil.checkAppOps(this)) {
-            return null
-        }
-        val networkStatsManager =
-            getSystemService(Context.NETWORK_STATS_SERVICE) as NetworkStatsManager
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-        val current = System.currentTimeMillis()
-        val wifiBucket = networkStatsManager.querySummaryForDevice(
-            ConnectivityManager.TYPE_WIFI,
-            null,
-            calendar.timeInMillis,
-            current
-        )
-        val mobileBucket = networkStatsManager.querySummaryForDevice(
-            ConnectivityManager.TYPE_MOBILE,
-            null,
-            calendar.timeInMillis,
-            current
-        )
-        return getString(
-            R.string.notify_net_speed_sub,
-            NetUtil.formatNetSize(wifiBucket.rxBytes + mobileBucket.rxBytes)
-        )
     }
 
     private fun createIcon(downloadSpeed: Long, uploadSpeed: Long): Icon {

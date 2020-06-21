@@ -2,9 +2,13 @@ package com.dede.nativetools.ui.netspeed
 
 
 import android.app.AppOpsManager
+import android.app.usage.NetworkStatsManager
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Process
+import com.dede.nativetools.R
 import java.math.BigDecimal
+import java.util.*
 import kotlin.math.roundToInt
 
 
@@ -142,4 +146,38 @@ object NetUtil {
         )
         return result == AppOpsManager.MODE_ALLOWED
     }
+
+    /**
+     * 获取今天所有数据下载量
+     */
+    fun getTodayRx(context: Context): String? {
+        if (!NetUtil.checkAppOps(context)) {
+            return null
+        }
+        val networkStatsManager =
+            context.getSystemService(Context.NETWORK_STATS_SERVICE) as NetworkStatsManager
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        val current = System.currentTimeMillis()
+        val wifiBucket = networkStatsManager.querySummaryForDevice(
+            ConnectivityManager.TYPE_WIFI,
+            null,
+            calendar.timeInMillis,
+            current
+        )
+        val mobileBucket = networkStatsManager.querySummaryForDevice(
+            ConnectivityManager.TYPE_MOBILE,
+            null,
+            calendar.timeInMillis,
+            current
+        )
+        return context.getString(
+            R.string.notify_net_speed_sub,
+            NetUtil.formatNetSize(wifiBucket.rxBytes + mobileBucket.rxBytes)
+        )
+    }
+
 }
