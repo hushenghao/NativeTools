@@ -32,7 +32,7 @@
         android:defaultValue="100"
         android:key="net_speed_scale"
         android:max="110"
-        android:title="图标缩放"
+        android:title="@string/label_net_speed_icon_zoom"
         app:icon="@drawable/shape_icon_mask"
         app:min="75"
         app:showSeekBarValue="true" />

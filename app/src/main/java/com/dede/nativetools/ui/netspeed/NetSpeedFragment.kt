@@ -81,7 +81,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         val b = preference.getBoolean(KEY_NET_SPEED_STATUS, false)
         if (!b) return
 
-        val context = context!!
+        val context = requireContext()
         val intent = createServiceIntent(context, preference)
         context.startService(intent)
         context.bindService(intent, this, Context.BIND_AUTO_CREATE)
@@ -93,8 +93,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         if (b) {
             launchService()
         } else {
-            context!!.unbindService(this)
-            context!!.stopService(intent)
+            requireContext().unbindService(this)
+            requireContext().stopService(intent)
             netSpeedBinder = null
         }
     }
@@ -183,7 +183,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onDestroy() {
         if (netSpeedBinder != null) {
-            context!!.unbindService(this)
+            requireContext().unbindService(this)
         }
         super.onDestroy()
     }

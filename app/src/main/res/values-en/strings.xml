@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Net Monitor</string>
+    <string name="cancel">Cancel</string>
+    <string name="access">Access</string>
+    <string name="dont_ask">Don\'t ask</string>
+    <string name="notify_net_speed_msg">Down: %s\t\t\tUp: %s</string>
+    <string name="notify_net_speed_sub">Today: %s</string>
+    <string name="switch_on">ON</string>
+    <string name="switch_off">OFF</string>
+    <string name="label_net_speed_interval">Interval</string>
+    <string name="label_net_speed_mode">Show mode</string>
+    <string name="label_net_speed_auto_start">Automatic startup</string>
+    <string name="label_net_speed">Net Monitor</string>
+    <string name="label_net_speed_locked_hide">Hide lock screen notification(Compatibility mode)</string>
+    <string name="label_net_speed_notify_clickable">Notification can be clicked</string>
+    <string name="usage_stats_msg">Usage access needs to be allowed when counting daily traffic usage</string>
+    <string name="usage_states_title">Usage access</string>
+    <string name="summary_net_speed_auto_start">Follow the system to start the background service</string>
+    <string name="summary_net_speed">Display the current network speed in the status bar</string>
+    <string name="summary_net_speed_locked_hide">The notification is hidden by default when the screen is locked. If it is invalid, you need to turn on the current option, which will make the process of the current application easier to be killed</string>
+    <string name="summary_net_speed_notify_clickable">Click notification to open the application settings interface</string>
+    <string name="label_net_speed_icon_zoom">Icon zoom</string>
+
+    <string-array name="net_speed_mode">
+        <item>Down</item>
+        <item>Up + Down</item>
+        <item>Up</item>
+    </string-array>
+</resources>
