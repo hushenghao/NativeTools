@@ -176,7 +176,7 @@ object NetUtil {
         )
         return context.getString(
             R.string.notify_net_speed_sub,
-            NetUtil.formatNetSize(wifiBucket.rxBytes + mobileBucket.rxBytes)
+            NetUtil.formatNetSize((wifiBucket?.rxBytes ?: 0) + (mobileBucket?.rxBytes ?: 0))
         )
     }
 
