@@ -2,7 +2,6 @@ package com.dede.nativetools.ui.netspeed
 
 import android.content.Context
 import android.graphics.*
-import androidx.core.util.Pools
 import com.dede.nativetools.NativeToolsApp
 import kotlin.math.abs
 
@@ -13,41 +12,43 @@ import kotlin.math.abs
  */
 object NetTextIconFactory {
 
-    class BitmapPool : Pools.SimplePool<Bitmap>(2) {
+    private val DEFAULT_CONFIG = Bitmap.Config.ARGB_8888
+    private var cachedBitmap: Bitmap? = null
 
-        companion object {
-            private val bitmapPool = BitmapPool()
-
-            fun obtain(size: Int, config: Bitmap.Config): Bitmap {
-                val acquire = bitmapPool.acquire()
-                    ?: return Bitmap.createBitmap(size, size, config)
-                if (acquire.config != config || acquire.width != size || acquire.height != size) {
-                    acquire.reconfigure(size, size, config)
-                }
-
-                // Bitmaps in the pool contain random data that in some cases must be cleared for an image
-                // to be rendered correctly. we shouldn't force all consumers to independently erase the
-                // contents individually, so we do so here.
-                acquire.eraseColor(Color.TRANSPARENT)
-                return acquire
-            }
-
-            fun recycle(bitmap: Bitmap) {
-                if (bitmap.isRecycled) {
-                    return
-                }
-                bitmapPool.release(bitmap)
-            }
-        }
-
-    }
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var ICON_SIZE = 72
 
     init {
         val context = NativeToolsApp.getInstance()
         init(context)
+        paint.typeface = Typeface.DEFAULT_BOLD
+        paint.textAlign = Paint.Align.CENTER
+        paint.color = Color.WHITE
     }
+
+    private fun createBitmap(size: Int, useCache: Boolean): Bitmap {
+        if (!useCache) {
+            return Bitmap.createBitmap(size, size, DEFAULT_CONFIG)
+        }
+        var bitmap = this.cachedBitmap
+        if (bitmap == null) {
+            bitmap = Bitmap.createBitmap(size, size, DEFAULT_CONFIG)
+            this.cachedBitmap = bitmap
+            return bitmap
+        }
+
+        if (bitmap.config != DEFAULT_CONFIG || bitmap.width != size || bitmap.height != size) {
+            bitmap.reconfigure(size, size, DEFAULT_CONFIG)
+        }
+
+        // Bitmaps in the pool contain random data that in some cases must be cleared for an image
+        // to be rendered correctly. we shouldn't force all consumers to independently erase the
+        // contents individually, so we do so here.
+        bitmap.eraseColor(Color.TRANSPARENT)
+        return bitmap
+    }
+
 
     private fun init(context: Context) {
         val dpi = context.resources.displayMetrics.densityDpi
@@ -73,20 +74,6 @@ object NetTextIconFactory {
         }
     }
 
-    private var usedBitmap: Bitmap? = null
-
-    private fun createBitmap(size: Int, fromCache: Boolean): Bitmap {
-        if (!fromCache) {
-            return Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
-        }
-        if (usedBitmap != null) {
-            BitmapPool.recycle(usedBitmap!!)
-        }
-        val bitmap = BitmapPool.obtain(size, Bitmap.Config.ARGB_8888)
-        usedBitmap = bitmap
-        return bitmap
-    }
-
     /**
      * 创建下载图标
      *
@@ -104,10 +91,6 @@ object NetTextIconFactory {
     ): Bitmap {
         val bitmap = createBitmap(size, fromCache)
         val canvas = Canvas(bitmap)
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        paint.typeface = Typeface.DEFAULT_BOLD
-        paint.textAlign = Paint.Align.CENTER
-        paint.color = Color.WHITE
         val half = size / 2f
 
         paint.textSize = size * 0.51f
@@ -142,13 +125,9 @@ object NetTextIconFactory {
     ): Bitmap {
         val bitmap = createBitmap(size, fromCache)
         val canvas = Canvas(bitmap)
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        paint.textSize = size * 0.42f
-        paint.typeface = Typeface.DEFAULT_BOLD
-        paint.textAlign = Paint.Align.CENTER
-        paint.color = Color.WHITE
         val half = size / 2f
 
+        paint.textSize = size * 0.42f
         var metrics = paint.fontMetrics
         val textY = abs(metrics.top) - metrics.descent
         canvas.scale(scale, scale, half, half)
