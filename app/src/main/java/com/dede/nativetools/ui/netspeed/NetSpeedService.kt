@@ -168,15 +168,24 @@ class NetSpeedService : Service() {
         notificationManager.createNotificationChannel(notificationChannel)
     }
 
-    private fun createNotification(): Notification {
-        createChannel()
-
-        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    private val builder by lazy(LazyThreadSafetyMode.NONE) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification.Builder(this, CHANNEL_ID)
         } else {
             Notification.Builder(this)
                 .setSound(null)
         }
+    }
+
+    private fun createNotification(): Notification {
+        createChannel()
+
+//        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            Notification.Builder(this, CHANNEL_ID)
+//        } else {
+//            Notification.Builder(this)
+//                .setSound(null)
+//        }
 
         val downloadSpeed = speed.getRxSpeed()
         val uploadSpeed = speed.getTxSpeed()

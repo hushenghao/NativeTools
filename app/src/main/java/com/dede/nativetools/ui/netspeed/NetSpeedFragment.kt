@@ -165,10 +165,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         scale = (size * scale - padding * 2) / size
         val bitmap = when (mode) {
             MODE_ALL -> {
-                NetTextIconFactory.createDoubleIcon("888M", "888M", scale, size)
+                NetTextIconFactory.createDoubleIcon("888M", "888M", scale, size, false)
             }
             else -> {
-                NetTextIconFactory.createSingleIcon("88.8", "Mb/s", scale, size)
+                NetTextIconFactory.createSingleIcon("88.8", "Mb/s", scale, size, false)
             }
         }
         val bitmapDrawable = BitmapDrawable(resources, bitmap)

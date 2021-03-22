@@ -7,7 +7,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Process
 import com.dede.nativetools.R
-import java.math.BigDecimal
+import java.text.DecimalFormat
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -19,6 +19,9 @@ object NetUtil {
 
     private const val UNIT = 1024
     private const val THRESHOLD = 900
+
+    private val df1 = DecimalFormat("0.0")
+    private val df2 = DecimalFormat("0.00")
 
     fun formatNetSpeedStr(speedByte: Long): String {
         var speed = speedByte.toDouble()
@@ -43,11 +46,7 @@ object NetUtil {
             speed /= UNIT
             suffix = "Pb/s"
         }
-        val speedStr = BigDecimal(speed)
-            .setScale(2, BigDecimal.ROUND_HALF_UP)
-            .stripTrailingZeros()
-            .toPlainString()
-        return speedStr + suffix
+        return df2.format(speed) + suffix
     }
 
     fun formatNetSpeed(speedByte: Long): Array<String> {
@@ -78,19 +77,13 @@ object NetUtil {
                 speed.roundToInt().toString()
             }
             speed >= 10 -> {// 10.22 -> 10.2
-                BigDecimal(speed)
-                    .setScale(1, BigDecimal.ROUND_HALF_UP)
-                    .stripTrailingZeros()
-                    .toPlainString()
+                df1.format(speed)
             }
             speed <= 0.0 -> {
                 "0"
             }
             else -> {// 0.223 -> 0.22
-                BigDecimal(speed)
-                    .setScale(2, BigDecimal.ROUND_HALF_UP)
-                    .stripTrailingZeros()
-                    .toPlainString()
+                df2.format(speed)
             }
         }
         return arrayOf(format, suffix)
@@ -127,10 +120,7 @@ object NetUtil {
                 "0"
             }
             else -> {// 1.2
-                BigDecimal(speed)
-                    .setScale(1, BigDecimal.ROUND_HALF_UP)
-                    .stripTrailingZeros()
-                    .toPlainString()
+                df1.format(speed)
             }
         }
         return format + suffix

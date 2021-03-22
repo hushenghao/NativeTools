@@ -2,6 +2,8 @@ package com.dede.nativetools.ui.netspeed
 
 import android.content.Context
 import android.graphics.*
+import androidx.core.util.Pools
+import com.dede.nativetools.NativeToolsApp
 import kotlin.math.abs
 
 
@@ -11,9 +13,43 @@ import kotlin.math.abs
  */
 object NetTextIconFactory {
 
+    class BitmapPool : Pools.SimplePool<Bitmap>(2) {
+
+        companion object {
+            private val bitmapPool = BitmapPool()
+
+            fun obtain(size: Int, config: Bitmap.Config): Bitmap {
+                val acquire = bitmapPool.acquire()
+                    ?: return Bitmap.createBitmap(size, size, config)
+                if (acquire.config != config || acquire.width != size || acquire.height != size) {
+                    acquire.reconfigure(size, size, config)
+                }
+
+                // Bitmaps in the pool contain random data that in some cases must be cleared for an image
+                // to be rendered correctly. we shouldn't force all consumers to independently erase the
+                // contents individually, so we do so here. See issue #131.
+                acquire.eraseColor(Color.TRANSPARENT)
+                return acquire
+            }
+
+            fun recycle(bitmap: Bitmap) {
+                if (bitmap.isRecycled) {
+                    return
+                }
+                bitmapPool.release(bitmap)
+            }
+        }
+
+    }
+
     private var ICON_SIZE = 72
 
-    fun init(context: Context) {
+    init {
+        val context = NativeToolsApp.getInstance()
+        init(context)
+    }
+
+    private fun init(context: Context) {
         val dpi = context.resources.displayMetrics.densityDpi
         when {
             dpi <= 160 -> {// mdpi
@@ -37,6 +73,20 @@ object NetTextIconFactory {
         }
     }
 
+    private var usedBitmap: Bitmap? = null
+
+    private fun createBitmap(size: Int, fromCache: Boolean): Bitmap {
+        if (!fromCache) {
+            return Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        }
+        if (usedBitmap != null) {
+            BitmapPool.recycle(usedBitmap!!)
+        }
+        val bitmap = BitmapPool.obtain(size, Bitmap.Config.ARGB_8888)
+        usedBitmap = bitmap
+        return bitmap
+    }
+
     /**
      * 创建下载图标
      *
@@ -49,9 +99,10 @@ object NetTextIconFactory {
         text1: String,
         text2: String,
         scale: Float = 1f,
-        size: Int = ICON_SIZE
+        size: Int = ICON_SIZE,
+        fromCache: Boolean = false
     ): Bitmap {
-        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val bitmap = createBitmap(size, fromCache)
         val canvas = Canvas(bitmap)
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.typeface = Typeface.DEFAULT_BOLD
@@ -86,9 +137,10 @@ object NetTextIconFactory {
         text1: String,
         text2: String,
         scale: Float = 1f,
-        size: Int = ICON_SIZE
+        size: Int = ICON_SIZE,
+        fromCache: Boolean = false
     ): Bitmap {
-        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val bitmap = createBitmap(size, fromCache)
         val canvas = Canvas(bitmap)
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.textSize = size * 0.42f
