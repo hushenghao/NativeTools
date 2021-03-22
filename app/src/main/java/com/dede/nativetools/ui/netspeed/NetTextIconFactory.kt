@@ -27,7 +27,7 @@ object NetTextIconFactory {
 
                 // Bitmaps in the pool contain random data that in some cases must be cleared for an image
                 // to be rendered correctly. we shouldn't force all consumers to independently erase the
-                // contents individually, so we do so here. See issue #131.
+                // contents individually, so we do so here.
                 acquire.eraseColor(Color.TRANSPARENT)
                 return acquire
             }
