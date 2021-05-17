@@ -6,6 +6,7 @@ import android.graphics.drawable.Icon
 import android.net.TrafficStats
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import android.os.Message
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
@@ -21,7 +22,7 @@ import com.dede.nativetools.util.safeInt
 @RequiresApi(Build.VERSION_CODES.N)
 class NetTileService : TileService(), Handler.Callback, Runnable {
 
-    private val handler = Handler(this)
+    private val handler = Handler(Looper.getMainLooper(), this)
     private var rxBytes: Long = 0L
     private var txBytes: Long = 0L
 

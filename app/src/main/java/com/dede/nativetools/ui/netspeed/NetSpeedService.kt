@@ -27,7 +27,7 @@ class NetSpeedService : Service() {
         }
 
         fun setLockHide(hide: Boolean) {
-            service.lockedHide(hide)
+            service.compatibilityMode = hide
         }
 
         fun setMode(mode: String) {
@@ -70,6 +70,9 @@ class NetSpeedService : Service() {
     internal var mode = MODE_DOWN
     internal var scale: Float = DEFAULT_SCALE
 
+    // 锁屏时隐藏(兼容模式)
+    private var compatibilityMode = false
+
     private val handler = Handler(Looper.getMainLooper())
 
     private val notifyRunnable = object : Runnable {
@@ -87,29 +90,16 @@ class NetSpeedService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(Intent.ACTION_SCREEN_ON)// 打开屏幕
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF)// 关闭屏幕
+        intentFilter.addAction(Intent.ACTION_USER_PRESENT)// 解锁
+        registerReceiver(receiver, intentFilter)
+
         resume()
     }
 
-    /**
-     * 锁屏时隐藏
-     */
-    fun lockedHide(hide: Boolean) {
-        if (hide) {
-            if (receiver == null) {
-                receiver = LockedHideReceiver()
-            }
-            val intentFilter = IntentFilter()
-            intentFilter.addAction(Intent.ACTION_SCREEN_ON)// 打开屏幕
-            intentFilter.addAction(Intent.ACTION_SCREEN_OFF)// 关闭屏幕
-            intentFilter.addAction(Intent.ACTION_USER_PRESENT)// 解锁
-            registerReceiver(receiver, intentFilter)
-        } else if (receiver != null) {
-            unregisterReceiver(receiver)
-            receiver = null
-        }
-    }
-
-    private var receiver: BroadcastReceiver? = null
+    private val receiver: BroadcastReceiver = LockedHideReceiver()
 
     /**
      * 恢复指示器
@@ -140,7 +130,7 @@ class NetSpeedService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
             if (intent.getBooleanExtra(EXTRA_LOCKED_HIDE, false)) {
-                lockedHide(true)
+                this.compatibilityMode = true
             }
             this.interval = intent.getIntExtra(EXTRA_INTERVAL, DEFAULT_INTERVAL)
             this.notifyClickable = intent.getBooleanExtra(EXTRA_NOTIFY_CLICKABLE, true)
@@ -155,8 +145,9 @@ class NetSpeedService : Service() {
             return
         }
         val channel = notificationManager.getNotificationChannel(CHANNEL_ID)
-        if (channel != null)
+        if (channel != null) {
             return
+        }
 
         val notificationChannel = NotificationChannel(
             CHANNEL_ID,
@@ -179,13 +170,6 @@ class NetSpeedService : Service() {
 
     private fun createNotification(): Notification {
         createChannel()
-
-//        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            Notification.Builder(this, CHANNEL_ID)
-//        } else {
-//            Notification.Builder(this)
-//                .setSound(null)
-//        }
 
         val downloadSpeed = speed.getRxSpeed()
         val uploadSpeed = speed.getTxSpeed()
@@ -240,9 +224,7 @@ class NetSpeedService : Service() {
 
     override fun onDestroy() {
         pause()
-        if (receiver != null) {
-            unregisterReceiver(receiver)
-        }
+        unregisterReceiver(receiver)
         super.onDestroy()
     }
 
@@ -251,10 +233,26 @@ class NetSpeedService : Service() {
      */
     private inner class LockedHideReceiver : BroadcastReceiver() {
 
-        private val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        private val keyguardManager by lazy(LazyThreadSafetyMode.NONE) {
+            getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        }
 
         override fun onReceive(context: Context?, intent: Intent?) {
             Log.i("LockedHideReceiver", intent?.action ?: "null")
+            // 非兼容模式
+            if (!compatibilityMode) {
+                when (intent?.action) {
+                    Intent.ACTION_SCREEN_ON -> {
+                        resume()// 直接更新指示器
+                    }
+                    Intent.ACTION_SCREEN_OFF -> {
+                        pause(false)// 关闭屏幕时显示，只保留服务保活
+                    }
+                }
+                return
+            }
+
+            // 兼容模式
             when (intent?.action) {
                 Intent.ACTION_SCREEN_ON -> {
                     // 屏幕打开
