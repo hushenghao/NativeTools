@@ -28,23 +28,23 @@ object NetUtil {
         var suffix = "B/s"
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Kb/s"
+            suffix = "KB/s"
         }
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Mb/s"
+            suffix = "MB/s"
         }
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Gb/s"
+            suffix = "GB/s"
         }
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Tb/s"
+            suffix = "TB/s"
         }
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Pb/s"
+            suffix = "PB/s"
         }
         return df2.format(speed) + suffix
     }
@@ -54,23 +54,23 @@ object NetUtil {
         var suffix = "B/s"
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Kb/s"
+            suffix = "KB/s"
         }
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Mb/s"
+            suffix = "MB/s"
         }
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Gb/s"
+            suffix = "GB/s"
         }
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Tb/s"
+            suffix = "TB/s"
         }
         if (speed > THRESHOLD) {
             speed /= UNIT
-            suffix = "Pb/s"
+            suffix = "PB/s"
         }
         val format = when {
             speed >= 100 -> { // 100.2 -> 100

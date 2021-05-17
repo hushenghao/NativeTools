@@ -168,7 +168,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 NetTextIconFactory.createDoubleIcon("888M", "888M", scale, size, false)
             }
             else -> {
-                NetTextIconFactory.createSingleIcon("88.8", "Mb/s", scale, size, false)
+                NetTextIconFactory.createSingleIcon("88.8", "MB/s", scale, size, false)
             }
         }
         val bitmapDrawable = BitmapDrawable(resources, bitmap)
