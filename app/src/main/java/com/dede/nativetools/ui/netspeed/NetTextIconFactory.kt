@@ -100,10 +100,10 @@ object NetTextIconFactory {
         var offset = size * 0.06f
         canvas.drawText(text1, half, textY + offset, paint)
 
-        paint.textSize = size * 0.39f
+        paint.textSize = size * 0.35f
         metrics = paint.fontMetrics
         val text2Y = abs(metrics.top) - metrics.descent
-        offset = size * 0.15f
+        offset = size * 0.16f
         canvas.drawText(text2, half, textY + text2Y + offset, paint)
         return bitmap
     }
