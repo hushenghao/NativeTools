@@ -3,7 +3,6 @@ package com.dede.nativetools.ui.netspeed
 import android.content.Intent
 import android.graphics.Typeface
 import android.graphics.drawable.Icon
-import android.net.TrafficStats
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -23,17 +22,16 @@ import com.dede.nativetools.util.safeInt
 class NetTileService : TileService(), Handler.Callback, Runnable {
 
     private val handler = Handler(Looper.getMainLooper(), this)
-    private var rxBytes: Long = 0L
-    private var txBytes: Long = 0L
 
     private var interval: Int = NetSpeedService.DEFAULT_INTERVAL
     private val sp by lazy { PreferenceManager.getDefaultSharedPreferences(baseContext) }
+    private val speed = Speed()
 
     override fun onStartListening() {
         interval = sp.getString(NetSpeedFragment.KEY_NET_SPEED_INTERVAL, null)
             .safeInt(NetSpeedService.DEFAULT_INTERVAL)
-        rxBytes = TrafficStats.getTotalRxBytes()
-        txBytes = TrafficStats.getTotalTxBytes()
+        speed.interval = interval
+        speed.reset()
         handler.post(this)
     }
 
@@ -60,13 +58,8 @@ class NetTileService : TileService(), Handler.Callback, Runnable {
     }
 
     override fun run() {
-        val rxBytes = TrafficStats.getTotalRxBytes()
-        val txBytes = TrafficStats.getTotalTxBytes()
-        val downloadSpeed = ((rxBytes - this.rxBytes) * 1f / interval * 1000 + .5).toLong()
-        val uploadSpeed = ((txBytes - this.txBytes) * 1f / interval * 1000 + .5).toLong()
-
-        this.txBytes = txBytes
-        this.rxBytes = rxBytes
+        val downloadSpeed = speed.getRxSpeed()
+        val uploadSpeed = speed.getTxSpeed()
 
         val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(downloadSpeed)
         val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(uploadSpeed)
