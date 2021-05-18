@@ -4,9 +4,6 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.graphics.drawable.Icon
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import android.text.Spannable
@@ -19,24 +16,21 @@ import com.dede.nativetools.R
 import com.dede.nativetools.util.safeInt
 
 @RequiresApi(Build.VERSION_CODES.N)
-class NetTileService : TileService(), Handler.Callback, Runnable {
-
-    private val handler = Handler(Looper.getMainLooper(), this)
+class NetTileService : TileService(), NetSpeedChanged {
 
     private var interval: Int = NetSpeedService.DEFAULT_INTERVAL
     private val sp by lazy { PreferenceManager.getDefaultSharedPreferences(baseContext) }
-    private val speed = Speed()
+    private val speed = NetSpeed(this)
 
     override fun onStartListening() {
         interval = sp.getString(NetSpeedFragment.KEY_NET_SPEED_INTERVAL, null)
             .safeInt(NetSpeedService.DEFAULT_INTERVAL)
         speed.interval = interval
-        speed.reset()
-        handler.post(this)
+        speed.resume()
     }
 
     override fun onStopListening() {
-        handler.removeCallbacks(this)
+        speed.pause()
     }
 
     private fun startMain() {
@@ -53,13 +47,9 @@ class NetTileService : TileService(), Handler.Callback, Runnable {
         }
     }
 
-    override fun handleMessage(msg: Message): Boolean {
-        return true
-    }
-
-    override fun run() {
-        val downloadSpeed = speed.getRxSpeed()
-        val uploadSpeed = speed.getTxSpeed()
+    override fun invoke(rxSpeed: Long, txSpeed: Long) {
+        val downloadSpeed = rxSpeed
+        val uploadSpeed = txSpeed
 
         val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(downloadSpeed)
         val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(uploadSpeed)
@@ -81,12 +71,10 @@ class NetTileService : TileService(), Handler.Callback, Runnable {
             tile.subtitle = getString(R.string.label_net_speed)
         }
         tile.updateTile()
-
-        handler.postDelayed(this, interval.toLong())
     }
 
     override fun onDestroy() {
-        handler.removeCallbacks(this)
+        speed.pause()
         super.onDestroy()
     }
 }

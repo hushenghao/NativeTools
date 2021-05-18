@@ -1,34 +1,58 @@
 package com.dede.nativetools.netspeed
 
 import android.net.TrafficStats
+import android.os.Handler
+import android.os.Looper
 import java.lang.reflect.Method
+import kotlin.properties.Delegates
 
-class Speed {
+typealias NetSpeedChanged = (Long, Long) -> Unit
 
-    var interval: Int = 1000
+class NetSpeed(private var netSpeedChanged: NetSpeedChanged? = null) : Runnable {
 
-    private var rxBytes: Long = getRxBytes()
-    private var txBytes: Long = getTxBytes()
+    private val handler = Handler(Looper.getMainLooper())
 
-    fun reset() {
+    override fun run() {
+        handler.postDelayed(this, interval.toLong())
+
+        val rxBytes = getRxBytes()
+        val txBytes = getTxBytes()
+        val rxSpeed = (rxBytes - this.rxBytes) * 1f / interval * 1000 + .5f
+        val txSpeed = (txBytes - this.txBytes) * 1f / interval * 1000 + .5f
+        this.rxSpeed = rxSpeed.toLong()
+        this.txSpeed = txSpeed.toLong()
+        this.rxBytes = rxBytes
+        this.txBytes = txBytes
+
+        netSpeedChanged?.invoke(this.rxSpeed, this.txSpeed)
+    }
+
+    private var rxBytes: Long = 0L
+    private var txBytes: Long = 0L
+
+    var interval: Int by Delegates.observable(1000) { _, old, new ->
+        if (old != new) {
+            reset()
+        }
+    }
+
+    var rxSpeed: Long = 0L
+        private set
+    var txSpeed: Long = 0L
+        private set
+
+    private fun reset() {
         rxBytes = getRxBytes()
         txBytes = getTxBytes()
     }
 
-    fun getRxSpeed(): Long {
-        val rxBytes = getRxBytes()
-        val rxSpeed = ((rxBytes - this.rxBytes) * 1f / interval * 1000 + .5).toLong()
-
-        this.rxBytes = rxBytes
-        return rxSpeed
+    fun resume() {
+        reset()
+        handler.post(this)
     }
 
-    fun getTxSpeed(): Long {
-        val txBytes = getTxBytes()
-        val txSpeed = ((txBytes - this.txBytes) * 1f / interval * 1000 + .5).toLong()
-
-        this.txBytes = txBytes
-        return txSpeed
+    fun pause() {
+        handler.removeCallbacks(this)
     }
 
     private var methodGetLoopbackRxBytes: Method? = null

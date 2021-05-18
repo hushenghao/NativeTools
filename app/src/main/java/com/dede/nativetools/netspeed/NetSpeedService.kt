@@ -8,16 +8,14 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.Icon
 import android.os.Build
-import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
 import android.util.Log
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
 import kotlin.properties.Delegates
 
 
-class NetSpeedService : Service() {
+class NetSpeedService : Service(), NetSpeedChanged {
 
     class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
@@ -65,8 +63,9 @@ class NetSpeedService : Service() {
 
     private val binder = NetSpeedBinder(this)
 
-    private val speed = Speed()
-    internal var interval: Int by Delegates.observable(DEFAULT_INTERVAL) { _, _, new ->
+    private val speed = NetSpeed(this)
+
+    private var interval: Int by Delegates.observable(DEFAULT_INTERVAL) { _, _, new ->
         speed.interval = new
     }
     private var notifyClickable = true
@@ -76,18 +75,12 @@ class NetSpeedService : Service() {
     // 锁屏时隐藏(兼容模式)
     private var compatibilityMode = false
 
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val notifyRunnable = object : Runnable {
-        override fun run() {
-            val notify = createNotification()
-            notificationManager.notify(NOTIFY_ID, notify)
-
-            handler.postDelayed(this, interval.toLong())
-        }
+    override fun invoke(rxSpeed: Long, txSpeed: Long) {
+        val notify = createNotification()
+        notificationManager.notify(NOTIFY_ID, notify)
     }
 
-    override fun onBind(intent: Intent): IBinder? {
+    override fun onBind(intent: Intent): IBinder {
         return binder
     }
 
@@ -108,20 +101,16 @@ class NetSpeedService : Service() {
      * 恢复指示器
      */
     private fun resume() {
-        handler.removeCallbacks(notifyRunnable)
-
-        speed.reset()
+        speed.resume()
         val notify = createNotification()
         startForeground(NOTIFY_ID, notify)
-
-        handler.post(notifyRunnable)
     }
 
     /**
      * 暂停指示器
      */
     private fun pause(stopForeground: Boolean = true) {
-        handler.removeCallbacks(notifyRunnable)
+        speed.pause()
         if (stopForeground) {
             notificationManager.cancel(NOTIFY_ID)
             stopForeground(true)
@@ -174,8 +163,8 @@ class NetSpeedService : Service() {
     private fun createNotification(): Notification {
         createChannel()
 
-        val downloadSpeed = speed.getRxSpeed()
-        val uploadSpeed = speed.getTxSpeed()
+        val downloadSpeed = speed.rxSpeed
+        val uploadSpeed = speed.txSpeed
         // android.text.format.Formatter.formatFileSize(android.content.Context, long)
         // 8.0以后使用的单位是1000，非1024
         val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(downloadSpeed)
