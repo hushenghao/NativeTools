@@ -32,8 +32,10 @@
 
         <service
             android:name=".netspeed.NetSpeedService"
-            android:process=":netspeed"
-            android:exported="false" />
+            android:exported="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/label_net_speed"
+            android:process=":netspeed" />
         <service
             android:name=".netspeed.NetTileService"
             android:icon="@drawable/ic_net_tile"

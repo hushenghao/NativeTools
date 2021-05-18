@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">网速指示器</string>
-    <string name="notify_net_speed_msg">下载：%s\t\t\t上传：%s</string>
-    <string name="notify_net_speed_sub">今日：%s</string>
+    <string name="notify_net_speed_msg">下载：%s • 上传：%s</string>
+    <string name="notify_net_speed_sub">今日：%s • 本月：%s</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
 

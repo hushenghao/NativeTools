@@ -14,6 +14,7 @@ import androidx.preference.PreferenceManager
 import androidx.preference.SeekBarPreference
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedService.Companion.MODE_ALL
+import com.dede.nativetools.util.checkAppOps
 import com.dede.nativetools.util.dp
 import com.dede.nativetools.util.safeInt
 
@@ -60,7 +61,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         launchService()
 
         if (!preference.getBoolean(KEY_OPS_DONT_ASK, false) &&
-            !NetUtil.checkAppOps(requireContext())
+            !requireContext().checkAppOps()
         ) {
             AlertDialog.Builder(requireContext())
                 .setTitle(R.string.usage_states_title)
@@ -87,15 +88,24 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         context.bindService(intent, this, Context.BIND_AUTO_CREATE)
     }
 
+    private fun stopService() {
+        val requireContext = requireContext()
+        val intent = Intent(requireContext, NetSpeedService::class.java)
+        unbindService()
+        requireContext.stopService(intent)
+    }
+
+    private fun unbindService() {
+        requireContext().unbindService(this)
+        netSpeedBinder = null
+    }
+
     private fun toggleService() {
         val b = preference.getBoolean(KEY_NET_SPEED_STATUS, false)
-        val intent = Intent(context, NetSpeedService::class.java)
         if (b) {
             launchService()
         } else {
-            requireContext().unbindService(this)
-            requireContext().stopService(intent)
-            netSpeedBinder = null
+            stopService()
         }
     }
 
@@ -182,9 +192,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     override fun onDestroy() {
-        if (netSpeedBinder != null) {
-            requireContext().unbindService(this)
-        }
+        unbindService()
         super.onDestroy()
     }
 
