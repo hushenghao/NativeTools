@@ -171,7 +171,7 @@ class NetSpeedService : Service(), NetSpeedChanged {
         val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(uploadSpeed)
 
         val contentStr = getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
-        builder.setSubText(NetUtil.getTodayRx(this))
+        builder.setSubText(NetUtil.getRxSubTitle(this))
             .setContentText(contentStr)
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_SECRET)

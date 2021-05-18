@@ -30,7 +30,7 @@ class NetSpeed(private var netSpeedChanged: NetSpeedChanged? = null) : Runnable 
     private var rxBytes: Long = 0L
     private var txBytes: Long = 0L
 
-    var interval: Int by Delegates.observable(1000) { _, old, new ->
+    var interval: Int by Delegates.observable(NetSpeedService.DEFAULT_INTERVAL) { _, old, new ->
         if (old != new) {
             reset()
         }

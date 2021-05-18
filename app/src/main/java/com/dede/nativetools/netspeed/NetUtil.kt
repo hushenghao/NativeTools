@@ -1,12 +1,11 @@
 package com.dede.nativetools.netspeed
 
 
-import android.app.AppOpsManager
 import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.net.ConnectivityManager
-import android.os.Process
 import com.dede.nativetools.R
+import com.dede.nativetools.util.checkAppOps
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.math.roundToInt
@@ -126,48 +125,68 @@ object NetUtil {
         return format + suffix
     }
 
-    fun checkAppOps(context: Context): Boolean {
-        val appOpsManager =
-            context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val result = appOpsManager.checkOpNoThrow(
-            AppOpsManager.OPSTR_GET_USAGE_STATS,
-            Process.myUid(),
-            context.packageName
-        )
-        return result == AppOpsManager.MODE_ALLOWED
-    }
-
     /**
-     * 获取今天所有数据下载量
+     * 获取所有数据下载量
      */
-    fun getTodayRx(context: Context): String? {
-        if (!NetUtil.checkAppOps(context)) {
+    fun getRxSubTitle(context: Context): String? {
+        if (!context.checkAppOps()) {
             return null
         }
-        val networkStatsManager =
-            context.getSystemService(Context.NETWORK_STATS_SERVICE) as NetworkStatsManager
+        val todayBytes = getTodayRxBytes(context)
+        val monthBytes = getMonthRxBytes(context)
+        return context.getString(
+            R.string.notify_net_speed_sub,
+            formatNetSize(todayBytes),
+            formatNetSize(monthBytes)
+        )
+    }
+
+    private fun getMonthRxBytes(context: Context): Long {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return getRxBytesInternal(context, calendar)
+    }
+
+    private fun getTodayRxBytes(context: Context): Long {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
-        val current = System.currentTimeMillis()
-        val wifiBucket = networkStatsManager.querySummaryForDevice(
-            ConnectivityManager.TYPE_WIFI,
-            null,
-            calendar.timeInMillis,
-            current
-        )
-        val mobileBucket = networkStatsManager.querySummaryForDevice(
-            ConnectivityManager.TYPE_MOBILE,
-            null,
-            calendar.timeInMillis,
-            current
-        )
-        return context.getString(
-            R.string.notify_net_speed_sub,
-            NetUtil.formatNetSize((wifiBucket?.rxBytes ?: 0) + (mobileBucket?.rxBytes ?: 0))
-        )
+        return getRxBytesInternal(context, calendar)
+    }
+
+    private fun getRxBytesInternal(context: Context, start: Calendar): Long {
+        val startTime = start.timeInMillis
+        val endTime = System.currentTimeMillis()
+        val networkStatsManager =
+            context.getSystemService(Context.NETWORK_STATS_SERVICE) as? NetworkStatsManager
+        val wifiBucket = try {
+            networkStatsManager?.querySummaryForDevice(
+                ConnectivityManager.TYPE_WIFI,
+                null,
+                startTime,
+                endTime
+            )
+        } catch (e: Exception) {
+            null
+        }
+        val mobileBucket = try {
+            networkStatsManager?.querySummaryForDevice(
+                ConnectivityManager.TYPE_MOBILE,
+                null,
+                startTime,
+                endTime
+            )
+        } catch (e: Exception) {
+            null
+        }
+        return (wifiBucket?.rxBytes ?: 0) + (mobileBucket?.rxBytes ?: 0)
+
     }
 
 }
