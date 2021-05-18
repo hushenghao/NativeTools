@@ -15,7 +15,7 @@ import com.dede.nativetools.R
 import kotlin.properties.Delegates
 
 
-class NetSpeedService : Service(), NetSpeedChanged {
+class NetSpeedService : Service() {
 
     class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
@@ -63,7 +63,10 @@ class NetSpeedService : Service(), NetSpeedChanged {
 
     private val binder = NetSpeedBinder(this)
 
-    private val speed = NetSpeed(this)
+    private val speed = NetSpeed { rxSpeed, txSpeed ->
+        val notify = createNotification(rxSpeed, txSpeed)
+        notificationManager.notify(NOTIFY_ID, notify)
+    }
 
     private var interval: Int by Delegates.observable(DEFAULT_INTERVAL) { _, _, new ->
         speed.interval = new
@@ -74,11 +77,6 @@ class NetSpeedService : Service(), NetSpeedChanged {
 
     // 锁屏时隐藏(兼容模式)
     private var compatibilityMode = false
-
-    override fun invoke(rxSpeed: Long, txSpeed: Long) {
-        val notify = createNotification()
-        notificationManager.notify(NOTIFY_ID, notify)
-    }
 
     override fun onBind(intent: Intent): IBinder {
         return binder
@@ -101,9 +99,9 @@ class NetSpeedService : Service(), NetSpeedChanged {
      * 恢复指示器
      */
     private fun resume() {
-        speed.resume()
         val notify = createNotification()
         startForeground(NOTIFY_ID, notify)
+        speed.resume()
     }
 
     /**
@@ -160,15 +158,13 @@ class NetSpeedService : Service(), NetSpeedChanged {
         }
     }
 
-    private fun createNotification(): Notification {
+    private fun createNotification(rxSpeed: Long = 0L, txSpeed: Long = 0L): Notification {
         createChannel()
 
-        val downloadSpeed = speed.rxSpeed
-        val uploadSpeed = speed.txSpeed
         // android.text.format.Formatter.formatFileSize(android.content.Context, long)
         // 8.0以后使用的单位是1000，非1024
-        val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(downloadSpeed)
-        val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(uploadSpeed)
+        val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(rxSpeed)
+        val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(txSpeed)
 
         val contentStr = getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
         builder.setSubText(NetUtil.getTodayRx(this))
@@ -179,7 +175,7 @@ class NetSpeedService : Service(), NetSpeedChanged {
             builder.setBadgeIconType(Notification.BADGE_ICON_NONE)
         }
 
-        val icon = createIcon(downloadSpeed, uploadSpeed)
+        val icon = createIcon(rxSpeed, txSpeed)
         builder.setSmallIcon(icon)
 
         if (notifyClickable) {

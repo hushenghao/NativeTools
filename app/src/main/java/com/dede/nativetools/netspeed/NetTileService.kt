@@ -1,14 +1,10 @@
 package com.dede.nativetools.netspeed
 
 import android.content.Intent
-import android.graphics.Typeface
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.StyleSpan
 import androidx.annotation.RequiresApi
 import androidx.preference.PreferenceManager
 import com.dede.nativetools.MainActivity
@@ -16,11 +12,13 @@ import com.dede.nativetools.R
 import com.dede.nativetools.util.safeInt
 
 @RequiresApi(Build.VERSION_CODES.N)
-class NetTileService : TileService(), NetSpeedChanged {
+class NetTileService : TileService() {
 
     private var interval: Int = NetSpeedService.DEFAULT_INTERVAL
     private val sp by lazy { PreferenceManager.getDefaultSharedPreferences(baseContext) }
-    private val speed = NetSpeed(this)
+    private val speed = NetSpeed { rxSpeed, txSpeed ->
+        update(rxSpeed, txSpeed)
+    }
 
     override fun onStartListening() {
         interval = sp.getString(NetSpeedFragment.KEY_NET_SPEED_INTERVAL, null)
@@ -47,26 +45,22 @@ class NetTileService : TileService(), NetSpeedChanged {
         }
     }
 
-    override fun invoke(rxSpeed: Long, txSpeed: Long) {
-        val downloadSpeed = rxSpeed
-        val uploadSpeed = txSpeed
-
-        val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(downloadSpeed)
-        val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(uploadSpeed)
+    private fun update(rxSpeed: Long, txSpeed: Long) {
+        val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(rxSpeed)
+        val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(txSpeed)
 
         val tile = qsTile
         tile.state = Tile.STATE_ACTIVE
-        val downSplit: Array<String> = NetUtil.formatNetSpeed(downloadSpeed)
+        val downSplit: Array<String> = NetUtil.formatNetSpeed(rxSpeed)
         tile.icon = Icon.createWithBitmap(
             NetTextIconFactory.createSingleIcon(downSplit[0], downSplit[1])
         )
-        val span = SpannableStringBuilder()
-            .append("⇃", StyleSpan(Typeface.BOLD), Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        val builder = StringBuilder()
+            .append("⇃")
             .append(downloadSpeedStr)
-            .append("\t")
-            .append("↿", StyleSpan(Typeface.BOLD), Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+            .append("\t↿")
             .append(uploadSpeedStr)
-        tile.label = span
+        tile.label = builder.toString()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             tile.subtitle = getString(R.string.label_net_speed)
         }
