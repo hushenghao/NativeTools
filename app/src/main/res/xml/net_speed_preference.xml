@@ -8,6 +8,7 @@
         android:summaryOff="@string/switch_off"
         android:summaryOn="@string/switch_on"
         android:title="@string/label_net_speed"
+        app:defaultValue="true"
         app:iconSpaceReserved="false" />
 
     <DropDownPreference
@@ -28,7 +29,7 @@
         app:title="@string/label_net_speed_mode"
         app:useSimpleSummaryProvider="true" />
 
-    <com.dede.nativetools.ui.netspeed.MySeekBarPreference
+    <com.dede.nativetools.netspeed.MySeekBarPreference
         android:defaultValue="100"
         android:key="net_speed_scale"
         android:max="110"

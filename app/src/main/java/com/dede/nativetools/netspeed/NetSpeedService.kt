@@ -1,4 +1,4 @@
-package com.dede.nativetools.ui.netspeed
+package com.dede.nativetools.netspeed
 
 
 import android.app.*
@@ -7,34 +7,35 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.Icon
-import android.os.*
+import android.os.Build
+import android.os.IBinder
 import android.util.Log
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
 import kotlin.properties.Delegates
 
 
-class NetSpeedService : Service() {
+class NetSpeedService : Service(), NetSpeedChanged {
 
-    class NetSpeedBinder(private val service: NetSpeedService) : Binder() {
+    class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
-        fun setInterval(interval: Int) {
+        override fun setInterval(interval: Int) {
             service.interval = interval
         }
 
-        fun setNotifyClickable(clickable: Boolean) {
+        override fun setNotifyClickable(clickable: Boolean) {
             service.notifyClickable = clickable
         }
 
-        fun setLockHide(hide: Boolean) {
-            service.lockedHide(hide)
+        override fun setLockHide(hide: Boolean) {
+            service.compatibilityMode = hide
         }
 
-        fun setMode(mode: String) {
+        override fun setMode(mode: String) {
             service.mode = mode
         }
 
-        fun setScale(scale: Float) {
+        override fun setScale(scale: Float) {
             service.scale = scale
         }
     }
@@ -62,73 +63,54 @@ class NetSpeedService : Service() {
 
     private val binder = NetSpeedBinder(this)
 
-    private val speed = Speed()
-    internal var interval: Int by Delegates.observable(DEFAULT_INTERVAL) { _, _, new ->
+    private val speed = NetSpeed(this)
+
+    private var interval: Int by Delegates.observable(DEFAULT_INTERVAL) { _, _, new ->
         speed.interval = new
     }
-    internal var notifyClickable = true
-    internal var mode = MODE_DOWN
-    internal var scale: Float = DEFAULT_SCALE
+    private var notifyClickable = true
+    private var mode = MODE_DOWN
+    private var scale: Float = DEFAULT_SCALE
 
-    private val handler = Handler(Looper.getMainLooper())
+    // 锁屏时隐藏(兼容模式)
+    private var compatibilityMode = false
 
-    private val notifyRunnable = object : Runnable {
-        override fun run() {
-            val notify = createNotification()
-            notificationManager.notify(NOTIFY_ID, notify)
-
-            handler.postDelayed(this, interval.toLong())
-        }
+    override fun invoke(rxSpeed: Long, txSpeed: Long) {
+        val notify = createNotification()
+        notificationManager.notify(NOTIFY_ID, notify)
     }
 
-    override fun onBind(intent: Intent): IBinder? {
+    override fun onBind(intent: Intent): IBinder {
         return binder
     }
 
     override fun onCreate() {
         super.onCreate()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(Intent.ACTION_SCREEN_ON)// 打开屏幕
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF)// 关闭屏幕
+        intentFilter.addAction(Intent.ACTION_USER_PRESENT)// 解锁
+        registerReceiver(receiver, intentFilter)
+
         resume()
     }
 
-    /**
-     * 锁屏时隐藏
-     */
-    fun lockedHide(hide: Boolean) {
-        if (hide) {
-            if (receiver == null) {
-                receiver = LockedHideReceiver()
-            }
-            val intentFilter = IntentFilter()
-            intentFilter.addAction(Intent.ACTION_SCREEN_ON)// 打开屏幕
-            intentFilter.addAction(Intent.ACTION_SCREEN_OFF)// 关闭屏幕
-            intentFilter.addAction(Intent.ACTION_USER_PRESENT)// 解锁
-            registerReceiver(receiver, intentFilter)
-        } else if (receiver != null) {
-            unregisterReceiver(receiver)
-            receiver = null
-        }
-    }
-
-    private var receiver: BroadcastReceiver? = null
+    private val receiver: BroadcastReceiver = LockedHideReceiver()
 
     /**
      * 恢复指示器
      */
     private fun resume() {
-        handler.removeCallbacks(notifyRunnable)
-
-        speed.reset()
+        speed.resume()
         val notify = createNotification()
         startForeground(NOTIFY_ID, notify)
-
-        handler.post(notifyRunnable)
     }
 
     /**
      * 暂停指示器
      */
     private fun pause(stopForeground: Boolean = true) {
-        handler.removeCallbacks(notifyRunnable)
+        speed.pause()
         if (stopForeground) {
             notificationManager.cancel(NOTIFY_ID)
             stopForeground(true)
@@ -140,7 +122,7 @@ class NetSpeedService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
             if (intent.getBooleanExtra(EXTRA_LOCKED_HIDE, false)) {
-                lockedHide(true)
+                this.compatibilityMode = true
             }
             this.interval = intent.getIntExtra(EXTRA_INTERVAL, DEFAULT_INTERVAL)
             this.notifyClickable = intent.getBooleanExtra(EXTRA_NOTIFY_CLICKABLE, true)
@@ -155,8 +137,9 @@ class NetSpeedService : Service() {
             return
         }
         val channel = notificationManager.getNotificationChannel(CHANNEL_ID)
-        if (channel != null)
+        if (channel != null) {
             return
+        }
 
         val notificationChannel = NotificationChannel(
             CHANNEL_ID,
@@ -180,15 +163,8 @@ class NetSpeedService : Service() {
     private fun createNotification(): Notification {
         createChannel()
 
-//        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            Notification.Builder(this, CHANNEL_ID)
-//        } else {
-//            Notification.Builder(this)
-//                .setSound(null)
-//        }
-
-        val downloadSpeed = speed.getRxSpeed()
-        val uploadSpeed = speed.getTxSpeed()
+        val downloadSpeed = speed.rxSpeed
+        val uploadSpeed = speed.txSpeed
         // android.text.format.Formatter.formatFileSize(android.content.Context, long)
         // 8.0以后使用的单位是1000，非1024
         val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(downloadSpeed)
@@ -240,9 +216,7 @@ class NetSpeedService : Service() {
 
     override fun onDestroy() {
         pause()
-        if (receiver != null) {
-            unregisterReceiver(receiver)
-        }
+        unregisterReceiver(receiver)
         super.onDestroy()
     }
 
@@ -251,10 +225,26 @@ class NetSpeedService : Service() {
      */
     private inner class LockedHideReceiver : BroadcastReceiver() {
 
-        private val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        private val keyguardManager by lazy(LazyThreadSafetyMode.NONE) {
+            getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        }
 
         override fun onReceive(context: Context?, intent: Intent?) {
             Log.i("LockedHideReceiver", intent?.action ?: "null")
+            // 非兼容模式
+            if (!compatibilityMode) {
+                when (intent?.action) {
+                    Intent.ACTION_SCREEN_ON -> {
+                        resume()// 直接更新指示器
+                    }
+                    Intent.ACTION_SCREEN_OFF -> {
+                        pause(false)// 关闭屏幕时显示，只保留服务保活
+                    }
+                }
+                return
+            }
+
+            // 兼容模式
             when (intent?.action) {
                 Intent.ACTION_SCREEN_ON -> {
                     // 屏幕打开

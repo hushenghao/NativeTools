@@ -31,10 +31,11 @@
         </activity>
 
         <service
-            android:name=".ui.netspeed.NetSpeedService"
+            android:name=".netspeed.NetSpeedService"
+            android:process=":netspeed"
             android:exported="false" />
         <service
-            android:name=".ui.netspeed.NetTileService"
+            android:name=".netspeed.NetTileService"
             android:icon="@drawable/ic_net_tile"
             android:label="@string/label_net_speed"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -43,7 +44,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".ui.LauncherReceiver">
+        <receiver android:name=".LauncherReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
