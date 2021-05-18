@@ -1,4 +1,4 @@
-package com.dede.nativetools.ui.netspeed
+package com.dede.nativetools.netspeed
 
 import android.content.*
 import android.graphics.drawable.BitmapDrawable
@@ -13,7 +13,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SeekBarPreference
 import com.dede.nativetools.R
-import com.dede.nativetools.ui.netspeed.NetSpeedService.Companion.MODE_ALL
+import com.dede.nativetools.netspeed.NetSpeedService.Companion.MODE_ALL
 import com.dede.nativetools.util.dp
 import com.dede.nativetools.util.safeInt
 

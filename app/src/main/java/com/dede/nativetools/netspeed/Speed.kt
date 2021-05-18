@@ -1,4 +1,4 @@
-package com.dede.nativetools.ui.netspeed
+package com.dede.nativetools.netspeed
 
 import android.net.TrafficStats
 import java.lang.reflect.Method

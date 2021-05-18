@@ -1,4 +1,4 @@
-package com.dede.nativetools.ui.netspeed
+package com.dede.nativetools.netspeed
 
 import android.content.Context
 import android.graphics.*

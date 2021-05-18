@@ -2,7 +2,6 @@ package com.dede.nativetools
 
 import android.app.Application
 import android.content.Context
-import com.dede.nativetools.ui.LauncherReceiver
 import me.weishu.reflection.Reflection
 
 class NativeToolsApp : Application() {

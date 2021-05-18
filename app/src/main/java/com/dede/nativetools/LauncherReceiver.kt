@@ -1,4 +1,4 @@
-package com.dede.nativetools.ui
+package com.dede.nativetools
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,7 +7,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.util.Log
 import androidx.preference.PreferenceManager
-import com.dede.nativetools.ui.netspeed.NetSpeedFragment
+import com.dede.nativetools.netspeed.NetSpeedFragment
 
 class LauncherReceiver : BroadcastReceiver() {
 
