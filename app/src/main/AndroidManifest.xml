@@ -32,6 +32,7 @@
 
         <service
             android:name=".netspeed.NetSpeedService"
+            android:process=":netspeed"
             android:exported="false" />
         <service
             android:name=".netspeed.NetTileService"

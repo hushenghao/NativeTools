@@ -7,7 +7,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.Icon
-import android.os.*
+import android.os.Build
+import android.os.Handler
+import android.os.IBinder
+import android.os.Looper
 import android.util.Log
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
@@ -16,25 +19,25 @@ import kotlin.properties.Delegates
 
 class NetSpeedService : Service() {
 
-    class NetSpeedBinder(private val service: NetSpeedService) : Binder() {
+    class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
-        fun setInterval(interval: Int) {
+        override fun setInterval(interval: Int) {
             service.interval = interval
         }
 
-        fun setNotifyClickable(clickable: Boolean) {
+        override fun setNotifyClickable(clickable: Boolean) {
             service.notifyClickable = clickable
         }
 
-        fun setLockHide(hide: Boolean) {
+        override fun setLockHide(hide: Boolean) {
             service.compatibilityMode = hide
         }
 
-        fun setMode(mode: String) {
+        override fun setMode(mode: String) {
             service.mode = mode
         }
 
-        fun setScale(scale: Float) {
+        override fun setScale(scale: Float) {
             service.scale = scale
         }
     }
@@ -66,9 +69,9 @@ class NetSpeedService : Service() {
     internal var interval: Int by Delegates.observable(DEFAULT_INTERVAL) { _, _, new ->
         speed.interval = new
     }
-    internal var notifyClickable = true
-    internal var mode = MODE_DOWN
-    internal var scale: Float = DEFAULT_SCALE
+    private var notifyClickable = true
+    private var mode = MODE_DOWN
+    private var scale: Float = DEFAULT_SCALE
 
     // 锁屏时隐藏(兼容模式)
     private var compatibilityMode = false

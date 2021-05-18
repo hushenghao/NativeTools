@@ -107,14 +107,14 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         modeOrScaleChange()
     }
 
-    private var netSpeedBinder: NetSpeedService.NetSpeedBinder? = null
+    private var netSpeedBinder: INetSpeedInterface? = null
 
     override fun onServiceDisconnected(name: ComponentName?) {
         netSpeedBinder = null
     }
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        netSpeedBinder = service as NetSpeedService.NetSpeedBinder?
+        netSpeedBinder = INetSpeedInterface.Stub.asInterface(service)
     }
 
     override fun onStart() {
