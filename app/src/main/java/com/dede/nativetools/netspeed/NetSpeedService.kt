@@ -186,6 +186,8 @@ class NetSpeedService : Service() {
                 intent, PendingIntent.FLAG_UPDATE_CURRENT
             )
             builder.setContentIntent(pendingIntent)
+        } else {
+            builder.setContentIntent(null)
         }
 
         return builder.build()
