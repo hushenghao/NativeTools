@@ -14,7 +14,7 @@ import androidx.preference.PreferenceManager
 import androidx.preference.SeekBarPreference
 import com.dede.nativetools.R
 import com.dede.nativetools.ui.netspeed.NetSpeedService.Companion.MODE_ALL
-import com.dede.nativetools.util.dip
+import com.dede.nativetools.util.dp
 import com.dede.nativetools.util.safeInt
 
 class NetSpeedFragment : PreferenceFragmentCompat(),
@@ -34,7 +34,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         private const val DEFAULT_SCALE_INT = 100
         private const val SCALE_DIVISOR = 100f
 
-        fun createServiceIntent(context: Context, preferences: SharedPreferences): Intent? {
+        fun createServiceIntent(context: Context, preferences: SharedPreferences): Intent {
             val intent = Intent(context, NetSpeedService::class.java)
             val interval =
                 preferences.getString(KEY_NET_SPEED_INTERVAL, null)
@@ -159,7 +159,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         netSpeedBinder?.setMode(mode ?: NetSpeedService.MODE_DOWN)
 
         // androidx.preference.preference:1.1.0 res/layout/preference.xml
-        val size = requireContext().dip(48f)// 最大48dp
+        val size = 48.dp// 最大48dp
         val padding = (size * 0.08f + 0.5f).toInt()
         // 多缩放padding*2个像素
         scale = (size * scale - padding * 2) / size

@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.R
 import androidx.preference.SeekBarPreference
-import com.dede.nativetools.util.dip
+import com.dede.nativetools.util.dp
 
 class MySeekBarPreference : SeekBarPreference, SeekBar.OnSeekBarChangeListener {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int)
@@ -25,17 +25,16 @@ class MySeekBarPreference : SeekBarPreference, SeekBar.OnSeekBarChangeListener {
 
     override fun onBindViewHolder(view: PreferenceViewHolder) {
         super.onBindViewHolder(view)
-        val context = view.itemView.context
 
         val imageView = view.findViewById(android.R.id.icon) as ImageView
-        val size = context.dip(42f)
+        val size = 42.dp
         imageView.layoutParams = imageView.layoutParams?.apply {
             height = size
             width = size
         }
         val seekBar = view.findViewById(R.id.seekbar) as SeekBar
         seekBar.layoutParams = seekBar.layoutParams?.apply {
-            height = context.dip(30f)
+            height = 30.dp
         }
         if (copySeekBarChangeListener == null || copySeekBarChangeListener != this) {
             try {
