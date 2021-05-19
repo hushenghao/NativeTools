@@ -168,10 +168,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         netSpeedBinder?.setScale(scale)
         netSpeedBinder?.setMode(mode ?: NetSpeedService.MODE_DOWN)
 
-        // androidx.preference.preference:1.1.0 res/layout/preference.xml
-        val size = 48.dp// 最大48dp
+        val size = PercentSeekBarPreference.ICON_SIZE.dp// 最大48dp
         val padding = (size * 0.08f + 0.5f).toInt()
-        // 多缩放padding*2个像素
+        // 多缩放padding*2个像素，添加边距
         scale = (size * scale - padding * 2) / size
         val bitmap = when (mode) {
             MODE_ALL -> {

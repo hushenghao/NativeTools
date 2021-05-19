@@ -10,15 +10,17 @@ import androidx.preference.R
 import androidx.preference.SeekBarPreference
 import com.dede.nativetools.util.dp
 
-class MySeekBarPreference : SeekBarPreference, SeekBar.OnSeekBarChangeListener {
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int)
-            : super(context, attrs, defStyleAttr, defStyleRes)
+class PercentSeekBarPreference @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = R.attr.seekBarPreferenceStyle,
+    defStyleRes: Int = 0
+) : SeekBarPreference(context, attrs, defStyleAttr, defStyleRes), SeekBar.OnSeekBarChangeListener {
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int)
-            : super(context, attrs, defStyleAttr)
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-    constructor(context: Context) : super(context)
+    companion object {
+        // androidx.preference.preference:1.1.0 res/layout/preference.xml
+        const val ICON_SIZE = 48f
+    }
 
     private var seekBarValueTextView: TextView? = null
     private var copySeekBarChangeListener: SeekBar.OnSeekBarChangeListener? = null
@@ -27,7 +29,7 @@ class MySeekBarPreference : SeekBarPreference, SeekBar.OnSeekBarChangeListener {
         super.onBindViewHolder(view)
 
         val imageView = view.findViewById(android.R.id.icon) as ImageView
-        val size = 42.dp
+        val size = ICON_SIZE.dp
         imageView.layoutParams = imageView.layoutParams?.apply {
             height = size
             width = size
@@ -47,10 +49,7 @@ class MySeekBarPreference : SeekBarPreference, SeekBar.OnSeekBarChangeListener {
             }
         }
         seekBarValueTextView = view.findViewById(R.id.seekbar_value) as TextView
-        seekBarValueTextView?.textSize = 12f
-        if (copySeekBarChangeListener != null) {
-            seekBarValueTextView?.text = "$value %"
-        }
+        seekBarValueTextView?.text = "$value %"
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
