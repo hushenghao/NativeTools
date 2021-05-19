@@ -47,6 +47,7 @@ class NetSpeed(private var netSpeedChanged: NetSpeedChanged? = null) : Runnable 
     }
 
     fun resume() {
+        handler.removeCallbacks(this)
         reset()
         handler.post(this)
     }
