@@ -12,6 +12,7 @@ import android.os.IBinder
 import android.util.Log
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
+import com.dede.nativetools.util.checkAppOps
 import kotlin.properties.Delegates
 
 
@@ -95,12 +96,16 @@ class NetSpeedService : Service() {
 
     private val receiver: BroadcastReceiver = LockedHideReceiver()
 
+    private fun startForeground() {
+        val notify = createNotification()
+        startForeground(NOTIFY_ID, notify)
+    }
+
     /**
      * 恢复指示器
      */
     private fun resume() {
-        val notify = createNotification()
-        startForeground(NOTIFY_ID, notify)
+        startForeground()
         speed.resume()
     }
 
@@ -113,7 +118,7 @@ class NetSpeedService : Service() {
             notificationManager.cancel(NOTIFY_ID)
             stopForeground(true)
         } else {
-            startForeground(NOTIFY_ID, createNotification())
+            startForeground()
         }
     }
 
@@ -161,13 +166,29 @@ class NetSpeedService : Service() {
     private fun createNotification(rxSpeed: Long = 0L, txSpeed: Long = 0L): Notification {
         createChannel()
 
+        /**
+         * 获取所有数据下载量
+         */
+        fun getRxSubText(context: Context): String? {
+            if (!context.checkAppOps()) {
+                return null
+            }
+            val todayBytes = NetUtil.getTodayRxBytes(context)
+            val monthBytes = NetUtil.getMonthRxBytes(context)
+            return context.getString(
+                R.string.notify_net_speed_sub,
+                NetUtil.formatNetSize(todayBytes),
+                NetUtil.formatNetSize(monthBytes)
+            )
+        }
+
         // android.text.format.Formatter.formatFileSize(android.content.Context, long)
         // 8.0以后使用的单位是1000，非1024
         val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(rxSpeed)
         val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(txSpeed)
 
         val contentStr = getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
-        builder.setSubText(NetUtil.getRxSubTitle(this))
+        builder.setSubText(getRxSubText(this))
             .setContentText(contentStr)
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_SECRET)

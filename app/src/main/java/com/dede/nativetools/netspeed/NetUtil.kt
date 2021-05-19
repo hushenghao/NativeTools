@@ -4,11 +4,8 @@ package com.dede.nativetools.netspeed
 import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.net.ConnectivityManager
-import com.dede.nativetools.R
-import com.dede.nativetools.util.checkAppOps
 import java.text.DecimalFormat
 import java.util.*
-import kotlin.math.roundToInt
 
 
 /**
@@ -19,6 +16,7 @@ object NetUtil {
     private const val UNIT = 1024
     private const val THRESHOLD = 900
 
+    private val df0 = DecimalFormat("0")
     private val df1 = DecimalFormat("0.0")
     private val df2 = DecimalFormat("0.00")
 
@@ -45,7 +43,7 @@ object NetUtil {
             speed /= UNIT
             suffix = "PB/s"
         }
-        return df2.format(speed) + suffix
+        return df2.format(speed).trimZeroAndDot() + suffix
     }
 
     fun formatNetSpeed(speedByte: Long): Array<String> {
@@ -73,19 +71,16 @@ object NetUtil {
         }
         val format = when {
             speed >= 100 -> { // 100.2 -> 100
-                speed.roundToInt().toString()
+                df0.format(speed)
             }
             speed >= 10 -> {// 10.22 -> 10.2
                 df1.format(speed)
-            }
-            speed <= 0.0 -> {
-                "0"
             }
             else -> {// 0.223 -> 0.22
                 df2.format(speed)
             }
         }
-        return arrayOf(format, suffix)
+        return arrayOf(format.trimZeroAndDot(), suffix)
     }
 
     fun formatNetSize(speedByte: Long): String {
@@ -113,35 +108,33 @@ object NetUtil {
         }
         val format = when {
             speed >= 10 -> { // 10.2
-                speed.roundToInt().toString()
-            }
-            speed <= 0.0 -> {
-                "0"
+                df0.format(speed)
             }
             else -> {// 1.2
                 df1.format(speed)
             }
         }
-        return format + suffix
+        return format.trimZeroAndDot() + suffix
+    }
+
+    private val regexTrimZero = Regex("0+?$")
+    private val regexTrimDot = Regex("[.]$")
+
+    private fun String.trimZeroAndDot(): String {
+        var s = this
+        if (s.indexOf(".") > 0) {
+            // 去掉多余的0
+            s = s.replace(regexTrimZero, "")
+            // 如最后一位是.则去掉
+            s = s.replace(regexTrimDot, "")
+        }
+        return s
     }
 
     /**
-     * 获取所有数据下载量
+     * 获取每月下载数据字节数
      */
-    fun getRxSubTitle(context: Context): String? {
-        if (!context.checkAppOps()) {
-            return null
-        }
-        val todayBytes = getTodayRxBytes(context)
-        val monthBytes = getMonthRxBytes(context)
-        return context.getString(
-            R.string.notify_net_speed_sub,
-            formatNetSize(todayBytes),
-            formatNetSize(monthBytes)
-        )
-    }
-
-    private fun getMonthRxBytes(context: Context): Long {
+    fun getMonthRxBytes(context: Context): Long {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_MONTH, 1)
         calendar.set(Calendar.HOUR_OF_DAY, 0)
@@ -151,7 +144,10 @@ object NetUtil {
         return getRxBytesInternal(context, calendar)
     }
 
-    private fun getTodayRxBytes(context: Context): Long {
+    /**
+     * 获取每天下载数据字节数
+     */
+    fun getTodayRxBytes(context: Context): Long {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
@@ -165,8 +161,9 @@ object NetUtil {
         val endTime = System.currentTimeMillis()
         val networkStatsManager =
             context.getSystemService(Context.NETWORK_STATS_SERVICE) as? NetworkStatsManager
+                ?: return 0L
         val wifiBucket = try {
-            networkStatsManager?.querySummaryForDevice(
+            networkStatsManager.querySummaryForDevice(
                 ConnectivityManager.TYPE_WIFI,
                 null,
                 startTime,
@@ -176,7 +173,7 @@ object NetUtil {
             null
         }
         val mobileBucket = try {
-            networkStatsManager?.querySummaryForDevice(
+            networkStatsManager.querySummaryForDevice(
                 ConnectivityManager.TYPE_MOBILE,
                 null,
                 startTime,

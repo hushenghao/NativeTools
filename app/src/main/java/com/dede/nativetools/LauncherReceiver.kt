@@ -4,19 +4,19 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.dede.nativetools.netspeed.NetSpeedFragment
 
 class LauncherReceiver : BroadcastReceiver() {
 
     companion object {
-        const val LAUNCHER_ACTION = "com.dede.netavetools.LAUNCHER"
+        const val ACTION_LAUNCHER = "com.dede.netavetools.LAUNCHER"
         private val actions = arrayOf(
             Intent.ACTION_BOOT_COMPLETED,
             Intent.ACTION_MY_PACKAGE_REPLACED,
-            LAUNCHER_ACTION
+            ACTION_LAUNCHER
         )
 
         fun launcher(
@@ -26,11 +26,7 @@ class LauncherReceiver : BroadcastReceiver() {
         ) {
             if (preference.getBoolean(NetSpeedFragment.KEY_NET_SPEED_STATUS, false)) {
                 val intent = NetSpeedFragment.createServiceIntent(context, preference)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    context.startForegroundService(intent)
-                } else {
-                    context.startService(intent)
-                }
+                ContextCompat.startForegroundService(context, intent)
             }
         }
     }
