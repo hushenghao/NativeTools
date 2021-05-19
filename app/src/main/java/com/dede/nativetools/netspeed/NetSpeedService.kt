@@ -13,6 +13,7 @@ import android.util.Log
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.util.checkAppOps
+import com.dede.nativetools.util.splicing
 import kotlin.properties.Delegates
 
 
@@ -177,15 +178,17 @@ class NetSpeedService : Service() {
             val monthBytes = NetUtil.getMonthRxBytes(context)
             return context.getString(
                 R.string.notify_net_speed_sub,
-                NetUtil.formatNetSize(todayBytes),
-                NetUtil.formatNetSize(monthBytes)
+                NetUtil.formatBytes(todayBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EQUAL_WIDTH).splicing(),
+                NetUtil.formatBytes(monthBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
             )
         }
 
         // android.text.format.Formatter.formatFileSize(android.content.Context, long)
         // 8.0以后使用的单位是1000，非1024
-        val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(rxSpeed)
-        val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(txSpeed)
+        val downloadSpeedStr: String =
+            NetUtil.formatBytes(rxSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
+        val uploadSpeedStr: String =
+            NetUtil.formatBytes(txSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
 
         val contentStr = getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
         builder.setSubText(getRxSubText(this))
@@ -217,17 +220,27 @@ class NetSpeedService : Service() {
     private fun createIcon(downloadSpeed: Long, uploadSpeed: Long): Icon {
         val bitmap = when (mode) {
             MODE_ALL -> {
-                val down = NetUtil.formatNetSize(downloadSpeed)
-                val up = NetUtil.formatNetSize(uploadSpeed)
+                val down =
+                    NetUtil.formatBytes(downloadSpeed, 0, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
+                val up =
+                    NetUtil.formatBytes(uploadSpeed, 0, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
                 NetTextIconFactory.createDoubleIcon(up, down, scale)
             }
             MODE_UP -> {
-                val upSplit: Array<String> = NetUtil.formatNetSpeed(uploadSpeed)
-                NetTextIconFactory.createSingleIcon(upSplit[0], upSplit[1], scale)
+                val upSplit = NetUtil.formatBytes(
+                    uploadSpeed,
+                    NetUtil.FLAG_FULL,
+                    NetUtil.ACCURACY_EQUAL_WIDTH_EXACT
+                )
+                NetTextIconFactory.createSingleIcon(upSplit.first, upSplit.second, scale)
             }
             else -> {
-                val downSplit: Array<String> = NetUtil.formatNetSpeed(downloadSpeed)
-                NetTextIconFactory.createSingleIcon(downSplit[0], downSplit[1], scale)
+                val downSplit = NetUtil.formatBytes(
+                    downloadSpeed,
+                    NetUtil.FLAG_FULL,
+                    NetUtil.ACCURACY_EQUAL_WIDTH_EXACT
+                )
+                NetTextIconFactory.createSingleIcon(downSplit.first, downSplit.second, scale)
             }
         }
         return Icon.createWithBitmap(bitmap)

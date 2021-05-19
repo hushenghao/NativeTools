@@ -37,6 +37,22 @@ val Number.dpf: Float
         displayMetrics()
     )
 
+fun Pair<String, String>.splicing(): String = this.first + this.second
+
+private val regexTrimZero = Regex("0+?$")
+private val regexTrimDot = Regex("[.]$")
+
+fun String.trimZeroAndDot(): String {
+    var s = this
+    if (s.indexOf(".") > 0) {
+        // 去掉多余的0
+        s = s.replace(regexTrimZero, "")
+        // 如最后一位是.则去掉
+        s = s.replace(regexTrimDot, "")
+    }
+    return s
+}
+
 fun Context.checkAppOps(): Boolean {
     val appOpsManager =
         this.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager

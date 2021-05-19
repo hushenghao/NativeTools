@@ -4,6 +4,7 @@ package com.dede.nativetools.netspeed
 import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.net.ConnectivityManager
+import com.dede.nativetools.util.trimZeroAndDot
 import java.text.DecimalFormat
 import java.util.*
 
@@ -13,122 +14,88 @@ import java.util.*
  */
 object NetUtil {
 
-    private const val UNIT = 1024
+    /**
+     * 精确等宽格式
+     */
+    const val ACCURACY_EQUAL_WIDTH_EXACT = 1
+
+    /**
+     * 精确格式
+     */
+    const val ACCURACY_EXACT = 2
+
+    /**
+     * 等宽格式
+     */
+    const val ACCURACY_EQUAL_WIDTH = 3
+
+    const val FLAG_BYTE = 1
+    const val FLAG_INFIX = 1 shl 1
+    const val FLAG_SECOND = 1 shl 2
+
+    const val FLAG_FULL = FLAG_BYTE or FLAG_INFIX or FLAG_SECOND
+
+    private const val CHAR_BYTE = 'B'
+    private const val CHAR_INFIX = '/'
+    private const val CHAR_SECOND = 's'
+
+    private val UNIT_CHARS = charArrayOf('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y', 'B')
+
+    private const val UNIT_SIZE = 1024
     private const val THRESHOLD = 900
+
+    fun formatBytes(bytes: Long, flags: Int, accuracy: Int): Pair<String, String> {
+
+        fun hasFlag(flag: Int): Boolean = (flags and flag) > 0
+
+        var speed = bytes.toDouble()
+        var unit: Char = CHAR_BYTE
+        for (char in UNIT_CHARS) {
+            if (speed > THRESHOLD) {
+                speed /= UNIT_SIZE
+                unit = char
+            } else {
+                break
+            }
+        }
+
+        val format = formatNumberInternal(speed, accuracy)// 速度
+
+        val sb = StringBuilder()
+            .append(unit)// 单位
+
+        if (hasFlag(FLAG_BYTE) && unit != CHAR_BYTE) {
+            sb.append(CHAR_BYTE)// 拼接B
+        }
+        if (hasFlag(FLAG_INFIX)) {
+            sb.append(CHAR_INFIX)// 拼接/
+        }
+        if (hasFlag(FLAG_SECOND)) {
+            sb.append(CHAR_SECOND)// 拼接s
+        }
+
+        return Pair(format, sb.toString())
+    }
 
     private val df0 = DecimalFormat("0")
     private val df1 = DecimalFormat("0.0")
     private val df2 = DecimalFormat("0.00")
 
-    fun formatNetSpeedStr(speedByte: Long): String {
-        var speed = speedByte.toDouble()
-        var suffix = "B/s"
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "KB/s"
-        }
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "MB/s"
-        }
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "GB/s"
-        }
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "TB/s"
-        }
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "PB/s"
-        }
-        return df2.format(speed).trimZeroAndDot() + suffix
-    }
-
-    fun formatNetSpeed(speedByte: Long): Array<String> {
-        var speed = speedByte.toDouble()
-        var suffix = "B/s"
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "KB/s"
-        }
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "MB/s"
-        }
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "GB/s"
-        }
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "TB/s"
-        }
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "PB/s"
-        }
-        val format = when {
-            speed >= 100 -> { // 100.2 -> 100
-                df0.format(speed)
+    private fun formatNumberInternal(num: Double, accuracy: Int): String {
+        val format = when (accuracy) {
+            ACCURACY_EQUAL_WIDTH_EXACT -> when {
+                num >= 100 -> df0 // 100.2 -> 100
+                num >= 10 -> df1 // 10.22 -> 10.2
+                else -> df2 // 0.223 -> 0.22
             }
-            speed >= 10 -> {// 10.22 -> 10.2
-                df1.format(speed)
+            ACCURACY_EQUAL_WIDTH -> when {
+                num >= 10 -> df0 // 10.2 -> 10
+                else -> df1 // 1.22 -> 1.2
             }
-            else -> {// 0.223 -> 0.22
-                df2.format(speed)
-            }
+            ACCURACY_EXACT -> df2 // 0.223 -> 0.22
+            else -> df2
         }
-        return arrayOf(format.trimZeroAndDot(), suffix)
-    }
-
-    fun formatNetSize(speedByte: Long): String {
-        var speed = speedByte.toDouble()
-        var suffix = "B"
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "K"
-        }
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "M"
-        }
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "G"
-        }
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "T"
-        }
-        if (speed > THRESHOLD) {
-            speed /= UNIT
-            suffix = "P"
-        }
-        val format = when {
-            speed >= 10 -> { // 10.2
-                df0.format(speed)
-            }
-            else -> {// 1.2
-                df1.format(speed)
-            }
-        }
-        return format.trimZeroAndDot() + suffix
-    }
-
-    private val regexTrimZero = Regex("0+?$")
-    private val regexTrimDot = Regex("[.]$")
-
-    private fun String.trimZeroAndDot(): String {
-        var s = this
-        if (s.indexOf(".") > 0) {
-            // 去掉多余的0
-            s = s.replace(regexTrimZero, "")
-            // 如最后一位是.则去掉
-            s = s.replace(regexTrimDot, "")
-        }
-        return s
+        return format.format(num).trimZeroAndDot()
     }
 
     /**

@@ -10,6 +10,7 @@ import androidx.preference.PreferenceManager
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.util.safeInt
+import com.dede.nativetools.util.splicing
 
 @RequiresApi(Build.VERSION_CODES.N)
 class NetTileService : TileService() {
@@ -46,14 +47,17 @@ class NetTileService : TileService() {
     }
 
     private fun update(rxSpeed: Long, txSpeed: Long) {
-        val downloadSpeedStr: String = NetUtil.formatNetSpeedStr(rxSpeed)
-        val uploadSpeedStr: String = NetUtil.formatNetSpeedStr(txSpeed)
+        val downloadSpeedStr =
+            NetUtil.formatBytes(rxSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
+        val uploadSpeedStr =
+            NetUtil.formatBytes(txSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
 
         val tile = qsTile
         tile.state = Tile.STATE_ACTIVE
-        val downSplit: Array<String> = NetUtil.formatNetSpeed(rxSpeed)
+        val downSplit =
+            NetUtil.formatBytes(rxSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EQUAL_WIDTH_EXACT)
         tile.icon = Icon.createWithBitmap(
-            NetTextIconFactory.createSingleIcon(downSplit[0], downSplit[1])
+            NetTextIconFactory.createSingleIcon(downSplit.first, downSplit.second)
         )
         val builder = StringBuilder()
             .append("⇃")
