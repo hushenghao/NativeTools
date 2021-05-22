@@ -174,17 +174,15 @@ class NetSpeedService : Service() {
             if (!context.checkAppOps()) {
                 return null
             }
-            val todayBytes = NetUtil.getTodayRxBytes(context)
-            val monthBytes = NetUtil.getMonthRxBytes(context)
+            val todayBytes = NetUtil.getTodayNetworkUsageRxBytes(context)
+            val monthBytes = NetUtil.getMonthNetworkUsageRxBytes(context)
             return context.getString(
                 R.string.notify_net_speed_sub,
-                NetUtil.formatBytes(todayBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EQUAL_WIDTH).splicing(),
-                NetUtil.formatBytes(monthBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
+                NetUtil.formatBytes(todayBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EXACT).splicing(),
+                NetUtil.formatBytes(monthBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EXACT).splicing()
             )
         }
 
-        // android.text.format.Formatter.formatFileSize(android.content.Context, long)
-        // 8.0以后使用的单位是1000，非1024
         val downloadSpeedStr: String =
             NetUtil.formatBytes(rxSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
         val uploadSpeedStr: String =

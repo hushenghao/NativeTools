@@ -13,18 +13,20 @@ class NetSpeed(private var netSpeedChanged: NetSpeedChanged? = null) : Runnable 
     private val handler = Handler(Looper.getMainLooper())
 
     override fun run() {
-        handler.postDelayed(this, interval.toLong())
+        synchronized(this) {
+            handler.postDelayed(this, interval.toLong())
 
-        val rxBytes = getRxBytes()
-        val txBytes = getTxBytes()
-        val rxSpeed = (rxBytes - this.rxBytes) * 1f / interval * 1000 + .5f
-        val txSpeed = (txBytes - this.txBytes) * 1f / interval * 1000 + .5f
-        this.rxSpeed = rxSpeed.toLong()
-        this.txSpeed = txSpeed.toLong()
-        this.rxBytes = rxBytes
-        this.txBytes = txBytes
+            val rxBytes = getRxBytes()
+            val txBytes = getTxBytes()
+            val rxSpeed = (rxBytes - this.rxBytes).toDouble() / interval * 1000 + .5f
+            val txSpeed = (txBytes - this.txBytes).toDouble() / interval * 1000 + .5f
+            this.rxSpeed = rxSpeed.toLong()
+            this.txSpeed = txSpeed.toLong()
+            this.rxBytes = rxBytes
+            this.txBytes = txBytes
 
-        netSpeedChanged?.invoke(this.rxSpeed, this.txSpeed)
+            netSpeedChanged?.invoke(this.rxSpeed, this.txSpeed)
+        }
     }
 
     private var rxBytes: Long = 0L

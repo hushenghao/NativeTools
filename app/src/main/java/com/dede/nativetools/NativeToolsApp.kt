@@ -2,6 +2,7 @@ package com.dede.nativetools
 
 import android.app.Application
 import android.content.Context
+import com.dede.nativetools.util.isMainProcess
 import me.weishu.reflection.Reflection
 
 class NativeToolsApp : Application() {
@@ -21,6 +22,8 @@ class NativeToolsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        LauncherReceiver.launcher(this)
+        if (this.isMainProcess()) {
+            LauncherReceiver.launcher(this)
+        }
     }
 }
