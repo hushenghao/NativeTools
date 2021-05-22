@@ -1,5 +1,6 @@
 package com.dede.nativetools.util
 
+import android.app.ActivityManager
 import android.app.AppOpsManager
 import android.content.Context
 import android.os.Build
@@ -70,4 +71,15 @@ fun Context.checkAppOps(): Boolean {
         )
     }
     return result == AppOpsManager.MODE_ALLOWED
+}
+
+fun Context.isMainProcess(): Boolean {
+    val pid = Process.myPid()
+    val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    for (appProcess in activityManager.runningAppProcesses) {
+        if (appProcess.pid == pid) {
+            return applicationInfo.packageName == appProcess.processName
+        }
+    }
+    return false
 }

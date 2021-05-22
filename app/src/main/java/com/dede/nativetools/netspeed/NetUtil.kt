@@ -5,7 +5,6 @@ import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.net.ConnectivityManager
 import com.dede.nativetools.util.trimZeroAndDot
-import java.text.DecimalFormat
 import java.util.*
 
 
@@ -25,6 +24,11 @@ object NetUtil {
     const val ACCURACY_EXACT = 2
 
     /**
+     * 低精度格式
+     */
+    const val ACCURACY_SHORTER = 4
+
+    /**
      * 等宽格式
      */
     const val ACCURACY_EQUAL_WIDTH = 3
@@ -41,6 +45,8 @@ object NetUtil {
 
     private val UNIT_CHARS = charArrayOf('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y', 'B')
 
+    // android.text.format.Formatter.formatFileSize(android.content.Context, long)
+    // 8.0以后使用的单位是1000，非1024
     private const val UNIT_SIZE = 1024
     private const val THRESHOLD = 900
 
@@ -77,23 +83,21 @@ object NetUtil {
         return Pair(format, sb.toString())
     }
 
-    private val df0 = DecimalFormat("0")
-    private val df1 = DecimalFormat("0.0")
-    private val df2 = DecimalFormat("0.00")
 
     private fun formatNumberInternal(num: Double, accuracy: Int): String {
         val format = when (accuracy) {
             ACCURACY_EQUAL_WIDTH_EXACT -> when {
-                num >= 100 -> df0 // 100.2 -> 100
-                num >= 10 -> df1 // 10.22 -> 10.2
-                else -> df2 // 0.223 -> 0.22
+                num >= 100 -> "%.0f" // 100.2 -> 100
+                num >= 10 -> "%.1f" // 10.22 -> 10.2
+                else -> "%.2f" // 0.223 -> 0.22
             }
             ACCURACY_EQUAL_WIDTH -> when {
-                num >= 10 -> df0 // 10.2 -> 10
-                else -> df1 // 1.22 -> 1.2
+                num >= 10 -> "%.0f" // 10.2 -> 10
+                else -> "%.1f" // 1.22 -> 1.2
             }
-            ACCURACY_EXACT -> df2 // 0.223 -> 0.22
-            else -> df2
+            ACCURACY_EXACT -> "%.2f" // 0.223 -> 0.22
+            ACCURACY_SHORTER -> "%.1f"
+            else -> "%.2f"
         }
         return format.format(num).trimZeroAndDot()
     }
@@ -101,56 +105,61 @@ object NetUtil {
     /**
      * 获取每月下载数据字节数
      */
-    fun getMonthRxBytes(context: Context): Long {
+    fun getMonthNetworkUsageRxBytes(context: Context): Long {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_MONTH, 1)
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
-        return getRxBytesInternal(context, calendar)
+        return getNetworkUsageRxBytesInternal(context, calendar)
     }
 
     /**
      * 获取每天下载数据字节数
      */
-    fun getTodayRxBytes(context: Context): Long {
+    fun getTodayNetworkUsageRxBytes(context: Context): Long {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
-        return getRxBytesInternal(context, calendar)
+        return getNetworkUsageRxBytesInternal(context, calendar)
     }
 
-    private fun getRxBytesInternal(context: Context, start: Calendar): Long {
-        val startTime = start.timeInMillis
-        val endTime = System.currentTimeMillis()
+    private fun getNetworkUsageRxBytesInternal(context: Context, start: Calendar): Long {
         val networkStatsManager =
             context.getSystemService(Context.NETWORK_STATS_SERVICE) as? NetworkStatsManager
                 ?: return 0L
-        val wifiBucket = try {
-            networkStatsManager.querySummaryForDevice(
-                ConnectivityManager.TYPE_WIFI,
-                null,
-                startTime,
-                endTime
-            )
-        } catch (e: Exception) {
-            null
-        }
-        val mobileBucket = try {
-            networkStatsManager.querySummaryForDevice(
-                ConnectivityManager.TYPE_MOBILE,
-                null,
-                startTime,
-                endTime
-            )
-        } catch (e: Exception) {
-            null
-        }
-        return (wifiBucket?.rxBytes ?: 0) + (mobileBucket?.rxBytes ?: 0)
+        val startTime = start.timeInMillis
+        val endTime = System.currentTimeMillis()
+        val wifiRxBytes = queryNetworkRxBytes(
+            networkStatsManager,
+            ConnectivityManager.TYPE_WIFI,
+            startTime,
+            endTime
+        )
+        val mobileRxBytes = queryNetworkRxBytes(
+            networkStatsManager,
+            ConnectivityManager.TYPE_MOBILE,
+            startTime,
+            endTime
+        )
+        return wifiRxBytes + mobileRxBytes
+    }
 
+    private inline fun queryNetworkRxBytes(
+        networkStatsManager: NetworkStatsManager,
+        networkType: Int,
+        startTime: Long, endTime: Long
+    ): Long {
+        return try {
+            networkStatsManager.querySummaryForDevice(
+                networkType, null, startTime, endTime
+            ).rxBytes
+        } catch (e: Exception) {
+            0L
+        }
     }
 
 }
