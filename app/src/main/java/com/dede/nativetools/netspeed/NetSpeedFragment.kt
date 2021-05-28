@@ -96,6 +96,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun unbindService() {
+        if (netSpeedBinder == null) {
+            return
+        }
         requireContext().unbindService(this)
         netSpeedBinder = null
     }
