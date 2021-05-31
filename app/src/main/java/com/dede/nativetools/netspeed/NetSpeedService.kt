@@ -9,7 +9,6 @@ import android.content.IntentFilter
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.util.checkAppOps
@@ -29,8 +28,8 @@ class NetSpeedService : Service() {
             service.notifyClickable = clickable
         }
 
-        override fun setLockHide(hide: Boolean) {
-            service.compatibilityMode = hide
+        override fun compatibilityMode(compatibilityMode: Boolean) {
+            service.compatibilityMode = compatibilityMode
         }
 
         override fun setMode(mode: String) {
@@ -47,7 +46,7 @@ class NetSpeedService : Service() {
         private const val CHANNEL_ID = "net_speed"
 
         const val EXTRA_INTERVAL = "extra_interval"
-        const val EXTRA_LOCKED_HIDE = "extra_locked_hide"
+        const val EXTRA_COMPATIBILITY_MODE = "extra_locked_hide"
         const val EXTRA_NOTIFY_CLICKABLE = "extra_notify_clickable"
         const val EXTRA_MODE = "extra_mode"
         const val EXTRA_SCALE = "extra_scale"
@@ -65,13 +64,13 @@ class NetSpeedService : Service() {
 
     private val binder = NetSpeedBinder(this)
 
-    private val speed = NetSpeed { rxSpeed, txSpeed ->
+    private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
         val notify = createNotification(rxSpeed, txSpeed)
         notificationManager.notify(NOTIFY_ID, notify)
     }
 
     private var interval: Int by Delegates.observable(DEFAULT_INTERVAL) { _, _, new ->
-        speed.interval = new
+        netSpeedHelper.interval = new
     }
     private var notifyClickable = true
     private var mode = MODE_DOWN
@@ -107,14 +106,14 @@ class NetSpeedService : Service() {
      */
     private fun resume() {
         startForeground()
-        speed.resume()
+        netSpeedHelper.resume()
     }
 
     /**
      * 暂停指示器
      */
     private fun pause(stopForeground: Boolean = true) {
-        speed.pause()
+        netSpeedHelper.pause()
         if (stopForeground) {
             notificationManager.cancel(NOTIFY_ID)
             stopForeground(true)
@@ -125,9 +124,7 @@ class NetSpeedService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
-            if (intent.getBooleanExtra(EXTRA_LOCKED_HIDE, false)) {
-                this.compatibilityMode = true
-            }
+            this.compatibilityMode = intent.getBooleanExtra(EXTRA_COMPATIBILITY_MODE, false)
             this.interval = intent.getIntExtra(EXTRA_INTERVAL, DEFAULT_INTERVAL)
             this.notifyClickable = intent.getBooleanExtra(EXTRA_NOTIFY_CLICKABLE, true)
             this.mode = intent.getStringExtra(EXTRA_MODE) ?: MODE_DOWN
@@ -178,8 +175,10 @@ class NetSpeedService : Service() {
             val monthBytes = NetUtil.getMonthNetworkUsageRxBytes(context)
             return context.getString(
                 R.string.notify_net_speed_sub,
-                NetUtil.formatBytes(todayBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EXACT).splicing(),
-                NetUtil.formatBytes(monthBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EXACT).splicing()
+                NetUtil.formatBytes(todayBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EXACT)
+                    .splicing(),
+                NetUtil.formatBytes(monthBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EXACT)
+                    .splicing()
             )
         }
 
@@ -260,7 +259,6 @@ class NetSpeedService : Service() {
         }
 
         override fun onReceive(context: Context?, intent: Intent?) {
-            Log.i("LockedHideReceiver", intent?.action ?: "null")
             // 非兼容模式
             if (!compatibilityMode) {
                 when (intent?.action) {
