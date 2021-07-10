@@ -5,9 +5,11 @@ import android.app.AppOpsManager
 import android.content.Context
 import android.os.Build
 import android.os.Process
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import com.dede.nativetools.NativeToolsApp
+import java.io.File
 import kotlin.math.roundToInt
 
 
@@ -74,12 +76,48 @@ fun Context.checkAppOps(): Boolean {
 }
 
 fun Context.isMainProcess(): Boolean {
+    val mainProcessName = this.packageName
+    val currentProcessName = getCurrentProcessName()
+    return !TextUtils.isEmpty(mainProcessName) &&
+            !TextUtils.isEmpty(currentProcessName) &&
+            mainProcessName == currentProcessName
+}
+
+private fun getProcessName(pid: Int): String? {
+    val file = File("/proc/$pid/cmdline")
+    if (!file.exists()) return null
+
+    file.bufferedReader().use { reader ->
+        var str = reader.readLine()
+        if (!TextUtils.isEmpty(str)) {
+            str = str.trim { it <= ' ' }
+        }
+        return str
+    }
+}
+
+private var currentProcessName: String = ""
+
+private fun Context.getCurrentProcessName(): String {
+    if (!TextUtils.isEmpty(currentProcessName)) {
+        return currentProcessName
+    }
+
     val pid = Process.myPid()
-    val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-    for (appProcess in activityManager.runningAppProcesses) {
-        if (appProcess.pid == pid) {
-            return applicationInfo.packageName == appProcess.processName
+    val processName = getProcessName(pid)
+    if (processName != null && !TextUtils.isEmpty(processName)) {
+        currentProcessName = processName
+    } else {
+        val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val list = activityManager.runningAppProcesses
+        if (list != null && list.isNotEmpty()) {
+            for (info in list) {
+                if (info.pid == pid) {
+                    currentProcessName = info.processName
+                    break
+                }
+            }
         }
     }
-    return false
+    return currentProcessName
 }

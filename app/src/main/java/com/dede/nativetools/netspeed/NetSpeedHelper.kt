@@ -1,21 +1,29 @@
 package com.dede.nativetools.netspeed
 
 import android.net.TrafficStats
-import android.os.Handler
-import android.os.Looper
+import com.dede.nativetools.util.IntervalHelper
 import java.lang.reflect.Method
 import kotlin.properties.Delegates
 
 typealias NetSpeedChanged = (Long, Long) -> Unit
 
-class NetSpeed(private var netSpeedChanged: NetSpeedChanged? = null) : Runnable {
+/**
+ * 网速计算
+ */
+class NetSpeedHelper(private var netSpeedChanged: NetSpeedChanged? = null) {
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var rxBytes: Long = 0L
+    private var txBytes: Long = 0L
 
-    override fun run() {
+    var interval: Int by Delegates.observable(NetSpeedService.DEFAULT_INTERVAL) { _, old, new ->
+        if (old != new) {
+            reset()
+            intervalHelper.setInterval(new.toLong())
+        }
+    }
+
+    private val intervalHelper: IntervalHelper = IntervalHelper(interval.toLong()) {
         synchronized(this) {
-            handler.postDelayed(this, interval.toLong())
-
             val rxBytes = getRxBytes()
             val txBytes = getTxBytes()
             val rxSpeed = (rxBytes - this.rxBytes).toDouble() / interval * 1000 + .5f
@@ -26,15 +34,6 @@ class NetSpeed(private var netSpeedChanged: NetSpeedChanged? = null) : Runnable 
             this.txBytes = txBytes
 
             netSpeedChanged?.invoke(this.rxSpeed, this.txSpeed)
-        }
-    }
-
-    private var rxBytes: Long = 0L
-    private var txBytes: Long = 0L
-
-    var interval: Int by Delegates.observable(NetSpeedService.DEFAULT_INTERVAL) { _, old, new ->
-        if (old != new) {
-            reset()
         }
     }
 
@@ -49,13 +48,12 @@ class NetSpeed(private var netSpeedChanged: NetSpeedChanged? = null) : Runnable 
     }
 
     fun resume() {
-        handler.removeCallbacks(this)
         reset()
-        handler.post(this)
+        intervalHelper.start()
     }
 
     fun pause() {
-        handler.removeCallbacks(this)
+        intervalHelper.stop()
     }
 
     private var methodGetLoopbackRxBytes: Method? = null

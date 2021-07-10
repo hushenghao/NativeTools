@@ -17,7 +17,7 @@ interface INetSpeedInterface {
     /**
      * 兼容模式
      */
-    void setLockHide(boolean hide);
+    void compatibilityMode(boolean compatibilityMode);
 
     /**
      * 显示模式

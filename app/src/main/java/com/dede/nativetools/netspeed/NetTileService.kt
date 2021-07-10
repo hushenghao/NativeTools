@@ -17,19 +17,19 @@ class NetTileService : TileService() {
 
     private var interval: Int = NetSpeedService.DEFAULT_INTERVAL
     private val sp by lazy { PreferenceManager.getDefaultSharedPreferences(baseContext) }
-    private val speed = NetSpeed { rxSpeed, txSpeed ->
+    private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
         update(rxSpeed, txSpeed)
     }
 
     override fun onStartListening() {
         interval = sp.getString(NetSpeedFragment.KEY_NET_SPEED_INTERVAL, null)
             .safeInt(NetSpeedService.DEFAULT_INTERVAL)
-        speed.interval = interval
-        speed.resume()
+        netSpeedHelper.interval = interval
+        netSpeedHelper.resume()
     }
 
     override fun onStopListening() {
-        speed.pause()
+        netSpeedHelper.pause()
     }
 
     private fun startMain() {
@@ -72,7 +72,7 @@ class NetTileService : TileService() {
     }
 
     override fun onDestroy() {
-        speed.pause()
+        netSpeedHelper.pause()
         super.onDestroy()
     }
 }
