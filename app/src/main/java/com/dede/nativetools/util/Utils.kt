@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Process
 import android.text.TextUtils
 import android.util.DisplayMetrics
-import android.util.Log
 import android.util.TypedValue
 import com.dede.nativetools.NativeToolsApp
 import java.io.File
@@ -80,7 +79,7 @@ fun Context.isMainProcess(): Boolean {
     val mainProcessName = this.packageName
     val currentProcessName = getCurrentProcessName()
     return !TextUtils.isEmpty(mainProcessName) &&
-//            !TextUtils.isEmpty(currentProcessName) &&
+            !TextUtils.isEmpty(currentProcessName) &&
             mainProcessName == currentProcessName
 }
 

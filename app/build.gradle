@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 30
@@ -9,8 +8,8 @@ android {
         applicationId "com.dede.nativetools"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 14
-        versionName "2.0.0"
+        versionCode 15
+        versionName "2.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -26,7 +25,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all {
             def buildType = variant.buildType.name
-            def version = "${variant.versionName}(${variant.versionCode})"
+            def version = "${variant.versionName}_${variant.versionCode}"
             outputFileName = "native_tools_${buildType}_${version}.apk"
         }
     }

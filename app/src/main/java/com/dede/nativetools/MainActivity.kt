@@ -4,11 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 
-class MainActivity : AppCompatActivity()
-/**,
-PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
-FragmentManager.OnBackStackChangedListener*/
-{
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,49 +14,5 @@ FragmentManager.OnBackStackChangedListener*/
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         setContentView(R.layout.main_activity)
     }
-
-//    override fun onPreferenceStartFragment(
-//        caller: PreferenceFragmentCompat?,
-//        pref: Preference
-//    ): Boolean {
-//        title = pref.title
-//        val fragmentManager: FragmentManager = supportFragmentManager
-//        val args: Bundle? = pref.extras
-//        val fragment = fragmentManager.fragmentFactory.instantiate(this.classLoader, pref.fragment)
-//        fragment.arguments = args
-//        fragment.setTargetFragment(caller, 0)
-//        fragmentManager.beginTransaction()
-//            .replace(R.id.container, fragment)
-//            .addToBackStack(null)
-//            .commit()
-//        return true
-//    }
-//
-//    override fun onStart() {
-//        super.onStart()
-//        supportFragmentManager.addOnBackStackChangedListener(this)
-//    }
-//
-//    override fun onStop() {
-//        super.onStop()
-//        supportFragmentManager.removeOnBackStackChangedListener(this)
-//    }
-//
-//    override fun onBackStackChanged() {
-//        val backStackEmpty = supportFragmentManager.backStackEntryCount == 0
-//        supportActionBar?.setDisplayHomeAsUpEnabled(!backStackEmpty)
-//        if (backStackEmpty) {
-//            title = getString(R.string.app_name)
-//        }
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            android.R.id.home -> {
-//                onBackPressed()
-//            }
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 
 }
