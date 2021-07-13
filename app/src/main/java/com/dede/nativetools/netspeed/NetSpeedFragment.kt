@@ -71,7 +71,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                     startActivity(intent)
                 }
                 .setNeutralButton(R.string.dont_ask) { _, _ ->
-                    preference.getBoolean(KEY_OPS_DONT_ASK, true)
+                    preference.edit().putBoolean(KEY_OPS_DONT_ASK, true).apply()
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
