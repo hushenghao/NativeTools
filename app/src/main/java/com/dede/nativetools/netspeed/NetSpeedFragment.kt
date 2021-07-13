@@ -25,7 +25,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     companion object {
         const val KEY_NET_SPEED_STATUS = "net_speed_status"
         const val KEY_NET_SPEED_INTERVAL = "net_speed_interval"
-        const val KEY_NET_SPEED_LOCKED_HIDE = "net_speed_locked_hide"
+        const val KEY_NET_SPEED_COMPATIBILITY_MODE = "net_speed_locked_hide"
         const val KEY_NET_SPEED_NOTIFY_CLICKABLE = "net_speed_notify_clickable"
         const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
         const val KEY_NET_SPEED_MODE = "net_speed_mode"
@@ -40,12 +40,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             val interval =
                 preferences.getString(KEY_NET_SPEED_INTERVAL, null)
                     .safeInt(NetSpeedService.DEFAULT_INTERVAL)
-            val lockedHide = preferences.getBoolean(KEY_NET_SPEED_LOCKED_HIDE, false)
+            val compatibilityMode = preferences.getBoolean(KEY_NET_SPEED_COMPATIBILITY_MODE, false)
             val clickable = preferences.getBoolean(KEY_NET_SPEED_NOTIFY_CLICKABLE, true)
             val mode = preferences.getString(KEY_NET_SPEED_MODE, NetSpeedService.MODE_DOWN)
             val scaleInt = preferences.getInt(KEY_NET_SPEED_SCALE, DEFAULT_SCALE_INT)
             intent.putExtra(NetSpeedService.EXTRA_INTERVAL, interval)
-            intent.putExtra(NetSpeedService.EXTRA_LOCKED_HIDE, lockedHide)
+            intent.putExtra(NetSpeedService.EXTRA_COMPATIBILITY_MODE, compatibilityMode)
             intent.putExtra(NetSpeedService.EXTRA_NOTIFY_CLICKABLE, clickable)
             intent.putExtra(NetSpeedService.EXTRA_MODE, mode)
             intent.putExtra(NetSpeedService.EXTRA_SCALE, scaleInt / SCALE_DIVISOR)
@@ -71,7 +71,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                     startActivity(intent)
                 }
                 .setNeutralButton(R.string.dont_ask) { _, _ ->
-                    preference.getBoolean(KEY_OPS_DONT_ASK, true)
+                    preference.edit().putBoolean(KEY_OPS_DONT_ASK, true).apply()
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
@@ -96,6 +96,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun unbindService() {
+        if (netSpeedBinder == null) {
+            return
+        }
         requireContext().unbindService(this)
         netSpeedBinder = null
     }
@@ -147,9 +150,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                     sharedPreferences.getString(key, null).safeInt(NetSpeedService.DEFAULT_INTERVAL)
                 netSpeedBinder?.setInterval(interval)
             }
-            KEY_NET_SPEED_LOCKED_HIDE -> {
-                val lockHide = sharedPreferences.getBoolean(key, false)
-                netSpeedBinder?.setLockHide(lockHide)
+            KEY_NET_SPEED_COMPATIBILITY_MODE -> {
+                val compatibilityMode = sharedPreferences.getBoolean(key, false)
+                netSpeedBinder?.compatibilityMode(compatibilityMode)
             }
             KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
                 val notifyClickable = sharedPreferences.getBoolean(key, false)
