@@ -35,15 +35,17 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         private const val DEFAULT_SCALE_INT = 100
         private const val SCALE_DIVISOR = 100f
 
-        fun createServiceIntent(context: Context, preferences: SharedPreferences): Intent {
+        fun createServiceIntent(context: Context): Intent {
+            val preference: SharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context)
             val intent = Intent(context, NetSpeedService::class.java)
             val interval =
-                preferences.getString(KEY_NET_SPEED_INTERVAL, null)
+                preference.getString(KEY_NET_SPEED_INTERVAL, null)
                     .safeInt(NetSpeedService.DEFAULT_INTERVAL)
-            val compatibilityMode = preferences.getBoolean(KEY_NET_SPEED_COMPATIBILITY_MODE, false)
-            val clickable = preferences.getBoolean(KEY_NET_SPEED_NOTIFY_CLICKABLE, true)
-            val mode = preferences.getString(KEY_NET_SPEED_MODE, NetSpeedService.MODE_DOWN)
-            val scaleInt = preferences.getInt(KEY_NET_SPEED_SCALE, DEFAULT_SCALE_INT)
+            val compatibilityMode = preference.getBoolean(KEY_NET_SPEED_COMPATIBILITY_MODE, false)
+            val clickable = preference.getBoolean(KEY_NET_SPEED_NOTIFY_CLICKABLE, true)
+            val mode = preference.getString(KEY_NET_SPEED_MODE, NetSpeedService.MODE_DOWN)
+            val scaleInt = preference.getInt(KEY_NET_SPEED_SCALE, DEFAULT_SCALE_INT)
             intent.putExtra(NetSpeedService.EXTRA_INTERVAL, interval)
             intent.putExtra(NetSpeedService.EXTRA_COMPATIBILITY_MODE, compatibilityMode)
             intent.putExtra(NetSpeedService.EXTRA_NOTIFY_CLICKABLE, clickable)
@@ -83,9 +85,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         if (!b) return
 
         val context = requireContext()
-        val intent = createServiceIntent(context, preference)
-        context.startService(intent)
+        val intent = createServiceIntent(context)
         context.bindService(intent, this, Context.BIND_AUTO_CREATE)
+        context.startService(intent)
     }
 
     private fun stopService() {
@@ -104,8 +106,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun toggleService() {
-        val b = preference.getBoolean(KEY_NET_SPEED_STATUS, false)
-        if (b) {
+        val status = preference.getBoolean(KEY_NET_SPEED_STATUS, false)
+        if (status) {
             launchService()
         } else {
             stopService()
@@ -117,7 +119,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.net_speed_preference)
         scaleSeekBarPreference = findPreference(KEY_NET_SPEED_SCALE)!!
-        modeOrScaleChange()
+        setModeOrScale()
     }
 
     private var netSpeedBinder: INetSpeedInterface? = null
@@ -159,12 +161,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 netSpeedBinder?.setNotifyClickable(notifyClickable)
             }
             KEY_NET_SPEED_MODE, KEY_NET_SPEED_SCALE -> {
-                modeOrScaleChange()
+                setModeOrScale()
             }
         }
     }
 
-    private fun modeOrScaleChange() {
+    private fun setModeOrScale() {
         val scaleInt = preference.getInt(KEY_NET_SPEED_SCALE, DEFAULT_SCALE_INT)
         val mode = preference.getString(KEY_NET_SPEED_MODE, NetSpeedService.MODE_DOWN)
         var scale = scaleInt / SCALE_DIVISOR

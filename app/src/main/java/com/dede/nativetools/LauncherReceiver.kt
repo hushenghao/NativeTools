@@ -19,22 +19,20 @@ class LauncherReceiver : BroadcastReceiver() {
             ACTION_LAUNCHER
         )
 
-        fun launcher(
-            context: Context,
-            preference: SharedPreferences =
+        fun launcher(context: Context) {
+            val preference: SharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context)
-        ) {
             if (preference.getBoolean(NetSpeedFragment.KEY_NET_SPEED_STATUS, false)) {
-                val intent = NetSpeedFragment.createServiceIntent(context, preference)
+                val intent = NetSpeedFragment.createServiceIntent(context)
                 ContextCompat.startForegroundService(context, intent)
             }
         }
     }
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-        val action = intent?.action
+    override fun onReceive(context: Context, intent: Intent) {
+        val action = intent.action
         Log.i("LauncherReceiver", "onReceive: $action")
-        if (context == null || !actions.contains(action)) return
+        if (!actions.contains(action)) return
 
         val preference = PreferenceManager.getDefaultSharedPreferences(context)
         if (action == Intent.ACTION_BOOT_COMPLETED ||
@@ -46,6 +44,6 @@ class LauncherReceiver : BroadcastReceiver() {
             }
         }
 
-        launcher(context, preference)
+        launcher(context)
     }
 }
