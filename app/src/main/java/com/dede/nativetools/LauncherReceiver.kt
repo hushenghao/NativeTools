@@ -3,11 +3,11 @@ package com.dede.nativetools
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
-import com.dede.nativetools.netspeed.NetSpeedFragment
+import com.dede.nativetools.netspeed.NetSpeedConfiguration
+import com.dede.nativetools.netspeed.NetSpeedService
+import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultSharedPreferences
 
 class LauncherReceiver : BroadcastReceiver() {
 
@@ -20,10 +20,12 @@ class LauncherReceiver : BroadcastReceiver() {
         )
 
         fun launcher(context: Context) {
-            val preference: SharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(context)
-            if (preference.getBoolean(NetSpeedFragment.KEY_NET_SPEED_STATUS, false)) {
-                val intent = NetSpeedFragment.createServiceIntent(context)
+            val status = defaultSharedPreferences.getBoolean(
+                NetSpeedConfiguration.KEY_NET_SPEED_STATUS,
+                false
+            )
+            if (status) {
+                val intent = NetSpeedService.createServiceIntent(context)
                 ContextCompat.startForegroundService(context, intent)
             }
         }
@@ -34,12 +36,15 @@ class LauncherReceiver : BroadcastReceiver() {
         Log.i("LauncherReceiver", "onReceive: $action")
         if (!actions.contains(action)) return
 
-        val preference = PreferenceManager.getDefaultSharedPreferences(context)
         if (action == Intent.ACTION_BOOT_COMPLETED ||
             action == Intent.ACTION_MY_PACKAGE_REPLACED
         ) {
             // 开机自启
-            if (!preference.getBoolean(NetSpeedFragment.KEY_NET_SPEED_AUTO_START, false)) {
+            val autoBoot = defaultSharedPreferences.getBoolean(
+                NetSpeedConfiguration.KEY_NET_SPEED_AUTO_START,
+                false
+            )
+            if (!autoBoot) {
                 return
             }
         }
