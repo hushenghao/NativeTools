@@ -13,12 +13,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion = "30.0.3"
+    compileSdkVersion(31)
+    //buildToolsVersion = "31.0.0"
     defaultConfig {
         applicationId = "com.dede.nativetools"
         minSdkVersion(23)
-        targetSdkVersion(30)
+        targetSdkVersion(31)
         versionCode = 16
         versionName = "2.1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

@@ -2,11 +2,13 @@ package com.dede.nativetools.netspeed
 
 
 import android.app.*
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.IBinder
-import androidx.preference.PreferenceManager
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.util.checkAppOps
@@ -60,12 +62,10 @@ class NetSpeedService : Service() {
         intentFilter.addAction(Intent.ACTION_SCREEN_ON)// 打开屏幕
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF)// 关闭屏幕
         intentFilter.addAction(Intent.ACTION_USER_PRESENT)// 解锁
-        registerReceiver(receiver, intentFilter)
+        registerReceiver(lockedHideReceiver, intentFilter)
 
         resume()
     }
-
-    private val receiver: BroadcastReceiver = LockedHideReceiver()
 
     private fun startForeground() {
         val notify = createNotification()
@@ -120,15 +120,6 @@ class NetSpeedService : Service() {
         notificationManager.createNotificationChannel(notificationChannel)
     }
 
-    private val builder by lazy(LazyThreadSafetyMode.NONE) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification.Builder(this, CHANNEL_ID)
-        } else {
-            Notification.Builder(this)
-                .setSound(null)
-        }
-    }
-
     private fun createNotification(rxSpeed: Long = 0L, txSpeed: Long = 0L): Notification {
         createChannel()
 
@@ -154,25 +145,36 @@ class NetSpeedService : Service() {
             NetUtil.formatBytes(rxSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
         val uploadSpeedStr: String =
             NetUtil.formatBytes(txSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
-
         val contentStr = getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
+
+        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Notification.Builder(this, CHANNEL_ID)
+        } else {
+            Notification.Builder(this)
+                .setSound(null)
+        }
+
         builder.setSubText(getRxSubText(this))
             .setContentText(contentStr)
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_SECRET)
+            .setSmallIcon(createIcon(rxSpeed, txSpeed))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setBadgeIconType(Notification.BADGE_ICON_NONE)
         }
 
-        val icon = createIcon(rxSpeed, txSpeed)
-        builder.setSmallIcon(icon)
+        var pendingFlag = PendingIntent.FLAG_UPDATE_CURRENT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
+            pendingFlag = PendingIntent.FLAG_MUTABLE
+        }
 
         if (configuration.notifyClickable) {
             val intent = Intent(this, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             val pendingIntent = PendingIntent.getActivity(
                 this, 0,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT
+                intent, pendingFlag
             )
             builder.setContentIntent(pendingIntent)
         } else {
@@ -214,23 +216,24 @@ class NetSpeedService : Service() {
 
     override fun onDestroy() {
         pause()
-        unregisterReceiver(receiver)
+        unregisterReceiver(lockedHideReceiver)
         super.onDestroy()
     }
 
     /**
      * 接收解锁、熄屏、亮屏广播
      */
-    private inner class LockedHideReceiver : BroadcastReceiver() {
+    private val lockedHideReceiver = object : BroadcastReceiver() {
 
         private val keyguardManager by lazy(LazyThreadSafetyMode.NONE) {
             getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         }
 
         override fun onReceive(context: Context?, intent: Intent?) {
+            val action = intent?.action ?: return
             // 非兼容模式
             if (!configuration.compatibilityMode) {
-                when (intent?.action) {
+                when (action) {
                     Intent.ACTION_SCREEN_ON -> {
                         resume()// 直接更新指示器
                     }
@@ -242,7 +245,7 @@ class NetSpeedService : Service() {
             }
 
             // 兼容模式
-            when (intent?.action) {
+            when (action) {
                 Intent.ACTION_SCREEN_ON -> {
                     // 屏幕打开
                     if (keyguardManager.isDeviceLocked || keyguardManager.isKeyguardLocked) {

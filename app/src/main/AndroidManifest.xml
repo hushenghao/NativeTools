@@ -19,6 +19,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,6 +38,7 @@
             android:process=":netspeed" />
         <service
             android:name=".netspeed.NetTileService"
+            android:exported="true"
             android:icon="@drawable/ic_net_tile"
             android:label="@string/label_net_speed"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -45,7 +47,9 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".LauncherReceiver">
+        <receiver
+            android:name=".LauncherReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
