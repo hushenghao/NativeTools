@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
 
+        <!-- https://developer.android.com/about/versions/12/behavior-changes-12#exported -->
         <service
             android:name=".netspeed.NetSpeedService"
             android:exported="false"

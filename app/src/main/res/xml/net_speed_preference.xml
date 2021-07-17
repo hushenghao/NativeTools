@@ -41,6 +41,7 @@
     <SwitchPreference
         android:key="net_speed_auto_start"
         android:title="@string/label_net_speed_auto_start"
+        app:defaultValue="true"
         app:iconSpaceReserved="false"
         app:summary="@string/summary_net_speed_auto_start" />
 
@@ -56,4 +57,11 @@
         app:defaultValue="true"
         app:iconSpaceReserved="false"
         app:summary="@string/summary_net_speed_notify_clickable" />
+
+    <SwitchPreference
+        android:key="net_speed_notify_quick_closeable"
+        android:title="@string/label_net_speed_notify_quick_closeable"
+        app:defaultValue="false"
+        app:iconSpaceReserved="false"
+        app:summary="@string/summary_net_speed_notify_quick_closeable" />
 </PreferenceScreen>

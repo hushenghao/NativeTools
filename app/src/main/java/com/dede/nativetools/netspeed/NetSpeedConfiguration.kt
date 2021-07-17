@@ -19,10 +19,11 @@ data class NetSpeedConfiguration(
     // 锁屏时隐藏(兼容模式)
     var compatibilityMode: Boolean,
     var mode: String,
-    var scale: Float
+    var scale: Float,
+    var quickCloseable: Boolean
 ) : Parcelable, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    constructor() : this(DEFAULT_INTERVAL, true, false, MODE_DOWN, DEFAULT_SCALE)
+    constructor() : this(DEFAULT_INTERVAL, true, false, MODE_DOWN, DEFAULT_SCALE, false)
 
     fun copy(configuration: NetSpeedConfiguration): NetSpeedConfiguration {
         this.interval = configuration.interval
@@ -30,6 +31,7 @@ data class NetSpeedConfiguration(
         this.compatibilityMode = configuration.compatibilityMode
         this.mode = configuration.mode
         this.scale = configuration.scale
+        this.quickCloseable = configuration.quickCloseable
         return this
     }
 
@@ -59,6 +61,10 @@ data class NetSpeedConfiguration(
                 val scale = scaleInt / SCALE_DIVISOR
                 this.scale = scale
             }
+            KEY_NET_SPEED_QUICK_CLOSEABLE -> {
+                val quickCloseable = preferences.getBoolean(key, false)
+                this.quickCloseable = quickCloseable
+            }
         }
         onSharedPreferenceChangeListener?.onSharedPreferenceChanged(preferences, key)
     }
@@ -77,7 +83,9 @@ data class NetSpeedConfiguration(
         const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
         const val KEY_NET_SPEED_MODE = "net_speed_mode"
         const val KEY_NET_SPEED_SCALE = "net_speed_scale"
+        const val KEY_NET_SPEED_QUICK_CLOSEABLE = "net_speed_notify_quick_closeable"
         const val KEY_OPS_DONT_ASK = "ops_dont_ask"
+        const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
 
         const val DEFAULT_SCALE_INT = 100
         const val SCALE_DIVISOR = 100f
@@ -103,12 +111,15 @@ data class NetSpeedConfiguration(
                 KEY_NET_SPEED_SCALE,
                 DEFAULT_SCALE_INT
             )
+            val quickCloseable =
+                defaultSharedPreferences.getBoolean(KEY_NET_SPEED_QUICK_CLOSEABLE, false)
             return NetSpeedConfiguration(
                 interval,
                 notifyClickable,
                 compatibilityMode,
                 mode,
-                scaleInt / SCALE_DIVISOR
+                scaleInt / SCALE_DIVISOR,
+                quickCloseable
             )
         }
     }

@@ -2,6 +2,7 @@ package com.dede.nativetools.netspeed
 
 import android.content.*
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
@@ -33,26 +34,60 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
         launchService()
 
-        val dontAskOps =
-            !defaultSharedPreferences.getBoolean(NetSpeedConfiguration.KEY_OPS_DONT_ASK, false)
-        if (dontAskOps && !requireContext().checkAppOps()) {
-            AlertDialog.Builder(requireContext())
-                .setTitle(R.string.usage_states_title)
-                .setMessage(R.string.usage_stats_msg)
-                .setPositiveButton(R.string.access) { _, _ ->
-                    val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-                    startActivity(intent)
-                }
-                .setNeutralButton(R.string.dont_ask) { _, _ ->
-                    defaultSharedPreferences.edit()
-                        .putBoolean(NetSpeedConfiguration.KEY_OPS_DONT_ASK, true)
-                        .apply()
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
-        }
+        checkOps()
+        checkNotification()
+
         val intentFilter = IntentFilter(NetSpeedService.ACTION_CLOSE)
         requireContext().registerReceiver(closeReceiver, intentFilter)
+    }
+
+    private fun checkOps() {
+        val dontAskOps =
+            defaultSharedPreferences.getBoolean(NetSpeedConfiguration.KEY_OPS_DONT_ASK, false)
+        val context = requireContext()
+        if (dontAskOps || context.checkAppOps()) {
+            return
+        }
+        AlertDialog.Builder(context)
+            .setTitle(R.string.usage_states_title)
+            .setMessage(R.string.usage_stats_msg)
+            .setPositiveButton(R.string.access) { _, _ ->
+                val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+                startActivity(intent)
+            }
+            .setNeutralButton(R.string.dont_ask) { _, _ ->
+                defaultSharedPreferences.edit()
+                    .putBoolean(NetSpeedConfiguration.KEY_OPS_DONT_ASK, true)
+                    .apply()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
+    private fun checkNotification() {
+        val context = requireContext()
+        val areNotificationsEnabled = NetSpeedNotificationHelp.areNotificationEnabled(context)
+        val dontAskNotify =
+            defaultSharedPreferences.getBoolean(
+                NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK,
+                false
+            )
+        if (dontAskNotify || areNotificationsEnabled) {
+            return
+        }
+        AlertDialog.Builder(context)
+            .setTitle(R.string.alert_title_notification_disable)
+            .setMessage(R.string.alert_msg_notification_disable)
+            .setPositiveButton(R.string.access) { _, _ ->
+                NetSpeedNotificationHelp.goNotificationSetting(context)
+            }
+            .setNeutralButton(R.string.dont_ask) { _, _ ->
+                defaultSharedPreferences.edit()
+                    .putBoolean(NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK, true)
+                    .apply()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
     }
 
     private val closeReceiver = object : BroadcastReceiver() {
@@ -129,6 +164,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             }
             NetSpeedConfiguration.KEY_NET_SPEED_INTERVAL,
             NetSpeedConfiguration.KEY_NET_SPEED_COMPATIBILITY_MODE,
+            NetSpeedConfiguration.KEY_NET_SPEED_QUICK_CLOSEABLE,
             NetSpeedConfiguration.KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
                 updateConfiguration()
             }
@@ -159,6 +195,15 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         val padding = (size * 0.08f + 0.5f).toInt()
         // 多缩放padding*2个像素，添加边距
         scale = (size * scale - padding * 2) / size
+        scaleSeekBarPreference.icon = createScalePreferenceIcon(mode, scale, size, padding)
+    }
+
+    private fun createScalePreferenceIcon(
+        mode: String,
+        scale: Float,
+        size: Int,
+        padding: Int
+    ): Drawable {
         val bitmap = when (mode) {
             NetSpeedConfiguration.MODE_ALL -> {
                 NetTextIconFactory.createDoubleIcon("888M", "888M", scale, size, false)
@@ -174,7 +219,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         val mask = ContextCompat.getDrawable(requireContext(), R.drawable.shape_icon_mask)
         val insetDrawable = InsetDrawable(mask, padding)
         layerDrawable.setDrawableByLayerId(R.id.icon_mask, insetDrawable)
-        scaleSeekBarPreference.icon = layerDrawable
+        return layerDrawable
     }
 
     override fun onDestroy() {
