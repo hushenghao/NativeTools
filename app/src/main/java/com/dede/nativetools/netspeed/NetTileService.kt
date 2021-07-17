@@ -6,24 +6,24 @@ import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
-import androidx.preference.PreferenceManager
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
+import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultSharedPreferences
 import com.dede.nativetools.util.safeInt
 import com.dede.nativetools.util.splicing
 
 @RequiresApi(Build.VERSION_CODES.N)
 class NetTileService : TileService() {
 
-    private var interval: Int = NetSpeedService.DEFAULT_INTERVAL
-    private val sp by lazy { PreferenceManager.getDefaultSharedPreferences(baseContext) }
+    private var interval: Int = NetSpeedConfiguration.DEFAULT_INTERVAL
+
     private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
         update(rxSpeed, txSpeed)
     }
 
     override fun onStartListening() {
-        interval = sp.getString(NetSpeedFragment.KEY_NET_SPEED_INTERVAL, null)
-            .safeInt(NetSpeedService.DEFAULT_INTERVAL)
+        interval = defaultSharedPreferences.getString(NetSpeedConfiguration.KEY_NET_SPEED_INTERVAL, null)
+            .safeInt(NetSpeedConfiguration.DEFAULT_INTERVAL)
         netSpeedHelper.interval = interval
         netSpeedHelper.resume()
     }

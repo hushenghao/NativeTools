@@ -2,42 +2,24 @@ package com.dede.nativetools.netspeed
 
 
 import android.app.*
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.IBinder
+import androidx.preference.PreferenceManager
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.util.checkAppOps
 import com.dede.nativetools.util.splicing
-import kotlin.properties.Delegates
 
 
 class NetSpeedService : Service() {
 
     class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
-        override fun setInterval(interval: Int) {
-            service.interval = interval
-        }
-
-        override fun setNotifyClickable(clickable: Boolean) {
-            service.notifyClickable = clickable
-        }
-
-        override fun compatibilityMode(compatibilityMode: Boolean) {
-            service.compatibilityMode = compatibilityMode
-        }
-
-        override fun setMode(mode: String) {
-            service.mode = mode
-        }
-
-        override fun setScale(scale: Float) {
-            service.scale = scale
+        override fun updateConfiguration(configuration: NetSpeedConfiguration?) {
+            service.configuration.copy(configuration ?: return)
+                .also { service.netSpeedHelper.interval = it.interval }
         }
     }
 
@@ -45,17 +27,14 @@ class NetSpeedService : Service() {
         private const val NOTIFY_ID = 10
         private const val CHANNEL_ID = "net_speed"
 
-        const val EXTRA_INTERVAL = "extra_interval"
-        const val EXTRA_COMPATIBILITY_MODE = "extra_locked_hide"
-        const val EXTRA_NOTIFY_CLICKABLE = "extra_notify_clickable"
-        const val EXTRA_MODE = "extra_mode"
-        const val EXTRA_SCALE = "extra_scale"
-        const val DEFAULT_INTERVAL = 1000
-        const val DEFAULT_SCALE = 1f
+        const val EXTRA_CONFIGURATION = "extra_configuration"
 
-        const val MODE_DOWN = "0"
-        const val MODE_ALL = "1"
-        const val MODE_UP = "2"
+        fun createServiceIntent(context: Context): Intent {
+            val intent = Intent(context, NetSpeedService::class.java)
+            val configuration = NetSpeedConfiguration.create()
+            intent.putExtra(EXTRA_CONFIGURATION, configuration)
+            return intent
+        }
     }
 
     private val notificationManager by lazy {
@@ -69,15 +48,7 @@ class NetSpeedService : Service() {
         notificationManager.notify(NOTIFY_ID, notify)
     }
 
-    private var interval: Int by Delegates.observable(DEFAULT_INTERVAL) { _, _, new ->
-        netSpeedHelper.interval = new
-    }
-    private var notifyClickable = true
-    private var mode = MODE_DOWN
-    private var scale: Float = DEFAULT_SCALE
-
-    // 锁屏时隐藏(兼容模式)
-    private var compatibilityMode = false
+    private val configuration = NetSpeedConfiguration()
 
     override fun onBind(intent: Intent): IBinder {
         return binder
@@ -123,12 +94,9 @@ class NetSpeedService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent != null) {
-            this.compatibilityMode = intent.getBooleanExtra(EXTRA_COMPATIBILITY_MODE, false)
-            this.interval = intent.getIntExtra(EXTRA_INTERVAL, DEFAULT_INTERVAL)
-            this.notifyClickable = intent.getBooleanExtra(EXTRA_NOTIFY_CLICKABLE, true)
-            this.mode = intent.getStringExtra(EXTRA_MODE) ?: MODE_DOWN
-            this.scale = intent.getFloatExtra(EXTRA_SCALE, DEFAULT_SCALE)
+        val configuration = intent?.getParcelableExtra<NetSpeedConfiguration>(EXTRA_CONFIGURATION)
+        if (configuration != null) {
+            this.configuration.copy(configuration).also { netSpeedHelper.interval = it.interval }
         }
         return super.onStartCommand(intent, flags, startId)
     }
@@ -199,7 +167,7 @@ class NetSpeedService : Service() {
         val icon = createIcon(rxSpeed, txSpeed)
         builder.setSmallIcon(icon)
 
-        if (notifyClickable) {
+        if (configuration.notifyClickable) {
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             val pendingIntent = PendingIntent.getActivity(
@@ -215,15 +183,16 @@ class NetSpeedService : Service() {
     }
 
     private fun createIcon(downloadSpeed: Long, uploadSpeed: Long): Icon {
-        val bitmap = when (mode) {
-            MODE_ALL -> {
+        val scale = configuration.scale
+        val bitmap = when (configuration.mode) {
+            NetSpeedConfiguration.MODE_ALL -> {
                 val down =
                     NetUtil.formatBytes(downloadSpeed, 0, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
                 val up =
                     NetUtil.formatBytes(uploadSpeed, 0, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
                 NetTextIconFactory.createDoubleIcon(up, down, scale)
             }
-            MODE_UP -> {
+            NetSpeedConfiguration.MODE_UP -> {
                 val upSplit = NetUtil.formatBytes(
                     uploadSpeed,
                     NetUtil.FLAG_FULL,
@@ -260,7 +229,7 @@ class NetSpeedService : Service() {
 
         override fun onReceive(context: Context?, intent: Intent?) {
             // 非兼容模式
-            if (!compatibilityMode) {
+            if (!configuration.compatibilityMode) {
                 when (intent?.action) {
                     Intent.ACTION_SCREEN_ON -> {
                         resume()// 直接更新指示器
