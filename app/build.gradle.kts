@@ -1,3 +1,10 @@
+import com.android.build.api.dsl.SigningConfig
+import java.util.Properties
+
+val keystoreProperties = Properties()
+val propertiesFile = rootProject.file("local.properties")
+propertiesFile.inputStream().use(keystoreProperties::load)
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -18,13 +25,26 @@ android {
         resConfigs("en", "zh")
     }
 
+    signingConfigs {
+        create("release", Action<SigningConfig> {
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            storeFile = file(keystoreProperties.getProperty("storeFile"))
+            storePassword = keystoreProperties.getProperty("storePassword")
+        })
+    }
+
     buildTypes {
         getByName("release") {
-            minifyEnabled(true)
+            isMinifyEnabled = true
             // TODO: b/120517460 shrinkResource can't be used with dynamic-feature at this moment.
             //       Need to ensure the app size has not increased
             // shrinkResource = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
@@ -34,8 +54,7 @@ android {
     }
 
     kotlinOptions {
-        val options = this as org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-        options.jvmTarget = "1.8"
+        jvmTarget = "1.8"
     }
 }
 
