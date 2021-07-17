@@ -8,6 +8,7 @@
     <string name="notify_net_speed_sub">Today: %s • Month: %s</string>
     <string name="switch_on">ON</string>
     <string name="switch_off">OFF</string>
+    <string name="action_close">CLOSE</string>
     <string name="label_net_speed_interval">Interval</string>
     <string name="label_net_speed_mode">Show mode</string>
     <string name="label_net_speed_auto_start">Automatic startup</string>

@@ -28,6 +28,7 @@ class NetSpeedService : Service() {
     companion object {
         private const val NOTIFY_ID = 10
         private const val CHANNEL_ID = "net_speed"
+        const val ACTION_CLOSE = "com.dede.nativetools.CLOSE"
 
         const val EXTRA_CONFIGURATION = "extra_configuration"
 
@@ -62,6 +63,7 @@ class NetSpeedService : Service() {
         intentFilter.addAction(Intent.ACTION_SCREEN_ON)// 打开屏幕
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF)// 关闭屏幕
         intentFilter.addAction(Intent.ACTION_USER_PRESENT)// 解锁
+        intentFilter.addAction(ACTION_CLOSE)// 关闭
         registerReceiver(lockedHideReceiver, intentFilter)
 
         resume()
@@ -169,6 +171,17 @@ class NetSpeedService : Service() {
             pendingFlag = PendingIntent.FLAG_MUTABLE
         }
 
+        val closeBroadcast = PendingIntent.getBroadcast(
+            this,
+            0,
+            Intent().setAction(ACTION_CLOSE).setPackage(packageName),
+            pendingFlag
+        )
+        val closeAction =
+            Notification.Action.Builder(null, getString(R.string.action_close), closeBroadcast)
+                .build()
+        builder.addAction(closeAction)
+
         if (configuration.notifyClickable) {
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -231,6 +244,10 @@ class NetSpeedService : Service() {
 
         override fun onReceive(context: Context?, intent: Intent?) {
             val action = intent?.action ?: return
+            if (action == ACTION_CLOSE) {
+                stopSelf()
+                return
+            }
             // 非兼容模式
             if (!configuration.compatibilityMode) {
                 when (action) {

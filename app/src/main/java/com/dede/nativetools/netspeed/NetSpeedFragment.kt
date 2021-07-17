@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
+import androidx.preference.SwitchPreference
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultSharedPreferences
 import com.dede.nativetools.util.checkAppOps
@@ -50,6 +51,15 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 .setNegativeButton(R.string.cancel, null)
                 .show()
         }
+        val intentFilter = IntentFilter(NetSpeedService.ACTION_CLOSE)
+        requireContext().registerReceiver(closeReceiver, intentFilter)
+    }
+
+    private val closeReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            stopService()
+            statusSwitchPreference?.isChecked = false
+        }
     }
 
     private fun launchService() {
@@ -82,10 +92,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private lateinit var scaleSeekBarPreference: SeekBarPreference
+    private var statusSwitchPreference: SwitchPreference? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.net_speed_preference)
         scaleSeekBarPreference = findPreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)!!
+        statusSwitchPreference = findPreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
         setModeOrScale()
     }
 
@@ -166,6 +178,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     override fun onDestroy() {
+        requireContext().unregisterReceiver(closeReceiver)
         unbindService()
         super.onDestroy()
     }

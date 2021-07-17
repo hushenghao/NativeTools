@@ -2,7 +2,6 @@ package com.dede.nativetools.netspeed
 
 import android.content.SharedPreferences
 import android.os.Parcelable
-import android.util.Log
 import androidx.preference.PreferenceManager
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.util.safeInt
@@ -38,7 +37,6 @@ data class NetSpeedConfiguration(
     var onSharedPreferenceChangeListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
 
     override fun onSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
-        Log.i("NetSpeedConfiguration", "onSharedPreferenceChanged: ")
         when (key) {
             KEY_NET_SPEED_INTERVAL -> {
                 val interval = preferences.getString(key, null).safeInt(DEFAULT_INTERVAL)
