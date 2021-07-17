@@ -1,9 +1,10 @@
 import com.android.build.api.dsl.SigningConfig
 import java.util.Properties
 
-val keystoreProperties = Properties()
-val propertiesFile = rootProject.file("local.properties")
-propertiesFile.inputStream().use(keystoreProperties::load)
+val keystoreProperties = Properties().apply {
+    rootProject.file("key.properties")
+        .takeIf { it.exists() }?.inputStream()?.use(this::load)
+}
 
 plugins {
     id("com.android.application")
@@ -26,6 +27,7 @@ android {
     }
 
     signingConfigs {
+        if (keystoreProperties.isEmpty()) return@signingConfigs
         create("release", Action<SigningConfig> {
             keyAlias = keystoreProperties.getProperty("keyAlias")
             keyPassword = keystoreProperties.getProperty("keyPassword")
@@ -44,7 +46,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.findByName("release")
         }
     }
 
