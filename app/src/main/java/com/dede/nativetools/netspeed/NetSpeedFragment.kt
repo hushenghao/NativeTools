@@ -1,7 +1,6 @@
 package com.dede.nativetools.netspeed
 
 import android.content.*
-import android.content.pm.PackageManager
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.InsetDrawable

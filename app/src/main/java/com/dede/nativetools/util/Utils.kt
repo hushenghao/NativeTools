@@ -7,9 +7,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Process
+import android.text.Spanned
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import androidx.core.text.HtmlCompat
 import com.dede.nativetools.NativeToolsApp
 import java.io.File
 import kotlin.math.roundToInt
@@ -23,6 +25,14 @@ fun String?.safeInt(default: Int): Int {
         default
     }
 }
+
+fun String?.fromHtml(): Spanned? {
+    return HtmlCompat.fromHtml(this ?: return null, HtmlCompat.FROM_HTML_MODE_LEGACY)
+}
+
+inline val String?.isEmpty: Boolean get() = TextUtils.isEmpty(this)
+
+inline val String?.isNotEmpty: Boolean get() = !TextUtils.isEmpty(this)
 
 private inline fun displayMetrics(): DisplayMetrics {
     return NativeToolsApp.getInstance().resources.displayMetrics
@@ -95,8 +105,8 @@ fun Context.checkAppOps(): Boolean {
 fun Context.isMainProcess(): Boolean {
     val mainProcessName = this.packageName
     val currentProcessName = getCurrentProcessName()
-    return !TextUtils.isEmpty(mainProcessName) &&
-            !TextUtils.isEmpty(currentProcessName) &&
+    return mainProcessName.isNotEmpty &&
+            currentProcessName.isNotEmpty &&
             mainProcessName == currentProcessName
 }
 
@@ -106,7 +116,7 @@ private fun getProcessName(pid: Int): String? {
 
     file.bufferedReader().use { reader ->
         var str = reader.readLine()
-        if (!TextUtils.isEmpty(str)) {
+        if (str.isNotEmpty) {
             str = str.trim { it <= ' ' }
         }
         return str
@@ -116,13 +126,13 @@ private fun getProcessName(pid: Int): String? {
 private var currentProcessName: String = ""
 
 private fun Context.getCurrentProcessName(): String {
-    if (!TextUtils.isEmpty(currentProcessName)) {
+    if (currentProcessName.isNotEmpty) {
         return currentProcessName
     }
 
     val pid = Process.myPid()
     val processName = getProcessName(pid)
-    if (processName != null && !TextUtils.isEmpty(processName)) {
+    if (processName != null && processName.isNotEmpty) {
         currentProcessName = processName
     } else {
         val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager

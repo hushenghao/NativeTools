@@ -14,6 +14,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.util.checkAppOps
+import com.dede.nativetools.util.fromHtml
 import com.dede.nativetools.util.safelyStartActivity
 import com.dede.nativetools.util.splicing
 
@@ -99,7 +100,7 @@ object NetSpeedNotificationHelp {
                 .setSound(null)
         }
 
-        builder.setSubText(getRxSubText(context))
+        builder.setSubText(getRxSubText(context).fromHtml())
             .setContentText(contentStr)
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_SECRET)
@@ -122,7 +123,7 @@ object NetSpeedNotificationHelp {
             val closeBroadcast = PendingIntent.getBroadcast(
                 context,
                 0,
-                Intent().setAction(NetSpeedService.ACTION_CLOSE).setPackage(context.packageName),
+                Intent(NetSpeedService.ACTION_CLOSE).setPackage(context.packageName),
                 pendingFlag
             )
             val closeAction =

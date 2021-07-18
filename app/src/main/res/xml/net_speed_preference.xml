@@ -32,7 +32,8 @@
     <com.dede.nativetools.netspeed.PercentSeekBarPreference
         android:defaultValue="100"
         android:key="net_speed_scale"
-        android:max="115"
+        android:max="120"
+        app:summary="@string/summary_net_speed_scale"
         android:title="@string/label_net_speed_icon_zoom"
         app:icon="@drawable/shape_icon_mask"
         app:min="80"
