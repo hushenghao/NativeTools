@@ -9,21 +9,18 @@ import androidx.annotation.RequiresApi
 import com.dede.nativetools.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultSharedPreferences
-import com.dede.nativetools.util.safeInt
+import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.getInterval
 import com.dede.nativetools.util.splicing
 
 @RequiresApi(Build.VERSION_CODES.N)
 class NetTileService : TileService() {
-
-    private var interval: Int = NetSpeedConfiguration.DEFAULT_INTERVAL
 
     private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
         update(rxSpeed, txSpeed)
     }
 
     override fun onStartListening() {
-        interval = defaultSharedPreferences.getString(NetSpeedConfiguration.KEY_NET_SPEED_INTERVAL, null)
-            .safeInt(NetSpeedConfiguration.DEFAULT_INTERVAL)
+        val interval = defaultSharedPreferences.getInterval()
         netSpeedHelper.interval = interval
         netSpeedHelper.resume()
     }
@@ -59,12 +56,7 @@ class NetTileService : TileService() {
         tile.icon = Icon.createWithBitmap(
             NetTextIconFactory.createSingleIcon(downSplit.first, downSplit.second)
         )
-        val builder = StringBuilder()
-            .append("⇃")
-            .append(downloadSpeedStr)
-            .append("\t↿")
-            .append(uploadSpeedStr)
-        tile.label = builder.toString()
+        tile.label = getString(R.string.tile_net_speed_label, downloadSpeedStr, uploadSpeedStr)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             tile.subtitle = getString(R.string.label_net_speed)
         }

@@ -1,3 +1,10 @@
+import java.util.Properties
+
+val keystoreProperties = Properties().apply {
+    rootProject.file("key.properties")
+        .takeIf { it.exists() }?.inputStream()?.use(this::load)
+}
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -5,26 +12,42 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion = "30.0.3"
+    compileSdkVersion(31)
+    //buildToolsVersion = "31.0.0"
     defaultConfig {
         applicationId = "com.dede.nativetools"
         minSdkVersion(23)
-        targetSdkVersion(30)
-        versionCode = 16
+        targetSdkVersion(31)
+        versionCode = 17
         versionName = "2.1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resConfigs("en", "zh")
+
+        // rename output file name
+        // https://stackoverflow.com/a/52508858/10008797
+        setProperty("archivesBaseName", "native_tools_${versionName}_${versionCode}")
+    }
+
+    signingConfigs {
+        if (keystoreProperties.isEmpty) return@signingConfigs
+        create("release") {
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            storeFile = file(keystoreProperties.getProperty("storeFile"))
+            storePassword = keystoreProperties.getProperty("storePassword")
+        }
     }
 
     buildTypes {
         getByName("release") {
-            minifyEnabled(true)
-            // TODO: b/120517460 shrinkResource can't be used with dynamic-feature at this moment.
-            //       Need to ensure the app size has not increased
-            // shrinkResource = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            signingConfig = signingConfigs.findByName("release")
         }
     }
 
@@ -34,8 +57,7 @@ android {
     }
 
     kotlinOptions {
-        val options = this as org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-        options.jvmTarget = "1.8"
+        jvmTarget = "1.8"
     }
 }
 

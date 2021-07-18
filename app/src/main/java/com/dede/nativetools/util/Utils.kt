@@ -3,6 +3,8 @@ package com.dede.nativetools.util
 import android.app.ActivityManager
 import android.app.AppOpsManager
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Process
 import android.text.TextUtils
@@ -54,6 +56,21 @@ fun String.trimZeroAndDot(): String {
         s = s.replace(regexTrimDot, "")
     }
     return s
+}
+
+fun SharedPreferences.getStringNotNull(key: String, default: String): String {
+    return this.getString(key, default) ?: default
+}
+
+fun SharedPreferences.putBoolean(key: String, value: Boolean) {
+    this.edit().putBoolean(key, value).apply()
+}
+
+fun Context.safelyStartActivity(intent: Intent) {
+    try {
+        this.startActivity(intent)
+    } catch (e: Throwable) {
+    }
 }
 
 fun Context.checkAppOps(): Boolean {

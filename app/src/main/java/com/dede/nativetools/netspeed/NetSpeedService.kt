@@ -1,16 +1,14 @@
 package com.dede.nativetools.netspeed
 
 
-import android.app.*
-import android.content.*
-import android.graphics.drawable.Icon
-import android.os.Build
+import android.app.KeyguardManager
+import android.app.NotificationManager
+import android.app.Service
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.IBinder
-import androidx.preference.PreferenceManager
-import com.dede.nativetools.MainActivity
-import com.dede.nativetools.R
-import com.dede.nativetools.util.checkAppOps
-import com.dede.nativetools.util.splicing
 
 
 class NetSpeedService : Service() {
@@ -18,20 +16,19 @@ class NetSpeedService : Service() {
     class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
         override fun updateConfiguration(configuration: NetSpeedConfiguration?) {
-            service.configuration.copy(configuration ?: return)
-                .also { service.netSpeedHelper.interval = it.interval }
+            service.updateConfiguration(configuration)
         }
     }
 
     companion object {
         private const val NOTIFY_ID = 10
-        private const val CHANNEL_ID = "net_speed"
+        const val ACTION_CLOSE = "com.dede.nativetools.CLOSE"
 
         const val EXTRA_CONFIGURATION = "extra_configuration"
 
         fun createServiceIntent(context: Context): Intent {
             val intent = Intent(context, NetSpeedService::class.java)
-            val configuration = NetSpeedConfiguration.create()
+            val configuration = NetSpeedConfiguration.initialize()
             intent.putExtra(EXTRA_CONFIGURATION, configuration)
             return intent
         }
@@ -44,11 +41,12 @@ class NetSpeedService : Service() {
     private val binder = NetSpeedBinder(this)
 
     private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
-        val notify = createNotification(rxSpeed, txSpeed)
+        val notify =
+            NetSpeedNotificationHelp.createNotification(this, configuration, rxSpeed, txSpeed)
         notificationManager.notify(NOTIFY_ID, notify)
     }
 
-    private val configuration = NetSpeedConfiguration()
+    private val configuration = NetSpeedConfiguration.defaultConfiguration
 
     override fun onBind(intent: Intent): IBinder {
         return binder
@@ -60,15 +58,14 @@ class NetSpeedService : Service() {
         intentFilter.addAction(Intent.ACTION_SCREEN_ON)// 打开屏幕
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF)// 关闭屏幕
         intentFilter.addAction(Intent.ACTION_USER_PRESENT)// 解锁
-        registerReceiver(receiver, intentFilter)
+        intentFilter.addAction(ACTION_CLOSE)// 关闭
+        registerReceiver(lockedHideReceiver, intentFilter)
 
         resume()
     }
 
-    private val receiver: BroadcastReceiver = LockedHideReceiver()
-
     private fun startForeground() {
-        val notify = createNotification()
+        val notify = NetSpeedNotificationHelp.createNotification(this, configuration)
         startForeground(NOTIFY_ID, notify)
     }
 
@@ -93,144 +90,41 @@ class NetSpeedService : Service() {
         }
     }
 
+    private fun updateConfiguration(configuration: NetSpeedConfiguration?) {
+        this.configuration.copy(configuration ?: return)
+            .also { netSpeedHelper.interval = it.interval }
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val configuration = intent?.getParcelableExtra<NetSpeedConfiguration>(EXTRA_CONFIGURATION)
-        if (configuration != null) {
-            this.configuration.copy(configuration).also { netSpeedHelper.interval = it.interval }
-        }
+        updateConfiguration(configuration)
         return super.onStartCommand(intent, flags, startId)
-    }
-
-    private fun createChannel() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            return
-        }
-        val channel = notificationManager.getNotificationChannel(CHANNEL_ID)
-        if (channel != null) {
-            return
-        }
-
-        val notificationChannel = NotificationChannel(
-            CHANNEL_ID,
-            getString(R.string.label_net_speed),
-            NotificationManager.IMPORTANCE_LOW
-        )
-        notificationChannel.setShowBadge(false)
-        notificationChannel.setSound(null, null)
-        notificationManager.createNotificationChannel(notificationChannel)
-    }
-
-    private val builder by lazy(LazyThreadSafetyMode.NONE) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification.Builder(this, CHANNEL_ID)
-        } else {
-            Notification.Builder(this)
-                .setSound(null)
-        }
-    }
-
-    private fun createNotification(rxSpeed: Long = 0L, txSpeed: Long = 0L): Notification {
-        createChannel()
-
-        /**
-         * 获取所有数据下载量
-         */
-        fun getRxSubText(context: Context): String? {
-            if (!context.checkAppOps()) {
-                return null
-            }
-            val todayBytes = NetUtil.getTodayNetworkUsageRxBytes(context)
-            val monthBytes = NetUtil.getMonthNetworkUsageRxBytes(context)
-            return context.getString(
-                R.string.notify_net_speed_sub,
-                NetUtil.formatBytes(todayBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EXACT)
-                    .splicing(),
-                NetUtil.formatBytes(monthBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EXACT)
-                    .splicing()
-            )
-        }
-
-        val downloadSpeedStr: String =
-            NetUtil.formatBytes(rxSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
-        val uploadSpeedStr: String =
-            NetUtil.formatBytes(txSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
-
-        val contentStr = getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
-        builder.setSubText(getRxSubText(this))
-            .setContentText(contentStr)
-            .setAutoCancel(false)
-            .setVisibility(Notification.VISIBILITY_SECRET)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder.setBadgeIconType(Notification.BADGE_ICON_NONE)
-        }
-
-        val icon = createIcon(rxSpeed, txSpeed)
-        builder.setSmallIcon(icon)
-
-        if (configuration.notifyClickable) {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            val pendingIntent = PendingIntent.getActivity(
-                this, 0,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT
-            )
-            builder.setContentIntent(pendingIntent)
-        } else {
-            builder.setContentIntent(null)
-        }
-
-        return builder.build()
-    }
-
-    private fun createIcon(downloadSpeed: Long, uploadSpeed: Long): Icon {
-        val scale = configuration.scale
-        val bitmap = when (configuration.mode) {
-            NetSpeedConfiguration.MODE_ALL -> {
-                val down =
-                    NetUtil.formatBytes(downloadSpeed, 0, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
-                val up =
-                    NetUtil.formatBytes(uploadSpeed, 0, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
-                NetTextIconFactory.createDoubleIcon(up, down, scale)
-            }
-            NetSpeedConfiguration.MODE_UP -> {
-                val upSplit = NetUtil.formatBytes(
-                    uploadSpeed,
-                    NetUtil.FLAG_FULL,
-                    NetUtil.ACCURACY_EQUAL_WIDTH_EXACT
-                )
-                NetTextIconFactory.createSingleIcon(upSplit.first, upSplit.second, scale)
-            }
-            else -> {
-                val downSplit = NetUtil.formatBytes(
-                    downloadSpeed,
-                    NetUtil.FLAG_FULL,
-                    NetUtil.ACCURACY_EQUAL_WIDTH_EXACT
-                )
-                NetTextIconFactory.createSingleIcon(downSplit.first, downSplit.second, scale)
-            }
-        }
-        return Icon.createWithBitmap(bitmap)
     }
 
     override fun onDestroy() {
         pause()
-        unregisterReceiver(receiver)
+        unregisterReceiver(lockedHideReceiver)
         super.onDestroy()
     }
 
     /**
      * 接收解锁、熄屏、亮屏广播
      */
-    private inner class LockedHideReceiver : BroadcastReceiver() {
+    private val lockedHideReceiver = object : BroadcastReceiver() {
 
         private val keyguardManager by lazy(LazyThreadSafetyMode.NONE) {
             getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         }
 
         override fun onReceive(context: Context?, intent: Intent?) {
+            val action = intent?.action ?: return
+            if (action == ACTION_CLOSE) {
+                stopSelf()
+                return
+            }
             // 非兼容模式
             if (!configuration.compatibilityMode) {
-                when (intent?.action) {
+                when (action) {
                     Intent.ACTION_SCREEN_ON -> {
                         resume()// 直接更新指示器
                     }
@@ -242,7 +136,7 @@ class NetSpeedService : Service() {
             }
 
             // 兼容模式
-            when (intent?.action) {
+            when (action) {
                 Intent.ACTION_SCREEN_ON -> {
                     // 屏幕打开
                     if (keyguardManager.isDeviceLocked || keyguardManager.isKeyguardLocked) {
