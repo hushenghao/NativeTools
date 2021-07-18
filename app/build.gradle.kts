@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.SigningConfig
 import java.util.Properties
 
 val keystoreProperties = Properties().apply {
@@ -24,24 +23,25 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resConfigs("en", "zh")
+
+        // rename output file name https://stackoverflow.com/a/52508858/10008797
+        setProperty("archivesBaseName", "native_tools_${versionName}_${versionCode}")
     }
 
     signingConfigs {
-        if (keystoreProperties.isEmpty()) return@signingConfigs
-        create("release", Action<SigningConfig> {
+        if (keystoreProperties.isEmpty) return@signingConfigs
+        create("release") {
             keyAlias = keystoreProperties.getProperty("keyAlias")
             keyPassword = keystoreProperties.getProperty("keyPassword")
             storeFile = file(keystoreProperties.getProperty("storeFile"))
             storePassword = keystoreProperties.getProperty("storePassword")
-        })
+        }
     }
 
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            // TODO: b/120517460 shrinkResource can't be used with dynamic-feature at this moment.
-            //       Need to ensure the app size has not increased
-            // shrinkResource = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

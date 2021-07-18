@@ -24,7 +24,7 @@ data class NetSpeedConfiguration constructor(
     var quickCloseable: Boolean
 ) : Parcelable, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private constructor() : this(DEFAULT_INTERVAL, true, false, MODE_DOWN, 1f, false)
+    constructor() : this(DEFAULT_INTERVAL, true, false, MODE_DOWN, 1f, false)
 
     fun copy(configuration: NetSpeedConfiguration): NetSpeedConfiguration {
         this.interval = configuration.interval
