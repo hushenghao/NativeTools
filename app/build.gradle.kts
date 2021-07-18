@@ -18,13 +18,14 @@ android {
         applicationId = "com.dede.nativetools"
         minSdkVersion(23)
         targetSdkVersion(31)
-        versionCode = 16
+        versionCode = 17
         versionName = "2.1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resConfigs("en", "zh")
 
-        // rename output file name https://stackoverflow.com/a/52508858/10008797
+        // rename output file name
+        // https://stackoverflow.com/a/52508858/10008797
         setProperty("archivesBaseName", "native_tools_${versionName}_${versionCode}")
     }
 
