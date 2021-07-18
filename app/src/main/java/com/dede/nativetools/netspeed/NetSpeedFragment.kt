@@ -1,13 +1,16 @@
 package com.dede.nativetools.netspeed
 
 import android.content.*
+import android.content.pm.PackageManager
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.IBinder
+import android.os.RemoteException
 import android.provider.Settings
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceFragmentCompat
@@ -15,8 +18,12 @@ import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultSharedPreferences
+import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.getMode
+import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.getScale
 import com.dede.nativetools.util.checkAppOps
 import com.dede.nativetools.util.dp
+import com.dede.nativetools.util.putBoolean
+import com.dede.nativetools.util.safelyStartActivity
 
 /**
  * 网速指示器设置页
@@ -26,7 +33,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     ServiceConnection {
 
     private val configuration by lazy(LazyThreadSafetyMode.NONE) {
-        NetSpeedConfiguration.create().also { it.onSharedPreferenceChangeListener = this }
+        NetSpeedConfiguration.initialize().also { it.onSharedPreferenceChangeListener = this }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,12 +60,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             .setMessage(R.string.usage_stats_msg)
             .setPositiveButton(R.string.access) { _, _ ->
                 val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-                startActivity(intent)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                requireContext().safelyStartActivity(intent)
             }
             .setNeutralButton(R.string.dont_ask) { _, _ ->
-                defaultSharedPreferences.edit()
+                defaultSharedPreferences
                     .putBoolean(NetSpeedConfiguration.KEY_OPS_DONT_ASK, true)
-                    .apply()
             }
             .setNegativeButton(R.string.cancel, null)
             .show()
@@ -82,9 +89,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 NetSpeedNotificationHelp.goNotificationSetting(context)
             }
             .setNeutralButton(R.string.dont_ask) { _, _ ->
-                defaultSharedPreferences.edit()
+                defaultSharedPreferences
                     .putBoolean(NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK, true)
-                    .apply()
             }
             .setNegativeButton(R.string.cancel, null)
             .show()
@@ -176,19 +182,16 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun updateConfiguration() {
-        netSpeedBinder?.updateConfiguration(configuration)
+        try {
+            netSpeedBinder?.updateConfiguration(configuration)
+        } catch (e: RemoteException) {
+            Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setModeOrScale() {
-        val scaleInt = defaultSharedPreferences.getInt(
-            NetSpeedConfiguration.KEY_NET_SPEED_SCALE,
-            NetSpeedConfiguration.DEFAULT_SCALE_INT
-        )
-        val mode = defaultSharedPreferences.getString(
-            NetSpeedConfiguration.KEY_NET_SPEED_MODE,
-            NetSpeedConfiguration.MODE_DOWN
-        ) ?: NetSpeedConfiguration.MODE_DOWN
-        var scale = scaleInt / NetSpeedConfiguration.SCALE_DIVISOR
+        var scale = defaultSharedPreferences.getScale()
+        val mode = defaultSharedPreferences.getMode()
         updateConfiguration()
 
         val size = PercentSeekBarPreference.ICON_SIZE.dp// 最大48dp

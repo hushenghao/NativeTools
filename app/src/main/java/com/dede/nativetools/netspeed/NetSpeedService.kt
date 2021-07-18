@@ -16,8 +16,7 @@ class NetSpeedService : Service() {
     class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
         override fun updateConfiguration(configuration: NetSpeedConfiguration?) {
-            service.configuration.copy(configuration ?: return)
-                .also { service.netSpeedHelper.interval = it.interval }
+            service.updateConfiguration(configuration)
         }
     }
 
@@ -29,7 +28,7 @@ class NetSpeedService : Service() {
 
         fun createServiceIntent(context: Context): Intent {
             val intent = Intent(context, NetSpeedService::class.java)
-            val configuration = NetSpeedConfiguration.create()
+            val configuration = NetSpeedConfiguration.initialize()
             intent.putExtra(EXTRA_CONFIGURATION, configuration)
             return intent
         }
@@ -47,7 +46,7 @@ class NetSpeedService : Service() {
         notificationManager.notify(NOTIFY_ID, notify)
     }
 
-    private val configuration = NetSpeedConfiguration()
+    private val configuration = NetSpeedConfiguration.defaultConfiguration
 
     override fun onBind(intent: Intent): IBinder {
         return binder
@@ -91,11 +90,14 @@ class NetSpeedService : Service() {
         }
     }
 
+    private fun updateConfiguration(configuration: NetSpeedConfiguration?) {
+        this.configuration.copy(configuration ?: return)
+            .also { netSpeedHelper.interval = it.interval }
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val configuration = intent?.getParcelableExtra<NetSpeedConfiguration>(EXTRA_CONFIGURATION)
-        if (configuration != null) {
-            this.configuration.copy(configuration).also { netSpeedHelper.interval = it.interval }
-        }
+        updateConfiguration(configuration)
         return super.onStartCommand(intent, flags, startId)
     }
 
