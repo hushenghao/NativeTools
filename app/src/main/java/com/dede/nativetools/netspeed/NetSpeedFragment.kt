@@ -74,11 +74,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private fun checkNotification() {
         val context = requireContext()
         val areNotificationsEnabled = NetSpeedNotificationHelp.areNotificationEnabled(context)
-        val dontAskNotify =
-            defaultSharedPreferences.getBoolean(
-                NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK,
-                false
-            )
+        val dontAskNotify = defaultSharedPreferences
+            .getBoolean(NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK, false)
         if (dontAskNotify || areNotificationsEnabled) {
             return
         }

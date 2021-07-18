@@ -67,8 +67,10 @@ fun SharedPreferences.putBoolean(key: String, value: Boolean) {
 }
 
 fun Context.safelyStartActivity(intent: Intent) {
-    intent.resolveActivity(this.packageManager) ?: return
-    this.startActivity(intent)
+    try {
+        this.startActivity(intent)
+    } catch (e: Throwable) {
+    }
 }
 
 fun Context.checkAppOps(): Boolean {
