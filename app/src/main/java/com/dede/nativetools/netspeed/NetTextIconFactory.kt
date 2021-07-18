@@ -92,15 +92,15 @@ object NetTextIconFactory {
         val bitmap = createBitmap(size, fromCache)
         val canvas = Canvas(bitmap)
         val half = size / 2f
+        canvas.scale(scale, scale, half, half)
 
         paint.textSize = size * 0.51f
         var metrics = paint.fontMetrics
         val textY = abs(metrics.top) - metrics.descent
-        canvas.scale(scale, scale, half, half)
         var offset = size * 0.06f
         canvas.drawText(text1, half, textY + offset, paint)
 
-        paint.textSize = size * 0.35f
+        paint.textSize = size * 0.37f
         metrics = paint.fontMetrics
         val text2Y = abs(metrics.top) - metrics.descent
         offset = size * 0.16f
@@ -126,11 +126,11 @@ object NetTextIconFactory {
         val bitmap = createBitmap(size, fromCache)
         val canvas = Canvas(bitmap)
         val half = size / 2f
+        canvas.scale(scale, scale, half, half)
 
         paint.textSize = size * 0.42f
         var metrics = paint.fontMetrics
         val textY = abs(metrics.top) - metrics.descent
-        canvas.scale(scale, scale, half, half)
         var offset = size * 0.05f
         canvas.drawText(text1, half, textY + offset, paint)
 

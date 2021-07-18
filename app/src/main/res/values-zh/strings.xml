@@ -2,7 +2,6 @@
     <string name="app_name">网速指示器</string>
     <string name="notify_net_speed_msg" formatted="false">下载：%s • 上传：%s</string>
     <string name="notify_net_speed_sub" formatted="false">今日：%s • 本月：%s</string>
-    <string name="tile_net_speed_label" formatted="false" translatable="false">⇃%s   ↿%s</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
     <string name="action_close">关闭</string>
@@ -30,31 +29,9 @@
     <string name="alert_msg_notification_disable">通知权限未开启，网速指示器将无法正常显示</string>
     <string name="desc_net_speed_notify">网速指示器需要通过通知来显示</string>
 
-    <string-array name="net_speed_interval">
-        <item>500 ms</item>
-        <item>800 ms</item>
-        <item>1000 ms</item>
-        <item>1500 ms</item>
-        <item>2000 ms</item>
-        <item>3000 ms</item>
-    </string-array>
-    <string-array name="net_speed_interval_value">
-        <item>500</item>
-        <item>800</item>
-        <item>1000</item>
-        <item>1500</item>
-        <item>2000</item>
-        <item>3000</item>
-    </string-array>
-
     <string-array name="net_speed_mode">
         <item>仅下载</item>
         <item>上传 + 下载</item>
         <item>仅上传</item>
-    </string-array>
-    <string-array name="net_speed_mode_value">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
     </string-array>
 </resources>

@@ -4,10 +4,11 @@
     <string name="cancel">Cancel</string>
     <string name="access">Access</string>
     <string name="dont_ask">Don\'t ask</string>
-    <string name="notify_net_speed_msg">Down: %s • Up: %s</string>
-    <string name="notify_net_speed_sub">Today: %s • Month: %s</string>
+    <string name="notify_net_speed_msg" formatted="false">Down: %s • Up: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">Today: %s • Month: %s</string>
     <string name="switch_on">ON</string>
     <string name="switch_off">OFF</string>
+    <string name="action_close">CLOSE</string>
     <string name="label_net_speed_interval">Interval</string>
     <string name="label_net_speed_mode">Show mode</string>
     <string name="label_net_speed_auto_start">Automatic startup</string>
@@ -27,4 +28,9 @@
         <item>Up + Down</item>
         <item>Up</item>
     </string-array>
+    <string name="label_net_speed_notify_quick_closeable">Notification quick close</string>
+    <string name="summary_net_speed_notify_quick_closeable">Add a close button to the network speed notification</string>
+    <string name="alert_title_notification_disable">Notification not enabled</string>
+    <string name="alert_msg_notification_disable">If the notification is not enabled, the network speed indicator will not display normally</string>
+    <string name="desc_net_speed_notify">The speed indicator needs to be displayed by notification</string>
 </resources>

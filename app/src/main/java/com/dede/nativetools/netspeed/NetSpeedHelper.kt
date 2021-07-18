@@ -15,7 +15,7 @@ class NetSpeedHelper(private var netSpeedChanged: NetSpeedChanged? = null) {
     private var rxBytes: Long = 0L
     private var txBytes: Long = 0L
 
-    var interval: Int by Delegates.observable(NetSpeedService.DEFAULT_INTERVAL) { _, old, new ->
+    var interval: Int by Delegates.observable(NetSpeedConfiguration.DEFAULT_INTERVAL) { _, old, new ->
         if (old != new) {
             reset()
             intervalHelper.setInterval(new.toLong())
