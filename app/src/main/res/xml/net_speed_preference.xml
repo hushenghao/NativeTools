@@ -36,7 +36,7 @@
         app:summary="@string/summary_net_speed_scale"
         android:title="@string/label_net_speed_icon_zoom"
         app:icon="@drawable/shape_icon_mask"
-        app:min="80"
+        app:min="85"
         app:showSeekBarValue="true" />
 
     <SwitchPreference

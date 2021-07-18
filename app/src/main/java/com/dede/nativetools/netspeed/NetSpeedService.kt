@@ -93,6 +93,13 @@ class NetSpeedService : Service() {
     private fun updateConfiguration(configuration: NetSpeedConfiguration?) {
         this.configuration.copy(configuration ?: return)
             .also { netSpeedHelper.interval = it.interval }
+        val notification = NetSpeedNotificationHelp.createNotification(
+            this,
+            this.configuration,
+            this.netSpeedHelper.rxSpeed,
+            this.netSpeedHelper.txSpeed
+        )
+        notificationManager.notify(NOTIFY_ID, notification)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
