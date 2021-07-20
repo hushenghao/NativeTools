@@ -3,7 +3,6 @@ package com.dede.nativetools.netspeed
 import android.content.Context
 import android.graphics.*
 import com.dede.nativetools.NativeToolsApp
-import kotlin.math.abs
 
 
 /**
@@ -74,6 +73,59 @@ object NetTextIconFactory {
         }
     }
 
+    sealed class IconConfig(val scale: Float, val size: Int) {
+
+        val center = size / 2f
+
+        var text1Y: Float = 0f
+        var text1Size: Float = 0f
+
+        var text2Y: Float = 0f
+        var text2Size: Float = 0f
+
+
+        class Single(scale: Float, size: Int) : IconConfig(scale, size) {
+
+            init {
+                text1Y = size * 0.5f
+                text1Size = size * 0.51f
+
+                text2Y = size * 0.87f
+                text2Size = size * 0.37f
+            }
+        }
+
+        class Pair(scale: Float, size: Int) : IconConfig(scale, size) {
+
+            init {
+                text1Y = size * 0.42f
+                text1Size = size * 0.41f
+
+                text2Y = size * 0.86f
+                text2Size = text1Size
+            }
+        }
+    }
+
+    fun createIconInternal(
+        text1: String,
+        text2: String,
+        icon: IconConfig,
+        fromCache: Boolean
+    ): Bitmap {
+        val bitmap = createBitmap(icon.size, fromCache)
+        val canvas = Canvas(bitmap)
+
+        canvas.scale(icon.scale, icon.scale, icon.center, icon.center)
+
+        paint.textSize = icon.text1Size
+        canvas.drawText(text1, icon.center, icon.text1Y, paint)
+
+        paint.textSize = icon.text2Size
+        canvas.drawText(text2, icon.center, icon.text2Y, paint)
+        return bitmap
+    }
+
     /**
      * 创建下载图标
      *
@@ -89,23 +141,7 @@ object NetTextIconFactory {
         size: Int = ICON_SIZE,
         fromCache: Boolean = false
     ): Bitmap {
-        val bitmap = createBitmap(size, fromCache)
-        val canvas = Canvas(bitmap)
-        val half = size / 2f
-        canvas.scale(scale, scale, half, half)
-
-        paint.textSize = size * 0.51f
-        var metrics = paint.fontMetrics
-        val textY = abs(metrics.top) - metrics.descent
-        var offset = size * 0.06f
-        canvas.drawText(text1, half, textY + offset, paint)
-
-        paint.textSize = size * 0.37f
-        metrics = paint.fontMetrics
-        val text2Y = abs(metrics.top) - metrics.descent
-        offset = size * 0.16f
-        canvas.drawText(text2, half, textY + text2Y + offset, paint)
-        return bitmap
+        return createIconInternal(text1, text2, IconConfig.Single(scale, size), fromCache)
     }
 
     /**
@@ -123,21 +159,6 @@ object NetTextIconFactory {
         size: Int = ICON_SIZE,
         fromCache: Boolean = false
     ): Bitmap {
-        val bitmap = createBitmap(size, fromCache)
-        val canvas = Canvas(bitmap)
-        val half = size / 2f
-        canvas.scale(scale, scale, half, half)
-
-        paint.textSize = size * 0.42f
-        var metrics = paint.fontMetrics
-        val textY = abs(metrics.top) - metrics.descent
-        var offset = size * 0.05f
-        canvas.drawText(text1, half, textY + offset, paint)
-
-        metrics = paint.fontMetrics
-        val text2Y = abs(metrics.top) - metrics.descent
-        offset = size * 0.21f
-        canvas.drawText(text2, half, textY + text2Y + offset, paint)
-        return bitmap
+        return createIconInternal(text1, text2, IconConfig.Pair(scale, size), fromCache)
     }
 }
