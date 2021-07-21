@@ -8,8 +8,16 @@
     </item>
     <item
         android:id="@+id/icon_frame"
-        android:drawable="@android:color/transparent" />
+        android:bottom="@dimen/net_speed_icon_padding"
+        android:drawable="@android:color/transparent"
+        android:left="@dimen/net_speed_icon_padding"
+        android:right="@dimen/net_speed_icon_padding"
+        android:top="@dimen/net_speed_icon_padding" />
     <item
         android:id="@+id/icon_mask"
-        android:drawable="@android:color/transparent" />
+        android:bottom="@dimen/net_speed_icon_padding"
+        android:drawable="@android:color/transparent"
+        android:left="@dimen/net_speed_icon_padding"
+        android:right="@dimen/net_speed_icon_padding"
+        android:top="@dimen/net_speed_icon_padding" />
 </layer-list>

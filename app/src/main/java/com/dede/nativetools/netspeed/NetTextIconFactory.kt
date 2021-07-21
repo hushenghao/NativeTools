@@ -1,14 +1,18 @@
 package com.dede.nativetools.netspeed
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import com.dede.nativetools.NativeToolsApp
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 
 /**
  * Created by hsh on 2017/5/11 011 下午 05:17.
  * 通知栏网速图标工厂
  */
+@SuppressLint("StaticFieldLeak")
 object NetTextIconFactory {
 
     private val DEFAULT_CONFIG = Bitmap.Config.ARGB_8888
@@ -18,10 +22,13 @@ object NetTextIconFactory {
 
     private var ICON_SIZE = 72
 
+    private lateinit var context: Context
+
     init {
         val context = NativeToolsApp.getInstance()
         init(context)
         paint.typeface = Typeface.DEFAULT_BOLD
+        paint.isFakeBoldText = true
         paint.textAlign = Paint.Align.CENTER
         paint.color = Color.WHITE
     }
@@ -50,6 +57,7 @@ object NetTextIconFactory {
 
 
     private fun init(context: Context) {
+        this.context = context
         val dpi = context.resources.displayMetrics.densityDpi
         when {
             dpi <= 160 -> {// mdpi
@@ -98,7 +106,7 @@ object NetTextIconFactory {
         class Pair(scale: Float, size: Int) : IconConfig(scale, size) {
 
             init {
-                text1Y = size * 0.415f
+                text1Y = size * 0.42f
                 text1Size = size * 0.40f
 
                 text2Y = size * 0.86f
@@ -106,6 +114,8 @@ object NetTextIconFactory {
             }
         }
     }
+
+    private val xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
 
     fun createIconInternal(
         text1: String,
@@ -116,6 +126,11 @@ object NetTextIconFactory {
         val bitmap = createBitmap(icon.size, fromCache)
         val canvas = Canvas(bitmap)
 
+        val squirclePath = getSquirclePath(0, 0, icon.center.roundToInt())
+        canvas.drawPath(squirclePath, paint)
+
+        paint.xfermode = xfermode
+
         canvas.scale(icon.scale, icon.scale, icon.center, icon.center)
 
         paint.textSize = icon.text1Size
@@ -123,7 +138,30 @@ object NetTextIconFactory {
 
         paint.textSize = icon.text2Size
         canvas.drawText(text2, icon.center, icon.text2Y, paint)
+        paint.xfermode = null
         return bitmap
+    }
+
+    private fun getSquirclePath(left: Int, top: Int, radius: Int): Path {
+        //Formula: (|x|)^3 + (|y|)^3 = radius^3
+        val radiusToPow = (radius * radius * radius).toDouble()
+        val path = Path()
+        path.moveTo((-radius).toFloat(), 0f)
+        for (x in -radius..radius)
+            path.lineTo(
+                x.toFloat(),
+                Math.cbrt(radiusToPow - abs(x * x * x)).toFloat()
+            )
+        for (x in radius downTo -radius)
+            path.lineTo(
+                x.toFloat(),
+                (-Math.cbrt(radiusToPow - abs(x * x * x))).toFloat()
+            )
+        path.close()
+        val matrix = Matrix()
+        matrix.postTranslate((left + radius).toFloat(), (top + radius).toFloat())
+        path.transform(matrix)
+        return path
     }
 
     /**

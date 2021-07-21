@@ -3,7 +3,6 @@ package com.dede.nativetools.netspeed
 import android.content.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.IBinder
@@ -23,6 +22,7 @@ import com.dede.nativetools.util.checkAppOps
 import com.dede.nativetools.util.dp
 import com.dede.nativetools.util.putBoolean
 import com.dede.nativetools.util.safelyStartActivity
+import kotlin.math.roundToInt
 
 /**
  * 网速指示器设置页
@@ -186,14 +186,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun setModeOrScale() {
-        var scale = defaultSharedPreferences.getScale()
+        val scale = defaultSharedPreferences.getScale()
         val mode = defaultSharedPreferences.getMode()
         updateConfiguration()
 
         val size = PercentSeekBarPreference.ICON_SIZE.dp// 最大48dp
-        val padding = (size * 0.08f + 0.5f).toInt()
-        // 多缩放padding*2个像素，添加边距
-        scale = (size * scale - padding * 2) / size
+        val padding = (size * 0.09f).roundToInt()
         scaleSeekBarPreference.icon = createScalePreferenceIcon(mode, scale, size, padding)
     }
 
@@ -211,13 +209,11 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 NetTextIconFactory.createSingleIcon("88.8", "MB/s", scale, size, false)
             }
         }
-        val bitmapDrawable = BitmapDrawable(resources, bitmap)
-        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.layer_icon_mask)
-        val layerDrawable = drawable as LayerDrawable
-        layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmapDrawable)
-        val mask = ContextCompat.getDrawable(requireContext(), R.drawable.shape_icon_mask)
-        val insetDrawable = InsetDrawable(mask, padding)
-        layerDrawable.setDrawableByLayerId(R.id.icon_mask, insetDrawable)
+        val layerDrawable =
+            ContextCompat.getDrawable(requireContext(), R.drawable.layer_icon_mask) as LayerDrawable
+        layerDrawable.setDrawableByLayerId(R.id.icon_frame, BitmapDrawable(resources, bitmap))
+        val maskDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.shape_icon_mask)
+        layerDrawable.setDrawableByLayerId(R.id.icon_mask, maskDrawable)
         return layerDrawable
     }
 
