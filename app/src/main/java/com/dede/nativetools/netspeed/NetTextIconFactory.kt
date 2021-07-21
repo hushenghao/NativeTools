@@ -87,8 +87,8 @@ object NetTextIconFactory {
         class Single(scale: Float, size: Int) : IconConfig(scale, size) {
 
             init {
-                text1Y = size * 0.5f
-                text1Size = size * 0.51f
+                text1Y = size * 0.475f
+                text1Size = size * 0.50f
 
                 text2Y = size * 0.87f
                 text2Size = size * 0.37f
@@ -98,8 +98,8 @@ object NetTextIconFactory {
         class Pair(scale: Float, size: Int) : IconConfig(scale, size) {
 
             init {
-                text1Y = size * 0.42f
-                text1Size = size * 0.41f
+                text1Y = size * 0.415f
+                text1Size = size * 0.40f
 
                 text2Y = size * 0.86f
                 text2Size = text1Size
