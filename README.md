@@ -11,13 +11,13 @@
 * 支持系统夜间模式
 * 支持图标简单自定义
 
-通过系统通知SmallIcon实现，显示范围受系统状态栏图标大小限制，不同设备显示大小可能不相同，但是会尽最大限度来保证显示完整且确保精度。
+通过系统通知的SmallIcon实现，显示范围受系统状态栏图标大小限制，不同设备显示大小可能不相同，但是会尽最大限度来保证显示完整且确保精度。
 
-如果你有什么好的想法请提交 [**Issues**](https://github.com/hushenghao/NativeTools/issues) 和 [**Pull requests**](https://github.com/hushenghao/NativeTools/pulls)
+如果你有什么好的想法请提交 [**Issues**](https://github.com/hushenghao/NativeTools/issues) 或 [**Pull requests**](https://github.com/hushenghao/NativeTools/pulls)
 
 ## 应用截图
 
-<img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269379709237029.jpeg"/><img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269379625806575.jpeg"/>
+<img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269610882462412.png"/> <img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269610958174546.png"/> <img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269612711209232.png"/>
 
 ## 应用下载
 
