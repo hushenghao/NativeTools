@@ -34,4 +34,11 @@
     <string name="alert_msg_notification_disable">If the notification is not enabled, the network speed indicator will not display normally</string>
     <string name="desc_net_speed_notify">The speed indicator needs to be displayed by notification</string>
     <string name="summary_net_speed_scale">The dotted border is the maximum range of the status bar icon</string>
+    <string name="label_net_speed_background">Icon background</string>
+    <string-array name="net_speed_background">
+        <item>None</item>
+        <item>Circle</item>
+        <item>Rounded Corners</item>
+        <item>Squircle</item>
+    </string-array>
 </resources>

@@ -16,13 +16,10 @@ import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultSharedPreferences
-import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.getMode
-import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.getScale
 import com.dede.nativetools.util.checkAppOps
 import com.dede.nativetools.util.dp
 import com.dede.nativetools.util.putBoolean
 import com.dede.nativetools.util.safelyStartActivity
-import kotlin.math.roundToInt
 
 /**
  * 网速指示器设置页
@@ -135,7 +132,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         addPreferencesFromResource(R.xml.net_speed_preference)
         scaleSeekBarPreference = findPreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)!!
         statusSwitchPreference = findPreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
-        setModeOrScale()
+        setScalePreferenceIcon(false)
     }
 
     private var netSpeedBinder: INetSpeedInterface? = null
@@ -171,8 +168,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 updateConfiguration()
             }
             NetSpeedConfiguration.KEY_NET_SPEED_MODE,
-            NetSpeedConfiguration.KEY_NET_SPEED_SCALE -> {
-                setModeOrScale()
+            NetSpeedConfiguration.KEY_NET_SPEED_SCALE,
+            NetSpeedConfiguration.KEY_NET_SPEED_BACKGROUND -> {
+                setScalePreferenceIcon(true)
             }
         }
     }
@@ -185,35 +183,26 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
     }
 
-    private fun setModeOrScale() {
-        val scale = defaultSharedPreferences.getScale()
-        val mode = defaultSharedPreferences.getMode()
-        updateConfiguration()
+    private fun setScalePreferenceIcon(updateConfiguration: Boolean) {
+        if (updateConfiguration) {
+            updateConfiguration()
+        }
 
-        val size = PercentSeekBarPreference.ICON_SIZE.dp// 最大48dp
-        val padding = (size * 0.09f).roundToInt()
-        scaleSeekBarPreference.icon = createScalePreferenceIcon(mode, scale, size, padding)
+        scaleSeekBarPreference.icon = createScalePreferenceIcon()
     }
 
-    private fun createScalePreferenceIcon(
-        mode: String,
-        scale: Float,
-        size: Int,
-        padding: Int
-    ): Drawable {
-        val bitmap = when (mode) {
-            NetSpeedConfiguration.MODE_ALL -> {
-                NetTextIconFactory.createDoubleIcon("888M", "888M", scale, size, false)
-            }
-            else -> {
-                NetTextIconFactory.createSingleIcon("88.8", "MB/s", scale, size, false)
-            }
+    private fun createScalePreferenceIcon(): Drawable {
+        val size = PercentSeekBarPreference.ICON_SIZE.dp// 最大48dp
+        val speed: Long = if (configuration.mode == NetSpeedConfiguration.MODE_ALL) {
+            MODE_ALL_BYTES
+        } else {
+            MODE_SINGLE_BYTES
         }
+        val bitmap = NetTextIconFactory.createIconBitmap(speed, speed, configuration, size, false)
+        val bitmapDrawable = BitmapDrawable(resources, bitmap)
         val layerDrawable =
             ContextCompat.getDrawable(requireContext(), R.drawable.layer_icon_mask) as LayerDrawable
-        layerDrawable.setDrawableByLayerId(R.id.icon_frame, BitmapDrawable(resources, bitmap))
-        val maskDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.shape_icon_mask)
-        layerDrawable.setDrawableByLayerId(R.id.icon_mask, maskDrawable)
+        layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmapDrawable)
         return layerDrawable
     }
 
@@ -221,6 +210,14 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         requireContext().unregisterReceiver(closeReceiver)
         unbindService()
         super.onDestroy()
+    }
+
+    companion object {
+        // 888M 931135488L
+        private const val MODE_ALL_BYTES = (2 shl 19) * 888L
+
+        // 88.8M 93113549L
+        private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
     }
 
 }

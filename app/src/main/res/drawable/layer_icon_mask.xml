@@ -6,18 +6,28 @@
             <solid android:color="@color/maskBgColor" />
         </shape>
     </item>
+
     <item
         android:id="@+id/icon_frame"
         android:bottom="@dimen/net_speed_icon_padding"
-        android:drawable="@android:color/transparent"
+        android:drawable="@android:color/darker_gray"
         android:left="@dimen/net_speed_icon_padding"
         android:right="@dimen/net_speed_icon_padding"
         android:top="@dimen/net_speed_icon_padding" />
+
     <item
         android:id="@+id/icon_mask"
         android:bottom="@dimen/net_speed_icon_padding"
-        android:drawable="@android:color/transparent"
         android:left="@dimen/net_speed_icon_padding"
         android:right="@dimen/net_speed_icon_padding"
-        android:top="@dimen/net_speed_icon_padding" />
+        android:top="@dimen/net_speed_icon_padding">
+        <shape android:shape="rectangle">
+            <corners android:radius="2dp" />
+            <stroke
+                android:width="1dp"
+                android:color="@android:color/holo_red_light"
+                android:dashWidth="2dp"
+                android:dashGap="2dp" />
+        </shape>
+    </item>
 </layer-list>

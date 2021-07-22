@@ -15,6 +15,7 @@
     <string name="label_net_speed_auto_start">开机自启</string>
     <string name="label_net_speed_icon_zoom">图标缩放</string>
     <string name="label_net_speed_notify_quick_closeable">通知快捷关闭</string>
+    <string name="label_net_speed_background">图标背景</string>
 
     <string name="summary_net_speed">在状态栏显示当前网速</string>
     <string name="summary_net_speed_locked_hide">锁屏时默认会隐藏通知。如果无效时才需开启当前选项，开启后会使当前应用的进程更容易被杀死</string>
@@ -58,5 +59,18 @@
         <item>0</item>
         <item>1</item>
         <item>2</item>
+    </string-array>
+
+    <string-array name="net_speed_background">
+        <item>无</item>
+        <item>圆形</item>
+        <item>圆角矩形</item>
+        <item>椭圆矩形</item>
+    </string-array>
+    <string-array name="net_speed_background_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 </resources>

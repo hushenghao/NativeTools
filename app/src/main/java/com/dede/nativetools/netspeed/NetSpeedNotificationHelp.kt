@@ -173,35 +173,10 @@ object NetSpeedNotificationHelp {
 
     private fun createIcon(
         configuration: NetSpeedConfiguration,
-        downloadSpeed: Long,
-        uploadSpeed: Long
+        rxSpeed: Long,
+        txSpeed: Long
     ): Icon {
-        val scale = configuration.scale
-        val bitmap = when (configuration.mode) {
-            NetSpeedConfiguration.MODE_ALL -> {
-                val down =
-                    NetUtil.formatBytes(downloadSpeed, 0, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
-                val up =
-                    NetUtil.formatBytes(uploadSpeed, 0, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
-                NetTextIconFactory.createDoubleIcon(up, down, scale)
-            }
-            NetSpeedConfiguration.MODE_UP -> {
-                val upSplit = NetUtil.formatBytes(
-                    uploadSpeed,
-                    NetUtil.FLAG_FULL,
-                    NetUtil.ACCURACY_EQUAL_WIDTH_EXACT
-                )
-                NetTextIconFactory.createSingleIcon(upSplit.first, upSplit.second, scale)
-            }
-            else -> {
-                val downSplit = NetUtil.formatBytes(
-                    downloadSpeed,
-                    NetUtil.FLAG_FULL,
-                    NetUtil.ACCURACY_EQUAL_WIDTH_EXACT
-                )
-                NetTextIconFactory.createSingleIcon(downSplit.first, downSplit.second, scale)
-            }
-        }
+        val bitmap = NetTextIconFactory.createIconBitmap(rxSpeed, txSpeed, configuration)
         return Icon.createWithBitmap(bitmap)
     }
 

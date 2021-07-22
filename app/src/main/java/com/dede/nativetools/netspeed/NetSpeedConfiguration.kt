@@ -21,10 +21,14 @@ data class NetSpeedConfiguration constructor(
     var compatibilityMode: Boolean,
     var mode: String,
     var scale: Float,
-    var quickCloseable: Boolean
+    var quickCloseable: Boolean,
+    var background: String
 ) : Parcelable, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    constructor() : this(DEFAULT_INTERVAL, true, false, MODE_DOWN, 1f, false)
+    constructor() : this(
+        DEFAULT_INTERVAL, true, false,
+        MODE_DOWN, 1f, false, BACKGROUND_NONE
+    )
 
     fun copy(configuration: NetSpeedConfiguration): NetSpeedConfiguration {
         this.interval = configuration.interval
@@ -33,6 +37,7 @@ data class NetSpeedConfiguration constructor(
         this.mode = configuration.mode
         this.scale = configuration.scale
         this.quickCloseable = configuration.quickCloseable
+        this.background = configuration.background
         return this
     }
 
@@ -62,6 +67,9 @@ data class NetSpeedConfiguration constructor(
                 this.quickCloseable =
                     preferences.getBoolean(key, defaultConfiguration.quickCloseable)
             }
+            KEY_NET_SPEED_BACKGROUND -> {
+                this.background = preferences.getBackground()
+            }
         }
         onSharedPreferenceChangeListener?.onSharedPreferenceChanged(preferences, key)
     }
@@ -84,6 +92,7 @@ data class NetSpeedConfiguration constructor(
         const val KEY_NET_SPEED_MODE = "net_speed_mode"
         const val KEY_NET_SPEED_SCALE = "net_speed_scale"
         const val KEY_NET_SPEED_QUICK_CLOSEABLE = "net_speed_notify_quick_closeable"
+        const val KEY_NET_SPEED_BACKGROUND = "net_speed_background"
         const val KEY_OPS_DONT_ASK = "ops_dont_ask"
         const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
 
@@ -95,6 +104,11 @@ data class NetSpeedConfiguration constructor(
         const val MODE_DOWN = "0"
         const val MODE_ALL = "1"
         const val MODE_UP = "2"
+
+        const val BACKGROUND_NONE = "0"
+        const val BACKGROUND_CIRCLE = "1"
+        const val BACKGROUND_ROUNDED_CORNERS = "2"
+        const val BACKGROUND_SQUIRCLE = "3"
 
         fun SharedPreferences.getScale(): Float {
             val scaleInt = this.getInt(
@@ -111,6 +125,10 @@ data class NetSpeedConfiguration constructor(
 
         fun SharedPreferences.getMode(): String {
             return this.getStringNotNull(KEY_NET_SPEED_MODE, MODE_DOWN)
+        }
+
+        fun SharedPreferences.getBackground(): String {
+            return this.getStringNotNull(KEY_NET_SPEED_BACKGROUND, BACKGROUND_NONE)
         }
 
         fun initialize(): NetSpeedConfiguration {
@@ -132,13 +150,15 @@ data class NetSpeedConfiguration constructor(
                     KEY_NET_SPEED_QUICK_CLOSEABLE,
                     defaultConfiguration.quickCloseable
                 )
+            val background = defaultSharedPreferences.getBackground()
             return NetSpeedConfiguration(
                 interval,
                 notifyClickable,
                 compatibilityMode,
                 mode,
                 scale,
-                quickCloseable
+                quickCloseable,
+                background
             )
         }
     }

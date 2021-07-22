@@ -51,10 +51,12 @@ class NetTileService : TileService() {
 
         val tile = qsTile
         tile.state = Tile.STATE_ACTIVE
-        val downSplit =
-            NetUtil.formatBytes(rxSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EQUAL_WIDTH_EXACT)
         tile.icon = Icon.createWithBitmap(
-            NetTextIconFactory.createSingleIcon(downSplit.first, downSplit.second)
+            NetTextIconFactory.createIconBitmap(
+                rxSpeed,
+                txSpeed,
+                NetSpeedConfiguration.initialize()
+            )
         )
         tile.label = getString(R.string.tile_net_speed_label, downloadSpeedStr, uploadSpeedStr)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

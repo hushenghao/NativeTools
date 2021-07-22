@@ -29,15 +29,24 @@
         app:title="@string/label_net_speed_mode"
         app:useSimpleSummaryProvider="true" />
 
+    <DropDownPreference
+        android:key="net_speed_background"
+        app:defaultValue="0"
+        app:entries="@array/net_speed_background"
+        app:entryValues="@array/net_speed_background_value"
+        app:iconSpaceReserved="false"
+        app:title="@string/label_net_speed_background"
+        app:useSimpleSummaryProvider="true" />
+
     <com.dede.nativetools.netspeed.PercentSeekBarPreference
         android:defaultValue="100"
         android:key="net_speed_scale"
         android:max="115"
-        app:summary="@string/summary_net_speed_scale"
         android:title="@string/label_net_speed_icon_zoom"
         app:icon="@drawable/shape_icon_mask"
         app:min="80"
-        app:showSeekBarValue="true" />
+        app:showSeekBarValue="true"
+        app:summary="@string/summary_net_speed_scale" />
 
     <SwitchPreference
         android:key="net_speed_auto_start"
