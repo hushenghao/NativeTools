@@ -15,8 +15,7 @@
 
 ## 应用截图
 
-<img height="500" src="https://assets.che300.com/wiki/2021-07-22/16269379709237029.jpeg"/>
-<img height="500" src="https://assets.che300.com/wiki/2021-07-22/16269379625806575.jpeg"/>
+<img height="500" src="https://assets.che300.com/wiki/2021-07-22/16269379709237029.jpeg"/><img height="500" src="https://assets.che300.com/wiki/2021-07-22/16269379625806575.jpeg"/>
 
 ## 应用下载
 
