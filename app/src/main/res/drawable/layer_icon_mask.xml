@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="2dp" />
@@ -10,10 +11,11 @@
     <item
         android:id="@+id/icon_frame"
         android:bottom="@dimen/net_speed_icon_padding"
-        android:drawable="@android:color/darker_gray"
+        android:drawable="@android:color/transparent"
         android:left="@dimen/net_speed_icon_padding"
         android:right="@dimen/net_speed_icon_padding"
-        android:top="@dimen/net_speed_icon_padding" />
+        android:top="@dimen/net_speed_icon_padding"
+        tools:drawable="@android:color/darker_gray" />
 
     <item
         android:id="@+id/icon_mask"

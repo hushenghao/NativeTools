@@ -23,13 +23,15 @@
     <string name="cancel">取消</string>
     <string name="access">去授权</string>
     <string name="dont_ask">不再提示</string>
-    <string name="label_net_speed_icon_zoom">图标缩放</string>
+    <string name="label_net_speed_icon_zoom">图标文字缩放</string>
     <string name="label_net_speed_notify_quick_closeable">通知快捷关闭</string>
     <string name="summary_net_speed_notify_quick_closeable">在网速通知上添加一个关闭按钮</string>
     <string name="alert_title_notification_disable">通知权限未开启</string>
     <string name="alert_msg_notification_disable">通知权限未开启，网速指示器将无法正常显示</string>
     <string name="desc_net_speed_notify">网速指示器需要通过通知来显示</string>
     <string name="summary_net_speed_scale">虚线边框为状态栏图标的最大范围</string>
+    <string name="label_about">关于</string>
+    <string name="chooser_label_browse">选择浏览器打开</string>
 
     <string-array name="net_speed_mode">
         <item>仅下载</item>

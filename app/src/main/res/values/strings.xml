@@ -13,7 +13,7 @@
     <string name="label_net_speed_notify_clickable">通知可被点击</string>
     <string name="label_net_speed_mode">显示模式</string>
     <string name="label_net_speed_auto_start">开机自启</string>
-    <string name="label_net_speed_icon_zoom">图标缩放</string>
+    <string name="label_net_speed_icon_zoom">图标文字缩放</string>
     <string name="label_net_speed_notify_quick_closeable">通知快捷关闭</string>
     <string name="label_net_speed_background">图标背景</string>
 
@@ -32,6 +32,11 @@
     <string name="access">去授权</string>
     <string name="dont_ask">不再提示</string>
     <string name="desc_net_speed_notify">网速指示器需要通过通知来显示</string>
+    <string name="label_about">关于</string>
+    <string name="summary_about_version" translatable="false">v%s (%d)</string>
+    <string name="chooser_label_browse">选择浏览器打开</string>
+
+    <string name="url_github" translatable="false">https://github.com/hushenghao/NativeTools</string>
 
     <string-array name="net_speed_interval">
         <item>500 ms</item>

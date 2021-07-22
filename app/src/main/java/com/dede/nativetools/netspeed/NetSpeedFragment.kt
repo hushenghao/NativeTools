@@ -11,15 +11,14 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
+import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultSharedPreferences
-import com.dede.nativetools.util.checkAppOps
-import com.dede.nativetools.util.dp
-import com.dede.nativetools.util.putBoolean
-import com.dede.nativetools.util.safelyStartActivity
+import com.dede.nativetools.util.*
 
 /**
  * 网速指示器设置页
@@ -133,6 +132,17 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         scaleSeekBarPreference = findPreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)!!
         statusSwitchPreference = findPreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
         setScalePreferenceIcon(false)
+        findPreference<Preference>(KEY_ABOUT)?.let {
+            it.summary = getString(
+                R.string.summary_about_version,
+                BuildConfig.VERSION_NAME,
+                BuildConfig.VERSION_CODE
+            )
+            it.setOnPreferenceClickListener {
+                requireContext().browse(getString(R.string.url_github))
+                return@setOnPreferenceClickListener true
+            }
+        }
     }
 
     private var netSpeedBinder: INetSpeedInterface? = null
@@ -218,6 +228,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
         // 88.8M 93113549L
         private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
+
+        private const val KEY_ABOUT = "about"
     }
 
 }

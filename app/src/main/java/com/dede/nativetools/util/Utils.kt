@@ -5,6 +5,7 @@ import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.text.Spanned
@@ -13,6 +14,7 @@ import android.util.DisplayMetrics
 import android.util.TypedValue
 import androidx.core.text.HtmlCompat
 import com.dede.nativetools.NativeToolsApp
+import com.dede.nativetools.R
 import java.io.File
 import kotlin.math.roundToInt
 
@@ -147,4 +149,12 @@ private fun Context.getCurrentProcessName(): String {
         }
     }
     return currentProcessName
+}
+
+fun Context.browse(url: String) {
+    val web = Intent(Intent.ACTION_VIEW)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        .setData(Uri.parse(url))
+    val chooserIntent = Intent.createChooser(web, getString(R.string.chooser_label_browse))
+    startActivity(chooserIntent)
 }

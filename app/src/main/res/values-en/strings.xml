@@ -21,7 +21,7 @@
     <string name="summary_net_speed">Display the current network speed in the status bar</string>
     <string name="summary_net_speed_locked_hide">The notification is hidden by default when the screen is locked. If it is invalid, you need to turn on the current option, which will make the process of the current application easier to be killed</string>
     <string name="summary_net_speed_notify_clickable">Click notification to open the application settings interface</string>
-    <string name="label_net_speed_icon_zoom">Icon zoom</string>
+    <string name="label_net_speed_icon_zoom">Icon text zoom</string>
 
     <string-array name="net_speed_mode">
         <item>Down</item>
@@ -41,4 +41,6 @@
         <item>Rounded Corners</item>
         <item>Squircle</item>
     </string-array>
+    <string name="label_about">About</string>
+    <string name="chooser_label_browse">Select browser to open</string>
 </resources>
