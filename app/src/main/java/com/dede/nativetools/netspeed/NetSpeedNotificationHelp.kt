@@ -29,6 +29,15 @@ object NetSpeedNotificationHelp {
         return this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
+    fun goSystemNotification(context: Context) {
+        // ConfigureNotificationSettings
+        // ShowOnLockScreenNotificationPreferenceController
+        val intent = Intent("android.settings.NOTIFICATION_SETTINGS")
+            //.putExtra(":settings:fragment_args_key", "configure_notifications_lock")
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.safelyStartActivity(intent)
+    }
+
     fun goNotificationSetting(context: Context) {
         val packageName = context.packageName
         val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -167,6 +176,7 @@ object NetSpeedNotificationHelp {
             description = context.getString(R.string.desc_net_speed_notify)
             setShowBadge(false)
             setSound(null, null)
+            lockscreenVisibility = Notification.VISIBILITY_SECRET
         }
         notificationManager.createNotificationChannel(notificationChannel)
     }

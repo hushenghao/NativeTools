@@ -34,6 +34,7 @@
     <string name="desc_net_speed_notify">网速指示器需要通过通知来显示</string>
     <string name="label_about">关于</string>
     <string name="summary_about_version" translatable="false">v%s (%d)</string>
+    <string name="percent_seek_bar_value" formatted="false" translatable="false">%d %%</string>
     <string name="chooser_label_browse">选择浏览器打开</string>
 
     <string name="url_github" translatable="false">https://github.com/hushenghao/NativeTools</string>

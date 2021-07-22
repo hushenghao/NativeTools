@@ -202,7 +202,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun createScalePreferenceIcon(): Drawable {
-        val size = PercentSeekBarPreference.ICON_SIZE.dp// 最大48dp
+        val size = PercentSeekBarPreference.ICON_SIZE.dp
         val speed: Long = if (configuration.mode == NetSpeedConfiguration.MODE_ALL) {
             MODE_ALL_BYTES
         } else {

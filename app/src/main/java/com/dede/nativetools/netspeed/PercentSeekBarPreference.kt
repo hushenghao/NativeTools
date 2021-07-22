@@ -1,5 +1,6 @@
 package com.dede.nativetools.netspeed
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
@@ -19,25 +20,22 @@ class PercentSeekBarPreference @JvmOverloads constructor(
 
     companion object {
         // androidx.preference.preference:1.1.0 res/layout/preference.xml
-        const val ICON_SIZE = 48f
+        // override_preference_widget_seekbar.xml
+        const val ICON_SIZE = 56f
     }
 
     private var seekBarValueTextView: TextView? = null
     private var copySeekBarChangeListener: SeekBar.OnSeekBarChangeListener? = null
 
+    init {
+        // override default layout
+        layoutResource = com.dede.nativetools.R.layout.override_preference_widget_seekbar
+    }
+
     override fun onBindViewHolder(view: PreferenceViewHolder) {
         super.onBindViewHolder(view)
 
-        val imageView = view.findViewById(android.R.id.icon) as ImageView
-        val size = ICON_SIZE.dp
-        imageView.layoutParams = imageView.layoutParams?.apply {
-            height = size
-            width = size
-        }
         val seekBar = view.findViewById(R.id.seekbar) as SeekBar
-        seekBar.layoutParams = seekBar.layoutParams?.apply {
-            height = 30.dp
-        }
         if (copySeekBarChangeListener == null || copySeekBarChangeListener != this) {
             try {
                 val field = SeekBar::class.java.getDeclaredField("mOnSeekBarChangeListener")
@@ -49,12 +47,17 @@ class PercentSeekBarPreference @JvmOverloads constructor(
             }
         }
         seekBarValueTextView = view.findViewById(R.id.seekbar_value) as TextView
-        seekBarValueTextView?.text = "$value %"
+        setValueStr(value)
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
         copySeekBarChangeListener?.onProgressChanged(seekBar, progress, fromUser)
-        seekBarValueTextView?.text = "${progress + min} %"
+        setValueStr(progress + min)
+    }
+
+    private fun setValueStr(value: Int) {
+        seekBarValueTextView?.text =
+            context.getString(com.dede.nativetools.R.string.percent_seek_bar_value, value)
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) {
