@@ -29,12 +29,13 @@
         app:title="@string/label_net_speed_mode"
         app:useSimpleSummaryProvider="true" />
 
-    <com.dede.nativetools.netspeed.PercentSeekBarPreference
+    <SeekBarPreference
         android:defaultValue="100"
         android:key="net_speed_scale"
         android:max="115"
         android:title="@string/label_net_speed_icon_zoom"
         app:icon="@drawable/layer_icon_mask"
+        app:layout="@layout/override_preference_widget_seekbar"
         app:min="80"
         app:showSeekBarValue="true"
         app:summary="@string/summary_net_speed_scale" />
