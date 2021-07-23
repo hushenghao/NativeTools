@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="net_speed_icon_padding">6dp</dimen>
+    <dimen name="percent_preference_icon_size">52dp</dimen>
 </resources>

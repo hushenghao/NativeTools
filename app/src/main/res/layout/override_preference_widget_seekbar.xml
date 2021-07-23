@@ -40,8 +40,8 @@
         android:paddingStart="0dp"
         android:paddingLeft="0dp"
         android:paddingTop="0dp"
-        android:paddingEnd="8dp"
-        android:paddingRight="8dp"
+        android:paddingEnd="10dp"
+        android:paddingRight="10dp"
         android:paddingBottom="0dp">
 
         <!--fix hide class warning-->
@@ -50,8 +50,8 @@
             class="androidx.preference.internal.PreferenceImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:maxHeight="56dp"
-            app:maxWidth="56dp" />
+            app:maxHeight="@dimen/percent_preference_icon_size"
+            app:maxWidth="@dimen/percent_preference_icon_size" />
 
     </LinearLayout>
 
@@ -140,6 +140,16 @@
                 android:paddingRight="0dp"
                 android:scrollbars="none"
                 android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceListItem"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingStart="3dp"
+                android:paddingLeft="3dp"
+                android:text="@string/percent_seek_bar_company"
                 android:textAppearance="?android:attr/textAppearanceListItem"
                 android:textSize="14sp" />
 
