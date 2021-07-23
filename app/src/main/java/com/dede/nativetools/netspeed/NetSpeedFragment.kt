@@ -9,7 +9,6 @@ import android.os.IBinder
 import android.os.RemoteException
 import android.provider.Settings
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -50,20 +49,18 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         if (dontAskOps || context.checkAppOps()) {
             return
         }
-        AlertDialog.Builder(context)
-            .setTitle(R.string.usage_states_title)
-            .setMessage(R.string.usage_stats_msg)
-            .setPositiveButton(R.string.access) { _, _ ->
+        context.alert(R.string.usage_states_title, R.string.usage_stats_msg) {
+            positiveButton(R.string.access) {
                 val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 requireContext().safelyStartActivity(intent)
             }
-            .setNeutralButton(R.string.dont_ask) { _, _ ->
+            neutralButton(R.string.dont_ask) {
                 defaultSharedPreferences
                     .putBoolean(NetSpeedConfiguration.KEY_OPS_DONT_ASK, true)
             }
-            .setNegativeButton(R.string.cancel, null)
-            .show()
+            negativeButton(R.string.cancel)
+        }
     }
 
     private fun checkNotification() {
@@ -74,24 +71,25 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         if (dontAskNotify || areNotificationsEnabled) {
             return
         }
-        AlertDialog.Builder(context)
-            .setTitle(R.string.alert_title_notification_disable)
-            .setMessage(R.string.alert_msg_notification_disable)
-            .setPositiveButton(R.string.access) { _, _ ->
+        context.alert(
+            R.string.alert_title_notification_disable,
+            R.string.alert_msg_notification_disable
+        ) {
+            positiveButton(R.string.access) {
                 NetSpeedNotificationHelp.goNotificationSetting(context)
             }
-            .setNeutralButton(R.string.dont_ask) { _, _ ->
+            neutralButton(R.string.dont_ask) {
                 defaultSharedPreferences
                     .putBoolean(NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK, true)
             }
-            .setNegativeButton(R.string.cancel, null)
-            .show()
+            negativeButton(R.string.cancel, null)
+        }
     }
 
     private val closeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             stopService()
-            statusSwitchPreference?.isChecked = false
+            statusSwitchPreference.isChecked = false
         }
     }
 
@@ -105,8 +103,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private fun startService() {
         val context = requireContext()
         val intent = NetSpeedService.createServiceIntent(context)
-        context.bindService(intent, this, Context.BIND_AUTO_CREATE)
         context.startService(intent)
+        context.bindService(intent, this, Context.BIND_AUTO_CREATE)
     }
 
     private fun stopService() {
@@ -125,14 +123,14 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private lateinit var scaleSeekBarPreference: SeekBarPreference
-    private var statusSwitchPreference: SwitchPreference? = null
+    private lateinit var statusSwitchPreference: SwitchPreference
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.net_speed_preference)
-        scaleSeekBarPreference = findPreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)!!
-        statusSwitchPreference = findPreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
+        scaleSeekBarPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)
+        statusSwitchPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
         setScalePreferenceIcon(false)
-        findPreference<Preference>(KEY_ABOUT)?.let {
+        requirePreference<Preference>(KEY_ABOUT).let {
             it.summary = getString(
                 R.string.summary_about_version,
                 BuildConfig.VERSION_NAME,

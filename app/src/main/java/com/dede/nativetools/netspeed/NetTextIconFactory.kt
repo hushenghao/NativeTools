@@ -199,8 +199,8 @@ object NetTextIconFactory {
                     0f,
                     icon.size.toFloat(),
                     icon.size.toFloat(),
-                    icon.size * 0.2f,
-                    icon.size * 0.2f,
+                    icon.size * 0.15f,
+                    icon.size * 0.15f,
                     paint
                 )
             }
