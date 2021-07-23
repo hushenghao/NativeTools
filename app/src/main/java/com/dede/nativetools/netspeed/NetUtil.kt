@@ -4,6 +4,7 @@ package com.dede.nativetools.netspeed
 import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.net.ConnectivityManager
+import androidx.core.content.getSystemService
 import com.dede.nativetools.util.trimZeroAndDot
 import java.util.*
 
@@ -128,9 +129,7 @@ object NetUtil {
     }
 
     private fun getNetworkUsageRxBytesInternal(context: Context, start: Calendar): Long {
-        val networkStatsManager =
-            context.getSystemService(Context.NETWORK_STATS_SERVICE) as? NetworkStatsManager
-                ?: return 0L
+        val networkStatsManager = context.getSystemService<NetworkStatsManager>() ?: return 0L
         val startTime = start.timeInMillis
         val endTime = System.currentTimeMillis()
         val wifiRxBytes = queryNetworkRxBytes(

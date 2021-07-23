@@ -1,7 +1,6 @@
 package com.dede.nativetools.netspeed
 
 import android.content.*
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
@@ -10,6 +9,7 @@ import android.os.RemoteException
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
@@ -207,10 +207,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             MODE_SINGLE_BYTES
         }
         val bitmap = NetTextIconFactory.createIconBitmap(speed, speed, configuration, size, false)
-        val bitmapDrawable = BitmapDrawable(resources, bitmap)
         val layerDrawable =
             ContextCompat.getDrawable(requireContext(), R.drawable.layer_icon_mask) as LayerDrawable
-        layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmapDrawable)
+        layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmap.toDrawable(resources))
         return layerDrawable
     }
 

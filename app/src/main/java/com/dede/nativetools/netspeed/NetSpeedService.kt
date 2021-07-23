@@ -9,6 +9,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
+import androidx.core.content.getSystemService
+import androidx.core.os.trace
 
 
 class NetSpeedService : Service() {
@@ -34,16 +36,14 @@ class NetSpeedService : Service() {
         }
     }
 
-    private val notificationManager by lazy {
-        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    }
+    private var notificationManager: NotificationManager? = null
 
     private val binder = NetSpeedBinder(this)
 
     private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
         val notify =
             NetSpeedNotificationHelp.createNotification(this, configuration, rxSpeed, txSpeed)
-        notificationManager.notify(NOTIFY_ID, notify)
+        notificationManager?.notify(NOTIFY_ID, notify)
     }
 
     private val configuration = NetSpeedConfiguration.defaultConfiguration
@@ -54,6 +54,7 @@ class NetSpeedService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        notificationManager = getSystemService<NotificationManager>()
         val intentFilter = IntentFilter()
         intentFilter.addAction(Intent.ACTION_SCREEN_ON)// 打开屏幕
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF)// 关闭屏幕
@@ -83,7 +84,7 @@ class NetSpeedService : Service() {
     private fun pause(stopForeground: Boolean = true) {
         netSpeedHelper.pause()
         if (stopForeground) {
-            notificationManager.cancel(NOTIFY_ID)
+            notificationManager?.cancel(NOTIFY_ID)
             stopForeground(true)
         } else {
             startForeground()
@@ -99,7 +100,7 @@ class NetSpeedService : Service() {
             this.netSpeedHelper.rxSpeed,
             this.netSpeedHelper.txSpeed
         )
-        notificationManager.notify(NOTIFY_ID, notification)
+        notificationManager?.notify(NOTIFY_ID, notification)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -118,10 +119,6 @@ class NetSpeedService : Service() {
      * 接收解锁、熄屏、亮屏广播
      */
     private val lockedHideReceiver = object : BroadcastReceiver() {
-
-        private val keyguardManager by lazy(LazyThreadSafetyMode.NONE) {
-            getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-        }
 
         override fun onReceive(context: Context?, intent: Intent?) {
             val action = intent?.action ?: return
@@ -146,7 +143,10 @@ class NetSpeedService : Service() {
             when (action) {
                 Intent.ACTION_SCREEN_ON -> {
                     // 屏幕打开
-                    if (keyguardManager.isDeviceLocked || keyguardManager.isKeyguardLocked) {
+                    val keyguardManager = getSystemService<KeyguardManager>()
+                    if (keyguardManager == null) {
+                        resume()
+                    } else if (keyguardManager.isDeviceLocked || keyguardManager.isKeyguardLocked) {
                         pause()// 已锁定时隐藏，临时关闭前台服务关闭通知（会降低进程优先级）
                     } else {
                         resume()// 未锁定时显示

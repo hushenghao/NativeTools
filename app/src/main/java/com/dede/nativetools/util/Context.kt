@@ -7,9 +7,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Process
+import androidx.core.content.getSystemService
 import com.dede.nativetools.R
 import java.io.File
-
 
 
 fun Context.safelyStartActivity(intent: Intent) {
@@ -20,8 +20,7 @@ fun Context.safelyStartActivity(intent: Intent) {
 }
 
 fun Context.checkAppOps(): Boolean {
-    val appOpsManager =
-        this.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+    val appOpsManager = getSystemService<AppOpsManager>() ?: return true
     val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         appOpsManager.unsafeCheckOpNoThrow(
             AppOpsManager.OPSTR_GET_USAGE_STATS,
@@ -71,7 +70,7 @@ private fun Context.getCurrentProcessName(): String {
     if (processName != null && processName.isNotEmpty) {
         currentProcessName = processName
     } else {
-        val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val activityManager = this.getSystemService<ActivityManager>() ?: return currentProcessName
         val list = activityManager.runningAppProcesses
         if (list != null && list.isNotEmpty()) {
             for (info in list) {
