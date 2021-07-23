@@ -6,7 +6,6 @@ import androidx.preference.PreferenceManager
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.util.getStringNotNull
 import com.dede.nativetools.util.safeInt
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 
@@ -23,7 +22,7 @@ data class NetSpeedConfiguration constructor(
     var scale: Float,
     var quickCloseable: Boolean,
     var background: String
-) : Parcelable, SharedPreferences.OnSharedPreferenceChangeListener {
+) : Parcelable {
 
     constructor() : this(
         DEFAULT_INTERVAL, true, false,
@@ -41,10 +40,10 @@ data class NetSpeedConfiguration constructor(
         return this
     }
 
-    @IgnoredOnParcel
-    var onSharedPreferenceChangeListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
+    // @IgnoredOnParcel
+    // var onSharedPreferenceChangeListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
 
-    override fun onSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
+    fun updateOnSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
         when (key) {
             KEY_NET_SPEED_INTERVAL -> {
                 this.interval = preferences.getInterval()
@@ -71,7 +70,7 @@ data class NetSpeedConfiguration constructor(
                 this.background = preferences.getBackground()
             }
         }
-        onSharedPreferenceChangeListener?.onSharedPreferenceChanged(preferences, key)
+        // onSharedPreferenceChangeListener?.onSharedPreferenceChanged(preferences, key)
     }
 
     companion object {

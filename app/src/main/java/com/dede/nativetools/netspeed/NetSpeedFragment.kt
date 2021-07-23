@@ -26,8 +26,21 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     ServiceConnection {
 
-    private val configuration by lazy(LazyThreadSafetyMode.NONE) {
-        NetSpeedConfiguration.initialize().also { it.onSharedPreferenceChangeListener = this }
+    private val configuration by lazy {
+        NetSpeedConfiguration.initialize()
+           // .also { it.onSharedPreferenceChangeListener = this }
+    }
+
+    private var netSpeedBinder: INetSpeedInterface? = null
+
+    private lateinit var scaleSeekBarPreference: SeekBarPreference
+    private lateinit var statusSwitchPreference: SwitchPreference
+
+    private val closeReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            stopService()
+            statusSwitchPreference.isChecked = false
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +53,104 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
         val intentFilter = IntentFilter(NetSpeedService.ACTION_CLOSE)
         requireContext().registerReceiver(closeReceiver, intentFilter)
+    }
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        addPreferencesFromResource(R.xml.net_speed_preference)
+        scaleSeekBarPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)
+        statusSwitchPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
+        setScalePreferenceIcon()
+        requirePreference<Preference>(KEY_ABOUT).let {
+            it.summary = getString(
+                R.string.summary_about_version,
+                BuildConfig.VERSION_NAME,
+                BuildConfig.VERSION_CODE
+            )
+            it.setOnPreferenceClickListener {
+                requireContext().browse(getString(R.string.url_github))
+                return@setOnPreferenceClickListener true
+            }
+        }
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) {
+        netSpeedBinder = null
+    }
+
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        netSpeedBinder = INetSpeedInterface.Stub.asInterface(service)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // defaultSharedPreferences.registerOnSharedPreferenceChangeListener(configuration)
+        // Crash!
+        // SharedPreferencesImpl#mListener is a WeakHashMap.
+        // data class NetSpeedConfiguration override hashCode method, unregisterOnSharedPreferenceChangeListener may fail.
+        // Reference chain: SharedPreferencesImpl#mListener -weak-> configuration --> fragment, fragment is leaked.
+        // if Activity recreated, edit shared preferences,
+        // Crash when methods such as getContext are called in the onSharedPreferenceChanged method.
+        defaultSharedPreferences.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // defaultSharedPreferences.unregisterOnSharedPreferenceChangeListener(configuration)
+        defaultSharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+        configuration.updateOnSharedPreferenceChanged(sharedPreferences, key)
+        when (key) {
+            NetSpeedConfiguration.KEY_NET_SPEED_STATUS -> {
+                val status = sharedPreferences.getBoolean(key, false)
+                if (status) startService() else stopService()
+            }
+            NetSpeedConfiguration.KEY_NET_SPEED_INTERVAL,
+            NetSpeedConfiguration.KEY_NET_SPEED_COMPATIBILITY_MODE,
+            NetSpeedConfiguration.KEY_NET_SPEED_QUICK_CLOSEABLE,
+            NetSpeedConfiguration.KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
+                updateConfiguration()
+            }
+            NetSpeedConfiguration.KEY_NET_SPEED_MODE,
+            NetSpeedConfiguration.KEY_NET_SPEED_SCALE,
+            NetSpeedConfiguration.KEY_NET_SPEED_BACKGROUND -> {
+                updateConfiguration()
+                setScalePreferenceIcon()
+            }
+        }
+    }
+
+    private fun updateConfiguration() {
+        try {
+            netSpeedBinder?.updateConfiguration(configuration)
+        } catch (e: RemoteException) {
+            Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setScalePreferenceIcon() {
+        scaleSeekBarPreference.icon = createScalePreferenceIcon()
+    }
+
+    private fun createScalePreferenceIcon(): Drawable {
+        val size = resources.getDimensionPixelSize(R.dimen.percent_preference_icon_size)
+        val speed: Long = if (configuration.mode == NetSpeedConfiguration.MODE_ALL) {
+            MODE_ALL_BYTES
+        } else {
+            MODE_SINGLE_BYTES
+        }
+        val bitmap = NetTextIconFactory.createIconBitmap(speed, speed, configuration, size, false)
+        val layerDrawable =
+            ContextCompat.getDrawable(requireContext(), R.drawable.layer_icon_mask) as LayerDrawable
+        layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmap.toDrawable(resources))
+        return layerDrawable
+    }
+
+    override fun onDestroy() {
+        requireContext().unregisterReceiver(closeReceiver)
+        unbindService()
+        super.onDestroy()
     }
 
     private fun checkOps() {
@@ -86,13 +197,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
     }
 
-    private val closeReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            stopService()
-            statusSwitchPreference.isChecked = false
-        }
-    }
-
     private fun launchService() {
         val status =
             defaultSharedPreferences.getBoolean(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, false)
@@ -122,104 +226,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         netSpeedBinder = null
     }
 
-    private lateinit var scaleSeekBarPreference: SeekBarPreference
-    private lateinit var statusSwitchPreference: SwitchPreference
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        addPreferencesFromResource(R.xml.net_speed_preference)
-        scaleSeekBarPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)
-        statusSwitchPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
-        setScalePreferenceIcon(false)
-        requirePreference<Preference>(KEY_ABOUT).let {
-            it.summary = getString(
-                R.string.summary_about_version,
-                BuildConfig.VERSION_NAME,
-                BuildConfig.VERSION_CODE
-            )
-            it.setOnPreferenceClickListener {
-                requireContext().browse(getString(R.string.url_github))
-                return@setOnPreferenceClickListener true
-            }
-        }
-    }
-
-    private var netSpeedBinder: INetSpeedInterface? = null
-
-    override fun onServiceDisconnected(name: ComponentName?) {
-        netSpeedBinder = null
-    }
-
-    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        netSpeedBinder = INetSpeedInterface.Stub.asInterface(service)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        defaultSharedPreferences.registerOnSharedPreferenceChangeListener(configuration)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        defaultSharedPreferences.unregisterOnSharedPreferenceChangeListener(configuration)
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        when (key) {
-            NetSpeedConfiguration.KEY_NET_SPEED_STATUS -> {
-                val status = sharedPreferences.getBoolean(key, false)
-                if (status) startService() else stopService()
-            }
-            NetSpeedConfiguration.KEY_NET_SPEED_INTERVAL,
-            NetSpeedConfiguration.KEY_NET_SPEED_COMPATIBILITY_MODE,
-            NetSpeedConfiguration.KEY_NET_SPEED_QUICK_CLOSEABLE,
-            NetSpeedConfiguration.KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
-                updateConfiguration()
-            }
-            NetSpeedConfiguration.KEY_NET_SPEED_MODE,
-            NetSpeedConfiguration.KEY_NET_SPEED_SCALE,
-            NetSpeedConfiguration.KEY_NET_SPEED_BACKGROUND -> {
-                setScalePreferenceIcon(true)
-            }
-        }
-    }
-
-    private fun updateConfiguration() {
-        try {
-            netSpeedBinder?.updateConfiguration(configuration)
-        } catch (e: RemoteException) {
-            Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun setScalePreferenceIcon(updateConfiguration: Boolean) {
-        if (updateConfiguration) {
-            updateConfiguration()
-        }
-
-        scaleSeekBarPreference.icon = createScalePreferenceIcon()
-    }
-
-    private fun createScalePreferenceIcon(): Drawable {
-        val size = resources.getDimensionPixelSize(R.dimen.percent_preference_icon_size)
-        val speed: Long = if (configuration.mode == NetSpeedConfiguration.MODE_ALL) {
-            MODE_ALL_BYTES
-        } else {
-            MODE_SINGLE_BYTES
-        }
-        val bitmap = NetTextIconFactory.createIconBitmap(speed, speed, configuration, size, false)
-        val layerDrawable =
-            ContextCompat.getDrawable(requireContext(), R.drawable.layer_icon_mask) as LayerDrawable
-        layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmap.toDrawable(resources))
-        return layerDrawable
-    }
-
-    override fun onDestroy() {
-        requireContext().unregisterReceiver(closeReceiver)
-        unbindService()
-        super.onDestroy()
-    }
-
     companion object {
+        private const val TAG = "NetSpeedFragment"
+
         // 888M 931135488L
         private const val MODE_ALL_BYTES = (2 shl 19) * 888L
 
