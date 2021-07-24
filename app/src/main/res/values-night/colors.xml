@@ -2,6 +2,6 @@
 
     <color name="appPrimary">#121212</color>
     <color name="appAccent">#D81B60</color>
-    <color name="maskBgColor">@android:color/black</color>
-
+    <color name="maskBgColor">#353535</color>
+    <color name="github_tint">#F0F6FC</color>
 </resources>

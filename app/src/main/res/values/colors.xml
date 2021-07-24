@@ -5,4 +5,7 @@
     <color name="appAccent">#D81B60</color>
     <color name="maskBgColor">#008577</color>
 
+    <color name="ic_launcher_background">#008577</color>
+    <color name="github_tint">#000</color>
+
 </resources>

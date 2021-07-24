@@ -5,7 +5,7 @@
     <string name="access">Access</string>
     <string name="dont_ask">Don\'t ask</string>
     <string name="notify_net_speed_msg" formatted="false">Down: %s • Up: %s</string>
-    <string name="notify_net_speed_sub" formatted="false">Today: %s • Month: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">Today: &lt;i>%s&lt;/i> • Month: &lt;i>%s&lt;/i></string>
     <string name="switch_on">ON</string>
     <string name="switch_off">OFF</string>
     <string name="action_close">CLOSE</string>
@@ -21,7 +21,7 @@
     <string name="summary_net_speed">Display the current network speed in the status bar</string>
     <string name="summary_net_speed_locked_hide">The notification is hidden by default when the screen is locked. If it is invalid, you need to turn on the current option, which will make the process of the current application easier to be killed</string>
     <string name="summary_net_speed_notify_clickable">Click notification to open the application settings interface</string>
-    <string name="label_net_speed_icon_zoom">Icon zoom</string>
+    <string name="label_net_speed_icon_zoom">Icon text zoom</string>
 
     <string-array name="net_speed_mode">
         <item>Down</item>
@@ -33,4 +33,17 @@
     <string name="alert_title_notification_disable">Notification not enabled</string>
     <string name="alert_msg_notification_disable">If the notification is not enabled, the network speed indicator will not display normally</string>
     <string name="desc_net_speed_notify">The speed indicator needs to be displayed by notification</string>
+    <string name="summary_net_speed_scale">The dotted border is the maximum range of the status bar icon</string>
+    <string name="label_net_speed_background">Icon background</string>
+    <string-array name="net_speed_background">
+        <item>None</item>
+        <item>Circle</item>
+        <item>Square</item>
+        <item>Squircle</item>
+    </string-array>
+    <string name="label_about">About</string>
+    <string name="chooser_label_browse">Select browser to open</string>
+    <string name="label_like_app">Like this app, click to go to the app store to score</string>
+    <string name="chooser_label_market">Select store</string>
+    <string name="label_open_source">Open Source</string>
 </resources>

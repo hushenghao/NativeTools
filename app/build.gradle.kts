@@ -18,8 +18,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdkVersion(23)
         targetSdkVersion(31)
-        versionCode = 17
-        versionName = "2.1.0"
+        versionCode = 18
+        versionName = "2.2.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resConfigs("en", "zh")
@@ -51,6 +51,10 @@ android {
         }
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -66,7 +70,11 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.3.0")
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.preference:preference-ktx:1.1.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
+
     implementation("me.weishu:free_reflection:3.0.1")
+    implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.7")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

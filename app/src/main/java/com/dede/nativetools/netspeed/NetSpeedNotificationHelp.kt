@@ -11,9 +11,11 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
-import com.dede.nativetools.MainActivity
+import androidx.core.content.getSystemService
+import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.util.checkAppOps
+import com.dede.nativetools.util.fromHtml
 import com.dede.nativetools.util.safelyStartActivity
 import com.dede.nativetools.util.splicing
 
@@ -24,8 +26,13 @@ object NetSpeedNotificationHelp {
 
     private const val CHANNEL_ID = "net_speed"
 
-    private fun Context.getNotificationManager(): NotificationManager {
-        return this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    fun goSystemNotification(context: Context) {
+        // ConfigureNotificationSettings
+        // ShowOnLockScreenNotificationPreferenceController
+        val intent = Intent("android.settings.NOTIFICATION_SETTINGS")
+            //.putExtra(":settings:fragment_args_key", "configure_notifications_lock")
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.safelyStartActivity(intent)
     }
 
     fun goNotificationSetting(context: Context) {
@@ -45,7 +52,8 @@ object NetSpeedNotificationHelp {
     fun areNotificationEnabled(context: Context): Boolean {
         val areNotificationsEnabled =
             NotificationManagerCompat.from(context).areNotificationsEnabled()
-        val notificationManager = context.getNotificationManager()
+        val notificationManager =
+            context.getSystemService<NotificationManager>() ?: return areNotificationsEnabled
         var channelDisabled = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
@@ -99,7 +107,7 @@ object NetSpeedNotificationHelp {
                 .setSound(null)
         }
 
-        builder.setSubText(getRxSubText(context))
+        builder.setSubText(getRxSubText(context).fromHtml())
             .setContentText(contentStr)
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_SECRET)
@@ -122,7 +130,7 @@ object NetSpeedNotificationHelp {
             val closeBroadcast = PendingIntent.getBroadcast(
                 context,
                 0,
-                Intent().setAction(NetSpeedService.ACTION_CLOSE).setPackage(context.packageName),
+                Intent(NetSpeedService.ACTION_CLOSE).setPackage(context.packageName),
                 pendingFlag
             )
             val closeAction =
@@ -152,7 +160,7 @@ object NetSpeedNotificationHelp {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
         }
-        val notificationManager = context.getNotificationManager()
+        val notificationManager = context.getSystemService<NotificationManager>() ?: return
         val channel = notificationManager.getNotificationChannel(CHANNEL_ID)
         if (channel != null) {
             return
@@ -166,41 +174,18 @@ object NetSpeedNotificationHelp {
             description = context.getString(R.string.desc_net_speed_notify)
             setShowBadge(false)
             setSound(null, null)
+            lockscreenVisibility = Notification.VISIBILITY_SECRET
         }
         notificationManager.createNotificationChannel(notificationChannel)
     }
 
     private fun createIcon(
         configuration: NetSpeedConfiguration,
-        downloadSpeed: Long,
-        uploadSpeed: Long
+        rxSpeed: Long,
+        txSpeed: Long
     ): Icon {
-        val scale = configuration.scale
-        val bitmap = when (configuration.mode) {
-            NetSpeedConfiguration.MODE_ALL -> {
-                val down =
-                    NetUtil.formatBytes(downloadSpeed, 0, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
-                val up =
-                    NetUtil.formatBytes(uploadSpeed, 0, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
-                NetTextIconFactory.createDoubleIcon(up, down, scale)
-            }
-            NetSpeedConfiguration.MODE_UP -> {
-                val upSplit = NetUtil.formatBytes(
-                    uploadSpeed,
-                    NetUtil.FLAG_FULL,
-                    NetUtil.ACCURACY_EQUAL_WIDTH_EXACT
-                )
-                NetTextIconFactory.createSingleIcon(upSplit.first, upSplit.second, scale)
-            }
-            else -> {
-                val downSplit = NetUtil.formatBytes(
-                    downloadSpeed,
-                    NetUtil.FLAG_FULL,
-                    NetUtil.ACCURACY_EQUAL_WIDTH_EXACT
-                )
-                NetTextIconFactory.createSingleIcon(downSplit.first, downSplit.second, scale)
-            }
-        }
+        val bitmap =
+            NetTextIconFactory.createIconBitmap(rxSpeed, txSpeed, configuration, fromCache = true)
         return Icon.createWithBitmap(bitmap)
     }
 
