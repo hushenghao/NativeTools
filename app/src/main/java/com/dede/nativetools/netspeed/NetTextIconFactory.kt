@@ -3,6 +3,7 @@ package com.dede.nativetools.netspeed
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import androidx.core.graphics.toXfermode
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.util.splicing
 import kotlin.math.abs
@@ -172,7 +173,7 @@ object NetTextIconFactory {
         return createIconInternal(text1, text2, iconConfig, fromCache)
     }
 
-    private val DST_OUT_XFERMODE = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
+    private val DST_OUT_XFERMODE = PorterDuff.Mode.DST_OUT.toXfermode()
 
     private fun createIconInternal(
         text1: String,
@@ -199,8 +200,8 @@ object NetTextIconFactory {
                     0f,
                     icon.size.toFloat(),
                     icon.size.toFloat(),
-                    icon.size * 0.2f,
-                    icon.size * 0.2f,
+                    icon.size * 0.15f,
+                    icon.size * 0.15f,
                     paint
                 )
             }

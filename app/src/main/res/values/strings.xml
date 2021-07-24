@@ -36,7 +36,12 @@
     <string name="summary_about_version" translatable="false">v%s (%d)</string>
     <string name="chooser_label_browse">选择浏览器打开</string>
 
+    <string name="percent_seek_bar_company" translatable="false">%</string>
     <string name="url_github" translatable="false">https://github.com/hushenghao/NativeTools</string>
+    <string name="github" translatable="false">github</string>
+    <string name="label_like_app">喜欢本应用，点击去应用商店评分</string>
+    <string name="chooser_label_market">选择应用商店</string>
+    <string name="label_open_source">开源相关</string>
 
     <string-array name="net_speed_interval">
         <item>500 ms</item>

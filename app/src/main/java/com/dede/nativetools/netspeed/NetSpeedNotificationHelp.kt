@@ -11,7 +11,8 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
-import com.dede.nativetools.MainActivity
+import androidx.core.content.getSystemService
+import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.util.checkAppOps
 import com.dede.nativetools.util.fromHtml
@@ -25,8 +26,13 @@ object NetSpeedNotificationHelp {
 
     private const val CHANNEL_ID = "net_speed"
 
-    private fun Context.getNotificationManager(): NotificationManager {
-        return this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    fun goSystemNotification(context: Context) {
+        // ConfigureNotificationSettings
+        // ShowOnLockScreenNotificationPreferenceController
+        val intent = Intent("android.settings.NOTIFICATION_SETTINGS")
+            //.putExtra(":settings:fragment_args_key", "configure_notifications_lock")
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.safelyStartActivity(intent)
     }
 
     fun goNotificationSetting(context: Context) {
@@ -46,7 +52,8 @@ object NetSpeedNotificationHelp {
     fun areNotificationEnabled(context: Context): Boolean {
         val areNotificationsEnabled =
             NotificationManagerCompat.from(context).areNotificationsEnabled()
-        val notificationManager = context.getNotificationManager()
+        val notificationManager =
+            context.getSystemService<NotificationManager>() ?: return areNotificationsEnabled
         var channelDisabled = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
@@ -153,7 +160,7 @@ object NetSpeedNotificationHelp {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
         }
-        val notificationManager = context.getNotificationManager()
+        val notificationManager = context.getSystemService<NotificationManager>() ?: return
         val channel = notificationManager.getNotificationChannel(CHANNEL_ID)
         if (channel != null) {
             return
@@ -167,6 +174,7 @@ object NetSpeedNotificationHelp {
             description = context.getString(R.string.desc_net_speed_notify)
             setShowBadge(false)
             setSound(null, null)
+            lockscreenVisibility = Notification.VISIBILITY_SECRET
         }
         notificationManager.createNotificationChannel(notificationChannel)
     }
