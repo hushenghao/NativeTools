@@ -7,6 +7,11 @@
         <item name="colorPrimary">@color/appPrimary</item>
         <item name="colorPrimaryDark">@color/appPrimary</item>
         <item name="colorAccent">@color/appAccent</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!-- Panel attributes -->
+
     </style>
 
 </resources>

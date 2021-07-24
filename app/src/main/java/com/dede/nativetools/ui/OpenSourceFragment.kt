@@ -11,7 +11,6 @@ import com.dede.nativetools.databinding.FragmentOpenSourceBinding
 import com.dede.nativetools.databinding.ItemOpenSourceBinding
 import com.dede.nativetools.util.browse
 import com.dede.nativetools.util.isEmpty
-import com.dede.nativetools.util.setDisplayHomeAsUpEnabled
 import org.json.JSONArray
 
 /**
@@ -23,10 +22,6 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().also {
-            it.setTitle(R.string.label_open_source)
-            it.setDisplayHomeAsUpEnabled(true)
-        }
         val arrayList = loadOpenSource()
         binding.recyclerView.adapter = object : RecyclerView.Adapter<VH>() {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {

@@ -70,6 +70,9 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.3.0")
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.preference:preference-ktx:1.1.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
+
     implementation("me.weishu:free_reflection:3.0.1")
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.7")
 

@@ -3,15 +3,14 @@ package com.dede.nativetools.ui
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.Keep
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
 import com.dede.nativetools.util.browse
 import com.dede.nativetools.util.market
-import com.dede.nativetools.util.setDisplayHomeAsUpEnabled
 
 /**
  * 关于项目
@@ -23,10 +22,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().also {
-            it.setTitle(R.string.label_about)
-            it.setDisplayHomeAsUpEnabled(true)
-        }
         binding.tvVersion.text = getString(
             R.string.summary_about_version,
             BuildConfig.VERSION_NAME,
@@ -39,12 +34,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             requireContext().market(requireContext().packageName)
         }
         binding.tvOpenSource.setOnClickListener {
-            val fragmentManager = requireActivity().supportFragmentManager
-            val fragment = OpenSourceFragment()
-            fragmentManager.beginTransaction()
-                .replace(R.id.container, fragment)
-                .addToBackStack(null)
-                .commit()
+            findNavController().navigate(R.id.action_aboutFragment_to_openSourceFragment)
         }
     }
 

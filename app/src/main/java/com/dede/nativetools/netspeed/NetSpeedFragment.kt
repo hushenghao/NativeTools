@@ -7,10 +7,8 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
 import android.provider.Settings
-import android.view.View
 import android.widget.Toast
 import androidx.annotation.Keep
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.preference.Preference
@@ -69,14 +67,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             BuildConfig.VERSION_NAME,
             BuildConfig.VERSION_CODE
         )
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requireActivity().let {
-            it.setTitle(R.string.label_net_speed)
-            it.setDisplayHomeAsUpEnabled(false)
-        }
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
@@ -241,7 +231,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         // 88.8M 93113549L
         private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
 
-        private const val KEY_ABOUT = "about"
+        const val KEY_ABOUT = "about"
     }
 
 }
