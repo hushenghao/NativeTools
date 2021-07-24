@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
 import android.provider.Settings
+import android.view.View
 import android.widget.Toast
+import androidx.annotation.Keep
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.preference.Preference
@@ -22,6 +25,7 @@ import com.dede.nativetools.util.*
 /**
  * 网速指示器设置页
  */
+@Keep
 class NetSpeedFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     ServiceConnection {
@@ -65,6 +69,14 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             BuildConfig.VERSION_NAME,
             BuildConfig.VERSION_CODE
         )
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().let {
+            it.setTitle(R.string.label_net_speed)
+            it.setDisplayHomeAsUpEnabled(false)
+        }
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {

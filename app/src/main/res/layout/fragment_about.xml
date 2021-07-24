@@ -14,13 +14,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/tv_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:text="@string/app_name"
         android:textAppearance="?attr/textAppearanceSubtitle1"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -42,7 +42,8 @@
         android:id="@+id/tv_like_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:paddingVertical="10dp"
         android:text="@string/label_like_app"
         android:textAppearance="?attr/textAppearanceCaption"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -57,11 +58,22 @@
         android:contentDescription="@string/github"
         android:padding="5dp"
         android:src="@drawable/ic_github_logo"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_open_source"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_version"
-        app:layout_constraintVertical_bias="0.9"
         app:tint="@color/github_tint" />
+
+    <TextView
+        android:id="@+id/tv_open_source"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:paddingVertical="8dp"
+        android:text="@string/label_open_source"
+        android:textAppearance="?attr/textAppearanceCaption"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

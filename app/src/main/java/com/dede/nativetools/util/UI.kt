@@ -1,11 +1,13 @@
 package com.dede.nativetools.util
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.dede.nativetools.NativeToolsApp
@@ -74,4 +76,12 @@ fun Context.alert(
         .setMessage(messageId)
     init?.invoke(AlertBuilder(builder))
     builder.show()
+}
+
+fun Activity.setDisplayHomeAsUpEnabled(enable: Boolean) {
+    if (this is AppCompatActivity && this.supportActionBar != null) {
+        this.supportActionBar?.setDisplayHomeAsUpEnabled(enable)
+    } else {
+        this.actionBar?.setDisplayHomeAsUpEnabled(enable)
+    }
 }

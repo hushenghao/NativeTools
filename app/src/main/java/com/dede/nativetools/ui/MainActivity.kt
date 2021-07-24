@@ -12,4 +12,9 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        return supportFragmentManager.popBackStackImmediate() &&
+                super.onSupportNavigateUp()
+    }
+
 }
