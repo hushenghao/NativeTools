@@ -91,3 +91,11 @@ fun Context.browse(url: String) {
     val chooserIntent = Intent.createChooser(web, getString(R.string.chooser_label_browse))
     startActivity(chooserIntent)
 }
+
+fun Context.market(packageName: String) {
+    val market = Intent(Intent.ACTION_VIEW)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        .setData(Uri.parse("market://details?id=$packageName"))
+    val chooserIntent = Intent.createChooser(market, getString(R.string.chooser_label_market))
+    startActivity(chooserIntent)
+}

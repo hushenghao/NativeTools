@@ -43,4 +43,6 @@
     </string-array>
     <string name="label_about">About</string>
     <string name="chooser_label_browse">Select browser to open</string>
+    <string name="label_like_app">Like this app, click to go to the app store to score</string>
+    <string name="chooser_label_market">Select store</string>
 </resources>

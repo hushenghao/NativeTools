@@ -51,6 +51,10 @@ android {
         }
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -67,6 +71,7 @@ dependencies {
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("me.weishu:free_reflection:3.0.1")
+    implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.7")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

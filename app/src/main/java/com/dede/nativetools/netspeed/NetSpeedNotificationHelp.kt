@@ -12,7 +12,7 @@ import android.os.Build
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
-import com.dede.nativetools.MainActivity
+import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.util.checkAppOps
 import com.dede.nativetools.util.fromHtml

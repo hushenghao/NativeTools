@@ -28,7 +28,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private val configuration by lazy {
         NetSpeedConfiguration.initialize()
-           // .also { it.onSharedPreferenceChangeListener = this }
+        // .also { it.onSharedPreferenceChangeListener = this }
     }
 
     private var netSpeedBinder: INetSpeedInterface? = null
@@ -60,17 +60,11 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         scaleSeekBarPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)
         statusSwitchPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
         setScalePreferenceIcon()
-        requirePreference<Preference>(KEY_ABOUT).let {
-            it.summary = getString(
-                R.string.summary_about_version,
-                BuildConfig.VERSION_NAME,
-                BuildConfig.VERSION_CODE
-            )
-            it.setOnPreferenceClickListener {
-                requireContext().browse(getString(R.string.url_github))
-                return@setOnPreferenceClickListener true
-            }
-        }
+        requirePreference<Preference>(KEY_ABOUT).summary = getString(
+            R.string.summary_about_version,
+            BuildConfig.VERSION_NAME,
+            BuildConfig.VERSION_CODE
+        )
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {

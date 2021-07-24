@@ -6,7 +6,7 @@ import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
-import com.dede.nativetools.MainActivity
+import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultSharedPreferences
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.getInterval
