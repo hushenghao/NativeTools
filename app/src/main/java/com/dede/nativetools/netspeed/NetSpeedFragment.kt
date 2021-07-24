@@ -11,10 +11,8 @@ import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SeekBarPreference
-import androidx.preference.SwitchPreference
+import androidx.navigation.fragment.findNavController
+import androidx.preference.*
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultSharedPreferences
@@ -62,11 +60,18 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         scaleSeekBarPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)
         statusSwitchPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
         setScalePreferenceIcon()
-        requirePreference<Preference>(KEY_ABOUT).summary = getString(
-            R.string.summary_about_version,
-            BuildConfig.VERSION_NAME,
-            BuildConfig.VERSION_CODE
-        )
+        requirePreference<Preference>(KEY_ABOUT).also {
+            it.summary = getString(
+                R.string.summary_about_version,
+                BuildConfig.VERSION_NAME,
+                BuildConfig.VERSION_CODE
+            )
+
+            it.setOnPreferenceClickListener {
+                findNavController().navigate(R.id.action_netSpeed_to_about)
+                return@setOnPreferenceClickListener true
+            }
+        }
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
@@ -231,7 +236,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         // 88.8M 93113549L
         private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
 
-        const val KEY_ABOUT = "about"
+        private const val KEY_ABOUT = "about"
     }
 
 }

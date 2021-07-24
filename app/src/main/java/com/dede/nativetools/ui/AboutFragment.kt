@@ -34,7 +34,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             requireContext().market(requireContext().packageName)
         }
         binding.tvOpenSource.setOnClickListener {
-            findNavController().navigate(R.id.action_aboutFragment_to_openSourceFragment)
+            findNavController().navigate(R.id.action_about_to_openSource)
         }
     }
 
