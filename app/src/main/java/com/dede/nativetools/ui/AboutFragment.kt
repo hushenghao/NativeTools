@@ -2,7 +2,6 @@ package com.dede.nativetools.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -15,7 +14,6 @@ import com.dede.nativetools.util.market
 /**
  * 关于项目
  */
-@Keep
 class AboutFragment : Fragment(R.layout.fragment_about) {
 
     private val binding: FragmentAboutBinding by viewBinding(FragmentAboutBinding::bind)
