@@ -99,3 +99,12 @@ fun Context.market(packageName: String) {
     val chooserIntent = Intent.createChooser(market, getString(R.string.chooser_label_market))
     startActivity(chooserIntent)
 }
+
+fun Context.share(textId: Int) {
+    val intent = Intent(Intent.ACTION_SEND)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        .setType("text/plain")
+        .putExtra(Intent.EXTRA_TEXT, getString(textId))
+    val chooserIntent = Intent.createChooser(intent, getString(R.string.action_share))
+    startActivity(chooserIntent)
+}

@@ -1,6 +1,10 @@
 package com.dede.nativetools.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -10,6 +14,7 @@ import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
 import com.dede.nativetools.util.browse
 import com.dede.nativetools.util.market
+import com.dede.nativetools.util.share
 
 /**
  * 关于项目
@@ -17,6 +22,11 @@ import com.dede.nativetools.util.market
 class AboutFragment : Fragment(R.layout.fragment_about) {
 
     private val binding: FragmentAboutBinding by viewBinding(FragmentAboutBinding::bind)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,6 +44,20 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.tvOpenSource.setOnClickListener {
             findNavController().navigate(R.id.action_about_to_openSource)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_share -> {
+                requireActivity().share(R.string.share_text)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_about, menu)
     }
 
 }
