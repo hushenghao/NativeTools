@@ -8,7 +8,6 @@ import android.os.IBinder
 import android.os.RemoteException
 import android.provider.Settings
 import android.widget.Toast
-import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
@@ -21,7 +20,6 @@ import com.dede.nativetools.util.*
 /**
  * 网速指示器设置页
  */
-@Keep
 class NetSpeedFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     ServiceConnection {
