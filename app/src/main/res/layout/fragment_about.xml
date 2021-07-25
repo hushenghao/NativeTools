@@ -8,17 +8,74 @@
         android:id="@+id/iv_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
         android:contentDescription="@string/app_name"
         android:elevation="1dp"
-        android:focusable="true"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/ic_launcher_round"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.2" />
+
+    <ImageView
+        android:id="@+id/iv_logo_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.8"
+        android:contentDescription="@null"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:src="@mipmap/ic_launcher_round"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/iv_logo"
+        app:layout_constraintLeft_toLeftOf="@id/iv_logo"
+        app:layout_constraintRight_toRightOf="@id/iv_logo"
+        app:layout_constraintTop_toTopOf="@id/iv_logo" />
+
+    <ImageView
+        android:id="@+id/iv_logo_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.6"
+        android:contentDescription="@null"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:src="@mipmap/ic_launcher_round"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/iv_logo"
+        app:layout_constraintLeft_toLeftOf="@id/iv_logo"
+        app:layout_constraintRight_toRightOf="@id/iv_logo"
+        app:layout_constraintTop_toTopOf="@id/iv_logo" />
+
+    <ImageView
+        android:id="@+id/iv_logo_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.4"
+        android:contentDescription="@null"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:src="@mipmap/ic_launcher_round"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/iv_logo"
+        app:layout_constraintLeft_toLeftOf="@id/iv_logo"
+        app:layout_constraintRight_toRightOf="@id/iv_logo"
+        app:layout_constraintTop_toTopOf="@id/iv_logo" />
+
+    <ImageView
+        android:id="@+id/iv_logo_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.2"
+        android:contentDescription="@null"
+        android:scaleX="0.6"
+        android:scaleY="0.6"
+        android:src="@mipmap/ic_launcher_round"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/iv_logo"
+        app:layout_constraintLeft_toLeftOf="@id/iv_logo"
+        app:layout_constraintRight_toRightOf="@id/iv_logo"
+        app:layout_constraintTop_toTopOf="@id/iv_logo" />
 
     <TextView
         android:id="@+id/tv_app_name"
