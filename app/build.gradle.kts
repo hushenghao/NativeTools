@@ -40,6 +40,10 @@ android {
     }
 
     buildTypes {
+        val config = signingConfigs.findByName("release") ?: signingConfigs.findByName("debug")
+        getByName("debug") {
+            signingConfig = config
+        }
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -47,7 +51,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.findByName("release")
+            signingConfig = config
         }
     }
 

@@ -16,7 +16,7 @@ class FeedbackSeekBar @JvmOverloads constructor(context: Context, attrs: Attribu
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
             onSeekBarChangeListener?.onProgressChanged(seekBar, progress, fromUser)
             if (fromUser) {
-                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
             }
         }
 

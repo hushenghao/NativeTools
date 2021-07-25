@@ -80,7 +80,7 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
                 this.x += dx
                 this.y += dy
                 performHapticFeedback(
-                    HapticFeedbackConstants.LONG_PRESS,
+                    HapticFeedbackConstants.CLOCK_TICK,
                     HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
                 )
                 return true
