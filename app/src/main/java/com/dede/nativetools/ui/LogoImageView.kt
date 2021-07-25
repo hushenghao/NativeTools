@@ -1,7 +1,6 @@
 package com.dede.nativetools.ui
 
 import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
@@ -13,12 +12,14 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.annotation.Keep
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
 import androidx.core.view.ViewCompat
 import com.dede.nativetools.R
 import kotlin.math.abs
 import kotlin.math.max
 
-class LogoImageView(context: Context, attrs: AttributeSet) :
+class LogoImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
     AppCompatImageView(context, attrs) {
 
     companion object {
@@ -26,27 +27,34 @@ class LogoImageView(context: Context, attrs: AttributeSet) :
 
         private const val TAG_ID: Int = R.id.iv_logo
         private const val TAG_FOLLOW_ID: Int = R.id.iv_logo_1
-        private const val RESUME_ANIMATOR_DURATION: Long = 500L
-        private const val FOLLOW_ANIMATOR_DURATION: Long = 50L
-        private const val FOLLOW_VIEWS_HIDE_DELAY: Long = 200L
+        private const val RESUME_ANIMATOR_DURATION: Long = 700L
+        private const val FOLLOW_ANIMATOR_DURATION: Long = 80L
+        private const val FOLLOW_ANIMATOR_START_DELAY: Long = FOLLOW_ANIMATOR_DURATION - 10L
     }
 
-    init {
-        isHapticFeedbackEnabled = true
-        isSoundEffectsEnabled = true
-    }
-
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
-        downPoint.set(this.x, this.y)
+    override fun layout(l: Int, t: Int, r: Int, b: Int) {
+        super.layout(l, t, r, b)
+        layoutPoint.set(this.x, this.y)
     }
 
     private val eventPoint = PointF()
     private val downPoint = PointF()
+    private val layoutPoint = PointF()
     private val slop = ViewConfiguration.get(context).scaledTouchSlop
     private var moved = false
 
     var followViews: Array<View>? = null
+    var enableFeedback = true
+        set(value) {
+            field = value
+            isHapticFeedbackEnabled = value
+            isSoundEffectsEnabled = value
+        }
+    private val hasFollowViews: Boolean get() = followViews?.isNotEmpty() ?: false
+
+    private fun filterMove(event: MotionEvent): Boolean {
+        return max(abs(event.rawX - downPoint.x), abs(event.rawY - downPoint.y)) > slop
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -56,6 +64,7 @@ class LogoImageView(context: Context, attrs: AttributeSet) :
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 eventPoint.set(event.x, event.y)
+                downPoint.set(event.rawX, event.rawY)
                 cleanAnimator()
                 playSoundEffect(SoundEffectConstants.CLICK)
                 moved = false
@@ -65,22 +74,21 @@ class LogoImageView(context: Context, attrs: AttributeSet) :
             MotionEvent.ACTION_MOVE -> {
                 val dx = event.x - eventPoint.x
                 val dy = event.y - eventPoint.y
-                if (!moved && max(abs(dx), abs(dy)) > slop) {
+                if (!moved && filterMove(event)) {
                     moved = true
                 }
                 this.x += dx
                 this.y += dy
                 performHapticFeedback(
-                    HapticFeedbackConstants.VIRTUAL_KEY,
+                    HapticFeedbackConstants.LONG_PRESS,
                     HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
                 )
                 return true
             }
-            MotionEvent.ACTION_UP,
-            MotionEvent.ACTION_CANCEL -> {
+            MotionEvent.ACTION_UP -> {
+                startUpAnimator(PointF(this.x, this.y), layoutPoint)
+                playSoundEffect(SoundEffectConstants.CLICK)
                 if (moved) {
-                    startUpAnimator(PointF(this.x, this.y), downPoint)
-                    playSoundEffect(SoundEffectConstants.CLICK)
                     isPressed = false
                     return false
                 }
@@ -94,8 +102,7 @@ class LogoImageView(context: Context, attrs: AttributeSet) :
             return
         }
         val followViews = this.followViews ?: return
-        val c = followViews.size
-        if (c <= 0) return
+        if (!hasFollowViews) return
 
         val items = followViews.map {
             it.visibility = VISIBLE
@@ -106,15 +113,11 @@ class LogoImageView(context: Context, attrs: AttributeSet) :
             playSequentially(items)
             interpolator = LinearInterpolator()
             duration = FOLLOW_ANIMATOR_DURATION
-            startDelay = FOLLOW_ANIMATOR_DURATION
+            startDelay = FOLLOW_ANIMATOR_START_DELAY
             start()
-        }
-        if (oldAnimator != null) {
-            animator.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationStart(animation: Animator) {
-                    oldAnimator.cancel()
-                }
-            })
+            if (oldAnimator != null) {
+                doOnStart { oldAnimator.cancel() }
+            }
         }
         setTag(TAG_FOLLOW_ID, animator)
     }
@@ -158,18 +161,12 @@ class LogoImageView(context: Context, attrs: AttributeSet) :
             start()
         }
         val followViews = this.followViews
-        if (followViews != null) {
-            animator.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationStart(animator: Animator?) {
-                    followViews.forEach { it.visibility = VISIBLE }
-                }
-
-                override fun onAnimationEnd(animator: Animator?) {
-                    postDelayed({
-                        followViews.forEach { it.visibility = INVISIBLE }
-                    }, FOLLOW_VIEWS_HIDE_DELAY)
-                }
-            })
+        if (followViews != null && hasFollowViews) {
+            animator.doOnEnd {
+                postDelayed({
+                    followViews.forEach { it.visibility = INVISIBLE }
+                }, FOLLOW_ANIMATOR_DURATION * followViews.size)
+            }
         }
         setTag(TAG_ID, animator)
     }

@@ -44,6 +44,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             findNavController().navigate(R.id.action_about_to_openSource)
         }
         binding.ivLogo.followViews = arrayOf(binding.ivLogo1, binding.ivLogo2, binding.ivLogo3, binding.ivLogo4)
+        binding.ivGithub.enableFeedback = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
