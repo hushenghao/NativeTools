@@ -136,8 +136,8 @@ object NetTextIconFactory {
                     NetUtil.formatBytes(rxSpeed, 0, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
                 val up =
                     NetUtil.formatBytes(txSpeed, 0, NetUtil.ACCURACY_EQUAL_WIDTH).splicing()
-                text1 = down
-                text2 = up
+                text1 = up
+                text2 = down
             }
             NetSpeedConfiguration.MODE_UP -> {
                 val upSplit = NetUtil.formatBytes(
