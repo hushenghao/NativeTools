@@ -1,6 +1,5 @@
 package com.dede.nativetools.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -44,22 +43,9 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.tvOpenSource.setOnClickListener {
             findNavController().navigate(R.id.action_about_to_openSource)
         }
-        binding.ivLogo.followViews = arrayOf(binding.ivLogo1, binding.ivLogo2, binding.ivLogo3, binding.ivLogo4)
+        binding.ivLogo.followViews =
+            arrayOf(binding.ivLogo1, binding.ivLogo2, binding.ivLogo3, binding.ivLogo4)
         binding.ivGithub.enableFeedback = false
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_share -> {
-                requireActivity().share(R.string.share_text)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_about, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
