@@ -4,11 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_icon"
+    <com.dede.nativetools.ui.LogoImageView
+        android:id="@+id/iv_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         android:contentDescription="@string/app_name"
+        android:elevation="1dp"
+        android:focusable="true"
         android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -25,7 +29,7 @@
         android:textAppearance="?attr/textAppearanceSubtitle1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_icon" />
+        app:layout_constraintTop_toBottomOf="@id/iv_logo" />
 
     <TextView
         android:id="@+id/tv_version"
@@ -43,19 +47,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:paddingVertical="10dp"
+        android:padding="10dp"
         android:text="@string/label_like_app"
         android:textAppearance="?attr/textAppearanceCaption"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_version" />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.dede.nativetools.ui.LogoImageView
         android:id="@+id/iv_github"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/github"
+        android:elevation="1dp"
         android:padding="5dp"
         android:src="@drawable/ic_github_logo"
         app:layout_constraintBottom_toTopOf="@id/tv_open_source"
@@ -69,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:background="?attr/selectableItemBackground"
-        android:paddingVertical="8dp"
+        android:padding="8dp"
         android:text="@string/label_open_source"
         android:textAppearance="?attr/textAppearanceCaption"
         app:layout_constraintBottom_toBottomOf="parent"
