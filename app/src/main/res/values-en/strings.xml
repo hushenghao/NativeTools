@@ -46,4 +46,6 @@
     <string name="label_like_app">Like this app, click to go to the app store to score</string>
     <string name="chooser_label_market">Select store</string>
     <string name="label_open_source">Open Source</string>
+    <string name="action_share">Share</string>
+    <string name="share_text">I found a useful gadget \"Net Monitor\". Go and download it! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
 </resources>
