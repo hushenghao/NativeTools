@@ -26,15 +26,11 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
         private const val TAG = "LogoImageView"
 
         private const val TAG_ID: Int = R.id.iv_logo
-        private const val TAG_FOLLOW_ID: Int = R.id.iv_logo_1
+        private const val TAG_FOLLOW_X_ID: Int = R.id.iv_logo_1
+        private const val TAG_FOLLOW_Y_ID: Int = R.id.iv_logo_2
         private const val RESUME_ANIMATOR_DURATION: Long = 700L
         private const val FOLLOW_ANIMATOR_DURATION: Long = 80L
         private const val FOLLOW_ANIMATOR_START_DELAY: Long = FOLLOW_ANIMATOR_DURATION - 10L
-    }
-
-    override fun layout(l: Int, t: Int, r: Int, b: Int) {
-        super.layout(l, t, r, b)
-        layoutPoint.set(this.x, this.y)
     }
 
     private val eventPoint = PointF()
@@ -51,18 +47,23 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
             isHapticFeedbackEnabled = value
             isSoundEffectsEnabled = value
         }
-    private val hasFollowViews: Boolean get() = followViews?.isNotEmpty() ?: false
+    private val hasFollowView: Boolean get() = followViews?.isNotEmpty() ?: false
 
     private fun filterMove(event: MotionEvent): Boolean {
         return max(abs(event.rawX - downPoint.x), abs(event.rawY - downPoint.y)) > slop
     }
 
+    override fun layout(l: Int, t: Int, r: Int, b: Int) {
+        super.layout(l, t, r, b)
+        layoutPoint.set(this.x, this.y)
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (inAnimator) {
+        if (inUpAnimator) {
             return super.onTouchEvent(event)
         }
-        when (event.action) {
+        when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 eventPoint.set(event.x, event.y)
                 downPoint.set(event.rawX, event.rawY)
@@ -100,18 +101,23 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
         return super.onTouchEvent(event)
     }
 
-    private fun startFollowAnimator(propertyName: String, start: Float, end: Float) {
+    private fun startFollowAnimator(
+        animatorId: Int,
+        propertyName: String,
+        start: Float,
+        end: Float
+    ) {
         if (!ViewCompat.isAttachedToWindow(this)) {
             return
         }
+        if (!hasFollowView) return
         val followViews = this.followViews ?: return
-        if (!hasFollowViews) return
 
         val items = followViews.map {
             it.visibility = VISIBLE
             createAnimator(it, propertyName, start, end)
         }
-        val oldAnimator = getTag(TAG_FOLLOW_ID) as? Animator
+        val oldAnimator = getTag(animatorId) as? Animator
         val animator = AnimatorSet().apply {
             playSequentially(items)
             interpolator = LinearInterpolator()
@@ -122,7 +128,7 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
                 doOnStart { oldAnimator.cancel() }
             }
         }
-        setTag(TAG_FOLLOW_ID, animator)
+        setTag(animatorId, animator)
     }
 
     private fun createAnimator(
@@ -136,22 +142,23 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     private fun cleanAnimator() {
         (getTag(TAG_ID) as? Animator)?.cancel()
-        (getTag(TAG_FOLLOW_ID) as? Animator)?.cancel()
+        (getTag(TAG_FOLLOW_X_ID) as? Animator)?.cancel()
+        (getTag(TAG_FOLLOW_Y_ID) as? Animator)?.cancel()
     }
 
     @Keep
     override fun setX(x: Float) {
-        startFollowAnimator("x", this.x, x)
+        startFollowAnimator(TAG_FOLLOW_X_ID, "x", this.x, x)
         super.setX(x)
     }
 
     @Keep
     override fun setY(y: Float) {
-        startFollowAnimator("y", this.y, y)
+        startFollowAnimator(TAG_FOLLOW_Y_ID, "y", this.y, y)
         super.setY(y)
     }
 
-    private val inAnimator: Boolean get() = (getTag(TAG_ID) as? Animator)?.isRunning ?: false
+    private val inUpAnimator: Boolean get() = (getTag(TAG_ID) as? Animator)?.isRunning ?: false
 
     private fun startUpAnimator(start: PointF, end: PointF) {
         cleanAnimator()
@@ -164,7 +171,7 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
             start()
         }
         val followViews = this.followViews
-        if (followViews != null && hasFollowViews) {
+        if (followViews != null && hasFollowView) {
             animator.doOnEnd {
                 postDelayed({
                     followViews.forEach { it.visibility = INVISIBLE }

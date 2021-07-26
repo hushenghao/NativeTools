@@ -13,7 +13,7 @@ plugins {
 
 android {
     compileSdkVersion(31)
-    //buildToolsVersion = "31.0.0"
+    //buildToolsVersion = "31.0.0"// 31.0.0缺少了dx.jar, 暂时降级
     defaultConfig {
         applicationId = "com.dede.nativetools"
         minSdkVersion(23)
@@ -40,7 +40,7 @@ android {
     }
 
     buildTypes {
-        val config = signingConfigs.findByName("release") ?: signingConfigs.findByName("debug")
+        val config = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
         getByName("debug") {
             signingConfig = config
         }
