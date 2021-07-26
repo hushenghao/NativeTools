@@ -22,6 +22,10 @@ import com.dede.nativetools.util.share
  */
 class AboutFragment : Fragment(R.layout.fragment_about) {
 
+    companion object {
+        private var animatored = false
+    }
+
     private val binding: FragmentAboutBinding by viewBinding(FragmentAboutBinding::bind)
     private var animator: Animator? = null
 
@@ -50,6 +54,10 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             arrayOf(binding.ivLogo1, binding.ivLogo2, binding.ivLogo3, binding.ivLogo4)
         binding.ivGithub.enableFeedback = false
 
+        if (animatored) {
+            return
+        }
+        animatored = true
         val property = object : Property<View, Float>(Float::class.java, "scale") {
             override fun get(view: View): Float {
                 return view.scaleX

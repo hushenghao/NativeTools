@@ -84,3 +84,15 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }
+
+tasks.create("jsonCompress") {
+    doLast {
+        val jsonFile = file("src/main/assets/open_source.json")
+        val jsonElement = com.google.gson.JsonParser.parseString(jsonFile.readText())
+        val gson = com.google.gson.GsonBuilder().create()
+        val jsonStr = gson.toJson(jsonElement)
+        // jsonFile.delete()
+        jsonFile.writeText(jsonStr)
+        println("JSON Compress Completed!")
+    }
+}
