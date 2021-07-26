@@ -39,6 +39,7 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     private val eventPoint = PointF()
     private val downPoint = PointF()
+    private val upPoint = PointF()
     private val layoutPoint = PointF()
     private val slop = ViewConfiguration.get(context).scaledTouchSlop
     private var moved = false
@@ -76,6 +77,8 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
                 val dy = event.y - eventPoint.y
                 if (!moved && filterMove(event)) {
                     moved = true
+                    // fix background
+                    isPressed = false
                 }
                 this.x += dx
                 this.y += dy
@@ -86,10 +89,10 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
                 return true
             }
             MotionEvent.ACTION_UP -> {
-                startUpAnimator(PointF(this.x, this.y), layoutPoint)
+                upPoint.set(this.x, this.y)
+                startUpAnimator(upPoint, layoutPoint)
                 playSoundEffect(SoundEffectConstants.CLICK)
                 if (moved) {
-                    isPressed = false
                     return false
                 }
             }
