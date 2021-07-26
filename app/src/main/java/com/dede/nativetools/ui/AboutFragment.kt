@@ -1,10 +1,12 @@
 package com.dede.nativetools.ui
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.util.Property
+import android.view.*
+import androidx.core.animation.addListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -21,6 +23,7 @@ import com.dede.nativetools.util.share
 class AboutFragment : Fragment(R.layout.fragment_about) {
 
     private val binding: FragmentAboutBinding by viewBinding(FragmentAboutBinding::bind)
+    private var animator: Animator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +49,32 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.ivLogo.followViews =
             arrayOf(binding.ivLogo1, binding.ivLogo2, binding.ivLogo3, binding.ivLogo4)
         binding.ivGithub.enableFeedback = false
+
+        val property = object : Property<View, Float>(Float::class.java, "scale") {
+            override fun get(view: View): Float {
+                return view.scaleX
+            }
+
+            override fun set(view: View, value: Float) {
+                view.scaleX = value
+                view.scaleY = value
+            }
+        }
+        animator = ObjectAnimator.ofFloat(binding.ivLogo, property, 1f, 1.3f, 0.7f)
+            .apply {
+                duration = 200
+                startDelay = 300
+                repeatMode = ValueAnimator.REVERSE
+                repeatCount = 1
+                start()
+                val feedback: (Animator) -> Unit = {
+                    // BZZZTT!!1!
+                    binding.ivLogo.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
+                }
+                addListener(onStart = feedback, onRepeat = feedback, onEnd = {
+                    animator = null
+                })
+            }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -60,6 +89,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_about, menu)
+    }
+
+    override fun onDestroyView() {
+        animator?.cancel()
+        super.onDestroyView()
     }
 
 }
