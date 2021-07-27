@@ -16,17 +16,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.15" />
 
     <ImageView
         android:id="@+id/iv_logo_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:alpha="0.8"
         android:contentDescription="@null"
         android:elevation="1dp"
-        android:scaleX="0.9"
-        android:scaleY="0.9"
         android:src="@mipmap/ic_launcher_round"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/iv_logo"
@@ -38,11 +35,8 @@
         android:id="@+id/iv_logo_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:alpha="0.6"
         android:contentDescription="@null"
         android:elevation="1dp"
-        android:scaleX="0.83"
-        android:scaleY="0.83"
         android:src="@mipmap/ic_launcher_round"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/iv_logo"
@@ -65,12 +59,25 @@
         android:id="@+id/tv_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="@string/summary_about_version"
         android:textAppearance="?attr/textAppearanceBody2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_app_name" />
+
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="?attr/selectableItemBackground"
+        android:padding="4dp"
+        android:text="@string/label_email"
+        android:textAppearance="?attr/textAppearanceBody2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_version" />
 
     <TextView
         android:id="@+id/tv_like_app"
@@ -82,7 +89,7 @@
         android:textAppearance="?attr/textAppearanceCaption"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_version" />
+        app:layout_constraintTop_toBottomOf="@id/tv_email" />
 
     <com.dede.nativetools.ui.LogoImageView
         android:id="@+id/iv_github"

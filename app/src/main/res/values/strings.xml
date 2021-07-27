@@ -45,6 +45,11 @@
     <string name="action_share">分享</string>
 
     <string name="share_text">发现了一个好用的小工具“网速指示器”快去下载吧！https://www.coolapk.com/apk/com.dede.nativetools</string>
+    <string name="action_beta" translatable="false">Beta</string>
+    <string name="email" translatable="false">dede.hu@qq.com</string>
+    <string name="label_email" translatable="false">Email: %s</string>
+    <string name="url_pgyer" translatable="false">https://www.pgyer.com/U9kJ</string>
+    <string name="toast_copyed">已复制</string>
 
     <string-array name="net_speed_interval">
         <item>500 ms</item>
