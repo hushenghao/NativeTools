@@ -107,8 +107,8 @@ object NetSpeedNotificationHelp {
                 .setSound(null)
         }
 
-        builder.setSubText(getRxSubText(context).fromHtml())
-            .setContentText(contentStr)
+        builder.setContentTitle(contentStr)
+            .setContentText(getRxSubText(context).fromHtml())
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_SECRET)
             .setSmallIcon(createIcon(configuration, rxSpeed, txSpeed))
