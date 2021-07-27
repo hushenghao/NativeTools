@@ -7,6 +7,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Process
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
 import com.dede.nativetools.R
 import java.io.File
@@ -84,6 +86,14 @@ private fun Context.getCurrentProcessName(): String {
     return currentProcessName
 }
 
+fun Context.toast(text: String) {
+    Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.toast(@StringRes resId: Int) {
+    Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
+}
+
 fun Context.browse(url: String) {
     val web = Intent(Intent.ACTION_VIEW)
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -100,7 +110,7 @@ fun Context.market(packageName: String) {
     startActivity(chooserIntent)
 }
 
-fun Context.share(textId: Int) {
+fun Context.share(@StringRes textId: Int) {
     val intent = Intent(Intent.ACTION_SEND)
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         .setType("text/plain")

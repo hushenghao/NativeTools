@@ -4,24 +4,23 @@ import android.animation.Animator
 import android.animation.FloatEvaluator
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Bundle
 import android.util.Property
 import android.view.*
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.addListener
+import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
-import com.dede.nativetools.util.browse
-import com.dede.nativetools.util.dpf
-import com.dede.nativetools.util.market
-import com.dede.nativetools.util.share
+import com.dede.nativetools.util.*
 
 /**
  * 关于项目
@@ -55,6 +54,13 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.tvLikeApp.setOnClickListener {
             requireContext().market(requireContext().packageName)
         }
+        val email = getString(R.string.email)
+        binding.tvEmail.text = getString(R.string.label_email, email)
+        binding.tvEmail.setOnClickListener {
+            val clipboardManager = requireContext().getSystemService<ClipboardManager>()
+            clipboardManager?.setPrimaryClip(ClipData.newPlainText("text", email))
+            requireContext().toast(R.string.toast_copyed)
+        }
         binding.tvOpenSource.setOnClickListener {
             findNavController().navigate(R.id.action_about_to_openSource)
         }
@@ -78,7 +84,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         val count = followViews.size
         if (count >= MAX_FOLLOW_COUNT) {
             if (!toasted) {
-                Toast.makeText(requireContext(), "BZZZTT!!1!💥", Toast.LENGTH_SHORT).show()
+                requireContext().toast("BZZZTT!!1!💥")
                 playAnimator()
                 toasted = true
             }
@@ -145,6 +151,10 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         return when (item.itemId) {
             R.id.action_share -> {
                 requireActivity().share(R.string.share_text)
+                true
+            }
+            R.id.action_get_beta -> {
+                requireActivity().browse(getString(R.string.url_pgyer))
                 true
             }
             else -> super.onOptionsItemSelected(item)
