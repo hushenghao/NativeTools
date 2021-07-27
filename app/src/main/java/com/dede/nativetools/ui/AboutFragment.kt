@@ -1,11 +1,16 @@
 package com.dede.nativetools.ui
 
 import android.animation.Animator
+import android.animation.FloatEvaluator
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.util.Property
 import android.view.*
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.addListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -14,6 +19,7 @@ import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
 import com.dede.nativetools.util.browse
+import com.dede.nativetools.util.dpf
 import com.dede.nativetools.util.market
 import com.dede.nativetools.util.share
 
@@ -24,10 +30,12 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     companion object {
         private var animatored = false
+        private const val MAX_FOLLOW_COUNT = 8
     }
 
     private val binding: FragmentAboutBinding by viewBinding(FragmentAboutBinding::bind)
     private var animator: Animator? = null
+    private var toasted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,13 +58,63 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.tvOpenSource.setOnClickListener {
             findNavController().navigate(R.id.action_about_to_openSource)
         }
-        binding.ivLogo.followViews =
-            arrayOf(binding.ivLogo1, binding.ivLogo2, binding.ivLogo3, binding.ivLogo4)
         binding.ivGithub.enableFeedback = false
 
+        val followViews = arrayListOf(binding.ivLogo1, binding.ivLogo2)
+        binding.ivLogo.setOnClickListener {
+            appendFollowView(followViews)
+        }
+        setFollowView(followViews)
         if (animatored) {
             return
         }
+        playAnimator()
+    }
+
+    private fun appendFollowView(followViews: ArrayList<ImageView>) {
+        if (animator?.isRunning == true) {
+            return
+        }
+        val count = followViews.size
+        if (count >= MAX_FOLLOW_COUNT) {
+            if (!toasted) {
+                Toast.makeText(requireContext(), "BZZZTT!!1!💥", Toast.LENGTH_SHORT).show()
+                playAnimator()
+                toasted = true
+            }
+            return
+        }
+        val insert = AppCompatImageView(requireContext()).apply {
+            elevation = 1.dpf
+            visibility = View.INVISIBLE
+            setImageResource(R.mipmap.ic_launcher_round)
+        }
+        val last = followViews[count - 1]
+        binding.container.addView(
+            insert,
+            binding.container.indexOfChild(last) + 1,
+            ConstraintLayout.LayoutParams(last.layoutParams as ConstraintLayout.LayoutParams)
+        )
+        followViews.add(insert)
+        setFollowView(followViews)
+        playAnimator()
+    }
+
+    private fun setFollowView(followViews: List<ImageView>) {
+        val floatEvaluator = FloatEvaluator()
+        val count = followViews.size
+        for (i in 0 until count) {
+            val evaluate = floatEvaluator.evaluate((i + 1f) / count, 1f, 0.6f)
+            followViews[i].apply {
+                scaleX = evaluate
+                scaleY = evaluate
+                alpha = evaluate
+            }
+        }
+        binding.ivLogo.followViews = followViews.toTypedArray()
+    }
+
+    private fun playAnimator() {
         animatored = true
         val property = object : Property<View, Float>(Float::class.java, "scale") {
             override fun get(view: View): Float {
@@ -79,9 +137,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                     // BZZZTT!!1!
                     binding.ivLogo.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
                 }
-                addListener(onStart = feedback, onRepeat = feedback, onEnd = {
-                    animator = null
-                })
+                addListener(onStart = feedback, onRepeat = feedback)
             }
     }
 
