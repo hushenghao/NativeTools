@@ -3,17 +3,17 @@ package com.dede.nativetools.ui
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PointF
 import android.util.AttributeSet
+import android.util.Property
 import android.view.*
 import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
-import androidx.annotation.Keep
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.animation.doOnEnd
-import androidx.core.animation.doOnStart
 import androidx.core.view.ViewCompat
 import com.dede.nativetools.R
 import kotlin.math.abs
@@ -26,11 +26,11 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
         private const val TAG = "LogoImageView"
 
         private const val TAG_ID: Int = R.id.iv_logo
-        private const val TAG_FOLLOW_X_ID: Int = R.id.iv_logo_1
-        private const val TAG_FOLLOW_Y_ID: Int = R.id.iv_logo_2
         private const val RESUME_ANIMATOR_DURATION: Long = 600L
         private const val FOLLOW_ANIMATOR_DURATION: Long = 60L
         private const val FOLLOW_ANIMATOR_START_DELAY: Long = FOLLOW_ANIMATOR_DURATION - 10L
+
+        private val LINEAR_INTERPOLATOR = LinearInterpolator()
     }
 
     private val eventPoint = PointF()
@@ -39,6 +39,26 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
     private val layoutPoint = PointF()
     private val slop = ViewConfiguration.get(context).scaledTouchSlop
     private var moved = false
+
+    private val xProperty = object : Property<View, Float>(Float::class.java, "x") {
+        override fun set(view: View, value: Float) {
+            view.x = value
+        }
+
+        override fun get(view: View): Float {
+            return view.x
+        }
+    }
+
+    private val yProperty = object : Property<View, Float>(Float::class.java, "y") {
+        override fun set(view: View, value: Float) {
+            view.y = value
+        }
+
+        override fun get(view: View): Float {
+            return view.y
+        }
+    }
 
     var followViews: Array<View>? = null
     var enableFeedback = true
@@ -89,7 +109,7 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
                 )
                 return true
             }
-            MotionEvent.ACTION_UP -> {
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 upPoint.set(this.x, this.y)
                 startUpAnimator(upPoint, layoutPoint)
                 playSoundEffect(SoundEffectConstants.CLICK)
@@ -101,12 +121,7 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
         return super.onTouchEvent(event)
     }
 
-    private fun startFollowAnimator(
-        animatorId: Int,
-        propertyName: String,
-        start: Float,
-        end: Float
-    ) {
+    private fun startFollowAnimator(property: Property<View, Float>, start: Float, end: Float) {
         if (!ViewCompat.isAttachedToWindow(this)) {
             return
         }
@@ -115,55 +130,46 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
 
         val items = followViews.map {
             it.visibility = VISIBLE
-            createAnimator(it, propertyName, start, end)
+            createAnimator(it, property, start, end)
         }
-        val oldAnimator = getTag(animatorId) as? Animator
-        val animator = AnimatorSet().apply {
+        AnimatorSet().apply {
             playSequentially(items)
-            interpolator = LinearInterpolator()
+            interpolator = LINEAR_INTERPOLATOR
             duration = FOLLOW_ANIMATOR_DURATION
             startDelay = FOLLOW_ANIMATOR_START_DELAY
             start()
-            if (oldAnimator != null) {
-                doOnStart { oldAnimator.cancel() }
-            }
         }
-        setTag(animatorId, animator)
     }
 
     private fun createAnimator(
         target: View,
-        propertyName: String,
+        property: Property<View, Float>,
         start: Float,
         end: Float
-    ): Animator {
-        return ObjectAnimator.ofFloat(target, propertyName, start, end)
+    ): ValueAnimator {
+        return ObjectAnimator.ofFloat(target, property, start, end)
+            .apply { setAutoCancel(true) }
     }
 
     private fun cleanAnimator() {
         (getTag(TAG_ID) as? Animator)?.cancel()
-        (getTag(TAG_FOLLOW_X_ID) as? Animator)?.cancel()
-        (getTag(TAG_FOLLOW_Y_ID) as? Animator)?.cancel()
     }
 
-    @Keep
     override fun setX(x: Float) {
-        startFollowAnimator(TAG_FOLLOW_X_ID, "x", this.x, x)
+        startFollowAnimator(xProperty, this.x, x)
         super.setX(x)
     }
 
-    @Keep
     override fun setY(y: Float) {
-        startFollowAnimator(TAG_FOLLOW_Y_ID, "y", this.y, y)
+        startFollowAnimator(yProperty, this.y, y)
         super.setY(y)
     }
 
     private val inUpAnimator: Boolean get() = (getTag(TAG_ID) as? Animator)?.isRunning ?: false
 
     private fun startUpAnimator(start: PointF, end: PointF) {
-        cleanAnimator()
-        val xOfFloat = createAnimator(this, "x", start.x, end.x)
-        val yOfFloat = createAnimator(this, "y", start.y, end.y)
+        val xOfFloat = createAnimator(this, xProperty, start.x, end.x)
+        val yOfFloat = createAnimator(this, yProperty, start.y, end.y)
         val animator = AnimatorSet().apply {
             playTogether(xOfFloat, yOfFloat)
             duration = RESUME_ANIMATOR_DURATION
