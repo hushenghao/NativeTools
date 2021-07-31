@@ -12,17 +12,20 @@ plugins {
 }
 
 android {
-    compileSdkVersion(31)
-    //buildToolsVersion = "31.0.0"
+    compileSdk = 31
+    buildToolsVersion = "31.0.0"
     defaultConfig {
         applicationId = "com.dede.nativetools"
-        minSdkVersion(23)
-        targetSdkVersion(31)
-        versionCode = 19
-        versionName = "2.2.1"
+        minSdk = 23
+        targetSdk = 31
+        versionCode = 20
+        versionName = "2.3.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        resConfigs("en", "zh")
+        resourceConfigurations.let {
+            it.add("en")
+            it.add("zh")
+        }
 
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797
@@ -40,6 +43,10 @@ android {
     }
 
     buildTypes {
+        val config = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
+        getByName("debug") {
+            signingConfig = config
+        }
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -47,7 +54,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.findByName("release")
+            signingConfig = config
         }
     }
 
@@ -79,4 +86,16 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+}
+
+tasks.create("jsonCompress") {
+    doLast {
+        val jsonFile = file("src/main/assets/open_source.json")
+        val jsonElement = com.google.gson.JsonParser.parseString(jsonFile.readText())
+        val gson = com.google.gson.GsonBuilder().create()
+        val jsonStr = gson.toJson(jsonElement)
+        // jsonFile.delete()
+        jsonFile.writeText(jsonStr)
+        println("JSON Compress Completed!")
+    }
 }

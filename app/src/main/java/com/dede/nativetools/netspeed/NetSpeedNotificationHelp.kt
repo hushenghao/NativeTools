@@ -15,7 +15,6 @@ import androidx.core.content.getSystemService
 import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.util.checkAppOps
-import com.dede.nativetools.util.fromHtml
 import com.dede.nativetools.util.safelyStartActivity
 import com.dede.nativetools.util.splicing
 
@@ -107,8 +106,8 @@ object NetSpeedNotificationHelp {
                 .setSound(null)
         }
 
-        builder.setSubText(getRxSubText(context).fromHtml())
-            .setContentText(contentStr)
+        builder.setContentTitle(contentStr)
+            .setContentText(getRxSubText(context))
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_SECRET)
             .setSmallIcon(createIcon(configuration, rxSpeed, txSpeed))

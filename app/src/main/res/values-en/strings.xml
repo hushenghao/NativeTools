@@ -5,7 +5,7 @@
     <string name="access">Access</string>
     <string name="dont_ask">Don\'t ask</string>
     <string name="notify_net_speed_msg" formatted="false">Down: %s • Up: %s</string>
-    <string name="notify_net_speed_sub" formatted="false">Today: &lt;i>%s&lt;/i> • Month: &lt;i>%s&lt;/i></string>
+    <string name="notify_net_speed_sub" formatted="false">Today: %s • Month: %s</string>
     <string name="switch_on">ON</string>
     <string name="switch_off">OFF</string>
     <string name="action_close">CLOSE</string>
@@ -48,4 +48,5 @@
     <string name="label_open_source">Open Source</string>
     <string name="action_share">Share</string>
     <string name="share_text">I found a useful gadget \"Net Monitor\". Go and download it! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="toast_copyed">Copied</string>
 </resources>

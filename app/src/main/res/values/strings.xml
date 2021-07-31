@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">网速指示器</string>
     <string name="notify_net_speed_msg" formatted="false">下载：%s • 上传：%s</string>
-    <string name="notify_net_speed_sub" formatted="false">今日：&lt;i>%s&lt;/i> • 本月：&lt;i>%s&lt;/i></string>
+    <string name="notify_net_speed_sub" formatted="false">今日：%s • 本月：%s</string>
     <string name="tile_net_speed_label" formatted="false" translatable="false">⇃%s   ↿%s</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
@@ -45,6 +45,11 @@
     <string name="action_share">分享</string>
 
     <string name="share_text">发现了一个好用的小工具“网速指示器”快去下载吧！https://www.coolapk.com/apk/com.dede.nativetools</string>
+    <string name="action_beta" translatable="false">Beta</string>
+    <string name="email" translatable="false">dede.hu@qq.com</string>
+    <string name="label_email" translatable="false">Email: %s</string>
+    <string name="url_pgyer" translatable="false">https://www.pgyer.com/U9kJ</string>
+    <string name="toast_copyed">已复制</string>
 
     <string-array name="net_speed_interval">
         <item>500 ms</item>
