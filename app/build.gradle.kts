@@ -12,17 +12,20 @@ plugins {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdk = 31
     //buildToolsVersion = "31.0.0"// 31.0.0缺少了dx.jar, 暂时降级
     defaultConfig {
         applicationId = "com.dede.nativetools"
-        minSdkVersion(23)
-        targetSdkVersion(31)
+        minSdk = 23
+        targetSdk = 31
         versionCode = 19
         versionName = "2.2.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        resConfigs("en", "zh")
+        resourceConfigurations.let {
+            it.add("en")
+            it.add("zh")
+        }
 
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797
