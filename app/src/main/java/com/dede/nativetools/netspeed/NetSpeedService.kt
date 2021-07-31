@@ -10,7 +10,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
 import androidx.core.content.getSystemService
-import androidx.core.os.trace
 
 
 class NetSpeedService : Service() {

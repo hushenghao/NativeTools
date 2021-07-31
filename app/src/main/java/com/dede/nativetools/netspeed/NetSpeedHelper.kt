@@ -1,8 +1,7 @@
 package com.dede.nativetools.netspeed
 
-import android.net.TrafficStats
+import com.dede.nativetools.netspeed.stats.INetStats
 import com.dede.nativetools.util.IntervalHelper
-import java.lang.reflect.Method
 import kotlin.properties.Delegates
 
 typealias NetSpeedChanged = (Long, Long) -> Unit
@@ -14,6 +13,7 @@ class NetSpeedHelper(private var netSpeedChanged: NetSpeedChanged? = null) {
 
     private var rxBytes: Long = 0L
     private var txBytes: Long = 0L
+    private val netStats: INetStats = INetStats.getInstance()
 
     var interval: Int by Delegates.observable(NetSpeedConfiguration.DEFAULT_INTERVAL) { _, old, new ->
         if (old != new) {
@@ -24,8 +24,8 @@ class NetSpeedHelper(private var netSpeedChanged: NetSpeedChanged? = null) {
 
     private val intervalHelper: IntervalHelper = IntervalHelper(interval.toLong()) {
         synchronized(this) {
-            val rxBytes = getRxBytes()
-            val txBytes = getTxBytes()
+            val rxBytes = netStats.getRxBytes()
+            val txBytes = netStats.getTxBytes()
             val rxSpeed = (rxBytes - this.rxBytes).toDouble() / interval * 1000 + .5f
             val txSpeed = (txBytes - this.txBytes).toDouble() / interval * 1000 + .5f
             this.rxSpeed = rxSpeed.toLong()
@@ -43,8 +43,8 @@ class NetSpeedHelper(private var netSpeedChanged: NetSpeedChanged? = null) {
         private set
 
     private fun reset() {
-        rxBytes = getRxBytes()
-        txBytes = getTxBytes()
+        rxBytes = netStats.getRxBytes()
+        txBytes = netStats.getTxBytes()
     }
 
     fun resume() {
@@ -56,53 +56,4 @@ class NetSpeedHelper(private var netSpeedChanged: NetSpeedChanged? = null) {
         intervalHelper.stop()
     }
 
-    private var methodGetLoopbackRxBytes: Method? = null
-    private var methodGetLoopbackTxBytes: Method? = null
-
-    init {
-        try {
-            methodGetLoopbackRxBytes = TrafficStats::class.java.getMethod("getLoopbackRxBytes")
-            methodGetLoopbackTxBytes = TrafficStats::class.java.getMethod("getLoopbackTxBytes")
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun getTxBytes(): Long {
-        return getTotalTxBytes() - getLoopbackTxBytes()
-    }
-
-    private fun getRxBytes(): Long {
-        return getTotalRxBytes() - getLoopbackRxBytes()
-    }
-
-    private fun getLoopbackRxBytes(): Long {
-        if (methodGetLoopbackRxBytes == null) return 0L
-        val result = try {
-            methodGetLoopbackRxBytes!!.invoke(null)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-        return (result as? Long) ?: 0L
-    }
-
-    private fun getLoopbackTxBytes(): Long {
-        if (methodGetLoopbackTxBytes == null) return 0L
-        val result = try {
-            methodGetLoopbackTxBytes!!.invoke(null)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-        return (result as? Long) ?: 0L
-    }
-
-    private fun getTotalRxBytes(): Long {
-        return TrafficStats.getTotalRxBytes()
-    }
-
-    private fun getTotalTxBytes(): Long {
-        return TrafficStats.getTotalTxBytes()
-    }
 }
