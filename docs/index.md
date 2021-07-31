@@ -1,6 +1,6 @@
 # 网速指示器
 
-<img height="80px" src="app/src/main/ic_launcher-web.png"/>
+<img height="80px" src="../app/src/main/ic_launcher-web.png"/>
 
 一个在系统状态栏显示当前网速的App，并在通知栏显示详细数据，主要针对原生ROM。
 
