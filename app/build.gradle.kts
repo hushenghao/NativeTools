@@ -13,13 +13,13 @@ plugins {
 
 android {
     compileSdk = 31
-    //buildToolsVersion = "31.0.0"// 31.0.0缺少了dx.jar, 暂时降级
+    buildToolsVersion = "31.0.0"
     defaultConfig {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 31
-        versionCode = 19
-        versionName = "2.2.1"
+        versionCode = 20
+        versionName = "2.3.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.let {
