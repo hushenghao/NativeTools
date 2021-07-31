@@ -1,37 +1,28 @@
-## Welcome to GitHub Pages
+# 网速指示器
 
-You can use the [editor on GitHub](https://github.com/hushenghao/NativeTools/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
+<img height="80px" src="app/src/main/ic_launcher-web.png"/>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+一个在系统状态栏显示当前网速的App，并在通知栏显示详细数据，主要针对原生ROM。
 
-### Markdown
+自用网速指示器，支持6.0及以上系统，兼容Android 12，支持中英文。
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+* 支持通知栏Tile（7.0+）
+* 支持今日和当月流量使用显示
+* 支持系统夜间模式
+* 支持图标简单自定义
 
-```markdown
-Syntax highlighted code block
+通过系统通知的SmallIcon实现，显示范围受系统状态栏图标大小限制，不同设备显示大小可能不相同，但是会尽最大限度来保证显示完整且确保精度。
 
-# Header 1
-## Header 2
-### Header 3
+如果你有什么好的想法请提交 [**Issues**](https://github.com/hushenghao/NativeTools/issues) 或 [**Pull requests**](https://github.com/hushenghao/NativeTools/pulls)
 
-- Bulleted
-- List
+## 应用截图
 
-1. Numbered
-2. List
+<img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269610882462412.png"/> <img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269610958174546.png"/> <img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269612711209232.png"/>
 
-**Bold** and _Italic_ and `Code` text
+## 应用下载
 
-[Link](url) and ![Image](src)
-```
+[<img height="50px" src="https://static.coolapk.com/static/web/v8/images/header-logo.png"/>](https://www.coolapk.com/apk/com.dede.nativetools)
+[<img height="50px" src="https://assets.che300.com/wiki/2021-07-22/16269394073576500.png"/>](https://play.google.com/store/apps/details?id=com.dede.nativetools)
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/hushenghao/NativeTools/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## 联系我
+Email：dede.hu@qq.com
