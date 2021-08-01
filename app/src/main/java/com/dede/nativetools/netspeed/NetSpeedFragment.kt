@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
 import android.provider.Settings
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
@@ -123,7 +122,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         try {
             netSpeedBinder?.updateConfiguration(configuration)
         } catch (e: RemoteException) {
-            Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
+            toast("error")
         }
     }
 
@@ -210,10 +209,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun stopService() {
-        val requireContext = requireContext()
-        val intent = Intent(requireContext, NetSpeedService::class.java)
+        val context = requireContext()
+        val intent = Intent(context, NetSpeedService::class.java)
         unbindService()
-        requireContext.stopService(intent)
+        context.stopService(intent)
     }
 
     private fun unbindService() {

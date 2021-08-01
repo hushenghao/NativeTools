@@ -4,8 +4,6 @@ import android.animation.Animator
 import android.animation.FloatEvaluator
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.os.Bundle
 import android.util.Property
 import android.view.*
@@ -13,7 +11,6 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.addListener
-import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -36,6 +33,17 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private var animator: Animator? = null
     private var toasted = false
 
+    private val scaleProperty = object : Property<View, Float>(Float::class.java, "scale") {
+        override fun get(view: View): Float {
+            return view.scaleX
+        }
+
+        override fun set(view: View, value: Float) {
+            view.scaleX = value
+            view.scaleY = value
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -57,9 +65,8 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         val email = getString(R.string.email)
         binding.tvEmail.text = getString(R.string.label_email, email)
         binding.tvEmail.setOnClickListener {
-            val clipboardManager = requireContext().getSystemService<ClipboardManager>()
-            clipboardManager?.setPrimaryClip(ClipData.newPlainText("text", email))
-            requireContext().toast(R.string.toast_copyed)
+            requireContext().copy(email)
+            toast(R.string.toast_copyed)
         }
         binding.tvOpenSource.setOnClickListener {
             findNavController().navigate(R.id.action_about_to_openSource)
@@ -84,7 +91,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         val count = followViews.size
         if (count >= MAX_FOLLOW_COUNT) {
             if (!toasted) {
-                requireContext().toast("BZZZTT!!1!💥")
+                toast("BZZZTT!!1!💥")
                 playAnimator()
                 toasted = true
             }
@@ -122,28 +129,18 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     private fun playAnimator() {
         animatored = true
-        val property = object : Property<View, Float>(Float::class.java, "scale") {
-            override fun get(view: View): Float {
-                return view.scaleX
-            }
-
-            override fun set(view: View, value: Float) {
-                view.scaleX = value
-                view.scaleY = value
-            }
-        }
-        animator = ObjectAnimator.ofFloat(binding.ivLogo, property, 1f, 1.3f, 0.7f)
+        animator = ObjectAnimator.ofFloat(binding.ivLogo, scaleProperty, 1f, 1.3f, 0.7f)
             .apply {
                 duration = 200
                 startDelay = 300
                 repeatMode = ValueAnimator.REVERSE
                 repeatCount = 1
-                start()
                 val feedback: (Animator) -> Unit = {
                     // BZZZTT!!1!
                     binding.ivLogo.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
                 }
                 addListener(onStart = feedback, onRepeat = feedback)
+                start()
             }
     }
 

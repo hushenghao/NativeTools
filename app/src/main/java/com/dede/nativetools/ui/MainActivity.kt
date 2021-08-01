@@ -22,9 +22,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(this, navController)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.toolbar.title = destination.label
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -1,7 +1,11 @@
+@file:JvmName("ContextKt")
+
 package com.dede.nativetools.util
 
 import android.app.ActivityManager
 import android.app.AppOpsManager
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,6 +16,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
 import com.dede.nativetools.R
 import java.io.File
+import java.io.InputStream
 
 
 fun Context.safelyStartActivity(intent: Intent) {
@@ -87,6 +92,10 @@ private fun Context.getCurrentProcessName(): String {
     return currentProcessName
 }
 
+fun Context.assets(fileName: String): InputStream {
+    return assets.open(fileName)
+}
+
 fun Context.toast(text: String) {
     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 }
@@ -118,4 +127,9 @@ fun Context.share(@StringRes textId: Int) {
         .putExtra(Intent.EXTRA_TEXT, getString(textId))
     val chooserIntent = Intent.createChooser(intent, getString(R.string.action_share))
     startActivity(chooserIntent)
+}
+
+fun Context.copy(text: String) {
+    val clipboardManager = this.getSystemService<ClipboardManager>()
+    clipboardManager?.setPrimaryClip(ClipData.newPlainText("text", text))
 }

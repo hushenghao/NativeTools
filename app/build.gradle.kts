@@ -104,7 +104,7 @@ tasks.create("jsonCompress") {
 
 val pgyer = tasks.create<Exec>("pgyer") {
     commandLine(
-        "curl",
+        "curl", "-F",
         "-F", "_api_key=${keystoreProperties["pgyer.api_key"]}",
         "-F", "buildUpdateDescription=Upload by gradle pgyer task",
         "https://www.pgyer.com/apiv2/app/upload"
@@ -125,8 +125,7 @@ afterEvaluate {
         }
         val apkFile = tree.singleFile
         pgyer.commandLine = pgyer.commandLine.apply {
-            add(1, "file=@${apkFile.absolutePath}")
-            add(1, "-F")
+            add(2, "file=@${apkFile.absolutePath}")
         }
     }
 }

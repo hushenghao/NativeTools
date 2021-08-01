@@ -1,3 +1,5 @@
+@file:JvmName("SharedPreferencesKt")
+
 package com.dede.nativetools.util
 
 import android.content.SharedPreferences
