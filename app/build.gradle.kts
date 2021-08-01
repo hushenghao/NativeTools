@@ -39,6 +39,8 @@ android {
             keyPassword = keystoreProperties.getProperty("keyPassword")
             storeFile = file(keystoreProperties.getProperty("storeFile"))
             storePassword = keystoreProperties.getProperty("storePassword")
+            enableV3Signing = true
+            enableV4Signing = true
         }
     }
 
