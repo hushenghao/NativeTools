@@ -103,17 +103,19 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
                 }
                 this.x += dx
                 this.y += dy
-                performHapticFeedback(
-                    HapticFeedbackConstants.CLOCK_TICK,
-                    HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
-                )
+                if (moved) {
+                    performHapticFeedback(
+                        HapticFeedbackConstants.CLOCK_TICK,
+                        HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                    )
+                }
                 return true
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 upPoint.set(this.x, this.y)
                 startUpAnimator(upPoint, layoutPoint)
-                playSoundEffect(SoundEffectConstants.CLICK)
                 if (moved) {
+                    playSoundEffect(SoundEffectConstants.CLICK)
                     return false
                 }
             }
