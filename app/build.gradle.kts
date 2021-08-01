@@ -104,7 +104,6 @@ tasks.create("jsonCompress") {
 
 tasks.create<Exec>("pgyer") {
     inputs.properties(
-        "user_key" to keystoreProperties["pgyer.user_key"],
         "api_key" to keystoreProperties["pgyer.api_key"]
     )
 }
@@ -122,9 +121,8 @@ afterEvaluate {
         val apkFile = tree.singleFile
         pgyer.commandLine(
             "curl", "-F", "file=@${apkFile.absolutePath}",
-            "-F", "uKey=${pgyer.inputs.properties["user_key"]}",
             "-F", "_api_key=${pgyer.inputs.properties["api_key"]}",
-            "https://www.pgyer.com/apiv1/app/upload"
+            "https://www.pgyer.com/apiv2/app/upload"
         )
     }
 }
