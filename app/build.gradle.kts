@@ -1,4 +1,4 @@
-import java.util.Properties
+import java.util.*
 
 val keystoreProperties = Properties().apply {
     rootProject.file("key.properties")
@@ -97,5 +97,32 @@ tasks.create("jsonCompress") {
         // jsonFile.delete()
         jsonFile.writeText(jsonStr)
         println("JSON Compress Completed!")
+    }
+}
+
+tasks.create<Exec>("pgyer") {
+    inputs.properties(
+        "user_key" to keystoreProperties["pgyer.user_key"],
+        "api_key" to keystoreProperties["pgyer.api_key"]
+    )
+}
+
+afterEvaluate {
+    val assemble = tasks.findByName("assembleRelease") as Task
+    val pgyer = tasks.findByName("pgyer") as Exec
+    assemble.mustRunAfter("clean")
+    pgyer.dependsOn("clean", assemble)
+    // pgyer.dependsOn(assemble)
+    assemble.doLast {
+        val tree = fileTree("build/outputs/apk/release") {
+            include("*.apk")
+        }
+        val apkFile = tree.singleFile
+        pgyer.commandLine(
+            "curl", "-F", "file=@${apkFile.absolutePath}",
+            "-F", "uKey=${pgyer.inputs.properties["user_key"]}",
+            "-F", "_api_key=${pgyer.inputs.properties["api_key"]}",
+            "https://www.pgyer.com/apiv1/app/upload"
+        )
     }
 }
