@@ -102,27 +102,31 @@ tasks.create("jsonCompress") {
     }
 }
 
-tasks.create<Exec>("pgyer") {
-    inputs.properties(
-        "api_key" to keystoreProperties["pgyer.api_key"]
+val pgyer = tasks.create<Exec>("pgyer") {
+    commandLine(
+        "curl",
+        "-F", "_api_key=${keystoreProperties["pgyer.api_key"]}",
+        "-F", "buildUpdateDescription=Upload by gradle pgyer task",
+        "https://www.pgyer.com/apiv2/app/upload"
     )
+    doLast {
+        println("\nUpload Completed!")
+    }
 }
 
 afterEvaluate {
     val assemble = tasks.findByName("assembleRelease") as Task
-    val pgyer = tasks.findByName("pgyer") as Exec
-    assemble.mustRunAfter("clean")
     pgyer.dependsOn("clean", assemble)
-    // pgyer.dependsOn(assemble)
+    assemble.mustRunAfter("clean")
+//    pgyer.dependsOn(assemble)
     assemble.doLast {
         val tree = fileTree("build/outputs/apk/release") {
             include("*.apk")
         }
         val apkFile = tree.singleFile
-        pgyer.commandLine(
-            "curl", "-F", "file=@${apkFile.absolutePath}",
-            "-F", "_api_key=${pgyer.inputs.properties["api_key"]}",
-            "https://www.pgyer.com/apiv2/app/upload"
-        )
+        pgyer.commandLine = pgyer.commandLine.apply {
+            add(1, "file=@${apkFile.absolutePath}")
+            add(1, "-F")
+        }
     }
 }
