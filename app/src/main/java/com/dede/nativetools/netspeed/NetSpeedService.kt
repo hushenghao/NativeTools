@@ -37,8 +37,6 @@ class NetSpeedService : Service() {
 
     private var notificationManager: NotificationManager? = null
 
-    private val binder = NetSpeedBinder(this)
-
     private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
         val notify =
             NetSpeedNotificationHelp.createNotification(this, configuration, rxSpeed, txSpeed)
@@ -48,7 +46,7 @@ class NetSpeedService : Service() {
     private val configuration = NetSpeedConfiguration.defaultConfiguration
 
     override fun onBind(intent: Intent): IBinder {
-        return binder
+        return NetSpeedBinder(this)
     }
 
     override fun onCreate() {

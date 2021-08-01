@@ -6,8 +6,8 @@ import android.content.Intent
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
-import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultSharedPreferences
 import com.dede.nativetools.netspeed.NetSpeedService
+import com.dede.nativetools.util.defaultSharedPreferences
 
 class LauncherReceiver : BroadcastReceiver() {
 

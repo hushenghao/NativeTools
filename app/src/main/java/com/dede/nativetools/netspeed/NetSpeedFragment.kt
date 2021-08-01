@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.*
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
-import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultSharedPreferences
 import com.dede.nativetools.util.*
 
 /**

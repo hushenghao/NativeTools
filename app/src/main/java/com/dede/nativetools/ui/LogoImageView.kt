@@ -88,7 +88,7 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
                 eventPoint.set(event.x, event.y)
                 downPoint.set(event.rawX, event.rawY)
                 cleanAnimator()
-                playSoundEffect(SoundEffectConstants.CLICK)
+                //playSoundEffect(SoundEffectConstants.CLICK)
                 moved = false
                 super.onTouchEvent(event)
                 return true

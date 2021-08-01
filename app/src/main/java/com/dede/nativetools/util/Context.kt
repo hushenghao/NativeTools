@@ -74,12 +74,13 @@ private fun Context.getCurrentProcessName(): String {
     } else {
         val activityManager = this.getSystemService<ActivityManager>() ?: return currentProcessName
         val list = activityManager.runningAppProcesses
-        if (list != null && list.isNotEmpty()) {
-            for (info in list) {
-                if (info.pid == pid) {
-                    currentProcessName = info.processName
-                    break
-                }
+        if (list == null || list.isEmpty()) {
+            return currentProcessName
+        }
+        for (info in list) {
+            if (info.pid == pid) {
+                currentProcessName = info.processName
+                break
             }
         }
     }

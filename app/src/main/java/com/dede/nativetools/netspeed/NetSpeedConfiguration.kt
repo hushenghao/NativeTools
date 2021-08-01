@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Parcelable
 import androidx.preference.PreferenceManager
 import com.dede.nativetools.NativeToolsApp
+import com.dede.nativetools.util.defaultSharedPreferences
 import com.dede.nativetools.util.getStringNotNull
 import com.dede.nativetools.util.safeInt
 import kotlinx.parcelize.Parcelize
@@ -74,11 +75,6 @@ data class NetSpeedConfiguration constructor(
     }
 
     companion object {
-
-        val defaultSharedPreferences: SharedPreferences
-            get() = PreferenceManager.getDefaultSharedPreferences(
-                NativeToolsApp.getInstance()
-            )
 
         val defaultConfiguration: NetSpeedConfiguration
             get() = NetSpeedConfiguration()
