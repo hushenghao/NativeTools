@@ -147,11 +147,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_share -> {
-                requireActivity().share(R.string.share_text)
+                requireContext().share(R.string.share_text)
                 true
             }
             R.id.action_get_beta -> {
-                requireActivity().browse(getString(R.string.url_pgyer))
+                requireContext().browse(getString(R.string.url_pgyer))
                 true
             }
             else -> super.onOptionsItemSelected(item)
