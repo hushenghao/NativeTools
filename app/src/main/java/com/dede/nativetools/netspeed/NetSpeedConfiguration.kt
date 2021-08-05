@@ -2,10 +2,8 @@ package com.dede.nativetools.netspeed
 
 import android.content.SharedPreferences
 import android.os.Parcelable
-import androidx.preference.PreferenceManager
-import com.dede.nativetools.NativeToolsApp
-import com.dede.nativetools.util.defaultSharedPreferences
-import com.dede.nativetools.util.getStringNotNull
+import com.dede.nativetools.util.get
+import com.dede.nativetools.util.globalPreferences
 import com.dede.nativetools.util.safeInt
 import kotlinx.parcelize.Parcelize
 
@@ -41,9 +39,6 @@ data class NetSpeedConfiguration constructor(
         return this
     }
 
-    // @IgnoredOnParcel
-    // var onSharedPreferenceChangeListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
-
     fun updateOnSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
         when (key) {
             KEY_NET_SPEED_INTERVAL -> {
@@ -51,11 +46,11 @@ data class NetSpeedConfiguration constructor(
             }
             KEY_NET_SPEED_COMPATIBILITY_MODE -> {
                 this.compatibilityMode =
-                    preferences.getBoolean(key, defaultConfiguration.compatibilityMode)
+                    preferences.get(key, defaultConfiguration.compatibilityMode)
             }
             KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
                 this.notifyClickable =
-                    preferences.getBoolean(key, defaultConfiguration.notifyClickable)
+                    preferences.get(key, defaultConfiguration.notifyClickable)
             }
             KEY_NET_SPEED_MODE -> {
                 this.mode = preferences.getMode()
@@ -65,13 +60,12 @@ data class NetSpeedConfiguration constructor(
             }
             KEY_NET_SPEED_QUICK_CLOSEABLE -> {
                 this.quickCloseable =
-                    preferences.getBoolean(key, defaultConfiguration.quickCloseable)
+                    preferences.get(key, defaultConfiguration.quickCloseable)
             }
             KEY_NET_SPEED_BACKGROUND -> {
                 this.background = preferences.getBackground()
             }
         }
-        // onSharedPreferenceChangeListener?.onSharedPreferenceChanged(preferences, key)
     }
 
     companion object {
@@ -105,47 +99,44 @@ data class NetSpeedConfiguration constructor(
         const val BACKGROUND_ROUNDED_CORNERS = "2"
         const val BACKGROUND_SQUIRCLE = "3"
 
-        fun SharedPreferences.getScale(): Float {
-            val scaleInt = this.getInt(
-                KEY_NET_SPEED_SCALE,
-                DEFAULT_SCALE_INT
-            )
+        private fun SharedPreferences.getScale(): Float {
+            val scaleInt = this.get(KEY_NET_SPEED_SCALE, DEFAULT_SCALE_INT)
             return scaleInt / SCALE_DIVISOR
         }
 
         fun SharedPreferences.getInterval(): Int {
-            return this.getString(KEY_NET_SPEED_INTERVAL, null)
+            return this.get(KEY_NET_SPEED_INTERVAL, DEFAULT_INTERVAL.toString())
                 .safeInt(defaultConfiguration.interval)
         }
 
-        fun SharedPreferences.getMode(): String {
-            return this.getStringNotNull(KEY_NET_SPEED_MODE, MODE_DOWN)
+        private fun SharedPreferences.getMode(): String {
+            return this.get(KEY_NET_SPEED_MODE, MODE_DOWN)
         }
 
-        fun SharedPreferences.getBackground(): String {
-            return this.getStringNotNull(KEY_NET_SPEED_BACKGROUND, BACKGROUND_NONE)
+        private fun SharedPreferences.getBackground(): String {
+            return this.get(KEY_NET_SPEED_BACKGROUND, BACKGROUND_NONE)
         }
 
         fun initialize(): NetSpeedConfiguration {
-            val interval = defaultSharedPreferences.getInterval()
+            val interval = globalPreferences.getInterval()
             val compatibilityMode =
-                defaultSharedPreferences.getBoolean(
+                globalPreferences.getBoolean(
                     KEY_NET_SPEED_COMPATIBILITY_MODE,
                     defaultConfiguration.compatibilityMode
                 )
             val notifyClickable =
-                defaultSharedPreferences.getBoolean(
+                globalPreferences.getBoolean(
                     KEY_NET_SPEED_NOTIFY_CLICKABLE,
                     defaultConfiguration.notifyClickable
                 )
-            val mode = defaultSharedPreferences.getMode()
-            val scale = defaultSharedPreferences.getScale()
+            val mode = globalPreferences.getMode()
+            val scale = globalPreferences.getScale()
             val quickCloseable =
-                defaultSharedPreferences.getBoolean(
+                globalPreferences.get(
                     KEY_NET_SPEED_QUICK_CLOSEABLE,
                     defaultConfiguration.quickCloseable
                 )
-            val background = defaultSharedPreferences.getBackground()
+            val background = globalPreferences.getBackground()
             return NetSpeedConfiguration(
                 interval,
                 notifyClickable,

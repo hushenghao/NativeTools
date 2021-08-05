@@ -16,6 +16,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.animation.doOnEnd
 import androidx.core.view.ViewCompat
 import com.dede.nativetools.R
+import com.dede.nativetools.util.XProperty
+import com.dede.nativetools.util.YProperty
+import com.dede.nativetools.util.hide
+import com.dede.nativetools.util.show
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -40,25 +44,8 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
     private val slop = ViewConfiguration.get(context).scaledTouchSlop
     private var moved = false
 
-    private val xProperty = object : Property<View, Float>(Float::class.java, "x") {
-        override fun set(view: View, value: Float) {
-            view.x = value
-        }
-
-        override fun get(view: View): Float {
-            return view.x
-        }
-    }
-
-    private val yProperty = object : Property<View, Float>(Float::class.java, "y") {
-        override fun set(view: View, value: Float) {
-            view.y = value
-        }
-
-        override fun get(view: View): Float {
-            return view.y
-        }
-    }
+    private val xProperty = XProperty()
+    private val yProperty = YProperty()
 
     var followViews: Array<View>? = null
     var enableFeedback = true
@@ -131,7 +118,7 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
         val followViews = this.followViews ?: return
 
         val items = followViews.map {
-            it.visibility = VISIBLE
+            it.show()
             createAnimator(it, property, start, end)
         }
         AnimatorSet().apply {
@@ -182,7 +169,7 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
         if (followViews != null && hasFollowView) {
             animator.doOnEnd {
                 postDelayed({
-                    followViews.forEach { it.visibility = INVISIBLE }
+                    followViews.forEach { it.hide() }
                 }, FOLLOW_ANIMATOR_DURATION * followViews.size)
             }
         }

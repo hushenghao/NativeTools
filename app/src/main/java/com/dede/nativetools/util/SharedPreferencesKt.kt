@@ -7,13 +7,21 @@ import androidx.preference.PreferenceManager
 import com.dede.nativetools.NativeToolsApp
 
 
-val defaultSharedPreferences: SharedPreferences
+val globalPreferences: SharedPreferences
     get() = PreferenceManager.getDefaultSharedPreferences(NativeToolsApp.getInstance())
 
-fun SharedPreferences.getStringNotNull(key: String, default: String): String {
+fun SharedPreferences.get(key: String, default: Int): Int {
+    return this.getInt(key, default)
+}
+
+fun SharedPreferences.get(key: String, default: String): String {
     return this.getString(key, default) ?: default
 }
 
-fun SharedPreferences.putBoolean(key: String, value: Boolean) {
+fun SharedPreferences.get(key: String, default: Boolean): Boolean {
+    return this.getBoolean(key, default)
+}
+
+fun SharedPreferences.put(key: String, value: Boolean) {
     this.edit().putBoolean(key, value).apply()
 }

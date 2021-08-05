@@ -87,13 +87,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         // Reference chain: SharedPreferencesImpl#mListener -weak-> configuration --> fragment, fragment is leaked.
         // if Activity recreated, edit shared preferences,
         // Crash when methods such as getContext are called in the onSharedPreferenceChanged method.
-        defaultSharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        globalPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onStop() {
         super.onStop()
-        // defaultSharedPreferences.unregisterOnSharedPreferenceChangeListener(configuration)
-        defaultSharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        globalPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -152,7 +151,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private fun checkOps() {
         val dontAskOps =
-            defaultSharedPreferences.getBoolean(NetSpeedConfiguration.KEY_OPS_DONT_ASK, false)
+            globalPreferences.get(NetSpeedConfiguration.KEY_OPS_DONT_ASK, false)
         val context = requireContext()
         if (dontAskOps || context.checkAppOps()) {
             return
@@ -164,8 +163,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 requireContext().safelyStartActivity(intent)
             }
             neutralButton(R.string.dont_ask) {
-                defaultSharedPreferences
-                    .putBoolean(NetSpeedConfiguration.KEY_OPS_DONT_ASK, true)
+                globalPreferences.put(NetSpeedConfiguration.KEY_OPS_DONT_ASK, true)
             }
             negativeButton(R.string.cancel)
         }
@@ -174,7 +172,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private fun checkNotification() {
         val context = requireContext()
         val areNotificationsEnabled = NetSpeedNotificationHelp.areNotificationEnabled(context)
-        val dontAskNotify = defaultSharedPreferences
+        val dontAskNotify = globalPreferences
             .getBoolean(NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK, false)
         if (dontAskNotify || areNotificationsEnabled) {
             return
@@ -187,16 +185,14 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 NetSpeedNotificationHelp.goNotificationSetting(context)
             }
             neutralButton(R.string.dont_ask) {
-                defaultSharedPreferences
-                    .putBoolean(NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK, true)
+                globalPreferences.put(NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK, true)
             }
             negativeButton(R.string.cancel, null)
         }
     }
 
     private fun launchService() {
-        val status =
-            defaultSharedPreferences.getBoolean(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, false)
+        val status = globalPreferences.get(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, false)
         if (!status) return
         startService()
     }

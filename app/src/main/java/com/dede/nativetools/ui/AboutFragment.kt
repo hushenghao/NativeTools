@@ -2,10 +2,8 @@ package com.dede.nativetools.ui
 
 import android.animation.Animator
 import android.animation.FloatEvaluator
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.util.Property
 import android.view.*
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
@@ -30,19 +28,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     }
 
     private val binding: FragmentAboutBinding by viewBinding(FragmentAboutBinding::bind)
-    private var animator: Animator? = null
     private var toasted = false
-
-    private val scaleProperty = object : Property<View, Float>(Float::class.java, "scale") {
-        override fun get(view: View): Float {
-            return view.scaleX
-        }
-
-        override fun set(view: View, value: Float) {
-            view.scaleX = value
-            view.scaleY = value
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,9 +71,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     }
 
     private fun appendFollowView(followViews: ArrayList<ImageView>) {
-        if (animator?.isRunning == true) {
-            return
-        }
         val count = followViews.size
         if (count >= MAX_FOLLOW_COUNT) {
             if (!toasted) {
@@ -99,7 +82,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         }
         val insert = AppCompatImageView(requireContext()).apply {
             elevation = 1.dpf
-            visibility = View.INVISIBLE
+            hide()
             setImageResource(R.mipmap.ic_launcher_round)
         }
         val last = followViews[count - 1]
@@ -129,7 +112,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     private fun playAnimator() {
         animatored = true
-        animator = ObjectAnimator.ofFloat(binding.ivLogo, scaleProperty, 1f, 1.3f, 0.7f)
+        lifecycleAnimator(binding.ivLogo, ScaleProperty(), 1f, 1.3f, 0.7f)
             .apply {
                 duration = 200
                 startDelay = 300
@@ -160,11 +143,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_about, menu)
-    }
-
-    override fun onDestroyView() {
-        animator?.cancel()
-        super.onDestroyView()
     }
 
 }

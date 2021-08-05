@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.getInterval
-import com.dede.nativetools.util.defaultSharedPreferences
+import com.dede.nativetools.util.globalPreferences
 import com.dede.nativetools.util.splicing
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -20,7 +20,7 @@ class NetTileService : TileService() {
     }
 
     override fun onStartListening() {
-        val interval = defaultSharedPreferences.getInterval()
+        val interval = globalPreferences.getInterval()
         netSpeedHelper.interval = interval
         netSpeedHelper.resume()
     }

@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.NetSpeedService
-import com.dede.nativetools.util.defaultSharedPreferences
+import com.dede.nativetools.util.globalPreferences
 
 class LauncherReceiver : BroadcastReceiver() {
 
@@ -15,7 +15,7 @@ class LauncherReceiver : BroadcastReceiver() {
         const val ACTION_LAUNCHER = "com.dede.netavetools.LAUNCHER"
 
         fun launcher(context: Context) {
-            val status = defaultSharedPreferences.getBoolean(
+            val status = globalPreferences.getBoolean(
                 NetSpeedConfiguration.KEY_NET_SPEED_STATUS,
                 false
             )
@@ -33,7 +33,7 @@ class LauncherReceiver : BroadcastReceiver() {
         when (action) {
             Intent.ACTION_BOOT_COMPLETED -> {
                 // 开机自启的设置状态
-                val autoBoot = defaultSharedPreferences.getBoolean(
+                val autoBoot = globalPreferences.getBoolean(
                     NetSpeedConfiguration.KEY_NET_SPEED_AUTO_START,
                     false
                 )
