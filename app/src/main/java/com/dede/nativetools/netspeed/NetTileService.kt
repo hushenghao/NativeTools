@@ -5,10 +5,10 @@ import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
-import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.getInterval
 import com.dede.nativetools.netspeed.utils.NetFormater
+import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.globalPreferences
 import com.dede.nativetools.util.newTask
@@ -22,8 +22,7 @@ class NetTileService : TileService() {
     }
 
     override fun onStartListening() {
-        val interval = globalPreferences.getInterval()
-        netSpeedHelper.interval = interval
+        netSpeedHelper.interval = globalPreferences.getInterval()
         netSpeedHelper.resume()
     }
 
@@ -47,24 +46,26 @@ class NetTileService : TileService() {
 
     private fun update(rxSpeed: Long, txSpeed: Long) {
         val downloadSpeedStr =
-            NetFormater.formatBytes(rxSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT).splicing()
+            NetFormater.formatBytes(rxSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT)
+                .splicing()
         val uploadSpeedStr =
-            NetFormater.formatBytes(txSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT).splicing()
+            NetFormater.formatBytes(txSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT)
+                .splicing()
 
-        val tile = qsTile
-        tile.state = Tile.STATE_ACTIVE
-        tile.icon = Icon.createWithBitmap(
-            NetTextIconFactory.createIconBitmap(
-                rxSpeed,
-                txSpeed,
-                NetSpeedConfiguration.initialize()
+        qsTile.apply {
+            state = Tile.STATE_ACTIVE
+            icon = Icon.createWithBitmap(
+                NetTextIconFactory.createIconBitmap(
+                    rxSpeed,
+                    txSpeed,
+                    NetSpeedConfiguration.initialize()
+                )
             )
-        )
-        tile.label = getString(R.string.tile_net_speed_label, downloadSpeedStr, uploadSpeedStr)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            tile.subtitle = getString(R.string.label_net_speed)
-        }
-        tile.updateTile()
+            label = getString(R.string.tile_net_speed_label, downloadSpeedStr, uploadSpeedStr)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                subtitle = getString(R.string.label_net_speed)
+            }
+        }.updateTile()
     }
 
     override fun onDestroy() {
