@@ -18,16 +18,25 @@ object NetTextIconFactory {
     private val DEFAULT_CONFIG = Bitmap.Config.ARGB_8888
     private var cachedBitmap: Bitmap? = null
 
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        typeface = Typeface.DEFAULT_BOLD
+        isFakeBoldText = true
+        textAlign = Paint.Align.CENTER
+        color = Color.WHITE
+    }
 
-    private var ICON_SIZE = 72
+    private val iconSize: Int
 
     init {
-        init()
-        paint.typeface = Typeface.DEFAULT_BOLD
-        paint.isFakeBoldText = true
-        paint.textAlign = Paint.Align.CENTER
-        paint.color = Color.WHITE
+        val dpi = displayMetrics().densityDpi
+        this.iconSize = when {
+            dpi <= 160 -> 24 // mdpi
+            dpi <= 240 -> 36 // hdpi
+            dpi <= 320 -> 48 // xhdpi
+            dpi <= 480 -> 72 // xxhdpi
+            dpi <= 640 -> 96 // xxxhdpi
+            else -> 96
+        }
     }
 
     private fun createBitmap(size: Int, useCache: Boolean): Bitmap {
@@ -52,31 +61,7 @@ object NetTextIconFactory {
         return bitmap
     }
 
-    private fun init() {
-        val dpi = displayMetrics().densityDpi
-        when {
-            dpi <= 160 -> {// mdpi
-                ICON_SIZE = 24
-            }
-            dpi <= 240 -> {// hdpi
-                ICON_SIZE = 36
-            }
-            dpi <= 320 -> {// xhdpi
-                ICON_SIZE = 48
-            }
-            dpi <= 480 -> {// xxhdpi
-                ICON_SIZE = 72
-            }
-            dpi <= 640 -> {// xxxhdpi
-                ICON_SIZE = 96
-            }
-            else -> {
-                ICON_SIZE = 96
-            }
-        }
-    }
-
-    sealed class IconConfig(val size: Int) {
+    private sealed class IconConfig(val size: Int) {
 
         val center = size / 2f
 
@@ -118,7 +103,7 @@ object NetTextIconFactory {
         rxSpeed: Long,
         txSpeed: Long,
         configuration: NetSpeedConfiguration = NetSpeedConfiguration.initialize(),
-        size: Int = ICON_SIZE,
+        size: Int = iconSize,
         fromCache: Boolean = false
     ): Bitmap {
         val text1: String
