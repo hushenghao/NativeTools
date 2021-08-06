@@ -20,10 +20,7 @@ import java.io.InputStream
 
 
 fun Context.safelyStartActivity(intent: Intent) {
-    try {
-        this.startActivity(intent)
-    } catch (e: Throwable) {
-    }
+    safely { this.startActivity(intent) }
 }
 
 fun Context.checkAppOps(): Boolean {

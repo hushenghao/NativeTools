@@ -1,4 +1,4 @@
-@file:JvmName("SharedPreferencesKt")
+@file:JvmName("PreferencesKt")
 
 package com.dede.nativetools.util
 

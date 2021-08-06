@@ -46,3 +46,11 @@ inline fun <T> safely(default: T, block: () -> T): T {
         default
     }
 }
+
+inline fun safely(block: () -> Unit) {
+    try {
+        block()
+    } catch (e: Throwable) {
+        e.printStackTrace()
+    }
+}
