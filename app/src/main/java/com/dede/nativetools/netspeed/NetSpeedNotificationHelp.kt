@@ -14,6 +14,8 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.R
+import com.dede.nativetools.netspeed.utils.NetFormater
+import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
 import com.dede.nativetools.util.checkAppOps
 import com.dede.nativetools.util.safelyStartActivity
 import com.dede.nativetools.util.splicing
@@ -81,21 +83,21 @@ object NetSpeedNotificationHelp {
             if (!context.checkAppOps()) {
                 return null
             }
-            val todayBytes = NetUtil.getTodayNetworkUsageRxBytes(context)
-            val monthBytes = NetUtil.getMonthNetworkUsageRxBytes(context)
+            val todayBytes = NetworkUsageUtil.todayNetworkUsageBytes(context)
+            val monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
             return context.getString(
                 R.string.notify_net_speed_sub,
-                NetUtil.formatBytes(todayBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EXACT)
+                NetFormater.formatBytes(todayBytes, NetFormater.FLAG_BYTE, NetFormater.ACCURACY_EXACT)
                     .splicing(),
-                NetUtil.formatBytes(monthBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EXACT)
+                NetFormater.formatBytes(monthBytes, NetFormater.FLAG_BYTE, NetFormater.ACCURACY_EXACT)
                     .splicing()
             )
         }
 
         val downloadSpeedStr: String =
-            NetUtil.formatBytes(rxSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
+            NetFormater.formatBytes(rxSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT).splicing()
         val uploadSpeedStr: String =
-            NetUtil.formatBytes(txSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
+            NetFormater.formatBytes(txSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT).splicing()
         val contentStr =
             context.getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
 

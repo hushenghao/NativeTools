@@ -37,3 +37,12 @@ fun String.trimZeroAndDot(): String {
     }
     return s
 }
+
+inline fun <T> safely(default: T, block: () -> T): T {
+    return try {
+        block()
+    } catch (e: Throwable) {
+        e.printStackTrace()
+        default
+    }
+}

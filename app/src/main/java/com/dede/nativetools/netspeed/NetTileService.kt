@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.getInterval
+import com.dede.nativetools.netspeed.utils.NetFormater
 import com.dede.nativetools.util.globalPreferences
 import com.dede.nativetools.util.splicing
 
@@ -45,9 +46,9 @@ class NetTileService : TileService() {
 
     private fun update(rxSpeed: Long, txSpeed: Long) {
         val downloadSpeedStr =
-            NetUtil.formatBytes(rxSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
+            NetFormater.formatBytes(rxSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT).splicing()
         val uploadSpeedStr =
-            NetUtil.formatBytes(txSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
+            NetFormater.formatBytes(txSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT).splicing()
 
         val tile = qsTile
         tile.state = Tile.STATE_ACTIVE

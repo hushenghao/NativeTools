@@ -1,18 +1,13 @@
-package com.dede.nativetools.netspeed
+package com.dede.nativetools.netspeed.utils
 
 
-import android.app.usage.NetworkStatsManager
-import android.content.Context
-import android.net.ConnectivityManager
-import androidx.core.content.getSystemService
 import com.dede.nativetools.util.trimZeroAndDot
-import java.util.*
 
 
 /**
  * Created by hsh on 2017/5/15 015 下午 05:14.
  */
-object NetUtil {
+object NetFormater {
 
     /**
      * 精确等宽格式
@@ -101,64 +96,6 @@ object NetUtil {
             else -> "%.2f"
         }
         return format.format(num).trimZeroAndDot()
-    }
-
-    /**
-     * 获取每月下载数据字节数
-     */
-    fun getMonthNetworkUsageRxBytes(context: Context): Long {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.DAY_OF_MONTH, 1)
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-        return getNetworkUsageRxBytesInternal(context, calendar)
-    }
-
-    /**
-     * 获取每天下载数据字节数
-     */
-    fun getTodayNetworkUsageRxBytes(context: Context): Long {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-        return getNetworkUsageRxBytesInternal(context, calendar)
-    }
-
-    private fun getNetworkUsageRxBytesInternal(context: Context, start: Calendar): Long {
-        val networkStatsManager = context.getSystemService<NetworkStatsManager>() ?: return 0L
-        val startTime = start.timeInMillis
-        val endTime = System.currentTimeMillis()
-        val wifiRxBytes = queryNetworkRxBytes(
-            networkStatsManager,
-            ConnectivityManager.TYPE_WIFI,
-            startTime,
-            endTime
-        )
-        val mobileRxBytes = queryNetworkRxBytes(
-            networkStatsManager,
-            ConnectivityManager.TYPE_MOBILE,
-            startTime,
-            endTime
-        )
-        return wifiRxBytes + mobileRxBytes
-    }
-
-    private inline fun queryNetworkRxBytes(
-        networkStatsManager: NetworkStatsManager,
-        networkType: Int,
-        startTime: Long, endTime: Long
-    ): Long {
-        return try {
-            networkStatsManager.querySummaryForDevice(
-                networkType, null, startTime, endTime
-            ).rxBytes
-        } catch (e: Exception) {
-            0L
-        }
     }
 
 }
