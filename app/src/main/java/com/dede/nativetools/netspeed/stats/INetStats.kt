@@ -12,8 +12,14 @@ interface INetStats {
         const val WLAN_IFACE = "wlan0"
         const val MOBILE_IFACE = "rmnet_data0"
 
-        fun addIfSupported(stat: Long): Long {
-            return if (stat == UNSUPPORTED) 0 else stat
+        fun Long.isSupported(): Boolean = this != UNSUPPORTED
+
+        fun addIfSupported(vararg stats: Long): Long {
+            var allStat: Long = 0
+            for (stat in stats) {
+                allStat += if (stat.isSupported()) stat else 0
+            }
+            return allStat
         }
 
         private var iNetStats: INetStats? = null
@@ -36,11 +42,8 @@ interface INetStats {
                 iNetStats = instance
                 break
             }
-            if (iNetStats == null) {
-                throw IllegalArgumentException("Not found supported INetStats")
-            }
             Log.i("NetSpeedHelper", "INetStats: $iNetStats")
-            return iNetStats!!
+            return checkNotNull(iNetStats) { "Not found supported INetStats" }
         }
 
         private fun create(clazz: Class<out INetStats>): INetStats {
@@ -48,15 +51,25 @@ interface INetStats {
                 Android31NetStats::class.java -> Android31NetStats()
                 ReflectNetStats::class.java -> ReflectNetStats()
                 ExcludeLoNetStats::class.java -> ExcludeLoNetStats()
-                else -> NormalNetStats()
+                NormalNetStats::class.java -> NormalNetStats()
+                else -> throw IllegalArgumentException("INetStats: $clazz don`t supported")
             }
         }
     }
 
+    /**
+     * NetStats是否支持
+     */
     fun supported(): Boolean
 
+    /**
+     * 下载字节
+     */
     fun getRxBytes(): Long
 
+    /**
+     * 长传字节
+     */
     fun getTxBytes(): Long
 
 }

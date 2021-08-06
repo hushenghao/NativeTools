@@ -4,12 +4,16 @@ import android.annotation.SuppressLint
 import android.net.TrafficStats
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.dede.nativetools.netspeed.stats.INetStats.Companion.isSupported
+import com.dede.nativetools.util.safely
 
 class Android31NetStats : INetStats {
 
     @RequiresApi(Build.VERSION_CODES.S)
-    private var supportWlan0 =
-        TrafficStats.getRxBytes(INetStats.WLAN_IFACE) != INetStats.UNSUPPORTED
+    private var supportWlan0 = safely(false) {
+        // no hide ???
+        TrafficStats.getRxBytes(INetStats.WLAN_IFACE).isSupported()
+    }
 
     override fun supported(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && supportWlan0
@@ -17,14 +21,18 @@ class Android31NetStats : INetStats {
 
     @SuppressLint("NewApi")
     override fun getRxBytes(): Long {
-        return TrafficStats.getMobileRxBytes() +
-                INetStats.addIfSupported(TrafficStats.getRxBytes(INetStats.WLAN_IFACE))
+        return INetStats.addIfSupported(
+            TrafficStats.getMobileRxBytes(),
+            TrafficStats.getRxBytes(INetStats.WLAN_IFACE)
+        )
     }
 
     @SuppressLint("NewApi")
     override fun getTxBytes(): Long {
-        return TrafficStats.getMobileTxBytes() +
-                INetStats.addIfSupported(TrafficStats.getTxBytes(INetStats.WLAN_IFACE))
+        return INetStats.addIfSupported(
+            TrafficStats.getMobileTxBytes(),
+            TrafficStats.getTxBytes(INetStats.WLAN_IFACE)
+        )
     }
 
 }
