@@ -199,14 +199,14 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private fun startService() {
         val context = requireContext()
-        val intent = NetSpeedService.createServiceIntent(context)
+        val intent = NetSpeedService.createIntent(context)
         context.startService(intent)
         context.bindService(intent, this, Context.BIND_AUTO_CREATE)
     }
 
     private fun stopService() {
         val context = requireContext()
-        val intent = Intent(context, NetSpeedService::class.java)
+        val intent = Intent<NetSpeedService>(context)
         unbindService()
         context.stopService(intent)
     }

@@ -1,11 +1,9 @@
 package com.dede.nativetools.netspeed
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.*
 import androidx.core.graphics.toXfermode
-import com.dede.nativetools.NativeToolsApp.Companion.globalContext
 import com.dede.nativetools.netspeed.utils.NetFormater
+import com.dede.nativetools.util.displayMetrics
 import com.dede.nativetools.util.splicing
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -15,7 +13,6 @@ import kotlin.math.roundToInt
  * Created by hsh on 2017/5/11 011 下午 05:17.
  * 通知栏网速图标工厂
  */
-@SuppressLint("StaticFieldLeak")
 object NetTextIconFactory {
 
     private val DEFAULT_CONFIG = Bitmap.Config.ARGB_8888
@@ -25,10 +22,8 @@ object NetTextIconFactory {
 
     private var ICON_SIZE = 72
 
-    private lateinit var context: Context
-
     init {
-        init(globalContext)
+        init()
         paint.typeface = Typeface.DEFAULT_BOLD
         paint.isFakeBoldText = true
         paint.textAlign = Paint.Align.CENTER
@@ -57,10 +52,8 @@ object NetTextIconFactory {
         return bitmap
     }
 
-
-    private fun init(context: Context) {
-        this.context = context
-        val dpi = context.resources.displayMetrics.densityDpi
+    private fun init() {
+        val dpi = displayMetrics().densityDpi
         when {
             dpi <= 160 -> {// mdpi
                 ICON_SIZE = 24

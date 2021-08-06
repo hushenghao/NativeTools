@@ -9,11 +9,10 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.dede.nativetools.NativeToolsApp.Companion.globalContext
 import kotlin.math.roundToInt
 
 
-private inline fun displayMetrics(): DisplayMetrics {
+fun displayMetrics(): DisplayMetrics {
     return globalContext.resources.displayMetrics
 }
 

@@ -1,6 +1,5 @@
 package com.dede.nativetools.netspeed
 
-import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
@@ -10,7 +9,9 @@ import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.getInterval
 import com.dede.nativetools.netspeed.utils.NetFormater
+import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.globalPreferences
+import com.dede.nativetools.util.newTask
 import com.dede.nativetools.util.splicing
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -31,8 +32,8 @@ class NetTileService : TileService() {
     }
 
     private fun startMain() {
-        val intent = Intent(baseContext, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val intent = Intent<MainActivity>(baseContext)
+            .newTask()
         startActivityAndCollapse(intent)
     }
 

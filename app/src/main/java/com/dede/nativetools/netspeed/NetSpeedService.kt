@@ -9,7 +9,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
+import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
+import com.dede.nativetools.util.Intent
+import com.dede.nativetools.util.get
+import com.dede.nativetools.util.globalPreferences
 
 
 class NetSpeedService : Service() {
@@ -27,11 +31,19 @@ class NetSpeedService : Service() {
 
         const val EXTRA_CONFIGURATION = "extra_configuration"
 
-        fun createServiceIntent(context: Context): Intent {
-            val intent = Intent(context, NetSpeedService::class.java)
-            val configuration = NetSpeedConfiguration.initialize()
-            intent.putExtra(EXTRA_CONFIGURATION, configuration)
-            return intent
+        fun createIntent(context: Context): Intent {
+            return Intent<NetSpeedService>(
+                context,
+                EXTRA_CONFIGURATION to NetSpeedConfiguration.initialize()
+            )
+        }
+
+        fun launchForeground(context: Context) {
+            val status = globalPreferences.get(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, false)
+            if (status) {
+                val intent = createIntent(context)
+                ContextCompat.startForegroundService(context, intent)
+            }
         }
     }
 

@@ -4,27 +4,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.core.content.ContextCompat
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.NetSpeedService
+import com.dede.nativetools.util.get
 import com.dede.nativetools.util.globalPreferences
 
 class LauncherReceiver : BroadcastReceiver() {
-
-    companion object {
-        const val ACTION_LAUNCHER = "com.dede.netavetools.LAUNCHER"
-
-        fun launcher(context: Context) {
-            val status = globalPreferences.getBoolean(
-                NetSpeedConfiguration.KEY_NET_SPEED_STATUS,
-                false
-            )
-            if (status) {
-                val intent = NetSpeedService.createServiceIntent(context)
-                ContextCompat.startForegroundService(context, intent)
-            }
-        }
-    }
 
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
@@ -33,16 +18,14 @@ class LauncherReceiver : BroadcastReceiver() {
         when (action) {
             Intent.ACTION_BOOT_COMPLETED -> {
                 // 开机自启的设置状态
-                val autoBoot = globalPreferences.getBoolean(
-                    NetSpeedConfiguration.KEY_NET_SPEED_AUTO_START,
-                    false
-                )
-                if (!autoBoot) {
-                    return
+                val autoBoot =
+                    globalPreferences.get(NetSpeedConfiguration.KEY_NET_SPEED_AUTO_START, false)
+                if (autoBoot) {
+                    NetSpeedService.launchForeground(context)
                 }
             }
-            Intent.ACTION_MY_PACKAGE_REPLACED, ACTION_LAUNCHER -> {
-                launcher(context)
+            Intent.ACTION_MY_PACKAGE_REPLACED -> {
+                NetSpeedService.launchForeground(context)
             }
         }
     }
