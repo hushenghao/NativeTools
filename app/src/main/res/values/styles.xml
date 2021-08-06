@@ -6,12 +6,17 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/appPrimary</item>
         <item name="colorPrimaryDark">@color/appPrimary</item>
-        <item name="colorAccent">@color/appAccent</item>
+        <item name="colorSecondary">@color/appAccent</item>
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!-- Panel attributes -->
 
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/appAccent</item>
     </style>
 
 </resources>
