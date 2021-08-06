@@ -10,6 +10,10 @@ class NativeToolsApp : Application() {
 
     companion object {
         private var instance: NativeToolsApp? = null
+
+        val globalContext: Context
+            get() = getInstance()
+
         fun getInstance(): NativeToolsApp {
             return checkNotNull(instance)
         }

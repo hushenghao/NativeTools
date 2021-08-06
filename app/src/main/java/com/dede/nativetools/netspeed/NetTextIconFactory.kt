@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import androidx.core.graphics.toXfermode
-import com.dede.nativetools.NativeToolsApp
+import com.dede.nativetools.NativeToolsApp.Companion.globalContext
 import com.dede.nativetools.util.splicing
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -27,8 +27,7 @@ object NetTextIconFactory {
     private lateinit var context: Context
 
     init {
-        val context = NativeToolsApp.getInstance()
-        init(context)
+        init(globalContext)
         paint.typeface = Typeface.DEFAULT_BOLD
         paint.isFakeBoldText = true
         paint.textAlign = Paint.Align.CENTER

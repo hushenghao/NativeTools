@@ -5,10 +5,11 @@ package com.dede.nativetools.util
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.dede.nativetools.NativeToolsApp
+import com.dede.nativetools.NativeToolsApp.Companion.globalContext
 
 
 val globalPreferences: SharedPreferences
-    get() = PreferenceManager.getDefaultSharedPreferences(NativeToolsApp.getInstance())
+    get() = PreferenceManager.getDefaultSharedPreferences(globalContext)
 
 fun SharedPreferences.get(key: String, default: Int): Int {
     return this.getInt(key, default)
