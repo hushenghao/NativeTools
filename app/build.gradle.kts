@@ -90,6 +90,25 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }
 
+configurations.all {
+    //exclude("androidx.drawerlayout", "drawerlayout")
+    //exclude("androidx.coordinatorlayout", "coordinatorlayout")
+    //exclude("androidx.cardview", "cardview")
+    exclude("androidx.viewpager2", "viewpager2")
+    exclude("androidx.viewpager", "viewpager")
+    exclude("androidx.slidingpanelayout", "slidingpanelayout")
+    exclude("androidx.swiperefreshlayout", "swiperefreshlayout")
+    exclude("androidx.asynclayoutinflater", "asynclayoutinflater")
+    exclude("androidx.transition", "transition")
+    exclude("androidx.dynamicanimation", "dynamicanimation")
+    exclude("androidx.vectordrawable", "vectordrawable-animated")
+    exclude("androidx.versionedparcelable", "versionedparcelable")
+    exclude("androidx.localbroadcastmanager", "localbroadcastmanager")
+    exclude("androidx.documentfile", "documentfile")
+    exclude("androidx.print", "print")
+    exclude("androidx.cursoradapter", "cursoradapter")
+}
+
 val pgyer = tasks.create<Exec>("pgyer") {
     commandLine(
         "curl", "-F",
