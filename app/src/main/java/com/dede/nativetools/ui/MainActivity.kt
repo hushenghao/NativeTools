@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     private val navController by lazy { findNavController(R.id.nav_host_fragment) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.ThemeOverlay_Shapes_Rounded)
+        setTheme(R.style.ThemeOverlay_ShapeSize_Large)
         super.onCreate(savedInstanceState)
         val isToggle = intent.getBooleanExtra("extra_toggle", false)
         if (isToggle) {

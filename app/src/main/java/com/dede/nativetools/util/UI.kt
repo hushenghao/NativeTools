@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlin.math.roundToInt
 
 
@@ -90,7 +91,7 @@ fun Context.alert(
     @StringRes messageId: Int,
     init: (AlertBuilder.() -> Unit)? = null
 ) {
-    val builder = AlertDialog.Builder(this)
+    val builder = MaterialAlertDialogBuilder(this)
         .setTitle(titleId)
         .setMessage(messageId)
     init?.invoke(AlertBuilder(builder))
