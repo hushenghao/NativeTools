@@ -17,6 +17,8 @@
     <string name="label_net_speed_notify_quick_closeable">通知快捷关闭</string>
     <string name="label_net_speed_background">图标背景</string>
     <string name="label_night_mode">夜间模式</string>
+    <string name="label_net_speed_usage">显示每日和每月流量使用</string>
+    <string name="label_about">关于</string>
 
     <string name="summary_net_speed">在状态栏显示当前网速</string>
     <string name="summary_net_speed_locked_hide">锁屏时默认会隐藏通知。如果无效时才需开启当前选项，开启后会使当前应用的进程更容易被杀死</string>
@@ -25,6 +27,8 @@
     <string name="summary_net_speed_scale">虚线边框为状态栏图标的最大范围</string>
     <string name="summary_net_speed_notify_quick_closeable">在网速通知上添加一个关闭按钮</string>
     <string name="summary_night_mode_follow_system">跟随系统</string>
+    <string name="summary_net_speed_usage">通知显示移动数据和WLAN流量使用总和</string>
+    <string name="summary_about_version" translatable="false">v%s (%d)</string>
 
     <string name="usage_states_title">使用情况访问授权</string>
     <string name="usage_stats_msg">统计每日流量使用情况时需要允许使用情况访问权限</string>
@@ -34,8 +38,6 @@
     <string name="access">去授权</string>
     <string name="dont_ask">不再提示</string>
     <string name="desc_net_speed_notify">网速指示器需要通过通知来显示</string>
-    <string name="label_about">关于</string>
-    <string name="summary_about_version" translatable="false">v%s (%d)</string>
     <string name="chooser_label_browse">选择浏览器打开</string>
 
     <string name="percent_seek_bar_company" translatable="false">%</string>

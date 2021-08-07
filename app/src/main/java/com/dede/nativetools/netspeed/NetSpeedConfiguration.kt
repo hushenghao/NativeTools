@@ -20,12 +20,13 @@ data class NetSpeedConfiguration constructor(
     var mode: String,
     var scale: Float,
     var quickCloseable: Boolean,
-    var background: String
+    var background: String,
+    var usage: Boolean
 ) : Parcelable {
 
     constructor() : this(
         DEFAULT_INTERVAL, true, false,
-        MODE_DOWN, 1f, false, BACKGROUND_NONE
+        MODE_DOWN, 1f, false, BACKGROUND_NONE, false
     )
 
     fun copy(configuration: NetSpeedConfiguration): NetSpeedConfiguration {
@@ -36,6 +37,7 @@ data class NetSpeedConfiguration constructor(
         this.scale = configuration.scale
         this.quickCloseable = configuration.quickCloseable
         this.background = configuration.background
+        this.usage = configuration.usage
         return this
     }
 
@@ -65,6 +67,9 @@ data class NetSpeedConfiguration constructor(
             KEY_NET_SPEED_BACKGROUND -> {
                 this.background = preferences.getBackground()
             }
+            KEY_NET_SPEED_USAGE -> {
+                this.usage = preferences.get(key, false)
+            }
         }
     }
 
@@ -84,6 +89,7 @@ data class NetSpeedConfiguration constructor(
         const val KEY_NET_SPEED_BACKGROUND = "net_speed_background"
         const val KEY_OPS_DONT_ASK = "ops_dont_ask"
         const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
+        const val KEY_NET_SPEED_USAGE = "net_speed_usage"
 
         private const val DEFAULT_SCALE_INT = 100
         private const val SCALE_DIVISOR = 100f
@@ -137,6 +143,7 @@ data class NetSpeedConfiguration constructor(
                     defaultConfiguration.quickCloseable
                 )
             val background = globalPreferences.getBackground()
+            val usage = globalPreferences.get(KEY_NET_SPEED_USAGE, false)
             return NetSpeedConfiguration(
                 interval,
                 notifyClickable,
@@ -144,7 +151,8 @@ data class NetSpeedConfiguration constructor(
                 mode,
                 scale,
                 quickCloseable,
-                background
+                background,
+                usage
             )
         }
     }

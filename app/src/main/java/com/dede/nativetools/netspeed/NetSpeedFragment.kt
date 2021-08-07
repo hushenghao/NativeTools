@@ -40,6 +40,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private lateinit var scaleSeekBarPreference: SeekBarPreference
     private lateinit var statusSwitchPreference: SwitchPreference
+    private lateinit var usageSwitchPreference: SwitchPreferenceCompat
 
     private lateinit var closeReceiver: BroadcastReceiver
 
@@ -69,6 +70,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         scaleSeekBarPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)
         statusSwitchPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
         updateScalePreferenceIcon()
+        usageSwitchPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_USAGE)
         requirePreference<SwitchPreferenceCompat>(KEY_V28_NIGHT_MODE_TOGGLE).also {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 it.isVisible = false
@@ -123,7 +125,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         configuration.updateOnSharedPreferenceChanged(sharedPreferences, key)
         when (key) {
             NetSpeedConfiguration.KEY_NET_SPEED_STATUS -> {
-                val status = sharedPreferences.getBoolean(key, false)
+                val status = sharedPreferences.get(key, false)
                 if (status) startService() else stopService()
             }
             NetSpeedConfiguration.KEY_NET_SPEED_INTERVAL,
@@ -131,6 +133,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedConfiguration.KEY_NET_SPEED_QUICK_CLOSEABLE,
             NetSpeedConfiguration.KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
                 updateConfiguration()
+            }
+            NetSpeedConfiguration.KEY_NET_SPEED_USAGE -> {
+                updateConfiguration()
+                checkOps()
             }
             NetSpeedConfiguration.KEY_NET_SPEED_MODE,
             NetSpeedConfiguration.KEY_NET_SPEED_SCALE,
@@ -173,6 +179,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun checkOps() {
+        if (!configuration.usage) {
+            return
+        }
         val dontAskOps =
             globalPreferences.get(NetSpeedConfiguration.KEY_OPS_DONT_ASK, false)
         val context = requireContext()
@@ -188,7 +197,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             neutralButton(R.string.dont_ask) {
                 globalPreferences.put(NetSpeedConfiguration.KEY_OPS_DONT_ASK, true)
             }
-            negativeButton(R.string.cancel)
+            negativeButton(R.string.cancel) {
+                usageSwitchPreference.isChecked = false
+            }
         }
     }
 
@@ -196,7 +207,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         val context = requireContext()
         val areNotificationsEnabled = NetSpeedNotificationHelp.areNotificationEnabled(context)
         val dontAskNotify = globalPreferences
-            .getBoolean(NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK, false)
+            .get(NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK, false)
         if (dontAskNotify || areNotificationsEnabled) {
             return
         }

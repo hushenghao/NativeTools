@@ -41,6 +41,8 @@
     <string name="summary_night_mode_follow_system">跟随系统</string>
     <string name="label_night_mode">夜间模式</string>
     <string name="label_net_speed_toggle">切换</string>
+    <string name="label_net_speed_usage">显示每日和每月流量使用</string>
+    <string name="summary_net_speed_usage">通知显示移动数据和WLAN流量使用总和</string>
 
     <string-array name="net_speed_mode">
         <item>仅下载</item>

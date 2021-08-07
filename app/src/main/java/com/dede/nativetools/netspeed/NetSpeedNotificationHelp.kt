@@ -67,6 +67,24 @@ object NetSpeedNotificationHelp {
         return areNotificationsEnabled && !channelDisabled
     }
 
+    /**
+     * 获取所有数据使用量
+     */
+    private fun getUsageText(context: Context): String? {
+        if (!context.checkAppOps()) {
+            return null
+        }
+        val todayBytes = NetworkUsageUtil.todayNetworkUsageBytes(context)
+        val monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
+        return context.getString(
+            R.string.notify_net_speed_sub,
+            NetFormater.formatBytes(todayBytes, NetFormater.FLAG_BYTE, NetFormater.ACCURACY_EXACT)
+                .splicing(),
+            NetFormater.formatBytes(monthBytes, NetFormater.FLAG_BYTE, NetFormater.ACCURACY_EXACT)
+                .splicing()
+        )
+    }
+
     fun createNotification(
         context: Context,
         configuration: NetSpeedConfiguration,
@@ -74,32 +92,6 @@ object NetSpeedNotificationHelp {
         txSpeed: Long = 0L
     ): Notification {
         createChannel(context)
-
-        /**
-         * 获取所有数据下载量
-         */
-        fun getRxSubText(context: Context): String? {
-            if (!context.checkAppOps()) {
-                return null
-            }
-            val todayBytes = NetworkUsageUtil.todayNetworkUsageBytes(context)
-            val monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
-            return context.getString(
-                R.string.notify_net_speed_sub,
-                NetFormater.formatBytes(
-                    todayBytes,
-                    NetFormater.FLAG_BYTE,
-                    NetFormater.ACCURACY_EXACT
-                )
-                    .splicing(),
-                NetFormater.formatBytes(
-                    monthBytes,
-                    NetFormater.FLAG_BYTE,
-                    NetFormater.ACCURACY_EXACT
-                )
-                    .splicing()
-            )
-        }
 
         val downloadSpeedStr: String =
             NetFormater.formatBytes(rxSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT)
@@ -117,8 +109,11 @@ object NetSpeedNotificationHelp {
                 .setSound(null)
         }
 
+        if (configuration.usage) {
+            val usageText = getUsageText(context)
+            builder.setContentText(usageText)
+        }
         builder.setContentTitle(contentStr)
-            .setContentText(getRxSubText(context))
             .setAutoCancel(false)
             .setVisibility(Notification.VISIBILITY_SECRET)
             .setSmallIcon(createIcon(configuration, rxSpeed, txSpeed))
@@ -145,8 +140,7 @@ object NetSpeedNotificationHelp {
                     null,
                     context.getString(R.string.action_close),
                     closeBroadcast
-                )
-                    .build()
+                ).build()
             builder.addAction(closeAction)
         }
 
