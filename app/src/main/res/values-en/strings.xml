@@ -49,4 +49,6 @@
     <string name="action_share">Share</string>
     <string name="share_text">I found a useful gadget \"Net Monitor\". Go and download it! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
     <string name="toast_copyed">Copied</string>
+    <string name="summary_night_mode_follow_system">Follow System</string>
+    <string name="label_night_mode">Night Mode</string>
 </resources>

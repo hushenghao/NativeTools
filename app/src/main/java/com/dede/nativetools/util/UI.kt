@@ -7,6 +7,7 @@ import android.util.TypedValue
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import kotlin.math.roundToInt
@@ -14,6 +15,14 @@ import kotlin.math.roundToInt
 
 fun displayMetrics(): DisplayMetrics {
     return globalContext.resources.displayMetrics
+}
+
+fun setNightMode(enable: Boolean) {
+    val mode = if (enable)
+        AppCompatDelegate.MODE_NIGHT_YES
+    else
+        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+    AppCompatDelegate.setDefaultNightMode(mode)
 }
 
 val Number.dp: Int

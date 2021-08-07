@@ -3,6 +3,7 @@ package com.dede.nativetools.netspeed
 import android.content.*
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
@@ -22,10 +23,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     ServiceConnection {
 
-    private val configuration by lazy {
-        NetSpeedConfiguration.initialize()
-        // .also { it.onSharedPreferenceChangeListener = this }
-    }
+    private val configuration by lazy { NetSpeedConfiguration.initialize() }
 
     private var netSpeedBinder: INetSpeedInterface? = null
 
@@ -56,6 +54,17 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         scaleSeekBarPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)
         statusSwitchPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
         setScalePreferenceIcon()
+        requirePreference<SwitchPreferenceCompat>(KEY_V28_NIGHT_MODE_TOGGLE).also {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                it.isVisible = false
+            } else {
+                it.isVisible = true
+                it.setOnPreferenceChangeListener { _, newValue ->
+                    setNightMode(newValue == true)
+                    return@setOnPreferenceChangeListener true
+                }
+            }
+        }
         requirePreference<Preference>(KEY_ABOUT).also {
             it.summary = getString(
                 R.string.summary_about_version,
@@ -229,6 +238,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
 
         private const val KEY_ABOUT = "about"
+        const val KEY_V28_NIGHT_MODE_TOGGLE = "v28_night_mode_toggle"
     }
 
 }

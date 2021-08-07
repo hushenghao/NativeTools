@@ -76,6 +76,14 @@
         app:iconSpaceReserved="false"
         app:summary="@string/summary_net_speed_notify_quick_closeable" />
 
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
+        app:iconSpaceReserved="false"
+        app:key="v28_night_mode_toggle"
+        app:summaryOff="@string/summary_night_mode_follow_system"
+        app:summaryOn="@string/switch_on"
+        app:title="@string/label_night_mode" />
+
     <Preference
         android:fragment="com.dede.nativetools.ui.AboutFragment"
         android:key="about"
