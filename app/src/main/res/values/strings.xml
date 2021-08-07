@@ -16,6 +16,7 @@
     <string name="label_net_speed_icon_zoom">图标文字缩放</string>
     <string name="label_net_speed_notify_quick_closeable">通知快捷关闭</string>
     <string name="label_net_speed_background">图标背景</string>
+    <string name="label_night_mode">夜间模式</string>
 
     <string name="summary_net_speed">在状态栏显示当前网速</string>
     <string name="summary_net_speed_locked_hide">锁屏时默认会隐藏通知。如果无效时才需开启当前选项，开启后会使当前应用的进程更容易被杀死</string>
@@ -23,6 +24,7 @@
     <string name="summary_net_speed_auto_start">跟随系统启动后台服务</string>
     <string name="summary_net_speed_scale">虚线边框为状态栏图标的最大范围</string>
     <string name="summary_net_speed_notify_quick_closeable">在网速通知上添加一个关闭按钮</string>
+    <string name="summary_night_mode_follow_system">跟随系统</string>
 
     <string name="usage_states_title">使用情况访问授权</string>
     <string name="usage_stats_msg">统计每日流量使用情况时需要允许使用情况访问权限</string>
@@ -50,6 +52,7 @@
     <string name="label_email" translatable="false">Email: %s</string>
     <string name="url_pgyer" translatable="false">https://www.pgyer.com/U9kJ</string>
     <string name="toast_copyed">已复制</string>
+    <string name="label_net_speed_toggle">切换</string>
 
     <string-array name="net_speed_interval">
         <item>500 ms</item>

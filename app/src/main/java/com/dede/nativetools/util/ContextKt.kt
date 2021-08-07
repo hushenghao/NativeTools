@@ -1,24 +1,28 @@
+@file:JvmName("ContextKt")
+
 package com.dede.nativetools.util
 
 import android.app.ActivityManager
 import android.app.AppOpsManager
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
+import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
 import java.io.File
+import java.io.InputStream
 
+val globalContext: Context
+    get() = NativeToolsApp.getInstance()
 
 fun Context.safelyStartActivity(intent: Intent) {
-    try {
-        this.startActivity(intent)
-    } catch (e: Throwable) {
-    }
+    safely { this.startActivity(intent) }
 }
 
 fun Context.checkAppOps(): Boolean {
@@ -74,16 +78,21 @@ private fun Context.getCurrentProcessName(): String {
     } else {
         val activityManager = this.getSystemService<ActivityManager>() ?: return currentProcessName
         val list = activityManager.runningAppProcesses
-        if (list != null && list.isNotEmpty()) {
-            for (info in list) {
-                if (info.pid == pid) {
-                    currentProcessName = info.processName
-                    break
-                }
+        if (list == null || list.isEmpty()) {
+            return currentProcessName
+        }
+        for (info in list) {
+            if (info.pid == pid) {
+                currentProcessName = info.processName
+                break
             }
         }
     }
     return currentProcessName
+}
+
+fun Context.assets(fileName: String): InputStream {
+    return assets.open(fileName)
 }
 
 fun Context.toast(text: String) {
@@ -96,25 +105,29 @@ fun Context.toast(@StringRes resId: Int) {
 
 fun Context.browse(url: String) {
     val web = Intent(Intent.ACTION_VIEW)
-        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        .setData(Uri.parse(url))
-    val chooserIntent = Intent.createChooser(web, getString(R.string.chooser_label_browse))
-    startActivity(chooserIntent)
+        .setData(url)
+        .newTask()
+        .toChooser(R.string.chooser_label_browse)
+    startActivity(web)
 }
 
 fun Context.market(packageName: String) {
     val market = Intent(Intent.ACTION_VIEW)
-        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        .setData(Uri.parse("market://details?id=$packageName"))
-    val chooserIntent = Intent.createChooser(market, getString(R.string.chooser_label_market))
-    startActivity(chooserIntent)
+        .setData("market://details?id=$packageName")
+        .newTask()
+        .toChooser(R.string.chooser_label_market)
+    startActivity(market)
 }
 
 fun Context.share(@StringRes textId: Int) {
-    val intent = Intent(Intent.ACTION_SEND)
-        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    val intent = Intent(Intent.ACTION_SEND, Intent.EXTRA_TEXT to getString(textId))
         .setType("text/plain")
-        .putExtra(Intent.EXTRA_TEXT, getString(textId))
-    val chooserIntent = Intent.createChooser(intent, getString(R.string.action_share))
-    startActivity(chooserIntent)
+        .newTask()
+        .toChooser(R.string.action_share)
+    startActivity(intent)
+}
+
+fun Context.copy(text: String) {
+    val clipboardManager = this.getSystemService<ClipboardManager>() ?: return
+    clipboardManager.setPrimaryClip(ClipData.newPlainText("text", text))
 }

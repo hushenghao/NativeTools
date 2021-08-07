@@ -38,6 +38,9 @@
     <string name="action_share">分享</string>
     <string name="share_text">发现了一个好用的小工具“网速指示器”快去下载吧！https://www.coolapk.com/apk/com.dede.nativetools</string>
     <string name="toast_copyed">已复制</string>
+    <string name="summary_night_mode_follow_system">跟随系统</string>
+    <string name="label_night_mode">夜间模式</string>
+    <string name="label_net_speed_toggle">切换</string>
 
     <string-array name="net_speed_mode">
         <item>仅下载</item>

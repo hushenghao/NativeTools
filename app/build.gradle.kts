@@ -1,4 +1,4 @@
-import java.util.Properties
+import java.util.*
 
 val keystoreProperties = Properties().apply {
     rootProject.file("key.properties")
@@ -18,8 +18,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 31
-        versionCode = 20
-        versionName = "2.3.0"
+        versionCode = 22
+        versionName = "2.4.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.let {
@@ -39,6 +39,8 @@ android {
             keyPassword = keystoreProperties.getProperty("keyPassword")
             storeFile = file(keystoreProperties.getProperty("storeFile"))
             storePassword = keystoreProperties.getProperty("storePassword")
+            enableV3Signing = true
+            enableV4Signing = true
         }
     }
 
@@ -73,7 +75,7 @@ android {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra.get("kotlin_version")}")
     implementation("androidx.appcompat:appcompat:1.3.0")
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.preference:preference-ktx:1.1.1")
@@ -88,14 +90,49 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }
 
-tasks.create("jsonCompress") {
+configurations.all {
+    //exclude("androidx.drawerlayout", "drawerlayout")
+    //exclude("androidx.coordinatorlayout", "coordinatorlayout")
+    //exclude("androidx.cardview", "cardview")
+    exclude("androidx.viewpager2", "viewpager2")
+    exclude("androidx.viewpager", "viewpager")
+    exclude("androidx.slidingpanelayout", "slidingpanelayout")
+    exclude("androidx.swiperefreshlayout", "swiperefreshlayout")
+    exclude("androidx.asynclayoutinflater", "asynclayoutinflater")
+    exclude("androidx.transition", "transition")
+    exclude("androidx.dynamicanimation", "dynamicanimation")
+    exclude("androidx.vectordrawable", "vectordrawable-animated")
+    exclude("androidx.versionedparcelable", "versionedparcelable")
+    exclude("androidx.localbroadcastmanager", "localbroadcastmanager")
+    exclude("androidx.documentfile", "documentfile")
+    exclude("androidx.print", "print")
+    exclude("androidx.cursoradapter", "cursoradapter")
+}
+
+val pgyer = tasks.create<Exec>("pgyer") {
+    commandLine(
+        "curl", "-F",
+        "-F", "_api_key=${keystoreProperties["pgyer.api_key"]}",
+        "-F", "buildUpdateDescription=Upload by gradle pgyer task",
+        "https://www.pgyer.com/apiv2/app/upload"
+    )
     doLast {
-        val jsonFile = file("src/main/assets/open_source.json")
-        val jsonElement = com.google.gson.JsonParser.parseString(jsonFile.readText())
-        val gson = com.google.gson.GsonBuilder().create()
-        val jsonStr = gson.toJson(jsonElement)
-        // jsonFile.delete()
-        jsonFile.writeText(jsonStr)
-        println("JSON Compress Completed!")
+        println("\nUpload Completed!")
+    }
+}
+
+afterEvaluate {
+    val assemble = tasks.findByName("assembleRelease") as Task
+    pgyer.dependsOn("clean", assemble)
+    assemble.mustRunAfter("clean")
+//    pgyer.dependsOn(assemble)
+    assemble.doLast {
+        val tree = fileTree("build/outputs/apk/release") {
+            include("*.apk")
+        }
+        val apkFile = tree.singleFile
+        pgyer.commandLine = pgyer.commandLine.apply {
+            add(2, "file=@${apkFile.absolutePath}")
+        }
     }
 }

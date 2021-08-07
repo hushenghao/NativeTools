@@ -7,16 +7,15 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
-import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
-import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.R
-import com.dede.nativetools.util.checkAppOps
-import com.dede.nativetools.util.safelyStartActivity
-import com.dede.nativetools.util.splicing
+import com.dede.nativetools.netspeed.utils.NetFormater
+import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
+import com.dede.nativetools.ui.MainActivity
+import com.dede.nativetools.util.*
 
 /**
  * 网速通知
@@ -30,21 +29,23 @@ object NetSpeedNotificationHelp {
         // ShowOnLockScreenNotificationPreferenceController
         val intent = Intent("android.settings.NOTIFICATION_SETTINGS")
             //.putExtra(":settings:fragment_args_key", "configure_notifications_lock")
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            .newTask()
         context.safelyStartActivity(intent)
     }
 
     fun goNotificationSetting(context: Context) {
         val packageName = context.packageName
         val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
-                .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
-                .putExtra(Settings.EXTRA_CHANNEL_ID, CHANNEL_ID)
+            Intent(
+                Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
+                Settings.EXTRA_APP_PACKAGE to packageName,
+                Settings.EXTRA_CHANNEL_ID to CHANNEL_ID
+            )
         } else {
             Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                .setData(Uri.parse("package:$packageName"))
+                .setData("package:$packageName")
         }
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.newTask()
         context.safelyStartActivity(intent)
     }
 
@@ -81,21 +82,31 @@ object NetSpeedNotificationHelp {
             if (!context.checkAppOps()) {
                 return null
             }
-            val todayBytes = NetUtil.getTodayNetworkUsageRxBytes(context)
-            val monthBytes = NetUtil.getMonthNetworkUsageRxBytes(context)
+            val todayBytes = NetworkUsageUtil.todayNetworkUsageBytes(context)
+            val monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
             return context.getString(
                 R.string.notify_net_speed_sub,
-                NetUtil.formatBytes(todayBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EXACT)
+                NetFormater.formatBytes(
+                    todayBytes,
+                    NetFormater.FLAG_BYTE,
+                    NetFormater.ACCURACY_EXACT
+                )
                     .splicing(),
-                NetUtil.formatBytes(monthBytes, NetUtil.FLAG_BYTE, NetUtil.ACCURACY_EXACT)
+                NetFormater.formatBytes(
+                    monthBytes,
+                    NetFormater.FLAG_BYTE,
+                    NetFormater.ACCURACY_EXACT
+                )
                     .splicing()
             )
         }
 
         val downloadSpeedStr: String =
-            NetUtil.formatBytes(rxSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
+            NetFormater.formatBytes(rxSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT)
+                .splicing()
         val uploadSpeedStr: String =
-            NetUtil.formatBytes(txSpeed, NetUtil.FLAG_FULL, NetUtil.ACCURACY_EXACT).splicing()
+            NetFormater.formatBytes(txSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT)
+                .splicing()
         val contentStr =
             context.getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
 
@@ -126,12 +137,9 @@ object NetSpeedNotificationHelp {
         }
 
         if (configuration.quickCloseable) {
-            val closeBroadcast = PendingIntent.getBroadcast(
-                context,
-                0,
-                Intent(NetSpeedService.ACTION_CLOSE).setPackage(context.packageName),
-                pendingFlag
-            )
+            val closeBroadcast = Intent(NetSpeedService.ACTION_CLOSE)
+                .setPackage(context.packageName)
+                .toPendingBroadcast(context, pendingFlag)
             val closeAction =
                 Notification.Action.Builder(
                     null,
@@ -143,12 +151,9 @@ object NetSpeedNotificationHelp {
         }
 
         if (configuration.notifyClickable) {
-            val intent = Intent(context, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            val pendingIntent = PendingIntent.getActivity(
-                context, 0,
-                intent, pendingFlag
-            )
+            val pendingIntent = Intent<MainActivity>(context)
+                .newTask()
+                .toPendingActivity(context, pendingFlag)
             builder.setContentIntent(pendingIntent)
         }
 

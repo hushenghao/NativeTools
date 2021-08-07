@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="appPrimary">#008577</color>
-    <color name="appAccent">#D81B60</color>
-    <color name="maskBgColor">#008577</color>
+    <!-- Material颜色工具 https://material.io/tools/color -->
+    <color name="appPrimary">#00796b</color>
+    <color name="appAccent">#d81b60</color>
 
-    <color name="ic_launcher_background">#008577</color>
+    <color name="maskBgColor">#00796B</color>
+    <color name="ic_launcher_background">#00796b</color>
     <color name="github_tint">#000</color>
 
 </resources>

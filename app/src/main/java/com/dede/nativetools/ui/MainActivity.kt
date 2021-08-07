@@ -1,5 +1,7 @@
 package com.dede.nativetools.ui
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -8,23 +10,46 @@ import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
+import com.dede.nativetools.netspeed.NetSpeedFragment
+import com.dede.nativetools.netspeed.NetSpeedService
+import com.dede.nativetools.util.get
+import com.dede.nativetools.util.globalPreferences
+import com.dede.nativetools.util.setNightMode
 
 /**
  * Main
  */
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
 
     private val binding by viewBinding(ActivityMainBinding::bind)
     private val navController by lazy { findNavController(R.id.nav_host_fragment) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.ThemeOverlay_Shapes_Rounded)
+        setTheme(R.style.ThemeOverlay_ShapeSize_Large)
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        val isToggle = intent.getBooleanExtra("extra_toggle", false)
+        if (isToggle) {
+            NetSpeedService.toggle(this)
+            finish()
+            return
+        }
+
+        setContentView(R.layout.activity_main)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        } else {
+            setNightMode(globalPreferences.get(NetSpeedFragment.KEY_V28_NIGHT_MODE_TOGGLE, false))
+        }
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(this, navController)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.toolbar.title = destination.label
-        }
+
+        navController.handleDeepLink(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        navController.handleDeepLink(intent)
     }
 
     override fun onSupportNavigateUp(): Boolean {

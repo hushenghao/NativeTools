@@ -4,16 +4,26 @@ import android.content.Context
 import android.content.DialogInterface
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.dede.nativetools.NativeToolsApp
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlin.math.roundToInt
 
 
-private inline fun displayMetrics(): DisplayMetrics {
-    return NativeToolsApp.getInstance().resources.displayMetrics
+fun displayMetrics(): DisplayMetrics {
+    return globalContext.resources.displayMetrics
+}
+
+fun setNightMode(enable: Boolean) {
+    val mode = if (enable)
+        AppCompatDelegate.MODE_NIGHT_YES
+    else
+        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+    AppCompatDelegate.setDefaultNightMode(mode)
 }
 
 val Number.dp: Int
@@ -29,6 +39,18 @@ val Number.dpf: Float
         this.toFloat(),
         displayMetrics()
     )
+
+fun View.gone() {
+    this.visibility = View.GONE
+}
+
+fun View.show() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    this.visibility = View.INVISIBLE
+}
 
 fun <T : Preference> PreferenceFragmentCompat.requirePreference(key: CharSequence): T {
     return findPreference(key) as? T
@@ -69,7 +91,7 @@ fun Context.alert(
     @StringRes messageId: Int,
     init: (AlertBuilder.() -> Unit)? = null
 ) {
-    val builder = AlertDialog.Builder(this)
+    val builder = MaterialAlertDialogBuilder(this)
         .setTitle(titleId)
         .setMessage(messageId)
     init?.invoke(AlertBuilder(builder))
