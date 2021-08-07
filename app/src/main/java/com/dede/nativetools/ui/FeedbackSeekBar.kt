@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
 import android.widget.SeekBar
+import androidx.appcompat.R
 import androidx.appcompat.widget.AppCompatSeekBar
 
 /**
@@ -12,7 +13,7 @@ import androidx.appcompat.widget.AppCompatSeekBar
 class FeedbackSeekBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = R.attr.seekBarStyle
 ) : AppCompatSeekBar(context, attrs, defStyleAttr) {
 
     private val listener = object : OnSeekBarChangeListener {
