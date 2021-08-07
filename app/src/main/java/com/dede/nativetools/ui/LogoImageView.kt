@@ -23,8 +23,11 @@ import com.dede.nativetools.util.show
 import kotlin.math.abs
 import kotlin.math.max
 
-class LogoImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
-    AppCompatImageView(context, attrs) {
+class LogoImageView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : AppCompatImageView(context, attrs, defStyleAttr) {
 
     companion object {
         private const val TAG = "LogoImageView"
@@ -137,7 +140,6 @@ class LogoImageView @JvmOverloads constructor(context: Context, attrs: Attribute
         end: Float
     ): ValueAnimator {
         return ObjectAnimator.ofFloat(target, property, start, end)
-            .apply { setAutoCancel(true) }
     }
 
     private fun cleanAnimator() {

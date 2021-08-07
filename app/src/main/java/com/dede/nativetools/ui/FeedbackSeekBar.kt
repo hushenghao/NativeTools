@@ -9,8 +9,11 @@ import androidx.appcompat.widget.AppCompatSeekBar
 /**
  * 带震动反馈的SeekBar
  */
-class FeedbackSeekBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
-    AppCompatSeekBar(context, attrs) {
+class FeedbackSeekBar @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : AppCompatSeekBar(context, attrs, defStyleAttr) {
 
     private val listener = object : OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
