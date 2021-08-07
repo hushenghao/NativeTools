@@ -18,7 +18,7 @@ fun Fragment.lifecycleAnimator(
 ): ObjectAnimator {
     val lifecycle = this.lifecycle
     val animator = ObjectAnimator.ofFloat(target, property, *values)
-    val observer = LifecycleEventObserver { source, event ->
+    val observer = LifecycleEventObserver { _, event ->
         if (event == Lifecycle.Event.ON_DESTROY) {
             animator.cancel()
         }

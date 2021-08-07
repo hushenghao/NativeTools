@@ -52,6 +52,7 @@
     <string name="label_email" translatable="false">Email: %s</string>
     <string name="url_pgyer" translatable="false">https://www.pgyer.com/U9kJ</string>
     <string name="toast_copyed">已复制</string>
+    <string name="label_net_speed_toggle">切换</string>
 
     <string-array name="net_speed_interval">
         <item>500 ms</item>

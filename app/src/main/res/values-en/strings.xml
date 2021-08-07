@@ -51,4 +51,5 @@
     <string name="toast_copyed">Copied</string>
     <string name="summary_night_mode_follow_system">Follow System</string>
     <string name="label_night_mode">Night Mode</string>
+    <string name="label_net_speed_toggle">Toggle</string>
 </resources>

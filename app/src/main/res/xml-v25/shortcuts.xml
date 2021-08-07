@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:icon="@drawable/ic_about"
+        android:shortcutId="about"
+        android:shortcutLongLabel="@string/label_about"
+        android:shortcutShortLabel="@string/label_about">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://dede.nativetools/about"
+            android:targetClass="com.dede.nativetools.ui.MainActivity"
+            android:targetPackage="com.dede.nativetools" />
+    </shortcut>
+    <shortcut
+        android:icon="@drawable/ic_toggle"
+        android:shortcutId="toggle"
+        android:shortcutLongLabel="@string/label_net_speed_toggle"
+        android:shortcutShortLabel="@string/label_net_speed_toggle">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.dede.nativetools.ui.MainActivity"
+            android:targetPackage="com.dede.nativetools">
+            <extra
+                android:name="extra_toggle"
+                android:value="true" />
+        </intent>
+
+    </shortcut>
+</shortcuts>

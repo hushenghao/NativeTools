@@ -1,14 +1,13 @@
 package com.dede.nativetools.netspeed
 
 import android.content.*
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
 import android.provider.Settings
-import androidx.core.content.ContextCompat
+import android.util.Log
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
 import androidx.preference.*
@@ -23,6 +22,19 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     ServiceConnection {
 
+    companion object {
+        private const val TAG = "NetSpeedFragment"
+
+        // 888M 931135488L
+        private const val MODE_ALL_BYTES = (2 shl 19) * 888L
+
+        // 88.8M 93113549L
+        private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
+
+        private const val KEY_ABOUT = "about"
+        const val KEY_V28_NIGHT_MODE_TOGGLE = "v28_night_mode_toggle"
+    }
+
     private val configuration by lazy { NetSpeedConfiguration.initialize() }
 
     private var netSpeedBinder: INetSpeedInterface? = null
@@ -30,12 +42,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private lateinit var scaleSeekBarPreference: SeekBarPreference
     private lateinit var statusSwitchPreference: SwitchPreference
 
-    private val closeReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            stopService()
-            statusSwitchPreference.isChecked = false
-        }
-    }
+    private lateinit var closeReceiver: BroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +52,15 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         checkOps()
         checkNotification()
 
+        if (!::closeReceiver.isInitialized) {
+            closeReceiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    stopService()
+                    statusSwitchPreference.isChecked = false
+                }
+            }
+        }
+
         val intentFilter = IntentFilter(NetSpeedService.ACTION_CLOSE)
         requireContext().registerReceiver(closeReceiver, intentFilter)
     }
@@ -53,7 +69,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         addPreferencesFromResource(R.xml.net_speed_preference)
         scaleSeekBarPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)
         statusSwitchPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
-        setScalePreferenceIcon()
+        updateScalePreferenceIcon()
         requirePreference<SwitchPreferenceCompat>(KEY_V28_NIGHT_MODE_TOGGLE).also {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 it.isVisible = false
@@ -121,7 +137,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedConfiguration.KEY_NET_SPEED_SCALE,
             NetSpeedConfiguration.KEY_NET_SPEED_BACKGROUND -> {
                 updateConfiguration()
-                setScalePreferenceIcon()
+                updateScalePreferenceIcon()
             }
         }
     }
@@ -134,11 +150,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
     }
 
-    private fun setScalePreferenceIcon() {
-        scaleSeekBarPreference.icon = createScalePreferenceIcon()
-    }
+    private fun updateScalePreferenceIcon() {
+        val drawable = scaleSeekBarPreference.icon
 
-    private fun createScalePreferenceIcon(): Drawable {
         val size = resources.getDimensionPixelSize(R.dimen.percent_preference_icon_size)
         val speed: Long = if (configuration.mode == NetSpeedConfiguration.MODE_ALL) {
             MODE_ALL_BYTES
@@ -147,13 +161,14 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
         val bitmap = NetTextIconFactory.createIconBitmap(speed, speed, configuration, size, false)
         val layerDrawable =
-            ContextCompat.getDrawable(requireContext(), R.drawable.layer_icon_mask) as LayerDrawable
+            drawable as LayerDrawable
         layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmap.toDrawable(resources))
-        return layerDrawable
     }
 
     override fun onDestroy() {
-        requireContext().unregisterReceiver(closeReceiver)
+        if (::closeReceiver.isInitialized) {
+            requireContext().unregisterReceiver(closeReceiver)
+        }
         unbindService()
         super.onDestroy()
     }
@@ -226,19 +241,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
         requireContext().unbindService(this)
         netSpeedBinder = null
-    }
-
-    companion object {
-        private const val TAG = "NetSpeedFragment"
-
-        // 888M 931135488L
-        private const val MODE_ALL_BYTES = (2 shl 19) * 888L
-
-        // 88.8M 93113549L
-        private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
-
-        private const val KEY_ABOUT = "about"
-        const val KEY_V28_NIGHT_MODE_TOGGLE = "v28_night_mode_toggle"
     }
 
 }

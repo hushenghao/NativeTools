@@ -28,6 +28,9 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <!-- https://developer.android.com/about/versions/12/behavior-changes-12#exported -->

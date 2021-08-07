@@ -14,6 +14,7 @@ import androidx.core.content.getSystemService
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.get
 import com.dede.nativetools.util.globalPreferences
+import com.dede.nativetools.util.put
 
 
 class NetSpeedService : Service() {
@@ -44,6 +45,17 @@ class NetSpeedService : Service() {
                 val intent = createIntent(context)
                 ContextCompat.startForegroundService(context, intent)
             }
+        }
+
+        fun toggle(context: Context) {
+            val status = globalPreferences.get(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, false)
+            val intent = createIntent(context)
+            if (status) {
+                context.stopService(intent)
+            } else {
+                ContextCompat.startForegroundService(context, intent)
+            }
+            globalPreferences.put(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, !status)
         }
     }
 
