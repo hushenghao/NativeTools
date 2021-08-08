@@ -81,7 +81,7 @@ class NetSpeedService : Service() {
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF)// 关闭屏幕
         intentFilter.addAction(Intent.ACTION_USER_PRESENT)// 解锁
         intentFilter.addAction(ACTION_CLOSE)// 关闭
-        registerReceiver(lockedHideReceiver, intentFilter)
+        registerReceiver(innerReceiver, intentFilter)
 
         resume()
     }
@@ -132,14 +132,14 @@ class NetSpeedService : Service() {
 
     override fun onDestroy() {
         pause()
-        unregisterReceiver(lockedHideReceiver)
+        unregisterReceiver(innerReceiver)
         super.onDestroy()
     }
 
     /**
      * 接收解锁、熄屏、亮屏广播
      */
-    private val lockedHideReceiver = object : BroadcastReceiver() {
+    private val innerReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context?, intent: Intent?) {
             val action = intent?.action ?: return

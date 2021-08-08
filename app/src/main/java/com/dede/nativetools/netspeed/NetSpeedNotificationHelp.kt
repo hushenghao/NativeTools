@@ -132,21 +132,15 @@ object NetSpeedNotificationHelp {
         }
 
         if (configuration.quickCloseable) {
-            val closeBroadcast = Intent(NetSpeedService.ACTION_CLOSE)
-                .setPackage(context.packageName)
+            val closeAction = Intent(NetSpeedService.ACTION_CLOSE)
                 .toPendingBroadcast(context, pendingFlag)
-            val closeAction =
-                Notification.Action.Builder(
-                    null,
-                    context.getString(R.string.action_close),
-                    closeBroadcast
-                ).build()
+                .toNotificationAction(R.string.action_close)
             builder.addAction(closeAction)
         }
 
         if (configuration.notifyClickable) {
             val pendingIntent = Intent<MainActivity>(context)
-                .newTask()
+                .newClearTask()
                 .toPendingActivity(context, pendingFlag)
             builder.setContentIntent(pendingIntent)
         }
