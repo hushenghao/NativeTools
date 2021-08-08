@@ -101,7 +101,7 @@ configurations.all {
     exclude("androidx.asynclayoutinflater", "asynclayoutinflater")
     exclude("androidx.transition", "transition")
     exclude("androidx.dynamicanimation", "dynamicanimation")
-    exclude("androidx.vectordrawable", "vectordrawable-animated")
+    //exclude("androidx.vectordrawable", "vectordrawable-animated")
     exclude("androidx.versionedparcelable", "versionedparcelable")
     exclude("androidx.localbroadcastmanager", "localbroadcastmanager")
     exclude("androidx.documentfile", "documentfile")

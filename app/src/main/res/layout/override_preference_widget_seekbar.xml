@@ -38,13 +38,7 @@
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
         android:minWidth="56dp"
-        android:orientation="horizontal"
-        android:paddingStart="0dp"
-        android:paddingLeft="0dp"
-        android:paddingTop="0dp"
-        android:paddingEnd="12dp"
-        android:paddingRight="12dp"
-        android:paddingBottom="0dp">
+        android:orientation="horizontal">
 
         <!--fix hide class warning-->
         <view
@@ -61,7 +55,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="0dp"
         android:clipChildren="false"
         android:clipToPadding="false">
 
@@ -69,6 +62,8 @@
             android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceListItem" />
@@ -99,10 +94,7 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             android:gravity="center_vertical"
-            android:paddingStart="0dp"
-            android:paddingLeft="0dp"
-            android:paddingEnd="0dp"
-            android:paddingRight="0dp">
+            android:visibility="gone">
 
             <!-- The total height of the Seekbar widget's area should be 48dp - this allows for an
             increased touch area so you do not need to exactly tap the thumb to move it. However,
@@ -145,17 +137,26 @@
                 android:textAppearance="?android:attr/textAppearanceListItem"
                 android:textSize="14sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:paddingStart="4dp"
-                android:paddingLeft="4dp"
-                android:text="@string/percent_seek_bar_company"
-                android:textAppearance="?android:attr/textAppearanceListItem"
-                android:textSize="14sp" />
-
         </view>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_below="@android:id/summary"
+            android:layout_marginTop="-4dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:labelBehavior="floating"
+                app:thumbRadius="6dp"
+                app:tickVisible="false"
+                app:trackHeight="3dp" />
+        </FrameLayout>
 
     </RelativeLayout>
 </LinearLayout>

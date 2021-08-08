@@ -29,7 +29,7 @@
         app:title="@string/label_net_speed_mode"
         app:useSimpleSummaryProvider="true" />
 
-    <SeekBarPreference
+    <com.dede.nativetools.ui.SlidePreference
         android:defaultValue="100"
         android:key="net_speed_scale"
         android:max="115"
