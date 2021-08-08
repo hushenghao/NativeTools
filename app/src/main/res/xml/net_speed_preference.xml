@@ -62,6 +62,13 @@
         app:iconSpaceReserved="false"
         app:summary="@string/summary_net_speed_locked_hide" />
 
+    <SwitchPreferenceCompat
+        app:key="net_speed_usage"
+        app:title="@string/label_net_speed_usage"
+        app:defaultValue="false"
+        app:summary="@string/summary_net_speed_usage"
+        app:iconSpaceReserved="false"/>
+
     <SwitchPreference
         android:key="net_speed_notify_clickable"
         android:title="@string/label_net_speed_notify_clickable"

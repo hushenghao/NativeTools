@@ -2,6 +2,7 @@ package com.dede.nativetools.util
 
 import android.text.Spanned
 import android.text.TextUtils
+import android.util.Base64
 import androidx.core.text.HtmlCompat
 
 
@@ -36,6 +37,12 @@ fun String.trimZeroAndDot(): String {
         s = s.replace(regexTrimDot, "")
     }
     return s
+}
+
+fun String.decodeBase64(): String? {
+    return safely(null) {
+        String(Base64.decode(this, Base64.DEFAULT))
+    }
 }
 
 inline fun <T> safely(default: T, block: () -> T): T {

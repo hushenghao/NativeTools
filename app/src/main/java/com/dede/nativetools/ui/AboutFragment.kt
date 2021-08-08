@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.animation.addListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -89,7 +89,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.container.addView(
             insert,
             binding.container.indexOfChild(last) + 1,
-            ConstraintLayout.LayoutParams(last.layoutParams as ConstraintLayout.LayoutParams)
+            LayoutParams(last.layoutParams as LayoutParams)
         )
         followViews.add(insert)
         setFollowView(followViews)
@@ -128,17 +128,16 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+        when (item.itemId) {
             R.id.action_share -> {
                 requireContext().share(R.string.share_text)
-                true
             }
             R.id.action_get_beta -> {
                 requireContext().browse(getString(R.string.url_pgyer))
-                true
             }
-            else -> super.onOptionsItemSelected(item)
+            else -> return super.onOptionsItemSelected(item)
         }
+        return true
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

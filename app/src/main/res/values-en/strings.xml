@@ -52,4 +52,6 @@
     <string name="summary_night_mode_follow_system">Follow System</string>
     <string name="label_night_mode">Night Mode</string>
     <string name="label_net_speed_toggle">Toggle</string>
+    <string name="label_net_speed_usage">Displays daily and monthly traffic usage</string>
+    <string name="summary_net_speed_usage">Notifications display the total usage of mobile data and WLAN traffic</string>
 </resources>
