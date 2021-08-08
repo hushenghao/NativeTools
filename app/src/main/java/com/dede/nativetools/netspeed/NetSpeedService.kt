@@ -11,10 +11,8 @@ import android.content.IntentFilter
 import android.os.IBinder
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
-import com.dede.nativetools.util.Intent
-import com.dede.nativetools.util.get
-import com.dede.nativetools.util.globalPreferences
-import com.dede.nativetools.util.put
+import com.dede.nativetools.netspeed.utils.DebugClipboardUtil
+import com.dede.nativetools.util.*
 
 
 class NetSpeedService : Service() {
@@ -76,12 +74,16 @@ class NetSpeedService : Service() {
     override fun onCreate() {
         super.onCreate()
         notificationManager = getSystemService<NotificationManager>()
-        val intentFilter = IntentFilter()
-        intentFilter.addAction(Intent.ACTION_SCREEN_ON)// 打开屏幕
-        intentFilter.addAction(Intent.ACTION_SCREEN_OFF)// 关闭屏幕
-        intentFilter.addAction(Intent.ACTION_USER_PRESENT)// 解锁
-        intentFilter.addAction(ACTION_CLOSE)// 关闭
+        val intentFilter = IntentFilter().addActions(
+            Intent.ACTION_SCREEN_ON,// 打开屏幕
+            Intent.ACTION_SCREEN_OFF,// 关闭屏幕
+            Intent.ACTION_USER_PRESENT,// 解锁
+            ACTION_CLOSE// 关闭
+        )
         registerReceiver(innerReceiver, intentFilter)
+
+        // adb广播操作剪切板
+        DebugClipboardUtil.register(this)
 
         resume()
     }
@@ -133,6 +135,7 @@ class NetSpeedService : Service() {
     override fun onDestroy() {
         pause()
         unregisterReceiver(innerReceiver)
+        DebugClipboardUtil.unregister(this)
         super.onDestroy()
     }
 

@@ -2,6 +2,7 @@
 
 package com.dede.nativetools.util
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.app.AppOpsManager
 import android.content.ClipData
@@ -130,4 +131,13 @@ fun Context.share(@StringRes textId: Int) {
 fun Context.copy(text: String) {
     val clipboardManager = this.getSystemService<ClipboardManager>() ?: return
     clipboardManager.setPrimaryClip(ClipData.newPlainText("text", text))
+}
+
+fun Context.readClipboard(): String? {
+    val clipboardManager = getSystemService<ClipboardManager>() ?: return null
+    val primaryClip = clipboardManager.primaryClip ?: return null
+    if (primaryClip.itemCount > 0) {
+        return primaryClip.getItemAt(0)?.text?.toString()
+    }
+    return null
 }
