@@ -2,9 +2,11 @@
 
 package com.dede.nativetools.util
 
+import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Parcelable
 import android.util.Log
@@ -36,6 +38,8 @@ fun Intent.putExtras(vararg extras: Pair<String, Any>): Intent {
 
 fun Intent.newTask(): Intent = this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
+fun Intent.newClearTask(): Intent = this.newTask().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
 fun Intent.setData(uri: String): Intent = setData(Uri.parse(uri))
 
 fun Intent.toChooser(@StringRes titleId: Int): Intent =
@@ -47,4 +51,12 @@ fun Intent.toPendingActivity(context: Context, flags: Int): PendingIntent =
 fun Intent.toPendingBroadcast(context: Context, flags: Int): PendingIntent =
     PendingIntent.getBroadcast(context, 0, this, flags)
 
+fun PendingIntent.toNotificationAction(@StringRes titleId: Int): Notification.Action =
+    Notification.Action.Builder(null, globalContext.getString(titleId), this).build()
 
+fun IntentFilter.addActions(vararg actions: String): IntentFilter {
+    for (action in actions) {
+        this.addAction(action)
+    }
+    return this
+}
