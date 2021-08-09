@@ -110,13 +110,17 @@ configurations.all {
 }
 
 val pgyer = tasks.create<Exec>("pgyer") {
+    val apiKey = keystoreProperties["pgyer.api_key"]
     commandLine(
         "curl", "-F",
-        "-F", "_api_key=${keystoreProperties["pgyer.api_key"]}",
+        "-F", "_api_key=$apiKey",
         "-F", "buildUpdateDescription=Upload by gradle pgyer task",
         "https://www.pgyer.com/apiv2/app/upload"
     )
     doLast {
+        if (apiKey == null) {
+            throw IllegalArgumentException("pgyer.api_key undefind")
+        }
         println("\nUpload Completed!")
     }
 }

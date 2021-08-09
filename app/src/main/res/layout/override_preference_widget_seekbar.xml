@@ -143,7 +143,7 @@
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_below="@android:id/summary"
-            android:layout_marginTop="-4dp"
+            android:layout_marginTop="-6dp"
             android:clipChildren="false"
             android:clipToPadding="false">
 
@@ -155,8 +155,8 @@
                 app:labelBehavior="floating"
                 app:thumbColor="@color/appAccent"
                 app:thumbRadius="8dp"
-                app:tickVisible="false"
-                app:trackHeight="3dp" />
+                app:trackColorActive="@color/appAccent"
+                app:trackHeight="2dp" />
         </FrameLayout>
 
     </RelativeLayout>
