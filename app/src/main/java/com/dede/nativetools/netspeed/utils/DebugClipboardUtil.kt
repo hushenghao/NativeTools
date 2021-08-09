@@ -7,6 +7,23 @@ import android.content.Intent
 import android.content.IntentFilter
 import com.dede.nativetools.util.*
 
+
+/**
+ * 添加了一个小的开发工具
+ * 使用adb修改/获取剪切板内容
+ *
+ * 修改剪切板
+ * adb shell am broadcast -a clipboard.set -e text "Hello World!"
+ * adb shell am broadcast -a clipboard.set -e base64 "SGVsbG8gV29ybGQh"
+ *
+ * 读取剪切板 (由于系统限制，只有应用在前台才能读取)
+ * adb shell am broadcast -a clipboard.get
+ *
+ * Why?
+ * adb shell input text "Hello World!"
+ * 对输入内容做了限制，同时对ime也有要求，所以这里使用剪切板来快捷发送字符串到手机
+ * 由于NetSpeedService做为前台服务，可长时间稳定运行，所以直接依附于当前服务
+ */
 class DebugClipboardUtil : BroadcastReceiver() {
 
     companion object {
