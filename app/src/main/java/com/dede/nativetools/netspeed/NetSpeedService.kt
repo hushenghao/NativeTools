@@ -9,10 +9,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
-import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import com.dede.nativetools.netspeed.utils.DebugClipboardUtil
-import com.dede.nativetools.util.*
+import com.dede.nativetools.util.Intent
+import com.dede.nativetools.util.addActions
+import com.dede.nativetools.util.startService
 
 
 class NetSpeedService : Service() {
@@ -38,22 +39,20 @@ class NetSpeedService : Service() {
         }
 
         fun launchForeground(context: Context) {
-            val status = globalPreferences.get(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, false)
-            if (status) {
-                val intent = createIntent(context)
-                ContextCompat.startForegroundService(context, intent)
+            if (NetSpeedPreferences.status) {
+                context.startService(createIntent(context), true)
             }
         }
 
         fun toggle(context: Context) {
-            val status = globalPreferences.get(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, false)
+            val status = NetSpeedPreferences.status
             val intent = createIntent(context)
             if (status) {
                 context.stopService(intent)
             } else {
-                ContextCompat.startForegroundService(context, intent)
+                context.startService(intent, true)
             }
-            globalPreferences.put(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, !status)
+            NetSpeedPreferences.status = !status
         }
     }
 

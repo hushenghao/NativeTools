@@ -2,7 +2,6 @@
 
 package com.dede.nativetools.util
 
-import android.app.Activity
 import android.app.ActivityManager
 import android.app.AppOpsManager
 import android.content.ClipData
@@ -13,6 +12,7 @@ import android.os.Build
 import android.os.Process
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
@@ -24,6 +24,14 @@ val globalContext: Context
 
 fun Context.safelyStartActivity(intent: Intent) {
     safely { this.startActivity(intent) }
+}
+
+fun Context.startService(intent: Intent, foreground: Boolean) {
+    if (foreground) {
+        ContextCompat.startForegroundService(this, intent)
+    } else {
+        this.startService(intent)
+    }
 }
 
 fun Context.checkAppOps(): Boolean {

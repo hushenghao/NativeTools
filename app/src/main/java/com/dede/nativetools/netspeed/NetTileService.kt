@@ -6,11 +6,9 @@ import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
 import com.dede.nativetools.R
-import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.getInterval
 import com.dede.nativetools.netspeed.utils.NetFormater
 import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.util.Intent
-import com.dede.nativetools.util.globalPreferences
 import com.dede.nativetools.util.newTask
 import com.dede.nativetools.util.splicing
 
@@ -22,7 +20,7 @@ class NetTileService : TileService() {
     }
 
     override fun onStartListening() {
-        netSpeedHelper.interval = globalPreferences.getInterval()
+        netSpeedHelper.interval = NetSpeedPreferences.interval
         netSpeedHelper.resume()
     }
 

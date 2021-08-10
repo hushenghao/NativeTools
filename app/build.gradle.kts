@@ -85,6 +85,8 @@ dependencies {
     implementation("me.weishu:free_reflection:3.0.1")
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.7")
 
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
