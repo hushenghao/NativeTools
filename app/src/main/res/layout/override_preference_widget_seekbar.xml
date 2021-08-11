@@ -155,6 +155,7 @@
                 app:labelBehavior="floating"
                 app:thumbColor="@color/appAccent"
                 app:thumbRadius="8dp"
+                app:tickVisible="false"
                 app:trackColorActive="@color/appAccent"
                 app:trackHeight="2dp" />
         </FrameLayout>
