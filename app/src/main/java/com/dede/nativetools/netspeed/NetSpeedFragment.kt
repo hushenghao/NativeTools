@@ -81,11 +81,23 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 }
             }
         }
-        requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_LOCKED_HIDE)
-            .setOnPreferenceClickListener {
-                NetSpeedNotificationHelp.goLockHideNotificationSetting(requireContext())
+        requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_LOCKED_HIDE).also {
+            it.setOnPreferenceClickListener {
+                requireContext().alert(
+                    R.string.label_net_speed_locked_hide,
+                    R.string.alert_msg_hide_lock_notification
+                ) {
+                    positiveButton(R.string.settings) {
+                        NetSpeedNotificationHelp.goLockHideNotificationSetting(requireContext())
+                    }
+                    negativeButton(android.R.string.cancel)
+                    neutralButton(R.string.help) {
+                        requireContext().browse(requireContext().getString(R.string.url_hide_lock_notification))
+                    }
+                }
                 return@setOnPreferenceClickListener true
             }
+        }
         requirePreference<Preference>(KEY_ABOUT).also {
             it.summary = getString(
                 R.string.summary_about_version,
@@ -192,7 +204,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             neutralButton(R.string.dont_ask) {
                 NetSpeedPreferences.dontAskOps = true
             }
-            negativeButton(R.string.cancel) {
+            negativeButton(android.R.string.cancel) {
                 usageSwitchPreference.isChecked = false
             }
         }
@@ -209,13 +221,13 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             R.string.alert_title_notification_disable,
             R.string.alert_msg_notification_disable
         ) {
-            positiveButton(R.string.access) {
+            positiveButton(R.string.settings) {
                 NetSpeedNotificationHelp.goNotificationSetting(context)
             }
             neutralButton(R.string.dont_ask) {
                 NetSpeedPreferences.dontAskNotify = true
             }
-            negativeButton(R.string.cancel, null)
+            negativeButton(android.R.string.cancel, null)
         }
     }
 

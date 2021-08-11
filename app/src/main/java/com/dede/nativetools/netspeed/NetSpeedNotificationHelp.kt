@@ -1,9 +1,6 @@
 package com.dede.nativetools.netspeed
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
@@ -24,11 +21,16 @@ object NetSpeedNotificationHelp {
 
     private const val CHANNEL_ID = "net_speed"
 
+    fun isSecure(context: Context): Boolean {
+        val keyguardManager = context.getSystemService<KeyguardManager>() ?: return true
+        return keyguardManager.isDeviceSecure || keyguardManager.isKeyguardSecure
+    }
+
     /**
      * 锁屏通知显示设置
      */
     fun goLockHideNotificationSetting(context: Context) {
-        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && isSecure(context)) {
             Intent(
                 Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
                 Settings.EXTRA_APP_PACKAGE to context.packageName,
