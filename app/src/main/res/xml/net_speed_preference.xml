@@ -56,6 +56,12 @@
         app:iconSpaceReserved="false"
         app:summary="@string/summary_net_speed_auto_start" />
 
+    <Preference
+        android:key="net_speed_locked_hide"
+        android:title="@string/label_net_speed_locked_hide"
+        app:iconSpaceReserved="false"
+        app:summary="@string/summary_net_speed_locked_hide" />
+
     <SwitchPreferenceCompat
         app:key="net_speed_usage"
         app:title="@string/label_net_speed_usage"

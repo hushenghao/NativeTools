@@ -24,12 +24,21 @@ object NetSpeedNotificationHelp {
 
     private const val CHANNEL_ID = "net_speed"
 
-    fun goSystemNotification(context: Context) {
-        // ConfigureNotificationSettings
-        // ShowOnLockScreenNotificationPreferenceController
-        val intent = Intent("android.settings.NOTIFICATION_SETTINGS")
-            //.putExtra(":settings:fragment_args_key", "configure_notifications_lock")
-            .newTask()
+    /**
+     * 锁屏通知显示设置
+     */
+    fun goLockHideNotificationSetting(context: Context) {
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Intent(
+                Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
+                Settings.EXTRA_APP_PACKAGE to context.packageName,
+                Settings.EXTRA_CHANNEL_ID to CHANNEL_ID
+            )
+        } else {
+            // Settings.ACTION_NOTIFICATION_SETTINGS
+            Intent("android.settings.NOTIFICATION_SETTINGS")
+        }
+        intent.newTask()
         context.safelyStartActivity(intent)
     }
 
