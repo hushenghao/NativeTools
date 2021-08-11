@@ -15,6 +15,8 @@
 
 如果你有什么好的想法请提交 [**Issues**](https://github.com/hushenghao/NativeTools/issues) 或 [**Pull requests**](https://github.com/hushenghao/NativeTools/pulls)
 
+[无法隐藏锁屏通知？](./docs/hide_lock_notification.md)
+
 ## 应用截图
 
 <img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269610882462412.png"/> <img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269610958174546.png"/> <img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269612711209232.png"/>

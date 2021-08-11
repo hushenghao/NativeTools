@@ -120,6 +120,10 @@ fun Context.browse(url: String) {
     startActivity(web)
 }
 
+fun Context.browse(@StringRes urlId: Int) {
+    this.browse(this.getString(urlId))
+}
+
 fun Context.market(packageName: String) {
     val market = Intent(Intent.ACTION_VIEW)
         .setData("market://details?id=$packageName")

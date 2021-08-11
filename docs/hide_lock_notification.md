@@ -2,9 +2,9 @@
 
 Does this document tell you how to modify the Settings to hide the "Net Monitor" lock screen notification.
 
-## On Android O above
+## On Android O and above
 
-Above Android O, you can set the display status of each notification on the lock screen separately.
+On Android O and above, you can set the display status of each notification on the lock screen separately.
 
 ### Lock screen password enabled (recommend)
 

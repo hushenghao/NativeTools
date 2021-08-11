@@ -92,7 +92,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                     }
                     negativeButton(android.R.string.cancel)
                     neutralButton(R.string.help) {
-                        requireContext().browse(requireContext().getString(R.string.url_hide_lock_notification))
+                        requireContext().browse(R.string.url_hide_lock_notification)
                     }
                 }
                 return@setOnPreferenceClickListener true

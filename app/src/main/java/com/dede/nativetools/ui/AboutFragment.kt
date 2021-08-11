@@ -43,7 +43,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             BuildConfig.VERSION_CODE
         )
         binding.ivGithub.setOnClickListener {
-            requireContext().browse(getString(R.string.url_github))
+            requireContext().browse(R.string.url_github)
         }
         binding.tvLikeApp.setOnClickListener {
             requireContext().market(requireContext().packageName)
