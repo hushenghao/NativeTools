@@ -56,6 +56,7 @@
         app:iconSpaceReserved="false"
         app:summary="@string/summary_net_speed_auto_start" />
 
+    <!--之前是SwitchPreference，线上用户是boolean值-->
     <Preference
         android:key="net_speed_locked_hide"
         android:title="@string/label_net_speed_locked_hide"

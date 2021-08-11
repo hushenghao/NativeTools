@@ -31,7 +31,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
 
         private const val KEY_ABOUT = "about"
-        private const val KEY_LOCKED_HIDE = "net_speed_locked_hide"
     }
 
     private val configuration by lazy { NetSpeedConfiguration.initialize() }
@@ -82,12 +81,11 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 }
             }
         }
-        requirePreference<Preference>(KEY_LOCKED_HIDE).also {
-            it.setOnPreferenceClickListener {
+        requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_LOCKED_HIDE)
+            .setOnPreferenceClickListener {
                 NetSpeedNotificationHelp.goLockHideNotificationSetting(requireContext())
                 return@setOnPreferenceClickListener true
             }
-        }
         requirePreference<Preference>(KEY_ABOUT).also {
             it.summary = getString(
                 R.string.summary_about_version,
