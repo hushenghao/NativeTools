@@ -121,7 +121,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 if (status) startService() else stopService()
             }
             NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
-            NetSpeedPreferences.KEY_NET_SPEED_COMPATIBILITY_MODE,
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
                 updateConfiguration()

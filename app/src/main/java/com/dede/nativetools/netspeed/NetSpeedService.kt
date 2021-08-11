@@ -1,7 +1,6 @@
 package com.dede.nativetools.netspeed
 
 
-import android.app.KeyguardManager
 import android.app.NotificationManager
 import android.app.Service
 import android.content.BroadcastReceiver
@@ -144,42 +143,15 @@ class NetSpeedService : Service() {
     private val innerReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context?, intent: Intent?) {
-            val action = intent?.action ?: return
-            if (action == ACTION_CLOSE) {
-                stopSelf()
-                return
-            }
-            // 非兼容模式
-            if (!configuration.compatibilityMode) {
-                when (action) {
-                    Intent.ACTION_SCREEN_ON -> {
-                        resume()// 直接更新指示器
-                    }
-                    Intent.ACTION_SCREEN_OFF -> {
-                        pause(false)// 关闭屏幕时显示，只保留服务保活
-                    }
+            when (intent?.action ?: return) {
+                ACTION_CLOSE -> {
+                    stopSelf()
                 }
-                return
-            }
-
-            // 兼容模式
-            when (action) {
                 Intent.ACTION_SCREEN_ON -> {
-                    // 屏幕打开
-                    val keyguardManager = getSystemService<KeyguardManager>()
-                    if (keyguardManager == null) {
-                        resume()
-                    } else if (keyguardManager.isDeviceLocked || keyguardManager.isKeyguardLocked) {
-                        pause()// 已锁定时隐藏，临时关闭前台服务关闭通知（会降低进程优先级）
-                    } else {
-                        resume()// 未锁定时显示
-                    }
+                    resume()// 直接更新指示器
                 }
                 Intent.ACTION_SCREEN_OFF -> {
                     pause(false)// 关闭屏幕时显示，只保留服务保活
-                }
-                Intent.ACTION_USER_PRESENT -> {
-                    resume()// 解锁后显示
                 }
             }
         }

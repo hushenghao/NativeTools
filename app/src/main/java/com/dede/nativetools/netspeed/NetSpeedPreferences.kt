@@ -17,7 +17,7 @@ object NetSpeedPreferences {
 
     const val KEY_NET_SPEED_STATUS = "net_speed_status"
     const val KEY_NET_SPEED_INTERVAL = "net_speed_interval"
-    const val KEY_NET_SPEED_COMPATIBILITY_MODE = "net_speed_locked_hide"
+    //const val KEY_NET_SPEED_COMPATIBILITY_MODE = "net_speed_locked_hide"
     const val KEY_NET_SPEED_NOTIFY_CLICKABLE = "net_speed_notify_clickable"
     const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
     const val KEY_NET_SPEED_MODE = "net_speed_mode"
@@ -73,12 +73,6 @@ object NetSpeedPreferences {
                 .get(KEY_NET_SPEED_SCALE, DEFAULT_SCALE_INT)
             return scaleInt / SCALE_DIVISOR
         }
-
-    val compatibilityMode: Boolean
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_COMPATIBILITY_MODE,
-            defaultConfiguration.compatibilityMode
-        )
 
     val notifyClickable: Boolean
         get() = globalPreferences.get(

@@ -11,8 +11,6 @@ import kotlinx.parcelize.Parcelize
 data class NetSpeedConfiguration constructor(
     var interval: Int,
     var notifyClickable: Boolean,
-    // 锁屏时隐藏(兼容模式)
-    var compatibilityMode: Boolean,
     var mode: String,
     var scale: Float,
     var quickCloseable: Boolean,
@@ -21,14 +19,13 @@ data class NetSpeedConfiguration constructor(
 ) : Parcelable {
 
     constructor() : this(
-        NetSpeedPreferences.DEFAULT_INTERVAL, true, false,
-        MODE_DOWN, 1f, false, BACKGROUND_NONE, false
+        NetSpeedPreferences.DEFAULT_INTERVAL, true, MODE_DOWN,
+        1f, false, BACKGROUND_NONE, false
     )
 
     fun copy(configuration: NetSpeedConfiguration): NetSpeedConfiguration {
         this.interval = configuration.interval
         this.notifyClickable = configuration.notifyClickable
-        this.compatibilityMode = configuration.compatibilityMode
         this.mode = configuration.mode
         this.scale = configuration.scale
         this.quickCloseable = configuration.quickCloseable
@@ -41,9 +38,6 @@ data class NetSpeedConfiguration constructor(
         when (key) {
             NetSpeedPreferences.KEY_NET_SPEED_INTERVAL -> {
                 this.interval = NetSpeedPreferences.interval
-            }
-            NetSpeedPreferences.KEY_NET_SPEED_COMPATIBILITY_MODE -> {
-                this.compatibilityMode = NetSpeedPreferences.compatibilityMode
             }
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
                 this.notifyClickable = NetSpeedPreferences.notifyClickable
@@ -84,7 +78,6 @@ data class NetSpeedConfiguration constructor(
             return NetSpeedConfiguration(
                 NetSpeedPreferences.interval,
                 NetSpeedPreferences.notifyClickable,
-                NetSpeedPreferences.compatibilityMode,
                 NetSpeedPreferences.mode,
                 NetSpeedPreferences.scale,
                 NetSpeedPreferences.quickCloseable,

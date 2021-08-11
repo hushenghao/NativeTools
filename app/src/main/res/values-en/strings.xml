@@ -13,13 +13,11 @@
     <string name="label_net_speed_mode">Show mode</string>
     <string name="label_net_speed_auto_start">Automatic startup</string>
     <string name="label_net_speed">Net Monitor</string>
-    <string name="label_net_speed_locked_hide">Hide lock screen notification(Compatibility mode)</string>
     <string name="label_net_speed_notify_clickable">Notification can be clicked</string>
     <string name="usage_stats_msg">Usage access needs to be allowed when counting daily traffic usage</string>
     <string name="usage_states_title">Usage access</string>
     <string name="summary_net_speed_auto_start">Follow the system to start the background service</string>
     <string name="summary_net_speed">Display the current network speed in the status bar</string>
-    <string name="summary_net_speed_locked_hide">The notification is hidden by default when the screen is locked. If it is invalid, you need to turn on the current option, which will make the process of the current application easier to be killed</string>
     <string name="summary_net_speed_notify_clickable">Click notification to open the application settings interface</string>
     <string name="label_net_speed_icon_zoom">Icon text zoom</string>
 
