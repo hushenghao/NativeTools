@@ -56,13 +56,6 @@
         app:iconSpaceReserved="false"
         app:summary="@string/summary_net_speed_auto_start" />
 
-    <!--之前是SwitchPreference，线上用户是boolean值-->
-    <Preference
-        android:key="net_speed_locked_hide"
-        android:title="@string/label_net_speed_locked_hide"
-        app:iconSpaceReserved="false"
-        app:summary="@string/summary_net_speed_locked_hide" />
-
     <SwitchPreferenceCompat
         app:key="net_speed_usage"
         app:title="@string/label_net_speed_usage"
@@ -83,6 +76,12 @@
         app:defaultValue="false"
         app:iconSpaceReserved="false"
         app:summary="@string/summary_net_speed_notify_quick_closeable" />
+
+    <Preference
+        android:key="net_speed_hide_lock_notification"
+        android:title="@string/label_net_speed_hide_lock_notification"
+        app:iconSpaceReserved="false"
+        app:summary="@string/summary_net_speed_hide_lock_notification" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"

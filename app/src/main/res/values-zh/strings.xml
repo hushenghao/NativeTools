@@ -8,14 +8,14 @@
 
     <string name="label_net_speed">网速指示器</string>
     <string name="label_net_speed_interval">刷新间隔</string>
-    <string name="label_net_speed_locked_hide">隐藏锁屏通知</string>
+    <string name="label_net_speed_hide_lock_notification">隐藏锁屏通知</string>
     <string name="label_net_speed_notify_clickable">通知可被点击</string>
     <string name="label_net_speed_mode">显示模式</string>
     <string name="label_net_speed_auto_start">开机自启</string>
     <string name="label_net_speed_background">图标背景</string>
 
     <string name="summary_net_speed">在状态栏显示当前网速</string>
-    <string name="summary_net_speed_locked_hide">锁屏时默认会隐藏通知，如果无效时才需要去设置隐藏锁屏通知</string>
+    <string name="summary_net_speed_hide_lock_notification">锁屏时默认会隐藏通知，如果无效时才需要去设置隐藏锁屏通知</string>
     <string name="summary_net_speed_notify_clickable">点击通知打开应用设置界面</string>
     <string name="summary_net_speed_auto_start">跟随系统启动后台服务</string>
     <string name="usage_states_title">使用情况访问授权</string>

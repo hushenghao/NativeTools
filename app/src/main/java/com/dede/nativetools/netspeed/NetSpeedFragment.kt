@@ -31,6 +31,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
 
         private const val KEY_ABOUT = "about"
+        private const val KEY_HIDE_LOCK_NOTIFICATION = "net_speed_hide_lock_notification"
     }
 
     private val configuration by lazy { NetSpeedConfiguration.initialize() }
@@ -81,20 +82,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 }
             }
         }
-        requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_LOCKED_HIDE).also {
+        requirePreference<Preference>(KEY_HIDE_LOCK_NOTIFICATION).also {
             it.setOnPreferenceClickListener {
-                requireContext().alert(
-                    R.string.label_net_speed_locked_hide,
-                    R.string.alert_msg_hide_lock_notification
-                ) {
-                    positiveButton(R.string.settings) {
-                        NetSpeedNotificationHelp.goLockHideNotificationSetting(requireContext())
-                    }
-                    negativeButton(android.R.string.cancel)
-                    neutralButton(R.string.help) {
-                        requireContext().browse(R.string.url_hide_lock_notification)
-                    }
-                }
+                showHideLockNotificationDialog()
                 return@setOnPreferenceClickListener true
             }
         }
@@ -184,6 +174,21 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
         unbindService()
         super.onDestroy()
+    }
+
+    private fun showHideLockNotificationDialog() {
+        requireContext().alert(
+            R.string.label_net_speed_hide_lock_notification,
+            R.string.alert_msg_hide_lock_notification
+        ) {
+            positiveButton(R.string.settings) {
+                NetSpeedNotificationHelp.goLockHideNotificationSetting(requireContext())
+            }
+            negativeButton(android.R.string.cancel)
+            neutralButton(R.string.help) {
+                requireContext().browse(R.string.url_hide_lock_notification)
+            }
+        }
     }
 
     private fun checkOps() {

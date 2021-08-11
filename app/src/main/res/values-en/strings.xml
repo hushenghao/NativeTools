@@ -14,13 +14,13 @@
     <string name="label_net_speed_mode">Show mode</string>
     <string name="label_net_speed_auto_start">Automatic startup</string>
     <string name="label_net_speed">Net Monitor</string>
-    <string name="label_net_speed_locked_hide">Hide lock screen notification</string>
+    <string name="label_net_speed_hide_lock_notification">Hide lock screen notification</string>
     <string name="label_net_speed_notify_clickable">Notification can be clicked</string>
     <string name="usage_stats_msg">Usage access needs to be allowed when counting daily traffic usage</string>
     <string name="usage_states_title">Usage access</string>
     <string name="summary_net_speed_auto_start">Follow the system to start the background service</string>
     <string name="summary_net_speed">Display the current network speed in the status bar</string>
-    <string name="summary_net_speed_locked_hide">By default, the screen-lock notification is hidden. You need to set the screen-lock notification only when the screen-lock notification is invalid</string>
+    <string name="summary_net_speed_hide_lock_notification">By default, the screen-lock notification is hidden. You need to set the screen-lock notification only when the screen-lock notification is invalid</string>
     <string name="summary_net_speed_notify_clickable">Click notification to open the application settings interface</string>
     <string name="label_net_speed_icon_zoom">Icon text zoom</string>
 
