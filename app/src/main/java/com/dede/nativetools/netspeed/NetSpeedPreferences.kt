@@ -17,6 +17,7 @@ object NetSpeedPreferences {
 
     const val KEY_NET_SPEED_STATUS = "net_speed_status"
     const val KEY_NET_SPEED_INTERVAL = "net_speed_interval"
+
     //const val KEY_NET_SPEED_COMPATIBILITY_MODE = "net_speed_locked_hide"
     const val KEY_NET_SPEED_NOTIFY_CLICKABLE = "net_speed_notify_clickable"
     const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
@@ -89,16 +90,17 @@ object NetSpeedPreferences {
     val usage: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_USAGE, defaultConfiguration.usage)
 
+    private val listeners =
+        HashMap<OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener>()
 
     fun registerPreferenceChangeListener(listener: OnPreferenceChangeListener) {
         val wrapper = WrapperPreferenceChangeListener(listener)
-        // WeakHashMap<SharedPreferences.OnSharedPreferenceChangeListener, Object> mListeners;
-        // override hashCode and equals func
+        listeners[listener] = wrapper
         globalPreferences.registerOnSharedPreferenceChangeListener(wrapper)
     }
 
     fun unregisterPreferenceChangeListener(listener: OnPreferenceChangeListener) {
-        val wrapper = WrapperPreferenceChangeListener(listener)
+        val wrapper = listeners.remove(listener) ?: return
         globalPreferences.unregisterOnSharedPreferenceChangeListener(wrapper)
     }
 
@@ -106,14 +108,6 @@ object NetSpeedPreferences {
         SharedPreferences.OnSharedPreferenceChangeListener {
         override fun onSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
             listener.onPreferenceChanged(key)
-        }
-
-        override fun hashCode(): Int {
-            return listener.hashCode()
-        }
-
-        override fun equals(other: Any?): Boolean {
-            return if (other is WrapperPreferenceChangeListener) listener == other.listener else false
         }
     }
 
