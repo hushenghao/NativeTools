@@ -5,9 +5,11 @@ import com.dede.nativetools.util.trimZeroAndDot
 
 
 /**
+ * 字节数格式化工具
+ *
  * Created by hsh on 2017/5/15 015 下午 05:14.
  */
-object NetFormater {
+object NetFormatter {
 
     /**
      * 精确等宽格式

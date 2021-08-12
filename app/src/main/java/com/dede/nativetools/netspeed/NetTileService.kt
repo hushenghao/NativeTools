@@ -6,7 +6,7 @@ import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
 import com.dede.nativetools.R
-import com.dede.nativetools.netspeed.utils.NetFormater
+import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.newTask
@@ -44,10 +44,10 @@ class NetTileService : TileService() {
 
     private fun update(rxSpeed: Long, txSpeed: Long) {
         val downloadSpeedStr =
-            NetFormater.formatBytes(rxSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT)
+            NetFormatter.formatBytes(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         val uploadSpeedStr =
-            NetFormater.formatBytes(txSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT)
+            NetFormatter.formatBytes(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
 
         qsTile.apply {

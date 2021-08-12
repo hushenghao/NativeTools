@@ -9,7 +9,7 @@ import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import com.dede.nativetools.R
-import com.dede.nativetools.netspeed.utils.NetFormater
+import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
 import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.util.*
@@ -89,9 +89,9 @@ object NetSpeedNotificationHelp {
         val monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
         return context.getString(
             R.string.notify_net_speed_sub,
-            NetFormater.formatBytes(todayBytes, NetFormater.FLAG_BYTE, NetFormater.ACCURACY_EXACT)
+            NetFormatter.formatBytes(todayBytes, NetFormatter.FLAG_BYTE, NetFormatter.ACCURACY_EXACT)
                 .splicing(),
-            NetFormater.formatBytes(monthBytes, NetFormater.FLAG_BYTE, NetFormater.ACCURACY_EXACT)
+            NetFormatter.formatBytes(monthBytes, NetFormatter.FLAG_BYTE, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         )
     }
@@ -105,10 +105,10 @@ object NetSpeedNotificationHelp {
         createChannel(context)
 
         val downloadSpeedStr: String =
-            NetFormater.formatBytes(rxSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT)
+            NetFormatter.formatBytes(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         val uploadSpeedStr: String =
-            NetFormater.formatBytes(txSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT)
+            NetFormatter.formatBytes(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         val contentStr =
             context.getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
