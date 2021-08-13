@@ -92,7 +92,7 @@
         app:title="@string/label_night_mode" />
 
     <Preference
-        android:fragment="com.dede.nativetools.ui.AboutFragment"
+        android:fragment="com.dede.nativetools.about.AboutFragment"
         android:key="about"
         android:title="@string/label_about"
         app:iconSpaceReserved="false"

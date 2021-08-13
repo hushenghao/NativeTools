@@ -20,20 +20,7 @@
         app:layout_constraintVertical_bias="0.15" />
 
     <ImageView
-        android:id="@+id/iv_logo_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@null"
-        android:elevation="1dp"
-        android:src="@mipmap/ic_launcher_round"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@id/iv_logo"
-        app:layout_constraintLeft_toLeftOf="@id/iv_logo"
-        app:layout_constraintRight_toRightOf="@id/iv_logo"
-        app:layout_constraintTop_toTopOf="@id/iv_logo" />
-
-    <ImageView
-        android:id="@+id/iv_logo_2"
+        android:id="@+id/iv_logo_template"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@null"
