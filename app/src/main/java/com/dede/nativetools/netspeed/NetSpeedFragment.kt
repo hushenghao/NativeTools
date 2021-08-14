@@ -18,7 +18,7 @@ import com.dede.nativetools.util.*
  * 网速指示器设置页
  */
 class NetSpeedFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener,
+    NetSpeedPreferences.OnPreferenceChangeListener,
     ServiceConnection {
 
     companion object {
@@ -31,7 +31,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
 
         private const val KEY_ABOUT = "about"
-        const val KEY_V28_NIGHT_MODE_TOGGLE = "v28_night_mode_toggle"
+        private const val KEY_HIDE_LOCK_NOTIFICATION = "net_speed_hide_lock_notification"
     }
 
     private val configuration by lazy { NetSpeedConfiguration.initialize() }
@@ -67,11 +67,11 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.net_speed_preference)
-        scaleSeekBarPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_SCALE)
-        statusSwitchPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_STATUS)
+        scaleSeekBarPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_SCALE)
+        statusSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
         updateScalePreferenceIcon()
-        usageSwitchPreference = requirePreference(NetSpeedConfiguration.KEY_NET_SPEED_USAGE)
-        requirePreference<SwitchPreferenceCompat>(KEY_V28_NIGHT_MODE_TOGGLE).also {
+        usageSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_USAGE)
+        requirePreference<SwitchPreferenceCompat>(NetSpeedPreferences.KEY_V28_NIGHT_MODE_TOGGLE).also {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 it.isVisible = false
             } else {
@@ -80,6 +80,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                     setNightMode(newValue == true)
                     return@setOnPreferenceChangeListener true
                 }
+            }
+        }
+        requirePreference<Preference>(KEY_HIDE_LOCK_NOTIFICATION).also {
+            it.setOnPreferenceClickListener {
+                showHideLockNotificationDialog()
+                return@setOnPreferenceClickListener true
             }
         }
         requirePreference<Preference>(KEY_ABOUT).also {
@@ -106,41 +112,33 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onStart() {
         super.onStart()
-        // defaultSharedPreferences.registerOnSharedPreferenceChangeListener(configuration)
-        // Crash!
-        // SharedPreferencesImpl#mListener is a WeakHashMap.
-        // data class NetSpeedConfiguration override hashCode method, unregisterOnSharedPreferenceChangeListener may fail.
-        // Reference chain: SharedPreferencesImpl#mListener -weak-> configuration --> fragment, fragment is leaked.
-        // if Activity recreated, edit shared preferences,
-        // Crash when methods such as getContext are called in the onSharedPreferenceChanged method.
-        globalPreferences.registerOnSharedPreferenceChangeListener(this)
+        NetSpeedPreferences.registerPreferenceChangeListener(this)
     }
 
     override fun onStop() {
         super.onStop()
-        globalPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        NetSpeedPreferences.unregisterPreferenceChangeListener(this)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        configuration.updateOnSharedPreferenceChanged(sharedPreferences, key)
+    override fun onPreferenceChanged(key: String) {
+        configuration.updateOnPreferenceChanged(key)
         when (key) {
-            NetSpeedConfiguration.KEY_NET_SPEED_STATUS -> {
-                val status = sharedPreferences.get(key, false)
+            NetSpeedPreferences.KEY_NET_SPEED_STATUS -> {
+                val status = NetSpeedPreferences.status
                 if (status) startService() else stopService()
             }
-            NetSpeedConfiguration.KEY_NET_SPEED_INTERVAL,
-            NetSpeedConfiguration.KEY_NET_SPEED_COMPATIBILITY_MODE,
-            NetSpeedConfiguration.KEY_NET_SPEED_QUICK_CLOSEABLE,
-            NetSpeedConfiguration.KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
+            NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
+            NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
+            NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
                 updateConfiguration()
             }
-            NetSpeedConfiguration.KEY_NET_SPEED_USAGE -> {
+            NetSpeedPreferences.KEY_NET_SPEED_USAGE -> {
                 updateConfiguration()
                 checkOps()
             }
-            NetSpeedConfiguration.KEY_NET_SPEED_MODE,
-            NetSpeedConfiguration.KEY_NET_SPEED_SCALE,
-            NetSpeedConfiguration.KEY_NET_SPEED_BACKGROUND -> {
+            NetSpeedPreferences.KEY_NET_SPEED_MODE,
+            NetSpeedPreferences.KEY_NET_SPEED_SCALE,
+            NetSpeedPreferences.KEY_NET_SPEED_BACKGROUND -> {
                 updateConfiguration()
                 updateScalePreferenceIcon()
             }
@@ -178,12 +176,26 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         super.onDestroy()
     }
 
+    private fun showHideLockNotificationDialog() {
+        requireContext().alert(
+            R.string.label_net_speed_hide_lock_notification,
+            R.string.alert_msg_hide_lock_notification
+        ) {
+            positiveButton(R.string.settings) {
+                NetSpeedNotificationHelp.goLockHideNotificationSetting(requireContext())
+            }
+            negativeButton(android.R.string.cancel)
+            neutralButton(R.string.help) {
+                requireContext().browse(R.string.url_hide_lock_notification)
+            }
+        }
+    }
+
     private fun checkOps() {
         if (!configuration.usage) {
             return
         }
-        val dontAskOps =
-            globalPreferences.get(NetSpeedConfiguration.KEY_OPS_DONT_ASK, false)
+        val dontAskOps = NetSpeedPreferences.dontAskOps
         val context = requireContext()
         if (dontAskOps || context.checkAppOps()) {
             return
@@ -195,9 +207,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 requireContext().safelyStartActivity(intent)
             }
             neutralButton(R.string.dont_ask) {
-                globalPreferences.put(NetSpeedConfiguration.KEY_OPS_DONT_ASK, true)
+                NetSpeedPreferences.dontAskOps = true
             }
-            negativeButton(R.string.cancel) {
+            negativeButton(android.R.string.cancel) {
                 usageSwitchPreference.isChecked = false
             }
         }
@@ -206,8 +218,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private fun checkNotification() {
         val context = requireContext()
         val areNotificationsEnabled = NetSpeedNotificationHelp.areNotificationEnabled(context)
-        val dontAskNotify = globalPreferences
-            .get(NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK, false)
+        val dontAskNotify = NetSpeedPreferences.dontAskNotify
         if (dontAskNotify || areNotificationsEnabled) {
             return
         }
@@ -215,18 +226,18 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             R.string.alert_title_notification_disable,
             R.string.alert_msg_notification_disable
         ) {
-            positiveButton(R.string.access) {
+            positiveButton(R.string.settings) {
                 NetSpeedNotificationHelp.goNotificationSetting(context)
             }
             neutralButton(R.string.dont_ask) {
-                globalPreferences.put(NetSpeedConfiguration.KEY_NOTIFICATION_DONT_ASK, true)
+                NetSpeedPreferences.dontAskNotify = true
             }
-            negativeButton(R.string.cancel, null)
+            negativeButton(android.R.string.cancel, null)
         }
     }
 
     private fun launchService() {
-        val status = globalPreferences.get(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, false)
+        val status = NetSpeedPreferences.status
         if (!status) return
         startService()
     }

@@ -4,10 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.dede.nativetools.netspeed.NetSpeedConfiguration
+import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.NetSpeedService
-import com.dede.nativetools.util.get
-import com.dede.nativetools.util.globalPreferences
 
 class LauncherReceiver : BroadcastReceiver() {
 
@@ -18,8 +16,7 @@ class LauncherReceiver : BroadcastReceiver() {
         when (action) {
             Intent.ACTION_BOOT_COMPLETED -> {
                 // 开机自启的设置状态
-                val autoBoot =
-                    globalPreferences.get(NetSpeedConfiguration.KEY_NET_SPEED_AUTO_START, false)
+                val autoBoot = NetSpeedPreferences.autoStart
                 if (autoBoot) {
                     NetSpeedService.launchForeground(context)
                 }

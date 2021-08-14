@@ -1,4 +1,4 @@
-package com.dede.nativetools.ui
+package com.dede.nativetools.about
 
 import android.animation.Animator
 import android.animation.FloatEvaluator
@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.animation.addListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.BuildConfig
@@ -25,9 +26,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     companion object {
         private var animatored = false
         private const val MAX_FOLLOW_COUNT = 8
+        private const val ENABLE_FOLLOW_COUNT = 2
     }
 
-    private val binding: FragmentAboutBinding by viewBinding(FragmentAboutBinding::bind)
+    private val binding by viewBinding(FragmentAboutBinding::bind)
+    private val viewModel by viewModels<AboutViewModel>()
     private var toasted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +46,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             BuildConfig.VERSION_CODE
         )
         binding.ivGithub.setOnClickListener {
-            requireContext().browse(getString(R.string.url_github))
+            requireContext().browse(R.string.url_github)
         }
         binding.tvLikeApp.setOnClickListener {
             requireContext().market(requireContext().packageName)
@@ -59,41 +62,56 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         }
         binding.ivGithub.enableFeedback = false
 
-        val followViews = arrayListOf(binding.ivLogo1, binding.ivLogo2)
+        val followViews = ArrayList<ImageView>()
+        for (i in followViews.size until viewModel.followCount.value!!) {
+            appendFollowView(followViews, binding.ivLogoTemplate, false)
+        }
         binding.ivLogo.setOnClickListener {
-            appendFollowView(followViews)
+            appendFollowView(followViews, binding.ivLogoTemplate)
         }
         setFollowView(followViews)
-        if (animatored) {
-            return
+
+        if (!animatored) {
+            playAnimator()
         }
-        playAnimator()
     }
 
-    private fun appendFollowView(followViews: ArrayList<ImageView>) {
-        val count = followViews.size
-        if (count >= MAX_FOLLOW_COUNT) {
-            if (!toasted) {
-                toast("BZZZTT!!1!💥")
-                playAnimator()
-                toasted = true
-            }
-            return
-        }
+    private fun createFollowView(template: ImageView): ImageView {
         val insert = AppCompatImageView(requireContext()).apply {
             elevation = 1.dpf
             hide()
             setImageResource(R.mipmap.ic_launcher_round)
         }
-        val last = followViews[count - 1]
         binding.container.addView(
             insert,
-            binding.container.indexOfChild(last) + 1,
-            LayoutParams(last.layoutParams as LayoutParams)
+            binding.container.indexOfChild(template) + 1,
+            LayoutParams(template.layoutParams as LayoutParams)
         )
+        return insert
+    }
+
+    private fun appendFollowView(
+        followViews: ArrayList<ImageView>,
+        template: ImageView,
+        animator: Boolean = true
+    ) {
+        val count = followViews.size
+        if (count >= MAX_FOLLOW_COUNT) {
+            if (!toasted) {
+                toast("BZZZTT!!1!💥")
+                if (animator) {
+                    playAnimator()
+                }
+                toasted = true
+            }
+            return
+        }
+        val insert = if (count == 0) template else createFollowView(template)
         followViews.add(insert)
         setFollowView(followViews)
-        playAnimator()
+        if (animator) {
+            playAnimator()
+        }
     }
 
     private fun setFollowView(followViews: List<ImageView>) {
@@ -107,6 +125,8 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 alpha = evaluate
             }
         }
+        viewModel.setFollowCount(count)
+        binding.ivLogo.dragEnable = count >= ENABLE_FOLLOW_COUNT
         binding.ivLogo.followViews = followViews.toTypedArray()
     }
 

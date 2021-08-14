@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/about"
-        android:name="com.dede.nativetools.ui.AboutFragment"
+        android:name="com.dede.nativetools.about.AboutFragment"
         android:label="@string/label_about"
         tools:layout="@layout/fragment_about">
         <action

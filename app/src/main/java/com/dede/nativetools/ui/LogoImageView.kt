@@ -57,6 +57,7 @@ class LogoImageView @JvmOverloads constructor(
             isHapticFeedbackEnabled = value
             isSoundEffectsEnabled = value
         }
+    var dragEnable = true
     private val hasFollowView: Boolean get() = followViews?.isNotEmpty() ?: false
 
     private fun filterMove(event: MotionEvent): Boolean {
@@ -70,7 +71,7 @@ class LogoImageView @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (inUpAnimator) {
+        if (inUpAnimator || !dragEnable) {
             return super.onTouchEvent(event)
         }
         when (event.actionMasked) {

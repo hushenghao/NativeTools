@@ -29,7 +29,7 @@
         app:title="@string/label_net_speed_mode"
         app:useSimpleSummaryProvider="true" />
 
-    <SeekBarPreference
+    <com.dede.nativetools.ui.SliderPreference
         android:defaultValue="100"
         android:key="net_speed_scale"
         android:max="115"
@@ -56,12 +56,6 @@
         app:iconSpaceReserved="false"
         app:summary="@string/summary_net_speed_auto_start" />
 
-    <SwitchPreference
-        android:key="net_speed_locked_hide"
-        android:title="@string/label_net_speed_locked_hide"
-        app:iconSpaceReserved="false"
-        app:summary="@string/summary_net_speed_locked_hide" />
-
     <SwitchPreferenceCompat
         app:key="net_speed_usage"
         app:title="@string/label_net_speed_usage"
@@ -83,6 +77,12 @@
         app:iconSpaceReserved="false"
         app:summary="@string/summary_net_speed_notify_quick_closeable" />
 
+    <Preference
+        android:key="net_speed_hide_lock_notification"
+        android:title="@string/label_net_speed_hide_lock_notification"
+        app:iconSpaceReserved="false"
+        app:summary="@string/summary_net_speed_hide_lock_notification" />
+
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:iconSpaceReserved="false"
@@ -92,7 +92,7 @@
         app:title="@string/label_night_mode" />
 
     <Preference
-        android:fragment="com.dede.nativetools.ui.AboutFragment"
+        android:fragment="com.dede.nativetools.about.AboutFragment"
         android:key="about"
         android:title="@string/label_about"
         app:iconSpaceReserved="false"

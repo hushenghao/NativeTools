@@ -2,7 +2,7 @@ package com.dede.nativetools.netspeed
 
 import android.graphics.*
 import androidx.core.graphics.toXfermode
-import com.dede.nativetools.netspeed.utils.NetFormater
+import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.util.displayMetrics
 import com.dede.nativetools.util.splicing
 import kotlin.math.abs
@@ -110,27 +110,27 @@ object NetTextIconFactory {
         val text2: String
         when (configuration.mode) {
             NetSpeedConfiguration.MODE_ALL -> {
-                val down = NetFormater.formatBytes(rxSpeed, 0, NetFormater.ACCURACY_EQUAL_WIDTH)
+                val down = NetFormatter.formatBytes(rxSpeed, 0, NetFormatter.ACCURACY_EQUAL_WIDTH)
                     .splicing()
-                val up = NetFormater.formatBytes(txSpeed, 0, NetFormater.ACCURACY_EQUAL_WIDTH)
+                val up = NetFormatter.formatBytes(txSpeed, 0, NetFormatter.ACCURACY_EQUAL_WIDTH)
                     .splicing()
                 text1 = up
                 text2 = down
             }
             NetSpeedConfiguration.MODE_UP -> {
-                val upSplit = NetFormater.formatBytes(
+                val upSplit = NetFormatter.formatBytes(
                     txSpeed,
-                    NetFormater.FLAG_FULL,
-                    NetFormater.ACCURACY_EQUAL_WIDTH_EXACT
+                    NetFormatter.FLAG_FULL,
+                    NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
                 )
                 text1 = upSplit.first
                 text2 = upSplit.second
             }
             else -> {
-                val downSplit = NetFormater.formatBytes(
+                val downSplit = NetFormatter.formatBytes(
                     rxSpeed,
-                    NetFormater.FLAG_FULL,
-                    NetFormater.ACCURACY_EQUAL_WIDTH_EXACT
+                    NetFormatter.FLAG_FULL,
+                    NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
                 )
                 text1 = downSplit.first
                 text2 = downSplit.second

@@ -1,7 +1,6 @@
 package com.dede.nativetools.netspeed
 
 
-import android.app.KeyguardManager
 import android.app.NotificationManager
 import android.app.Service
 import android.content.BroadcastReceiver
@@ -9,10 +8,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
-import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import com.dede.nativetools.netspeed.utils.DebugClipboardUtil
-import com.dede.nativetools.util.*
+import com.dede.nativetools.util.Intent
+import com.dede.nativetools.util.addActions
+import com.dede.nativetools.util.startService
 
 
 class NetSpeedService : Service() {
@@ -38,22 +38,20 @@ class NetSpeedService : Service() {
         }
 
         fun launchForeground(context: Context) {
-            val status = globalPreferences.get(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, false)
-            if (status) {
-                val intent = createIntent(context)
-                ContextCompat.startForegroundService(context, intent)
+            if (NetSpeedPreferences.status) {
+                context.startService(createIntent(context), true)
             }
         }
 
         fun toggle(context: Context) {
-            val status = globalPreferences.get(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, false)
+            val status = NetSpeedPreferences.status
             val intent = createIntent(context)
             if (status) {
                 context.stopService(intent)
             } else {
-                ContextCompat.startForegroundService(context, intent)
+                context.startService(intent, true)
             }
-            globalPreferences.put(NetSpeedConfiguration.KEY_NET_SPEED_STATUS, !status)
+            NetSpeedPreferences.status = !status
         }
     }
 
@@ -145,42 +143,15 @@ class NetSpeedService : Service() {
     private val innerReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context?, intent: Intent?) {
-            val action = intent?.action ?: return
-            if (action == ACTION_CLOSE) {
-                stopSelf()
-                return
-            }
-            // 非兼容模式
-            if (!configuration.compatibilityMode) {
-                when (action) {
-                    Intent.ACTION_SCREEN_ON -> {
-                        resume()// 直接更新指示器
-                    }
-                    Intent.ACTION_SCREEN_OFF -> {
-                        pause(false)// 关闭屏幕时显示，只保留服务保活
-                    }
+            when (intent?.action ?: return) {
+                ACTION_CLOSE -> {
+                    stopSelf()
                 }
-                return
-            }
-
-            // 兼容模式
-            when (action) {
                 Intent.ACTION_SCREEN_ON -> {
-                    // 屏幕打开
-                    val keyguardManager = getSystemService<KeyguardManager>()
-                    if (keyguardManager == null) {
-                        resume()
-                    } else if (keyguardManager.isDeviceLocked || keyguardManager.isKeyguardLocked) {
-                        pause()// 已锁定时隐藏，临时关闭前台服务关闭通知（会降低进程优先级）
-                    } else {
-                        resume()// 未锁定时显示
-                    }
+                    resume()// 直接更新指示器
                 }
                 Intent.ACTION_SCREEN_OFF -> {
                     pause(false)// 关闭屏幕时显示，只保留服务保活
-                }
-                Intent.ACTION_USER_PRESENT -> {
-                    resume()// 解锁后显示
                 }
             }
         }

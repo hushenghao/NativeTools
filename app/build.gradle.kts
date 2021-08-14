@@ -18,8 +18,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 31
-        versionCode = 23
-        versionName = "2.4.1"
+        versionCode = 24
+        versionName = "2.5.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.let {
@@ -85,6 +85,8 @@ dependencies {
     implementation("me.weishu:free_reflection:3.0.1")
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.7")
 
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
@@ -101,7 +103,7 @@ configurations.all {
     exclude("androidx.asynclayoutinflater", "asynclayoutinflater")
     exclude("androidx.transition", "transition")
     exclude("androidx.dynamicanimation", "dynamicanimation")
-    exclude("androidx.vectordrawable", "vectordrawable-animated")
+    //exclude("androidx.vectordrawable", "vectordrawable-animated")
     exclude("androidx.versionedparcelable", "versionedparcelable")
     exclude("androidx.localbroadcastmanager", "localbroadcastmanager")
     exclude("androidx.documentfile", "documentfile")
@@ -110,13 +112,17 @@ configurations.all {
 }
 
 val pgyer = tasks.create<Exec>("pgyer") {
+    val apiKey = keystoreProperties["pgyer.api_key"]
     commandLine(
         "curl", "-F",
-        "-F", "_api_key=${keystoreProperties["pgyer.api_key"]}",
+        "-F", "_api_key=$apiKey",
         "-F", "buildUpdateDescription=Upload by gradle pgyer task",
         "https://www.pgyer.com/apiv2/app/upload"
     )
     doLast {
+        if (apiKey == null) {
+            throw IllegalArgumentException("pgyer.api_key undefind")
+        }
         println("\nUpload Completed!")
     }
 }

@@ -1,9 +1,6 @@
 package com.dede.nativetools.netspeed
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
@@ -12,7 +9,7 @@ import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import com.dede.nativetools.R
-import com.dede.nativetools.netspeed.utils.NetFormater
+import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
 import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.util.*
@@ -24,12 +21,26 @@ object NetSpeedNotificationHelp {
 
     private const val CHANNEL_ID = "net_speed"
 
-    fun goSystemNotification(context: Context) {
-        // ConfigureNotificationSettings
-        // ShowOnLockScreenNotificationPreferenceController
-        val intent = Intent("android.settings.NOTIFICATION_SETTINGS")
-            //.putExtra(":settings:fragment_args_key", "configure_notifications_lock")
-            .newTask()
+    fun isSecure(context: Context): Boolean {
+        val keyguardManager = context.getSystemService<KeyguardManager>() ?: return true
+        return keyguardManager.isDeviceSecure || keyguardManager.isKeyguardSecure
+    }
+
+    /**
+     * 锁屏通知显示设置
+     */
+    fun goLockHideNotificationSetting(context: Context) {
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && isSecure(context)) {
+            Intent(
+                Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
+                Settings.EXTRA_APP_PACKAGE to context.packageName,
+                Settings.EXTRA_CHANNEL_ID to CHANNEL_ID
+            )
+        } else {
+            // Settings.ACTION_NOTIFICATION_SETTINGS
+            Intent("android.settings.NOTIFICATION_SETTINGS")
+        }
+        intent.newTask()
         context.safelyStartActivity(intent)
     }
 
@@ -78,9 +89,9 @@ object NetSpeedNotificationHelp {
         val monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
         return context.getString(
             R.string.notify_net_speed_sub,
-            NetFormater.formatBytes(todayBytes, NetFormater.FLAG_BYTE, NetFormater.ACCURACY_EXACT)
+            NetFormatter.formatBytes(todayBytes, NetFormatter.FLAG_BYTE, NetFormatter.ACCURACY_EXACT)
                 .splicing(),
-            NetFormater.formatBytes(monthBytes, NetFormater.FLAG_BYTE, NetFormater.ACCURACY_EXACT)
+            NetFormatter.formatBytes(monthBytes, NetFormatter.FLAG_BYTE, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         )
     }
@@ -94,10 +105,10 @@ object NetSpeedNotificationHelp {
         createChannel(context)
 
         val downloadSpeedStr: String =
-            NetFormater.formatBytes(rxSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT)
+            NetFormatter.formatBytes(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         val uploadSpeedStr: String =
-            NetFormater.formatBytes(txSpeed, NetFormater.FLAG_FULL, NetFormater.ACCURACY_EXACT)
+            NetFormatter.formatBytes(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         val contentStr =
             context.getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
