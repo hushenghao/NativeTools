@@ -20,7 +20,7 @@ object NetTextIconFactory {
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         typeface = Typeface.DEFAULT_BOLD
-        isFakeBoldText = true
+        //isFakeBoldText = true
         textAlign = Paint.Align.CENTER
         color = Color.WHITE
     }
