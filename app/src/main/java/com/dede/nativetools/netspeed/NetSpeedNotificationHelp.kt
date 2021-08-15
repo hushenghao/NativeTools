@@ -5,13 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
-import android.os.Bundle
 import android.provider.Settings
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
-import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
@@ -122,8 +120,6 @@ object NetSpeedNotificationHelp {
         val uploadSpeedStr: String =
             NetFormatter.formatBytes(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
-        val contentStr =
-            context.getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
 
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel(context)
@@ -146,12 +142,6 @@ object NetSpeedNotificationHelp {
                 .setColorized(false)
         }
 
-        builder.setContentTitle(contentStr)
-        if (configuration.usage) {
-            val usageText = getUsageText(context)
-            builder.setContentText(usageText)
-        }
-
         if (configuration.hideLockNotification) {
             builder.setVisibility(Notification.VISIBILITY_SECRET)
         } else {
@@ -166,6 +156,14 @@ object NetSpeedNotificationHelp {
                 builder.setCustomContentView(remoteViews)
             } else {
                 builder.setContent(remoteViews)
+            }
+        } else {
+            val contentStr =
+                context.getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
+            builder.setContentTitle(contentStr)
+            if (configuration.usage) {
+                val usageText = getUsageText(context)
+                builder.setContentText(usageText)
             }
         }
 
@@ -200,10 +198,6 @@ object NetSpeedNotificationHelp {
         val notificationManager = context.getSystemService<NotificationManager>() ?: return
         for (channelId in OLD_CHANNEL_IDS) {
             notificationManager.deleteNotificationChannel(channelId)
-        }
-        val channel = notificationManager.getNotificationChannel(CHANNEL_ID)
-        if (channel != null) {
-            return
         }
 
         val notificationChannel = NotificationChannel(

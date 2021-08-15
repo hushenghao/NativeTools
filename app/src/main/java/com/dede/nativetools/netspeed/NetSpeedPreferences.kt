@@ -23,13 +23,14 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_SCALE = "net_speed_scale"
     const val KEY_NET_SPEED_QUICK_CLOSEABLE = "net_speed_notify_quick_closeable"
     const val KEY_NET_SPEED_BACKGROUND = "net_speed_background"
-    const val KEY_OPS_DONT_ASK = "ops_dont_ask"
-    const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
     const val KEY_NET_SPEED_USAGE = "net_speed_usage"
     const val KEY_V28_NIGHT_MODE_TOGGLE = "v28_night_mode_toggle"
     const val KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION = "net_speed_locked_hide"
-    const val KEY_DONT_SHOW_LOCK_NOTIFICATION_HELP = "dont_show_lock_notification_help"
     const val KEY_NET_SPEED_HIDE_NOTIFICATION = "net_speed_hide_notification"
+
+    const val KEY_OPS_DONT_ASK = "ops_dont_ask"
+    const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
+    const val KEY_DONT_SHOW_LOCK_NOTIFICATION_HELP = "dont_show_lock_notification_help"
 
     const val DEFAULT_INTERVAL = 1000
 

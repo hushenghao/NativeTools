@@ -22,7 +22,7 @@ data class NetSpeedConfiguration constructor(
 
     constructor() : this(
         NetSpeedPreferences.DEFAULT_INTERVAL, true, MODE_DOWN, 1f,
-        false, BACKGROUND_NONE, false, false, false
+        false, BACKGROUND_NONE, false, false, true
     )
 
     fun copy(configuration: NetSpeedConfiguration): NetSpeedConfiguration {
