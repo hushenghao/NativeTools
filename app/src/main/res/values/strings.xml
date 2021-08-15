@@ -31,7 +31,7 @@
     <string name="summary_about_version" translatable="false">v%s (%d)</string>
 
     <string name="usage_states_title">使用情况访问授权</string>
-    <string name="usage_stats_msg">统计每日流量使用情况时需要允许使用情况访问权限</string>
+    <string name="usage_stats_msg">统计每日流量使用情况时需要允许使用情况访问权限。</string>
     <string name="alert_title_notification_disable">通知权限未开启</string>
     <string name="alert_msg_notification_disable">通知权限未开启，网速指示器将无法正常显示</string>
     <string name="settings">去设置</string>
@@ -57,7 +57,13 @@
     <string name="url_pgyer" translatable="false">https://www.pgyer.com/U9kJ</string>
     <string name="toast_copyed">已复制</string>
     <string name="label_net_speed_toggle">切换</string>
-    <string name="alert_msg_hide_lock_notification">在设置中找到“隐藏锁屏通知”，选择“仅显示敏感内容”或“隐藏所有通知”</string>
+    <string name="alert_msg_hide_lock_notification">有时候通知无法隐藏可能是锁屏设置引起的。在设置中找到\'隐藏锁屏通知\"，选择\"仅显示敏感内容\"或\"隐藏所有通知\"。</string>
+    <string name="label_general">通用</string>
+    <string name="label_notification">通知</string>
+    <string name="label_other">其他</string>
+    <string name="label_net_speed_hide_notification">隐藏通知栏通知</string>
+    <string name="summary_net_speed_hide_notification">通过替换默认通知样式来隐藏通知（可能不支持所有设备）</string>
+    <string name="i_know">我知道了</string>
 
     <string-array name="net_speed_interval">
         <item>500 ms</item>

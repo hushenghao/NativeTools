@@ -15,12 +15,14 @@ data class NetSpeedConfiguration constructor(
     var scale: Float,
     var quickCloseable: Boolean,
     var background: String,
-    var usage: Boolean
+    var usage: Boolean,
+    var hideNotification: Boolean,
+    var hideLockNotification: Boolean
 ) : Parcelable {
 
     constructor() : this(
-        NetSpeedPreferences.DEFAULT_INTERVAL, true, MODE_DOWN,
-        1f, false, BACKGROUND_NONE, false
+        NetSpeedPreferences.DEFAULT_INTERVAL, true, MODE_DOWN, 1f,
+        false, BACKGROUND_NONE, false, false, false
     )
 
     fun copy(configuration: NetSpeedConfiguration): NetSpeedConfiguration {
@@ -31,6 +33,8 @@ data class NetSpeedConfiguration constructor(
         this.quickCloseable = configuration.quickCloseable
         this.background = configuration.background
         this.usage = configuration.usage
+        this.hideNotification = configuration.hideNotification
+        this.hideLockNotification = configuration.hideLockNotification
         return this
     }
 
@@ -57,6 +61,12 @@ data class NetSpeedConfiguration constructor(
             NetSpeedPreferences.KEY_NET_SPEED_USAGE -> {
                 this.usage = NetSpeedPreferences.usage
             }
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
+                this.hideNotification = NetSpeedPreferences.hideNotification
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION -> {
+                this.hideLockNotification = NetSpeedPreferences.hideLockNotification
+            }
         }
     }
 
@@ -82,7 +92,9 @@ data class NetSpeedConfiguration constructor(
                 NetSpeedPreferences.scale,
                 NetSpeedPreferences.quickCloseable,
                 NetSpeedPreferences.background,
-                NetSpeedPreferences.usage
+                NetSpeedPreferences.usage,
+                NetSpeedPreferences.hideNotification,
+                NetSpeedPreferences.hideLockNotification
             )
         }
     }

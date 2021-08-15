@@ -31,7 +31,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
 
         private const val KEY_ABOUT = "about"
-        private const val KEY_HIDE_LOCK_NOTIFICATION = "net_speed_hide_lock_notification"
     }
 
     private val configuration by lazy { NetSpeedConfiguration.initialize() }
@@ -39,7 +38,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private var netSpeedBinder: INetSpeedInterface? = null
 
     private lateinit var scaleSeekBarPreference: SeekBarPreference
-    private lateinit var statusSwitchPreference: SwitchPreference
+    private lateinit var statusSwitchPreference: SwitchPreferenceCompat
     private lateinit var usageSwitchPreference: SwitchPreferenceCompat
 
     private lateinit var closeReceiver: BroadcastReceiver
@@ -82,12 +81,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 }
             }
         }
-        requirePreference<Preference>(KEY_HIDE_LOCK_NOTIFICATION).also {
-            it.setOnPreferenceClickListener {
-                showHideLockNotificationDialog()
-                return@setOnPreferenceClickListener true
-            }
-        }
         requirePreference<Preference>(KEY_ABOUT).also {
             it.summary = getString(
                 R.string.summary_about_version,
@@ -100,6 +93,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 return@setOnPreferenceClickListener true
             }
         }
+        updateNotificationConfig()
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
@@ -142,6 +136,28 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 updateConfiguration()
                 updateScalePreferenceIcon()
             }
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION -> {
+                if (configuration.hideLockNotification) {
+                    showHideLockNotificationDialog()
+                }
+                updateConfiguration()
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
+                updateNotificationConfig()
+                updateConfiguration()
+            }
+        }
+    }
+
+    private fun updateNotificationConfig() {
+        val keys = arrayOf(
+            NetSpeedPreferences.KEY_NET_SPEED_USAGE,
+            NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
+            NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE
+        )
+        val isEnabled = configuration.hideNotification.not()
+        for (key in keys) {
+            requirePreference<Preference>(key).isEnabled = isEnabled
         }
     }
 
@@ -177,6 +193,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun showHideLockNotificationDialog() {
+        if (NetSpeedPreferences.dontShowLockNotificationHelp) {
+            return
+        }
         requireContext().alert(
             R.string.label_net_speed_hide_lock_notification,
             R.string.alert_msg_hide_lock_notification
@@ -184,7 +203,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             positiveButton(R.string.settings) {
                 NetSpeedNotificationHelp.goLockHideNotificationSetting(requireContext())
             }
-            negativeButton(android.R.string.cancel)
+            negativeButton(R.string.i_know) {
+                NetSpeedPreferences.dontShowLockNotificationHelp = true
+            }
             neutralButton(R.string.help) {
                 requireContext().browse(R.string.url_hide_lock_notification)
             }

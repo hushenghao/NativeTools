@@ -5,9 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
+import android.os.Bundle
 import android.provider.Settings
+import android.widget.RemoteViews
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
+import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
@@ -19,7 +23,8 @@ import com.dede.nativetools.util.*
  */
 object NetSpeedNotificationHelp {
 
-    private const val CHANNEL_ID = "net_speed"
+    private val OLD_CHANNEL_IDS = arrayOf("net_speed")
+    private const val CHANNEL_ID = "net_speed_1"
 
     fun isSecure(context: Context): Boolean {
         val keyguardManager = context.getSystemService<KeyguardManager>() ?: return true
@@ -89,9 +94,17 @@ object NetSpeedNotificationHelp {
         val monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
         return context.getString(
             R.string.notify_net_speed_sub,
-            NetFormatter.formatBytes(todayBytes, NetFormatter.FLAG_BYTE, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.formatBytes(
+                todayBytes,
+                NetFormatter.FLAG_BYTE,
+                NetFormatter.ACCURACY_EXACT
+            )
                 .splicing(),
-            NetFormatter.formatBytes(monthBytes, NetFormatter.FLAG_BYTE, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.formatBytes(
+                monthBytes,
+                NetFormatter.FLAG_BYTE,
+                NetFormatter.ACCURACY_EXACT
+            )
                 .splicing()
         )
     }
@@ -102,7 +115,6 @@ object NetSpeedNotificationHelp {
         rxSpeed: Long = 0L,
         txSpeed: Long = 0L
     ): Notification {
-        createChannel(context)
 
         val downloadSpeedStr: String =
             NetFormatter.formatBytes(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
@@ -114,23 +126,47 @@ object NetSpeedNotificationHelp {
             context.getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
 
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createChannel(context)
             Notification.Builder(context, CHANNEL_ID)
         } else {
             Notification.Builder(context)
+                .setPriority(Notification.PRIORITY_HIGH)
                 .setSound(null)
+            //.setDefaults(Notification.DEFAULT_VIBRATE)
+        }
+        builder.setAutoCancel(false)
+            .setSmallIcon(createIcon(configuration, rxSpeed, txSpeed))
+            .setCategory(null)
+            .setColor(context.getColor(R.color.appPrimary))
+            .setOnlyAlertOnce(true)
+            .setOngoing(true)
+            .setLocalOnly(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder.setBadgeIconType(Notification.BADGE_ICON_NONE)
+                .setColorized(false)
         }
 
+        builder.setContentTitle(contentStr)
         if (configuration.usage) {
             val usageText = getUsageText(context)
             builder.setContentText(usageText)
         }
-        builder.setContentTitle(contentStr)
-            .setAutoCancel(false)
-            .setVisibility(Notification.VISIBILITY_SECRET)
-            .setSmallIcon(createIcon(configuration, rxSpeed, txSpeed))
-            .setCategory(null)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder.setBadgeIconType(Notification.BADGE_ICON_NONE)
+
+        if (configuration.hideLockNotification) {
+            builder.setVisibility(Notification.VISIBILITY_SECRET)
+        } else {
+            builder.setVisibility(Notification.VISIBILITY_PUBLIC)
+        }
+
+        if (configuration.hideNotification) {
+            val remoteViews = RemoteViews(context.packageName, R.layout.notification_empty_view)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                // context.applicationInfo.targetSdkVersion < Build.VERSION_CODES.S
+                // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
+                builder.setCustomContentView(remoteViews)
+            } else {
+                builder.setContent(remoteViews)
+            }
         }
 
         var pendingFlag = PendingIntent.FLAG_UPDATE_CURRENT
@@ -159,11 +195,12 @@ object NetSpeedNotificationHelp {
         return builder.build()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel(context: Context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            return
-        }
         val notificationManager = context.getSystemService<NotificationManager>() ?: return
+        for (channelId in OLD_CHANNEL_IDS) {
+            notificationManager.deleteNotificationChannel(channelId)
+        }
         val channel = notificationManager.getNotificationChannel(CHANNEL_ID)
         if (channel != null) {
             return
@@ -172,10 +209,11 @@ object NetSpeedNotificationHelp {
         val notificationChannel = NotificationChannel(
             CHANNEL_ID,
             context.getString(R.string.label_net_speed),
-            NotificationManager.IMPORTANCE_LOW
+            NotificationManager.IMPORTANCE_HIGH
         ).apply {
             description = context.getString(R.string.desc_net_speed_notify)
             setShowBadge(false)
+            //enableVibration(true)
             setSound(null, null)
             lockscreenVisibility = Notification.VISIBILITY_SECRET
         }

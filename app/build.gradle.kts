@@ -19,7 +19,7 @@ android {
     defaultConfig {
         applicationId = "com.dede.nativetools"
         minSdk = 23
-        targetSdk = 31
+        targetSdk = 30
         versionCode = 25
         versionName = "2.5.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

@@ -19,7 +19,7 @@
     <string name="summary_net_speed_notify_clickable">点击通知打开应用设置界面</string>
     <string name="summary_net_speed_auto_start">跟随系统启动后台服务</string>
     <string name="usage_states_title">使用情况访问授权</string>
-    <string name="usage_stats_msg">统计每日流量使用情况时需要允许使用情况访问权限</string>
+    <string name="usage_stats_msg">统计每日流量使用情况时需要允许使用情况访问权限。</string>
     <string name="settings">去设置</string>
     <string name="help">帮助</string>
     <string name="access">去授权</string>
@@ -44,7 +44,13 @@
     <string name="label_net_speed_toggle">切换</string>
     <string name="label_net_speed_usage">显示每日和每月流量使用</string>
     <string name="summary_net_speed_usage">通知显示移动数据和WLAN流量使用总和</string>
-    <string name="alert_msg_hide_lock_notification">在设置中找到“隐藏锁屏通知”，选择“仅显示敏感内容”或“隐藏所有通知”</string>
+    <string name="alert_msg_hide_lock_notification">有时候通知无法隐藏可能是锁屏设置引起的。在设置中找到\'隐藏锁屏通知\"，选择\"仅显示敏感内容\"或\"隐藏所有通知\"。</string>
+    <string name="label_general">通用</string>
+    <string name="label_notification">通知</string>
+    <string name="label_other">其他</string>
+    <string name="label_net_speed_hide_notification">隐藏通知栏通知</string>
+    <string name="summary_net_speed_hide_notification">通过替换默认通知样式来隐藏通知（可能不支持所有设备）</string>
+    <string name="i_know">我知道了</string>
 
     <string-array name="net_speed_mode">
         <item>仅下载</item>
