@@ -2,6 +2,7 @@ package com.dede.nativetools.util
 
 import android.content.Context
 import android.content.DialogInterface
+import android.os.Build
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
@@ -18,11 +19,12 @@ fun displayMetrics(): DisplayMetrics {
     return globalContext.resources.displayMetrics
 }
 
-fun setNightMode(enable: Boolean) {
-    val mode = if (enable)
-        AppCompatDelegate.MODE_NIGHT_YES
-    else
-        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+fun setV28NightMode(enable: Boolean) {
+    val mode = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        enable -> AppCompatDelegate.MODE_NIGHT_YES
+        else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+    }
     AppCompatDelegate.setDefaultNightMode(mode)
 }
 

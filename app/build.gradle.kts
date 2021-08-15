@@ -115,7 +115,7 @@ configurations.all {
 
 tasks.register<Exec>("pgyer") {
     val apiKey = keystoreProperties["pgyer.api_key"]
-        ?: throw IllegalArgumentException("pgyer.api_key undefind")
+        ?: throw IllegalArgumentException("pgyer.api_key not found")
 
     val assemble = tasks.named("assembleRelease").get()
     dependsOn("clean", assemble)

@@ -1,6 +1,5 @@
 package com.dede.nativetools.netspeed
 
-import android.content.SharedPreferences
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultConfiguration
 import com.dede.nativetools.util.get
 import com.dede.nativetools.util.globalPreferences
@@ -30,7 +29,6 @@ object NetSpeedPreferences {
 
     const val KEY_OPS_DONT_ASK = "ops_dont_ask"
     const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
-    const val KEY_DONT_SHOW_LOCK_NOTIFICATION_HELP = "dont_show_lock_notification_help"
 
     const val DEFAULT_INTERVAL = 1000
 
@@ -104,32 +102,4 @@ object NetSpeedPreferences {
             defaultConfiguration.hideLockNotification
         )
 
-    var dontShowLockNotificationHelp: Boolean
-        get() = globalPreferences.get(KEY_DONT_SHOW_LOCK_NOTIFICATION_HELP, false)
-        set(value) = globalPreferences.set(KEY_DONT_SHOW_LOCK_NOTIFICATION_HELP, value)
-
-    private val listeners =
-        HashMap<OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener>()
-
-    fun registerPreferenceChangeListener(listener: OnPreferenceChangeListener) {
-        val wrapper = WrapperPreferenceChangeListener(listener)
-        listeners[listener] = wrapper
-        globalPreferences.registerOnSharedPreferenceChangeListener(wrapper)
-    }
-
-    fun unregisterPreferenceChangeListener(listener: OnPreferenceChangeListener) {
-        val wrapper = listeners.remove(listener) ?: return
-        globalPreferences.unregisterOnSharedPreferenceChangeListener(wrapper)
-    }
-
-    private class WrapperPreferenceChangeListener(val listener: OnPreferenceChangeListener) :
-        SharedPreferences.OnSharedPreferenceChangeListener {
-        override fun onSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
-            listener.onPreferenceChanged(key)
-        }
-    }
-
-    interface OnPreferenceChangeListener {
-        fun onPreferenceChanged(key: String)
-    }
 }

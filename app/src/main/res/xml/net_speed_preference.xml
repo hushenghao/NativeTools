@@ -69,6 +69,13 @@
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:iconSpaceReserved="false"
+            app:key="net_speed_hide_notification"
+            app:summary="@string/summary_net_speed_hide_notification"
+            app:title="@string/label_net_speed_hide_notification" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:iconSpaceReserved="false"
             app:key="net_speed_usage"
             app:summary="@string/summary_net_speed_usage"
             app:title="@string/label_net_speed_usage" />
@@ -88,18 +95,12 @@
             app:summary="@string/summary_net_speed_notify_quick_closeable" />
 
         <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:iconSpaceReserved="false"
-            app:key="net_speed_hide_notification"
-            app:summary="@string/summary_net_speed_hide_notification"
-            app:title="@string/label_net_speed_hide_notification" />
-
-        <SwitchPreferenceCompat
             android:key="net_speed_locked_hide"
             android:title="@string/label_net_speed_hide_lock_notification"
             app:defaultValue="true"
             app:iconSpaceReserved="false"
-            app:summary="@string/summary_net_speed_hide_lock_notification" />
+            app:summary="@string/summary_net_speed_hide_lock_notification"
+            app:widgetLayout="@layout/override_preference_widget_switch_compat" />
 
     </PreferenceCategory>
 

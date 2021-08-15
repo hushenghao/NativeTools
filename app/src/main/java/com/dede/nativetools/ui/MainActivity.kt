@@ -1,10 +1,8 @@
 package com.dede.nativetools.ui
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -12,7 +10,7 @@ import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.NetSpeedService
-import com.dede.nativetools.util.setNightMode
+import com.dede.nativetools.util.setV28NightMode
 
 /**
  * Main
@@ -34,11 +32,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContentView(R.layout.activity_main)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        } else {
-            setNightMode(NetSpeedPreferences.v28NightMode)
-        }
+        setV28NightMode(NetSpeedPreferences.v28NightMode)
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(this, navController)
 

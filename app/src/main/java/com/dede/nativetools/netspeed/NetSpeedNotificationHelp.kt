@@ -113,7 +113,6 @@ object NetSpeedNotificationHelp {
         rxSpeed: Long = 0L,
         txSpeed: Long = 0L
     ): Notification {
-
         val downloadSpeedStr: String =
             NetFormatter.formatBytes(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
@@ -148,6 +147,15 @@ object NetSpeedNotificationHelp {
             builder.setVisibility(Notification.VISIBILITY_PUBLIC)
         }
 
+        var pendingFlag = PendingIntent.FLAG_UPDATE_CURRENT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // support Android S
+            // https://developer.android.com/about/versions/12/behavior-changes-all#foreground-service-notification-delay
+            builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
+            // https://developer.android.com/about/versions/12/behavior-changes-12#pending-intent-mutability
+            pendingFlag = PendingIntent.FLAG_MUTABLE
+        }
+
         if (configuration.hideNotification) {
             val remoteViews = RemoteViews(context.packageName, R.layout.notification_empty_view)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -165,22 +173,13 @@ object NetSpeedNotificationHelp {
                 val usageText = getUsageText(context)
                 builder.setContentText(usageText)
             }
-        }
 
-        var pendingFlag = PendingIntent.FLAG_UPDATE_CURRENT
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            // support Android S
-            // https://developer.android.com/about/versions/12/behavior-changes-all#foreground-service-notification-delay
-            builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
-            // https://developer.android.com/about/versions/12/behavior-changes-12#pending-intent-mutability
-            pendingFlag = PendingIntent.FLAG_MUTABLE
-        }
-
-        if (configuration.quickCloseable) {
-            val closeAction = Intent(NetSpeedService.ACTION_CLOSE)
-                .toPendingBroadcast(context, pendingFlag)
-                .toNotificationAction(R.string.action_close)
-            builder.addAction(closeAction)
+            if (configuration.quickCloseable) {
+                val closeAction = Intent(NetSpeedService.ACTION_CLOSE)
+                    .toPendingBroadcast(context, pendingFlag)
+                    .toNotificationAction(R.string.action_close)
+                builder.addAction(closeAction)
+            }
         }
 
         if (configuration.notifyClickable) {
