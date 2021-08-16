@@ -5,6 +5,7 @@
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
     <string name="action_close">关闭</string>
+    <string name="expand_button_title">更多设置</string>
 
     <string name="label_net_speed">网速指示器</string>
     <string name="label_net_speed_interval">刷新间隔</string>

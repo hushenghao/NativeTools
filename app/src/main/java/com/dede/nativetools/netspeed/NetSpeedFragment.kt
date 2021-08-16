@@ -1,5 +1,6 @@
 package com.dede.nativetools.netspeed
 
+import android.annotation.SuppressLint
 import android.content.*
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
@@ -7,7 +8,6 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
 import android.provider.Settings
-import android.util.Log
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
 import androidx.preference.*
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.util.*
+import java.util.*
 
 /**
  * 网速指示器设置页
@@ -43,7 +44,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private lateinit var statusSwitchPreference: SwitchPreferenceCompat
     private lateinit var usageSwitchPreference: SwitchPreferenceCompat
 
-    private lateinit var closeReceiver: BroadcastReceiver
+    private val closeReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            stopService()
+            statusSwitchPreference.isChecked = false
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,15 +58,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
         checkOps()
         checkNotification()
-
-        if (!::closeReceiver.isInitialized) {
-            closeReceiver = object : BroadcastReceiver() {
-                override fun onReceive(context: Context?, intent: Intent?) {
-                    stopService()
-                    statusSwitchPreference.isChecked = false
-                }
-            }
-        }
 
         val intentFilter = IntentFilter(NetSpeedService.ACTION_CLOSE)
         requireContext().registerReceiver(closeReceiver, intentFilter)
@@ -78,10 +75,16 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onCreateAdapter(preferenceScreen: PreferenceScreen?): RecyclerView.Adapter<*> {
         return object : PreferenceGroupAdapter(preferenceScreen) {
+            @SuppressLint("RestrictedApi")
             override fun onBindViewHolder(holder: PreferenceViewHolder, position: Int) {
                 super.onBindViewHolder(holder, position)
-                holder.findViewById(R.id.iv_preference_help)?.setOnClickListener {
-                    showHideLockNotificationDialog()
+                val preference = getItem(position) ?: return
+                if (preference.javaClass.name == "androidx.preference.ExpandButton") {
+                    holder.findViewById(androidx.preference.R.id.icon_frame)?.gone()
+                } else if (preference.key == NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION) {
+                    holder.findViewById(R.id.iv_preference_help)?.setOnClickListener {
+                        showHideLockNotificationDialog()
+                    }
                 }
             }
         }
@@ -130,7 +133,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 val status = NetSpeedPreferences.status
                 if (status) startService() else stopService()
             }
-            NetSpeedPreferences.KEY_V28_NIGHT_MODE_TOGGLE->{
+            NetSpeedPreferences.KEY_V28_NIGHT_MODE_TOGGLE -> {
                 setV28NightMode(NetSpeedPreferences.v28NightMode)
             }
             NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
@@ -192,9 +195,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     override fun onDestroy() {
-        if (::closeReceiver.isInitialized) {
-            requireContext().unregisterReceiver(closeReceiver)
-        }
+        requireContext().unregisterReceiver(closeReceiver)
         unbindService()
         super.onDestroy()
     }

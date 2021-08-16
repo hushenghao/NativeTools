@@ -5,6 +5,7 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
+        app:initialExpandedChildrenCount="4"
         app:title="@string/label_general">
 
         <SwitchPreferenceCompat
@@ -14,6 +15,13 @@
             android:title="@string/label_net_speed"
             app:defaultValue="false"
             app:iconSpaceReserved="false" />
+
+        <SwitchPreferenceCompat
+            android:key="net_speed_auto_start"
+            android:title="@string/label_net_speed_auto_start"
+            app:defaultValue="false"
+            app:iconSpaceReserved="false"
+            app:summary="@string/summary_net_speed_auto_start" />
 
         <DropDownPreference
             android:key="net_speed_interval"
@@ -53,18 +61,20 @@
             app:title="@string/label_net_speed_background"
             app:useSimpleSummaryProvider="true" />
 
-        <SwitchPreferenceCompat
-            android:key="net_speed_auto_start"
-            android:title="@string/label_net_speed_auto_start"
-            app:defaultValue="false"
-            app:iconSpaceReserved="false"
-            app:summary="@string/summary_net_speed_auto_start" />
-
     </PreferenceCategory>
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
+        app:initialExpandedChildrenCount="2"
         app:title="@string/label_notification">
+
+        <SwitchPreferenceCompat
+            android:key="net_speed_locked_hide"
+            android:title="@string/label_net_speed_hide_lock_notification"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:summary="@string/summary_net_speed_hide_lock_notification"
+            app:widgetLayout="@layout/override_preference_widget_switch_compat" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
@@ -93,14 +103,6 @@
             app:defaultValue="false"
             app:iconSpaceReserved="false"
             app:summary="@string/summary_net_speed_notify_quick_closeable" />
-
-        <SwitchPreferenceCompat
-            android:key="net_speed_locked_hide"
-            android:title="@string/label_net_speed_hide_lock_notification"
-            app:defaultValue="true"
-            app:iconSpaceReserved="false"
-            app:summary="@string/summary_net_speed_hide_lock_notification"
-            app:widgetLayout="@layout/override_preference_widget_switch_compat" />
 
     </PreferenceCategory>
 
