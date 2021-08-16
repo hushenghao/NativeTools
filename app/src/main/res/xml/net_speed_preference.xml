@@ -12,7 +12,7 @@
             android:summaryOff="@string/switch_off"
             android:summaryOn="@string/switch_on"
             android:title="@string/label_net_speed"
-            app:defaultValue="true"
+            app:defaultValue="false"
             app:iconSpaceReserved="false" />
 
         <DropDownPreference

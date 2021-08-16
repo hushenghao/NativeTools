@@ -125,17 +125,13 @@ object NetSpeedNotificationHelp {
             Notification.Builder(context, CHANNEL_ID)
         } else {
             Notification.Builder(context)
-                .setPriority(Notification.PRIORITY_HIGH)
+                .setPriority(Notification.PRIORITY_DEFAULT)
                 .setSound(null)
-            //.setDefaults(Notification.DEFAULT_VIBRATE)
+                //.setDefaults(Notification.DEFAULT_VIBRATE)
         }
-        builder.setAutoCancel(false)
+        builder.setCategory(null)
             .setSmallIcon(createIcon(configuration, rxSpeed, txSpeed))
-            .setCategory(null)
             .setColor(context.getColor(R.color.appPrimary))
-            .setOnlyAlertOnce(true)
-            .setOngoing(true)
-            .setLocalOnly(true)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setBadgeIconType(Notification.BADGE_ICON_NONE)
                 .setColorized(false)
@@ -202,11 +198,12 @@ object NetSpeedNotificationHelp {
         val notificationChannel = NotificationChannel(
             CHANNEL_ID,
             context.getString(R.string.label_net_speed),
-            NotificationManager.IMPORTANCE_HIGH
+            NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
             description = context.getString(R.string.desc_net_speed_notify)
             setShowBadge(false)
-            //enableVibration(true)
+            enableVibration(false)
+            enableLights(false)
             setSound(null, null)
             lockscreenVisibility = Notification.VISIBILITY_SECRET
         }
