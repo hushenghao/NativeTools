@@ -59,7 +59,7 @@ class NetSpeedService : Service() {
 
     private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
         val notify =
-            NetSpeedNotificationHelp.createNotification(this, configuration, rxSpeed, txSpeed)
+            NetSpeedNotificationHelper.createNotification(this, configuration, rxSpeed, txSpeed)
         notificationManager?.notify(NOTIFY_ID, notify)
     }
 
@@ -87,7 +87,7 @@ class NetSpeedService : Service() {
     }
 
     private fun startForeground() {
-        val notify = NetSpeedNotificationHelp.createNotification(this, configuration)
+        val notify = NetSpeedNotificationHelper.createNotification(this, configuration)
         startForeground(NOTIFY_ID, notify)
     }
 
@@ -115,7 +115,7 @@ class NetSpeedService : Service() {
     private fun updateConfiguration(configuration: NetSpeedConfiguration?) {
         this.configuration.copy(configuration ?: return)
             .also { netSpeedHelper.interval = it.interval }
-        val notification = NetSpeedNotificationHelp.createNotification(
+        val notification = NetSpeedNotificationHelper.createNotification(
             this,
             this.configuration,
             this.netSpeedHelper.rxSpeed,

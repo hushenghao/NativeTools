@@ -19,11 +19,37 @@ import com.dede.nativetools.util.*
 /**
  * 网速通知
  */
-object NetSpeedNotificationHelp {
+object NetSpeedNotificationHelper {
 
-    private const val CHANNEL_ID = "net_speed"
+    private const val CHANNEL_ID = "net_speed_1"
 
-    fun isSecure(context: Context): Boolean {
+    private const val KEY_NOTIFICATION_CHANNEL_VERSION = "notification_channel_version"
+    private const val NOTIFICATION_CHANNEL_VERSION = 1
+
+    /**
+     * 更新通知渠道版本
+     */
+    fun checkNotificationChannelAndUpgrade(context: Context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+        val notificationManager = context.getSystemService<NotificationManager>() ?: return
+        val old = globalPreferences.get(KEY_NOTIFICATION_CHANNEL_VERSION, 0)
+        for (v in (old..NOTIFICATION_CHANNEL_VERSION)) {
+            when (v) {
+                0 -> {
+                    // 通知优先级由IMPORTANCE_LOW提升为IMPORTANCE_DEFAULT
+                    notificationManager.deleteNotificationChannel("net_speed")
+                }
+                NOTIFICATION_CHANNEL_VERSION -> {
+                    globalPreferences.set(
+                        KEY_NOTIFICATION_CHANNEL_VERSION,
+                        NOTIFICATION_CHANNEL_VERSION
+                    )
+                }
+            }
+        }
+    }
+
+    private fun isSecure(context: Context): Boolean {
         val keyguardManager = context.getSystemService<KeyguardManager>() ?: return true
         return keyguardManager.isDeviceSecure || keyguardManager.isKeyguardSecure
     }

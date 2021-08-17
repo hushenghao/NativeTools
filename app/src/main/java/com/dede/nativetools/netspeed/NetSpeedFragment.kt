@@ -206,7 +206,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             R.string.alert_msg_hide_lock_notification
         ) {
             positiveButton(R.string.settings) {
-                NetSpeedNotificationHelp.goLockHideNotificationSetting(requireContext())
+                NetSpeedNotificationHelper.goLockHideNotificationSetting(requireContext())
             }
             negativeButton(R.string.i_know)
             neutralButton(R.string.help) {
@@ -241,7 +241,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private fun checkNotification() {
         val context = requireContext()
-        val areNotificationsEnabled = NetSpeedNotificationHelp.areNotificationEnabled(context)
+        val areNotificationsEnabled = NetSpeedNotificationHelper.areNotificationEnabled(context)
         val dontAskNotify = NetSpeedPreferences.dontAskNotify
         if (dontAskNotify || areNotificationsEnabled) {
             return
@@ -251,7 +251,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             R.string.alert_msg_notification_disable
         ) {
             positiveButton(R.string.settings) {
-                NetSpeedNotificationHelp.goNotificationSetting(context)
+                NetSpeedNotificationHelper.goNotificationSetting(context)
             }
             neutralButton(R.string.dont_ask) {
                 NetSpeedPreferences.dontAskNotify = true
