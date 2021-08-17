@@ -21,8 +21,7 @@ import com.dede.nativetools.util.*
  */
 object NetSpeedNotificationHelp {
 
-    private val OLD_CHANNEL_IDS = arrayOf("net_speed")
-    private const val CHANNEL_ID = "net_speed_1"
+    private const val CHANNEL_ID = "net_speed"
 
     fun isSecure(context: Context): Boolean {
         val keyguardManager = context.getSystemService<KeyguardManager>() ?: return true
@@ -127,7 +126,7 @@ object NetSpeedNotificationHelp {
             Notification.Builder(context)
                 .setPriority(Notification.PRIORITY_DEFAULT)
                 .setSound(null)
-                //.setDefaults(Notification.DEFAULT_VIBRATE)
+            //.setDefaults(Notification.DEFAULT_VIBRATE)
         }
         builder.setCategory(null)
             .setSmallIcon(createIcon(configuration, rxSpeed, txSpeed))
@@ -191,10 +190,6 @@ object NetSpeedNotificationHelp {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel(context: Context) {
         val notificationManager = context.getSystemService<NotificationManager>() ?: return
-        for (channelId in OLD_CHANNEL_IDS) {
-            notificationManager.deleteNotificationChannel(channelId)
-        }
-
         val notificationChannel = NotificationChannel(
             CHANNEL_ID,
             context.getString(R.string.label_net_speed),
