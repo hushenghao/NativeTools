@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="4dp"
-        android:src="@drawable/ic_about" />
+        android:src="@drawable/ic_baseline_help_24" />
 
     <include layout="@layout/preference_widget_switch_compat" />
 </LinearLayout>
