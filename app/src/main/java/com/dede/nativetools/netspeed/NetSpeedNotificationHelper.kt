@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
@@ -32,18 +33,23 @@ object NetSpeedNotificationHelper {
     fun checkNotificationChannelAndUpgrade(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         val notificationManager = context.getSystemService<NotificationManager>() ?: return
-        val old = globalPreferences.get(KEY_NOTIFICATION_CHANNEL_VERSION, 0)
-        for (v in (old..NOTIFICATION_CHANNEL_VERSION)) {
+        val target = NOTIFICATION_CHANNEL_VERSION
+        val old = globalPreferences.get(KEY_NOTIFICATION_CHANNEL_VERSION, target)
+        if (old > target) {
+            Log.w(
+                "NotificationChannelVersion",
+                "version downgrade, old: $old, target: $target"
+            )
+        }
+        for (v in (old..target)) {
             when (v) {
                 0 -> {
                     // 通知优先级由IMPORTANCE_LOW提升为IMPORTANCE_DEFAULT
                     notificationManager.deleteNotificationChannel("net_speed")
                 }
-                NOTIFICATION_CHANNEL_VERSION -> {
-                    globalPreferences.set(
-                        KEY_NOTIFICATION_CHANNEL_VERSION,
-                        NOTIFICATION_CHANNEL_VERSION
-                    )
+                target -> {
+                    // 更新版本号
+                    globalPreferences.set(KEY_NOTIFICATION_CHANNEL_VERSION, target)
                 }
             }
         }
