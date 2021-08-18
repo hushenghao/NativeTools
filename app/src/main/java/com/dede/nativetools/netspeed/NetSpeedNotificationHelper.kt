@@ -21,10 +21,10 @@ import com.dede.nativetools.util.*
  */
 object NetSpeedNotificationHelper {
 
-    private const val CHANNEL_ID = "net_speed_1"
-
     private const val KEY_NOTIFICATION_CHANNEL_VERSION = "notification_channel_version"
     private const val NOTIFICATION_CHANNEL_VERSION = 1
+
+    private const val CHANNEL_ID = "net_speed_${NOTIFICATION_CHANNEL_VERSION}"
 
     /**
      * 更新通知渠道版本
