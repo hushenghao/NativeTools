@@ -37,13 +37,13 @@
         <service
             android:name=".netspeed.NetSpeedService"
             android:exported="false"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_baseline_speed_24"
             android:label="@string/label_net_speed"
             android:process=":netspeed" />
         <service
             android:name=".netspeed.NetTileService"
             android:exported="true"
-            android:icon="@drawable/ic_net_tile"
+            android:icon="@drawable/ic_baseline_speed_24"
             android:label="@string/label_net_speed"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>

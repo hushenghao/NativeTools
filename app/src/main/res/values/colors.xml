@@ -6,7 +6,6 @@
     <color name="appAccent">#d81b60</color>
 
     <color name="maskBgColor">#00796B</color>
-    <color name="ic_launcher_background">#00796b</color>
     <color name="github_tint">#000</color>
 
 </resources>

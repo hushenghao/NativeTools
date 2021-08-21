@@ -1,6 +1,5 @@
 package com.dede.nativetools.netspeed
 
-import android.content.SharedPreferences
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultConfiguration
 import com.dede.nativetools.util.get
 import com.dede.nativetools.util.globalPreferences
@@ -23,10 +22,13 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_SCALE = "net_speed_scale"
     const val KEY_NET_SPEED_QUICK_CLOSEABLE = "net_speed_notify_quick_closeable"
     const val KEY_NET_SPEED_BACKGROUND = "net_speed_background"
+    const val KEY_NET_SPEED_USAGE = "net_speed_usage"
+    const val KEY_NIGHT_MODE_TOGGLE = "v28_night_mode_toggle"
+    const val KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION = "net_speed_locked_hide"
+    const val KEY_NET_SPEED_HIDE_NOTIFICATION = "net_speed_hide_notification"
+
     const val KEY_OPS_DONT_ASK = "ops_dont_ask"
     const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
-    const val KEY_NET_SPEED_USAGE = "net_speed_usage"
-    const val KEY_V28_NIGHT_MODE_TOGGLE = "v28_night_mode_toggle"
 
     const val DEFAULT_INTERVAL = 1000
 
@@ -37,8 +39,8 @@ object NetSpeedPreferences {
         get() = globalPreferences.get(KEY_NET_SPEED_STATUS, false)
         set(value) = globalPreferences.set(KEY_NET_SPEED_STATUS, value)
 
-    val v28NightMode: Boolean
-        get() = globalPreferences.get(KEY_V28_NIGHT_MODE_TOGGLE, false)
+    val isNightMode: Boolean
+        get() = globalPreferences.get(KEY_NIGHT_MODE_TOGGLE, false)
 
     val autoStart: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_AUTO_START, false)
@@ -88,28 +90,16 @@ object NetSpeedPreferences {
     val usage: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_USAGE, defaultConfiguration.usage)
 
-    private val listeners =
-        HashMap<OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener>()
+    val hideNotification: Boolean
+        get() = globalPreferences.get(
+            KEY_NET_SPEED_HIDE_NOTIFICATION,
+            defaultConfiguration.hideNotification
+        )
 
-    fun registerPreferenceChangeListener(listener: OnPreferenceChangeListener) {
-        val wrapper = WrapperPreferenceChangeListener(listener)
-        listeners[listener] = wrapper
-        globalPreferences.registerOnSharedPreferenceChangeListener(wrapper)
-    }
+    val hideLockNotification: Boolean
+        get() = globalPreferences.get(
+            KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION,
+            defaultConfiguration.hideLockNotification
+        )
 
-    fun unregisterPreferenceChangeListener(listener: OnPreferenceChangeListener) {
-        val wrapper = listeners.remove(listener) ?: return
-        globalPreferences.unregisterOnSharedPreferenceChangeListener(wrapper)
-    }
-
-    private class WrapperPreferenceChangeListener(val listener: OnPreferenceChangeListener) :
-        SharedPreferences.OnSharedPreferenceChangeListener {
-        override fun onSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
-            listener.onPreferenceChanged(key)
-        }
-    }
-
-    interface OnPreferenceChangeListener {
-        fun onPreferenceChanged(key: String)
-    }
 }

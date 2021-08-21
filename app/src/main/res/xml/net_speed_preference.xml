@@ -3,98 +3,125 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/label_net_speed">
 
-    <SwitchPreference
-        android:key="net_speed_status"
-        android:summaryOff="@string/switch_off"
-        android:summaryOn="@string/switch_on"
-        android:title="@string/label_net_speed"
-        app:defaultValue="true"
-        app:iconSpaceReserved="false" />
-
-    <DropDownPreference
-        android:key="net_speed_interval"
-        app:defaultValue="1000"
-        app:entries="@array/net_speed_interval"
-        app:entryValues="@array/net_speed_interval_value"
+    <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:title="@string/label_net_speed_interval"
-        app:useSimpleSummaryProvider="true" />
+        app:initialExpandedChildrenCount="4"
+        app:title="@string/label_general">
 
-    <DropDownPreference
-        android:key="net_speed_mode"
-        app:defaultValue="0"
-        app:entries="@array/net_speed_mode"
-        app:entryValues="@array/net_speed_mode_value"
+        <SwitchPreferenceCompat
+            android:key="net_speed_status"
+            android:summaryOff="@string/switch_off"
+            android:summaryOn="@string/switch_on"
+            android:title="@string/label_net_speed"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_baseline_speed_24" />
+
+        <SwitchPreferenceCompat
+            android:key="net_speed_auto_start"
+            android:title="@string/label_net_speed_auto_start"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_outline_restart_alt_24"
+            app:summary="@string/summary_net_speed_auto_start" />
+
+        <DropDownPreference
+            android:key="net_speed_interval"
+            app:defaultValue="1000"
+            app:entries="@array/net_speed_interval"
+            app:entryValues="@array/net_speed_interval_value"
+            app:icon="@drawable/ic_baseline_timer_24"
+            app:title="@string/label_net_speed_interval"
+            app:useSimpleSummaryProvider="true" />
+
+        <DropDownPreference
+            android:key="net_speed_mode"
+            app:defaultValue="0"
+            app:entries="@array/net_speed_mode"
+            app:entryValues="@array/net_speed_mode_value"
+            app:icon="@drawable/ic_outline_menu_open_24"
+            app:title="@string/label_net_speed_mode"
+            app:useSimpleSummaryProvider="true" />
+
+        <DropDownPreference
+            android:key="net_speed_background"
+            app:defaultValue="0"
+            app:entries="@array/net_speed_background"
+            app:entryValues="@array/net_speed_background_value"
+            app:icon="@drawable/ic_outline_wallpaper_24"
+            app:title="@string/label_net_speed_background"
+            app:useSimpleSummaryProvider="true" />
+
+        <com.dede.nativetools.ui.SliderPreference
+            android:defaultValue="100"
+            android:key="net_speed_scale"
+            android:max="115"
+            android:title="@string/label_net_speed_icon_zoom"
+            app:icon="@drawable/layer_icon_mask"
+            app:min="80"
+            app:showSeekBarValue="true"
+            app:summary="@string/summary_net_speed_scale" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:title="@string/label_net_speed_mode"
-        app:useSimpleSummaryProvider="true" />
+        app:initialExpandedChildrenCount="2"
+        app:title="@string/label_notification">
 
-    <com.dede.nativetools.ui.SliderPreference
-        android:defaultValue="100"
-        android:key="net_speed_scale"
-        android:max="115"
-        android:title="@string/label_net_speed_icon_zoom"
-        app:icon="@drawable/layer_icon_mask"
-        app:layout="@layout/override_preference_widget_seekbar"
-        app:min="80"
-        app:showSeekBarValue="true"
-        app:summary="@string/summary_net_speed_scale" />
+        <SwitchPreferenceCompat
+            android:key="net_speed_locked_hide"
+            android:title="@string/label_net_speed_hide_lock_notification"
+            app:defaultValue="true"
+            app:icon="@drawable/ic_outline_phonelink_lock_24"
+            app:summary="@string/summary_net_speed_hide_lock_notification"
+            app:widgetLayout="@layout/override_preference_widget_switch_compat" />
 
-    <DropDownPreference
-        android:key="net_speed_background"
-        app:defaultValue="0"
-        app:entries="@array/net_speed_background"
-        app:entryValues="@array/net_speed_background_value"
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_outline_notifications_off_24"
+            app:key="net_speed_hide_notification"
+            app:summary="@string/summary_net_speed_hide_notification"
+            app:title="@string/label_net_speed_hide_notification" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_outline_data_usage_24"
+            app:key="net_speed_usage"
+            app:summary="@string/summary_net_speed_usage"
+            app:title="@string/label_net_speed_usage" />
+
+        <SwitchPreferenceCompat
+            android:key="net_speed_notify_clickable"
+            android:title="@string/label_net_speed_notify_clickable"
+            app:defaultValue="true"
+            app:icon="@drawable/ic_outline_touch_24"
+            app:summary="@string/summary_net_speed_notify_clickable" />
+
+        <SwitchPreferenceCompat
+            android:key="net_speed_notify_quick_closeable"
+            android:title="@string/label_net_speed_notify_quick_closeable"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_outline_cancel"
+            app:summary="@string/summary_net_speed_notify_quick_closeable" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:title="@string/label_net_speed_background"
-        app:useSimpleSummaryProvider="true" />
+        app:title="@string/label_other">
 
-    <SwitchPreference
-        android:key="net_speed_auto_start"
-        android:title="@string/label_net_speed_auto_start"
-        app:defaultValue="true"
-        app:iconSpaceReserved="false"
-        app:summary="@string/summary_net_speed_auto_start" />
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_outline_dark_mode_24"
+            app:key="v28_night_mode_toggle"
+            app:summaryOff="@string/summary_night_mode_follow_system"
+            app:summaryOn="@string/switch_on"
+            app:title="@string/label_night_mode" />
 
-    <SwitchPreferenceCompat
-        app:key="net_speed_usage"
-        app:title="@string/label_net_speed_usage"
-        app:defaultValue="false"
-        app:summary="@string/summary_net_speed_usage"
-        app:iconSpaceReserved="false"/>
-
-    <SwitchPreference
-        android:key="net_speed_notify_clickable"
-        android:title="@string/label_net_speed_notify_clickable"
-        app:defaultValue="true"
-        app:iconSpaceReserved="false"
-        app:summary="@string/summary_net_speed_notify_clickable" />
-
-    <SwitchPreference
-        android:key="net_speed_notify_quick_closeable"
-        android:title="@string/label_net_speed_notify_quick_closeable"
-        app:defaultValue="false"
-        app:iconSpaceReserved="false"
-        app:summary="@string/summary_net_speed_notify_quick_closeable" />
-
-    <Preference
-        android:key="net_speed_hide_lock_notification"
-        android:title="@string/label_net_speed_hide_lock_notification"
-        app:iconSpaceReserved="false"
-        app:summary="@string/summary_net_speed_hide_lock_notification" />
-
-    <SwitchPreferenceCompat
-        app:defaultValue="false"
-        app:iconSpaceReserved="false"
-        app:key="v28_night_mode_toggle"
-        app:summaryOff="@string/summary_night_mode_follow_system"
-        app:summaryOn="@string/switch_on"
-        app:title="@string/label_night_mode" />
-
-    <Preference
-        android:fragment="com.dede.nativetools.about.AboutFragment"
-        android:key="about"
-        android:title="@string/label_about"
-        app:iconSpaceReserved="false"
-        app:summary="@string/summary_about_version" />
+        <Preference
+            android:fragment="com.dede.nativetools.about.AboutFragment"
+            android:key="about"
+            android:title="@string/label_about"
+            app:icon="@drawable/ic_outline_info"
+            app:summary="@string/summary_about_version" />
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -26,8 +26,8 @@
     android:clipToPadding="false"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingStart="12dp"
+    android:paddingLeft="12dp"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     tools:viewBindingIgnore="true">
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
-        android:minWidth="56dp"
+        android:minWidth="52dp"
         android:orientation="horizontal">
 
         <!--fix hide class warning-->
@@ -54,7 +54,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:clipChildren="false"
         android:clipToPadding="false">
 
@@ -62,8 +62,8 @@
             android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceListItem" />
@@ -145,13 +145,14 @@
             android:layout_below="@android:id/summary"
             android:layout_marginTop="-6dp"
             android:clipChildren="false"
-            android:clipToPadding="false">
+            android:clipToPadding="false"
+            android:paddingBottom="4dp">
 
             <com.google.android.material.slider.Slider
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical"
                 app:labelBehavior="floating"
                 app:thumbColor="@color/appAccent"
                 app:thumbRadius="8dp"

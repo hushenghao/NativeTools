@@ -24,3 +24,7 @@ fun SharedPreferences.get(key: String, default: Boolean): Boolean {
 fun SharedPreferences.set(key: String, value: Boolean) {
     this.edit().putBoolean(key, value).apply()
 }
+
+fun SharedPreferences.set(key: String, value: Int) {
+    this.edit().putInt(key, value).apply()
+}

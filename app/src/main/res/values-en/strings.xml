@@ -10,13 +10,14 @@
     <string name="switch_on">ON</string>
     <string name="switch_off">OFF</string>
     <string name="action_close">CLOSE</string>
+    <string name="expand_button_title">More Options</string>
     <string name="label_net_speed_interval">Interval</string>
     <string name="label_net_speed_mode">Show mode</string>
     <string name="label_net_speed_auto_start">Automatic startup</string>
     <string name="label_net_speed">Net Monitor</string>
     <string name="label_net_speed_hide_lock_notification">Hide lock screen notification</string>
     <string name="label_net_speed_notify_clickable">Notification can be clicked</string>
-    <string name="usage_stats_msg">Usage access needs to be allowed when counting daily traffic usage</string>
+    <string name="usage_stats_msg">Usage access needs to be allowed when counting daily traffic usage.</string>
     <string name="usage_states_title">Usage access</string>
     <string name="summary_net_speed_auto_start">Follow the system to start the background service</string>
     <string name="summary_net_speed">Display the current network speed in the status bar</string>
@@ -55,5 +56,12 @@
     <string name="label_net_speed_toggle">Toggle</string>
     <string name="label_net_speed_usage">Displays daily and monthly traffic usage</string>
     <string name="summary_net_speed_usage">Notifications display the total usage of mobile data and WLAN traffic</string>
-    <string name="alert_msg_hide_lock_notification">Find \"Hide Lockscreen notifications\" in Settings and choose \"Show sensitive content only\" or \"Hide all notifications\"</string>
+    <string name="alert_msg_hide_lock_notification">Sometimes the inability to hide notifications can be caused by the lock screen setting. Find \'Hide lock screen notifications\' in Settings and select\' Show sensitive content only \'or\' Hide all notifications\'.</string>
+    <string name="label_general">General</string>
+    <string name="label_notification">Notification</string>
+    <string name="label_other">Other</string>
+    <string name="label_net_speed_hide_notification">Hide notification</string>
+    <string name="summary_net_speed_hide_notification">Hide notifications by replacing the default notification style (may not be supported on all devices)</string>
+    <string name="i_know">I know that</string>
+    <string name="tip_easter_egg">彩蛋</string>
 </resources>
