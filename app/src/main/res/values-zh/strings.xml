@@ -52,6 +52,7 @@
     <string name="label_net_speed_hide_notification">隐藏通知栏通知</string>
     <string name="summary_net_speed_hide_notification">通过替换默认通知样式来隐藏通知（可能不支持所有设备）</string>
     <string name="i_know">我知道了</string>
+    <string name="tip_easter_egg">Easter Egg</string>
 
     <string-array name="net_speed_mode">
         <item>仅下载</item>

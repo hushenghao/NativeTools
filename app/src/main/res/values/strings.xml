@@ -45,7 +45,7 @@
     <string name="percent_seek_bar_company" translatable="false">%</string>
     <string name="url_github" translatable="false">https://github.com/hushenghao/NativeTools</string>
     <string name="url_hide_lock_notification" translatable="false">https://github.com/hushenghao/NativeTools/blob/develop/docs/hide_lock_notification.md</string>
-    <string name="github" translatable="false">github</string>
+    <string name="github" translatable="false">Github</string>
     <string name="label_like_app">喜欢本应用，点击去应用商店评分</string>
     <string name="chooser_label_market">选择应用商店</string>
     <string name="label_open_source">开源相关</string>
@@ -65,6 +65,7 @@
     <string name="label_net_speed_hide_notification">隐藏通知栏通知</string>
     <string name="summary_net_speed_hide_notification">通过替换默认通知样式来隐藏通知（可能不支持所有设备）</string>
     <string name="i_know">我知道了</string>
+    <string name="tip_easter_egg">Easter Egg</string>
 
     <string-array name="net_speed_interval">
         <item>500 ms</item>
