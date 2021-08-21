@@ -6,6 +6,7 @@
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:initialExpandedChildrenCount="4"
+        app:key="key_general"
         app:title="@string/label_general">
 
         <SwitchPreferenceCompat
@@ -65,6 +66,7 @@
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:initialExpandedChildrenCount="2"
+        app:key="key_notification"
         app:title="@string/label_notification">
 
         <SwitchPreferenceCompat
@@ -107,6 +109,7 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
+        app:key="key_other"
         app:title="@string/label_other">
 
         <SwitchPreferenceCompat
