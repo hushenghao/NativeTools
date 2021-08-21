@@ -20,14 +20,11 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 27
-        versionName = "2.6.0"
+        versionCode = 28
+        versionName = "2.6.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        resourceConfigurations.let {
-            it.add("en")
-            it.add("zh")
-        }
+        resourceConfigurations.addAll(arrayListOf("en", "zh"))
 
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797

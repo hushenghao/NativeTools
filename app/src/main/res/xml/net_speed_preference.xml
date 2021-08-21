@@ -55,7 +55,7 @@
             android:key="net_speed_scale"
             android:max="115"
             android:title="@string/label_net_speed_icon_zoom"
-            app:icon="@drawable/layer_icon_mask"
+            app:icon="@drawable/ic_outline_zoom_out_24"
             app:min="80"
             app:showSeekBarValue="true"
             app:summary="@string/summary_net_speed_scale" />

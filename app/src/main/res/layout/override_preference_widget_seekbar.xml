@@ -26,35 +26,20 @@
     android:clipToPadding="false"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-    android:paddingStart="12dp"
-    android:paddingLeft="12dp"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     tools:viewBindingIgnore="true">
 
-    <LinearLayout
-        android:id="@+id/icon_frame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="start|center_vertical"
-        android:minWidth="52dp"
-        android:orientation="horizontal">
-
-        <!--fix hide class warning-->
-        <view
-            android:id="@android:id/icon"
-            class="androidx.preference.internal.PreferenceImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:maxHeight="@dimen/percent_preference_icon_size"
-            app:maxWidth="@dimen/percent_preference_icon_size" />
-
-    </LinearLayout>
+    <include layout="@layout/image_frame" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_gravity="top"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
         android:clipChildren="false"
         android:clipToPadding="false">
 
@@ -62,8 +47,6 @@
             android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceListItem" />
@@ -143,10 +126,10 @@
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_below="@android:id/summary"
-            android:layout_marginTop="-6dp"
+            android:layout_marginTop="-4dp"
+            android:layout_marginHorizontal="-8dp"
             android:clipChildren="false"
-            android:clipToPadding="false"
-            android:paddingBottom="4dp">
+            android:clipToPadding="false">
 
             <com.google.android.material.slider.Slider
                 android:id="@+id/slider"
@@ -162,4 +145,15 @@
         </FrameLayout>
 
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_right_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:maxWidth="@dimen/percent_preference_icon_size"
+        android:maxHeight="@dimen/percent_preference_icon_size"
+        android:visibility="gone"
+        tools:visibility="visible" />
 </LinearLayout>
