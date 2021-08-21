@@ -20,4 +20,4 @@
 # hide the original source file name.
 -renamesourcefileattribute SourceFile
 
--keepnames class androidx.preference.ExpandButton
+#-keepnames class androidx.preference.ExpandButton

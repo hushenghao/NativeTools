@@ -79,9 +79,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             override fun onBindViewHolder(holder: PreferenceViewHolder, position: Int) {
                 super.onBindViewHolder(holder, position)
                 val preference = getItem(position) ?: return
-                if (preference.javaClass.name == "androidx.preference.ExpandButton") {
-                    holder.findViewById(androidx.preference.R.id.icon_frame)?.gone()
-                } else if (preference.key == NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION) {
+//                if (preference.javaClass.name == "androidx.preference.ExpandButton") {
+//                    holder.findViewById(androidx.preference.R.id.icon_frame)?.gone()
+//                } else
+                if (preference.key == NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION) {
                     holder.findViewById(R.id.iv_preference_help)?.setOnClickListener {
                         showHideLockNotificationDialog()
                     }
@@ -167,7 +168,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         )
         val isEnabled = configuration.hideNotification.not()
         for (key in keys) {
-            requirePreference<Preference>(key).isVisible = isEnabled
+            requirePreference<Preference>(key).isEnabled = isEnabled
         }
     }
 

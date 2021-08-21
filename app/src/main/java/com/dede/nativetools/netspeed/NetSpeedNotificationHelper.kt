@@ -163,6 +163,7 @@ object NetSpeedNotificationHelper {
         builder.setCategory(null)
             .setSmallIcon(createIcon(configuration, rxSpeed, txSpeed))
             .setColor(context.getColor(R.color.appPrimary))
+            .setOnlyAlertOnce(false)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setBadgeIconType(Notification.BADGE_ICON_NONE)
                 .setColorized(false)
