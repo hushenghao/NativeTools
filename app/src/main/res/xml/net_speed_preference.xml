@@ -41,15 +41,6 @@
             app:title="@string/label_net_speed_mode"
             app:useSimpleSummaryProvider="true" />
 
-        <DropDownPreference
-            android:key="net_speed_background"
-            app:defaultValue="0"
-            app:entries="@array/net_speed_background"
-            app:entryValues="@array/net_speed_background_value"
-            app:icon="@drawable/ic_outline_wallpaper_24"
-            app:title="@string/label_net_speed_background"
-            app:useSimpleSummaryProvider="true" />
-
         <com.dede.nativetools.ui.SliderPreference
             android:defaultValue="100"
             android:key="net_speed_scale"
@@ -59,6 +50,15 @@
             app:min="80"
             app:showSeekBarValue="true"
             app:summary="@string/summary_net_speed_scale" />
+
+        <DropDownPreference
+            android:key="net_speed_background"
+            app:defaultValue="0"
+            app:entries="@array/net_speed_background"
+            app:entryValues="@array/net_speed_background_value"
+            app:icon="@drawable/ic_outline_wallpaper_24"
+            app:title="@string/label_net_speed_background"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
