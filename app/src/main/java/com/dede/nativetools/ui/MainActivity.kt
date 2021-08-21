@@ -10,7 +10,7 @@ import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.NetSpeedService
-import com.dede.nativetools.util.setV28NightMode
+import com.dede.nativetools.util.setNightMode
 
 /**
  * Main
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContentView(R.layout.activity_main)
-        setV28NightMode(NetSpeedPreferences.v28NightMode)
+        setNightMode(NetSpeedPreferences.isNightMode)
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(this, navController)
 

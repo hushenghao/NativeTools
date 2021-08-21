@@ -3,7 +3,6 @@ package com.dede.nativetools.netspeed
 import android.annotation.SuppressLint
 import android.content.*
 import android.graphics.drawable.LayerDrawable
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
@@ -92,9 +91,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun initOtherPreference() {
-        requirePreference<SwitchPreferenceCompat>(NetSpeedPreferences.KEY_V28_NIGHT_MODE_TOGGLE).also {
-            it.isVisible = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
-        }
+//        requirePreference<SwitchPreferenceCompat>(NetSpeedPreferences.KEY_NIGHT_MODE_TOGGLE).also {
+//            it.isVisible = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
+//        }
         requirePreference<Preference>(KEY_ABOUT).also {
             it.summary = getString(
                 R.string.summary_about_version,
@@ -134,8 +133,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 val status = NetSpeedPreferences.status
                 if (status) startService() else stopService()
             }
-            NetSpeedPreferences.KEY_V28_NIGHT_MODE_TOGGLE -> {
-                setV28NightMode(NetSpeedPreferences.v28NightMode)
+            NetSpeedPreferences.KEY_NIGHT_MODE_TOGGLE -> {
+                setNightMode(NetSpeedPreferences.isNightMode)
             }
             NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
