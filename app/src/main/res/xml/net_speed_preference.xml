@@ -37,7 +37,7 @@
             app:defaultValue="0"
             app:entries="@array/net_speed_mode"
             app:entryValues="@array/net_speed_mode_value"
-            app:icon="@drawable/ic_baseline_whatshot_24"
+            app:icon="@drawable/ic_outline_menu_open_24"
             app:title="@string/label_net_speed_mode"
             app:useSimpleSummaryProvider="true" />
 
@@ -94,14 +94,14 @@
             android:key="net_speed_notify_clickable"
             android:title="@string/label_net_speed_notify_clickable"
             app:defaultValue="true"
-            app:icon="@drawable/ic_outline_click_24"
+            app:icon="@drawable/ic_outline_touch_24"
             app:summary="@string/summary_net_speed_notify_clickable" />
 
         <SwitchPreferenceCompat
             android:key="net_speed_notify_quick_closeable"
             android:title="@string/label_net_speed_notify_quick_closeable"
             app:defaultValue="false"
-            app:icon="@drawable/ic_baseline_close_24"
+            app:icon="@drawable/ic_outline_cancel"
             app:summary="@string/summary_net_speed_notify_quick_closeable" />
 
     </PreferenceCategory>
