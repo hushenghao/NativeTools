@@ -74,27 +74,25 @@ android {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra.get("kotlin_version")}")
-    implementation("androidx.appcompat:appcompat:1.3.0")
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.preference:preference-ktx:1.1.1")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.preference.ktx)
+    implementation(libs.bundles.navigation)
 
-    implementation("me.weishu:free_reflection:3.0.1")
-    implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.7")
+    implementation(libs.free.reflection)
+    implementation(libs.viewbinding.property.delegate)
 
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
+    debugImplementation(libs.leakcanary)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.expresso.core)
 }
 
 configurations.all {
     //exclude("androidx.drawerlayout", "drawerlayout")
     //exclude("androidx.coordinatorlayout", "coordinatorlayout")
-    //exclude("androidx.cardview", "cardview")
     exclude("androidx.viewpager2", "viewpager2")
     exclude("androidx.viewpager", "viewpager")
     exclude("androidx.slidingpanelayout", "slidingpanelayout")

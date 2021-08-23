@@ -3,16 +3,13 @@ tasks.wrapper {
 }
 
 buildscript {
-    extra.apply {
-        set("kotlin_version", "1.5.21")
-    }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.0.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${project.extra.get("kotlin_version")}")
+        classpath(libs.android.gradle)
+        classpath(libs.kotlin.gradle)
     }
 }
 
