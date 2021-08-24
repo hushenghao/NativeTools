@@ -74,19 +74,19 @@ android {
 }
 
 dependencies {
-    implementation(libs.kotlin.stdlib)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.preference.ktx)
-    implementation(libs.bundles.navigation)
+    implementation(deps.kotlin.stdlib)
+    implementation(deps.appcompat)
+    implementation(deps.material)
+    implementation(deps.preference.ktx)
+    implementation(deps.bundles.navigation)
 
-    implementation(libs.free.reflection)
-    implementation(libs.viewbinding.property.delegate)
+    implementation(deps.free.reflection)
+    implementation(deps.viewbinding.property.delegate)
 
-    debugImplementation(libs.leakcanary)
+    debugImplementation(deps.leakcanary)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.bundles.android.test)
+    testImplementation(deps.junit)
+    androidTestImplementation(deps.bundles.android.test)
 }
 
 configurations.all {
