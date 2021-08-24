@@ -23,6 +23,7 @@ androidx-expresso-core = "androidx.test.espresso:espresso-core:3.4.0"
 
 [bundles]
 navigation = ["navigation-ui-ktx", "navigation-fragment-ktx"]
+android-test = ["androidx-junit", "androidx-expresso-core"]
 
 #[plugins]
 #kotlin-android = { id = "kotlin-android", version.ref = "kotlin" }

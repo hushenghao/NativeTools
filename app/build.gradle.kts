@@ -86,8 +86,7 @@ dependencies {
     debugImplementation(libs.leakcanary)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.expresso.core)
+    androidTestImplementation(libs.bundles.android.test)
 }
 
 configurations.all {
