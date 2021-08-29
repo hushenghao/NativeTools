@@ -7,12 +7,14 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
 import android.provider.Settings
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
 import androidx.preference.*
 import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
+import com.dede.nativetools.ui.SliderPreference
 import com.dede.nativetools.util.*
 import java.util.*
 
@@ -39,7 +41,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private var netSpeedBinder: INetSpeedInterface? = null
 
-    private lateinit var scaleSeekBarPreference: SeekBarPreference
+    private lateinit var scaleSliderPreference: SliderPreference
     private lateinit var statusSwitchPreference: SwitchPreferenceCompat
     private lateinit var usageSwitchPreference: SwitchPreferenceCompat
 
@@ -64,7 +66,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.net_speed_preference)
-        scaleSeekBarPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_SCALE)
+        scaleSliderPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_SCALE)
         statusSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
         usageSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_USAGE)
         updateScalePreferenceIcon()
@@ -180,7 +182,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun updateScalePreferenceIcon() {
-        val drawable = scaleSeekBarPreference.icon
+        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.layer_icon_mask)
 
         val size = resources.getDimensionPixelSize(R.dimen.percent_preference_icon_size)
         val speed: Long = if (configuration.mode == NetSpeedConfiguration.MODE_ALL) {
@@ -189,9 +191,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             MODE_SINGLE_BYTES
         }
         val bitmap = NetTextIconFactory.createIconBitmap(speed, speed, configuration, size, false)
-        val layerDrawable =
-            drawable as LayerDrawable
+        val layerDrawable = drawable as LayerDrawable
         layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmap.toDrawable(resources))
+        scaleSliderPreference.setRightIcon(drawable)
     }
 
     override fun onDestroy() {

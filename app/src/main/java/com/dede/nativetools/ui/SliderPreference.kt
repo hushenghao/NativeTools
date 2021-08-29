@@ -1,8 +1,12 @@
 package com.dede.nativetools.ui
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.HapticFeedbackConstants
+import android.view.View
+import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.SeekBarPreference
@@ -16,6 +20,9 @@ class SliderPreference @JvmOverloads constructor(context: Context, attrs: Attrib
     init {
         layoutResource = R.layout.override_preference_widget_seekbar
     }
+
+    private var rightImage: ImageView? = null
+    private var rightDrawable: Drawable? = null
 
     override fun onBindViewHolder(view: PreferenceViewHolder) {
         super.onBindViewHolder(view)
@@ -35,6 +42,17 @@ class SliderPreference @JvmOverloads constructor(context: Context, attrs: Attrib
             addOnChangeListener(impl)
             addOnSliderTouchListener(impl)
         }
+
+        rightImage = view.findViewById(R.id.iv_right_icon) as? ImageView
+        Log.i("TAG", "onBindViewHolder: " + rightImage)
+        setRightIcon(rightDrawable)
+    }
+
+    fun setRightIcon(icon: Drawable?) {
+        rightDrawable = icon
+        val rightImage = rightImage ?: return
+        rightImage.setImageDrawable(icon)
+        rightImage.visibility = View.VISIBLE
     }
 
     private inner class Impl(val seekBar: SeekBar) :

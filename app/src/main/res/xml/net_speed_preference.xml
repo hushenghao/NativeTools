@@ -6,6 +6,7 @@
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:initialExpandedChildrenCount="4"
+        app:key="key_general"
         app:title="@string/label_general">
 
         <SwitchPreferenceCompat
@@ -41,6 +42,16 @@
             app:title="@string/label_net_speed_mode"
             app:useSimpleSummaryProvider="true" />
 
+        <com.dede.nativetools.ui.SliderPreference
+            android:defaultValue="100"
+            android:key="net_speed_scale"
+            android:max="115"
+            android:title="@string/label_net_speed_icon_zoom"
+            app:icon="@drawable/ic_outline_zoom_out_24"
+            app:min="80"
+            app:showSeekBarValue="true"
+            app:summary="@string/summary_net_speed_scale" />
+
         <DropDownPreference
             android:key="net_speed_background"
             app:defaultValue="0"
@@ -50,21 +61,12 @@
             app:title="@string/label_net_speed_background"
             app:useSimpleSummaryProvider="true" />
 
-        <com.dede.nativetools.ui.SliderPreference
-            android:defaultValue="100"
-            android:key="net_speed_scale"
-            android:max="115"
-            android:title="@string/label_net_speed_icon_zoom"
-            app:icon="@drawable/layer_icon_mask"
-            app:min="80"
-            app:showSeekBarValue="true"
-            app:summary="@string/summary_net_speed_scale" />
-
     </PreferenceCategory>
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:initialExpandedChildrenCount="2"
+        app:key="key_notification"
         app:title="@string/label_notification">
 
         <SwitchPreferenceCompat
@@ -107,6 +109,7 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
+        app:key="key_other"
         app:title="@string/label_other">
 
         <SwitchPreferenceCompat
