@@ -22,6 +22,7 @@ androidx-junit = "androidx.test.ext:junit:1.1.3"
 androidx-expresso-core = "androidx.test.espresso:espresso-core:3.4.0"
 
 [bundles]
+classpath = ["android-gradle", "kotlin-gradle"]
 navigation = ["navigation-ui-ktx", "navigation-fragment-ktx"]
 android-test = ["androidx-junit", "androidx-expresso-core"]
 

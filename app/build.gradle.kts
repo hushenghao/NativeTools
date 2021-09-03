@@ -59,8 +59,8 @@ android {
         }
     }
 
-    buildFeatures {
-        viewBinding = true
+    viewBinding {
+        isEnabled = true
     }
 
     compileOptions {
