@@ -2,7 +2,7 @@
 kotlin = "1.5.21"
 
 [libraries]
-android-gradle = "com.android.tools.build:gradle:7.0.1"
+android-gradle = "com.android.tools.build:gradle:7.0.2"
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
