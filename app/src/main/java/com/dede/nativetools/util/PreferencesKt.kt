@@ -9,6 +9,10 @@ import androidx.preference.PreferenceManager
 val globalPreferences: SharedPreferences
     get() = PreferenceManager.getDefaultSharedPreferences(globalContext)
 
+fun SharedPreferences.has(key: String): Boolean {
+    return this.all.containsKey(key)
+}
+
 fun SharedPreferences.get(key: String, default: Int): Int {
     return this.getInt(key, default)
 }

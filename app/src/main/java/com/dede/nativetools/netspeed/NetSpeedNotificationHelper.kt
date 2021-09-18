@@ -23,7 +23,7 @@ import com.dede.nativetools.util.*
 object NetSpeedNotificationHelper {
 
     private const val KEY_NOTIFICATION_CHANNEL_VERSION = "notification_channel_version"
-    private const val NOTIFICATION_CHANNEL_VERSION = 1
+    private const val NOTIFICATION_CHANNEL_VERSION = 2
 
     private const val CHANNEL_ID = "net_speed_${NOTIFICATION_CHANNEL_VERSION}"
 
@@ -34,7 +34,11 @@ object NetSpeedNotificationHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         val notificationManager = context.getSystemService<NotificationManager>() ?: return
         val target = NOTIFICATION_CHANNEL_VERSION
-        val old = globalPreferences.get(KEY_NOTIFICATION_CHANNEL_VERSION, target)
+        val old = globalPreferences.get(KEY_NOTIFICATION_CHANNEL_VERSION, 0)
+        if (old == 0) {// 第一次安装
+            globalPreferences.set(KEY_NOTIFICATION_CHANNEL_VERSION, target)
+            return
+        }
         if (old > target) {
             Log.w(
                 "NotificationChannelVersion",
@@ -43,15 +47,23 @@ object NetSpeedNotificationHelper {
         }
         for (v in (old..target)) {
             when (v) {
-                0 -> {
+                1 -> {
                     // 通知优先级由IMPORTANCE_LOW提升为IMPORTANCE_DEFAULT
-                    notificationManager.deleteNotificationChannel("net_speed")
+                    // fix version 1 bug
+                    notificationManager.deleteNotificationChannels("net_speed", "net_speed_1")
                 }
                 target -> {
                     // 更新版本号
                     globalPreferences.set(KEY_NOTIFICATION_CHANNEL_VERSION, target)
                 }
             }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun NotificationManager.deleteNotificationChannels(vararg channelIds: String) {
+        for (channelId in channelIds) {
+            this.deleteNotificationChannel(channelId)
         }
     }
 
