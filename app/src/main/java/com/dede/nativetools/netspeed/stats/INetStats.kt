@@ -47,12 +47,11 @@ interface INetStats {
         }
 
         private fun create(clazz: Class<out INetStats>): INetStats {
-            return when (clazz) {
-                Android31NetStats::class.java -> Android31NetStats()
-                ReflectNetStats::class.java -> ReflectNetStats()
-                ExcludeLoNetStats::class.java -> ExcludeLoNetStats()
-                NormalNetStats::class.java -> NormalNetStats()
-                else -> throw IllegalArgumentException("INetStats: $clazz don`t supported")
+            return runCatching {
+                clazz.newInstance()
+            }.getOrElse {
+                it.printStackTrace()
+                NormalNetStats()
             }
         }
     }
