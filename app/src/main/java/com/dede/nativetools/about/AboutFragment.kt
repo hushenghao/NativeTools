@@ -140,7 +140,10 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 repeatCount = 1
                 val feedback: (Animator) -> Unit = {
                     // BZZZTT!!1!
-                    binding.ivLogo.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
+                    binding.ivLogo.performHapticFeedback(
+                        HapticFeedbackConstants.CONTEXT_CLICK,
+                        HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                    )
                 }
                 addListener(onStart = feedback, onRepeat = feedback)
                 start()
