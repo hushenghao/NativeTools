@@ -13,6 +13,7 @@ import com.dede.nativetools.netspeed.utils.DebugClipboardUtil
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.addActions
 import com.dede.nativetools.util.startService
+import kotlinx.coroutines.*
 
 
 class NetSpeedService : Service() {
@@ -20,7 +21,10 @@ class NetSpeedService : Service() {
     class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
         override fun updateConfiguration(configuration: NetSpeedConfiguration?) {
-            service.updateConfiguration(configuration)
+            if (configuration == null) return
+            service.lifecycleScope.launch(Dispatchers.Main) {
+                service.updateConfiguration(configuration)
+            }
         }
     }
 
@@ -58,6 +62,8 @@ class NetSpeedService : Service() {
     private val notificationManager: NotificationManager? by lazy(LazyThreadSafetyMode.NONE) {
         getSystemService<NotificationManager>()
     }
+
+    val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
         val notify =
@@ -137,6 +143,7 @@ class NetSpeedService : Service() {
     }
 
     override fun onDestroy() {
+        lifecycleScope.cancel()
         pause()
         unregisterReceiver(innerReceiver)
         DebugClipboardUtil.unregister(this)
