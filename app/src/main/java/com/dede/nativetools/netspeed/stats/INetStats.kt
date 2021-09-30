@@ -36,7 +36,7 @@ interface INetStats {
             )
             for (clazz in allNetBytesClass) {
                 val instance = create(clazz)
-                if (!instance.supported())
+                if (instance == null || !instance.supported())
                     continue
 
                 iNetStats = instance
@@ -46,13 +46,10 @@ interface INetStats {
             return checkNotNull(iNetStats) { "Not found supported INetStats" }
         }
 
-        private fun create(clazz: Class<out INetStats>): INetStats {
-            return runCatching {
-                clazz.newInstance()
-            }.getOrElse {
-                it.printStackTrace()
-                NormalNetStats()
-            }
+        private fun create(clazz: Class<out INetStats>): INetStats? {
+            return runCatching(clazz::newInstance)
+                .onFailure(Throwable::printStackTrace)
+                .getOrNull()
         }
     }
 

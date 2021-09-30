@@ -8,11 +8,7 @@ import androidx.core.text.HtmlCompat
 
 fun String?.safeInt(default: Int): Int {
     if (this == null) return default
-    return try {
-        this.toInt()
-    } catch (e: NumberFormatException) {
-        default
-    }
+    return runCatching(String::toInt).onFailure(Throwable::printStackTrace).getOrDefault(default)
 }
 
 fun String?.fromHtml(): Spanned? {
@@ -40,24 +36,5 @@ fun String.trimZeroAndDot(): String {
 }
 
 fun String.decodeBase64(): String? {
-    return safely(null) {
-        String(Base64.decode(this, Base64.DEFAULT))
-    }
-}
-
-inline fun <T> safely(default: T, block: () -> T): T {
-    return try {
-        block()
-    } catch (e: Throwable) {
-        e.printStackTrace()
-        default
-    }
-}
-
-inline fun safely(block: () -> Unit) {
-    try {
-        block()
-    } catch (e: Throwable) {
-        e.printStackTrace()
-    }
+    return runCatching { String(Base64.decode(this, Base64.DEFAULT)) }.getOrNull()
 }

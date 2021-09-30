@@ -5,15 +5,14 @@ import android.net.TrafficStats
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.dede.nativetools.netspeed.stats.INetStats.Companion.isSupported
-import com.dede.nativetools.util.safely
 
 class Android31NetStats : INetStats {
 
     @RequiresApi(Build.VERSION_CODES.S)
-    private var supportWlan0 = safely(false) {
+    private var supportWlan0 = kotlin.runCatching {
         // no hide ???
         TrafficStats.getRxBytes(INetStats.WLAN_IFACE).isSupported()
-    }
+    }.onFailure(Throwable::printStackTrace).getOrDefault(false)
 
     override fun supported(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && supportWlan0

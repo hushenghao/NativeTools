@@ -23,7 +23,7 @@ val globalContext: Context
     get() = NativeToolsApp.getInstance()
 
 fun Context.safelyStartActivity(intent: Intent) {
-    safely { this.startActivity(intent) }
+    intent.runCatching(this::startActivity)
 }
 
 fun Context.startService(intent: Intent, foreground: Boolean) {

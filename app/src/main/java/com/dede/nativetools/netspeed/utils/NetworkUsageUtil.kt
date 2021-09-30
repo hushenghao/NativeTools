@@ -4,7 +4,6 @@ import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.net.ConnectivityManager
 import androidx.core.content.getSystemService
-import com.dede.nativetools.util.safely
 import java.util.*
 
 /**
@@ -64,11 +63,11 @@ object NetworkUsageUtil {
         networkType: Int,
         startTime: Long, endTime: Long
     ): Long {
-        return safely(0) {
+        return kotlin.runCatching {
             val bucket = networkStatsManager.querySummaryForDevice(
                 networkType, null, startTime, endTime
             )
             bucket.rxBytes + bucket.txBytes
-        }
+        }.getOrDefault(0)
     }
 }
