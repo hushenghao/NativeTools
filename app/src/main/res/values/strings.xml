@@ -45,6 +45,8 @@
     <string name="percent_seek_bar_company" translatable="false">%</string>
     <string name="url_github" translatable="false">https://github.com/hushenghao/NativeTools</string>
     <string name="url_hide_lock_notification" translatable="false">https://github.com/hushenghao/NativeTools/blob/develop/docs/hide_lock_notification.md</string>
+    <string name="url_alipay_payment_code" translatable="false">https://qr.alipay.com/fkx102121bvcoglww05av58</string>
+    <string name="url_wx_payment_code" translatable="false">wxp://f2f0HUx189brtInq9P5t6f8ei40cJnbCmh6DdC9gVai6cHBPAb40fxNLfCQBMZCGvxQP</string>
     <string name="github" translatable="false">Github</string>
     <string name="label_like_app">喜欢本应用，点击去应用商店评分</string>
     <string name="chooser_label_market">选择应用商店</string>

@@ -112,16 +112,19 @@ fun Context.toast(@StringRes resId: Int) {
     Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
 }
 
-fun Context.browse(url: String) {
+fun Context.browse(url: String, chooser: Boolean = true) {
     val web = Intent(Intent.ACTION_VIEW)
         .setData(url)
         .newTask()
-        .toChooser(R.string.chooser_label_browse)
-    startActivity(web)
+    if (chooser) {
+        startActivity(web.toChooser(R.string.chooser_label_browse))
+    } else {
+        web.runCatching(this::startActivity).onFailure(Throwable::printStackTrace)
+    }
 }
 
-fun Context.browse(@StringRes urlId: Int) {
-    this.browse(this.getString(urlId))
+fun Context.browse(@StringRes urlId: Int, chooser: Boolean = true) {
+    this.browse(this.getString(urlId), chooser)
 }
 
 fun Context.market(packageName: String) {
