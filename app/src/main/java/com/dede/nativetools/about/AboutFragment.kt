@@ -24,7 +24,6 @@ import com.dede.nativetools.util.*
 class AboutFragment : Fragment(R.layout.fragment_about) {
 
     companion object {
-        private var animatored = false
         private const val MAX_FOLLOW_COUNT = 8
         private const val ENABLE_FOLLOW_COUNT = 2
     }
@@ -71,23 +70,18 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         }
         setFollowView(followViews)
 
-        if (!animatored) {
+        if (!viewModel.animatored) {
             playAnimator()
         }
     }
 
     private fun createFollowView(template: ImageView): ImageView {
-        val insert = AppCompatImageView(requireContext()).apply {
+        return AppCompatImageView(requireContext()).apply {
             elevation = 1.dpf
             hide()
             setImageResource(R.mipmap.ic_launcher_round)
+            layoutParams = LayoutParams(template.layoutParams as LayoutParams)
         }
-        binding.container.addView(
-            insert,
-            binding.container.indexOfChild(template) + 1,
-            LayoutParams(template.layoutParams as LayoutParams)
-        )
-        return insert
     }
 
     private fun appendFollowView(
@@ -106,7 +100,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             }
             return
         }
-        val insert = if (count == 0) template else createFollowView(template)
+        val insert = if (count == 0) template else {
+            createFollowView(template).apply {
+                binding.container.addView(this, binding.container.indexOfChild(template) + 1)
+            }
+        }
         followViews.add(insert)
         setFollowView(followViews)
         if (animator) {
@@ -118,11 +116,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         val floatEvaluator = FloatEvaluator()
         val count = followViews.size
         for (i in 0 until count) {
-            val evaluate = floatEvaluator.evaluate((i + 1f) / count, 1f, 0.6f)
+            val value = floatEvaluator.evaluate((i + 1f) / count, 1f, 0.6f)
             followViews[i].apply {
-                scaleX = evaluate
-                scaleY = evaluate
-                alpha = evaluate
+                scaleX = value
+                scaleY = value
+                alpha = value
             }
         }
         viewModel.setFollowCount(count)
@@ -131,7 +129,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     }
 
     private fun playAnimator() {
-        animatored = true
+        viewModel.animatored = true
         lifecycleAnimator(binding.ivLogo, ScaleProperty(), 1f, 1.3f, 0.7f)
             .apply {
                 duration = 200
