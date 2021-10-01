@@ -48,15 +48,14 @@
     <string name="url_alipay_payment_code" translatable="false">https://qr.alipay.com/fkx102121bvcoglww05av58</string>
     <string name="url_wx_payment_code" translatable="false">wxp://f2f0HUx189brtInq9P5t6f8ei40cJnbCmh6DdC9gVai6cHBPAb40fxNLfCQBMZCGvxQP</string>
     <string name="github" translatable="false">Github</string>
-    <string name="label_like_app">喜欢本应用，点击去应用商店评分</string>
     <string name="chooser_label_market">选择应用商店</string>
     <string name="label_open_source">开源相关</string>
     <string name="action_share">分享</string>
 
     <string name="share_text">发现了一个好用的小工具“网速指示器”快去下载吧！https://www.coolapk.com/apk/com.dede.nativetools</string>
     <string name="action_beta" translatable="false">Beta</string>
+    <string name="action_feedback">反馈</string>
     <string name="email" translatable="false">dede.hu@qq.com</string>
-    <string name="label_email" translatable="false">Email: %s</string>
     <string name="url_pgyer" translatable="false">https://www.pgyer.com/U9kJ</string>
     <string name="toast_copyed">已复制</string>
     <string name="label_net_speed_toggle">切换</string>
@@ -68,6 +67,9 @@
     <string name="summary_net_speed_hide_notification">通过替换默认通知样式来隐藏通知（可能不支持所有设备）</string>
     <string name="i_know">我知道了</string>
     <string name="tip_easter_egg">彩蛋</string>
+    <string name="action_like">给应用打分</string>
+    <string name="action_donate">捐赠</string>
+    <string name="label_coffee">请我喝一杯咖啡?</string>
 
     <string-array name="net_speed_interval">
         <item>500 ms</item>
@@ -109,4 +111,5 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string name="toast_wx_payment_tip">微信付款码请截图后扫描</string>
 </resources>

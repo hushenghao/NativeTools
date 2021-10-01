@@ -18,7 +18,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintVertical_bias="0.2" />
 
     <ImageView
         android:id="@+id/iv_logo_template"
@@ -54,31 +54,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_app_name" />
-
-    <TextView
-        android:id="@+id/tv_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:background="?attr/selectableItemBackground"
-        android:padding="4dp"
-        android:text="@string/label_email"
-        android:textAppearance="?attr/textAppearanceBody2"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_version" />
-
-    <TextView
-        android:id="@+id/tv_like_app"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:padding="8dp"
-        android:text="@string/label_like_app"
-        android:textAppearance="?attr/textAppearanceCaption"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_email" />
 
     <com.dede.nativetools.ui.LogoImageView
         android:id="@+id/iv_github"

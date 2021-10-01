@@ -8,6 +8,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.widget.Toast
@@ -18,6 +19,8 @@ import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
 import java.io.File
 import java.io.InputStream
+import androidx.core.content.ContextCompat.startActivity
+
 
 val globalContext: Context
     get() = NativeToolsApp.getInstance()
@@ -140,6 +143,14 @@ fun Context.share(@StringRes textId: Int) {
         .setType("text/plain")
         .newTask()
         .toChooser(R.string.action_share)
+    startActivity(intent)
+}
+
+fun Context.emailTo(@StringRes addressRes: Int) {
+    val uri = Uri.parse("mailto:${getString(addressRes)}")
+    val intent = Intent(Intent(Intent.ACTION_SENDTO, uri))
+        .newTask()
+        .toChooser(R.string.action_feedback)
     startActivity(intent)
 }
 

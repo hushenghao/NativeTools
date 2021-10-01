@@ -16,6 +16,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
+import com.dede.nativetools.donate.DonateDialogFragment
 import com.dede.nativetools.util.*
 
 /**
@@ -46,15 +47,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         )
         binding.ivGithub.setOnClickListener {
             requireContext().browse(R.string.url_github)
-        }
-        binding.tvLikeApp.setOnClickListener {
-            requireContext().market(requireContext().packageName)
-        }
-        val email = getString(R.string.email)
-        binding.tvEmail.text = getString(R.string.label_email, email)
-        binding.tvEmail.setOnClickListener {
-            requireContext().copy(email)
-            toast(R.string.toast_copyed)
         }
         binding.tvOpenSource.setOnClickListener {
             findNavController().navigate(R.id.action_about_to_openSource)
@@ -155,6 +147,16 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             }
             R.id.action_get_beta -> {
                 requireContext().browse(getString(R.string.url_pgyer))
+            }
+            R.id.action_like -> {
+                requireContext().market(requireContext().packageName)
+            }
+            R.id.action_feedback -> {
+                requireContext().emailTo(R.string.email)
+            }
+            R.id.action_donate -> {
+                val donateDialogFragment = DonateDialogFragment()
+                donateDialogFragment.show(childFragmentManager, "Donate")
             }
             else -> return super.onOptionsItemSelected(item)
         }
