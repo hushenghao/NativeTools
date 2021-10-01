@@ -19,6 +19,7 @@
     </style>
 
     <style name="OverflowMenu" parent="Widget.MaterialComponents.PopupMenu.Overflow">
+        <item name="android:dropDownVerticalOffset">4dp</item>
         <item name="overlapAnchor">false</item>
     </style>
 
