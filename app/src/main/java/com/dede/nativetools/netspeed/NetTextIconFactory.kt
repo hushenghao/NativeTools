@@ -102,7 +102,7 @@ object NetTextIconFactory {
     fun createIconBitmap(
         rxSpeed: Long,
         txSpeed: Long,
-        configuration: NetSpeedConfiguration = NetSpeedConfiguration.initialize(),
+        configuration: NetSpeedConfiguration,
         size: Int = iconSize,
         fromCache: Boolean = false
     ): Bitmap {

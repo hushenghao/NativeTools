@@ -21,3 +21,7 @@
 -renamesourcefileattribute SourceFile
 
 #-keepnames class androidx.preference.ExpandButton
+-keepnames class * extends com.dede.nativetools.netspeed.stats.INetStats
+-keepclassmembers class * extends com.dede.nativetools.netspeed.stats.INetStats {
+   public <init>();
+}

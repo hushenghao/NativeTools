@@ -8,6 +8,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.widget.Toast
@@ -18,12 +19,14 @@ import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
 import java.io.File
 import java.io.InputStream
+import androidx.core.content.ContextCompat.startActivity
+
 
 val globalContext: Context
     get() = NativeToolsApp.getInstance()
 
 fun Context.safelyStartActivity(intent: Intent) {
-    safely { this.startActivity(intent) }
+    intent.runCatching(this::startActivity)
 }
 
 fun Context.startService(intent: Intent, foreground: Boolean) {
@@ -112,16 +115,19 @@ fun Context.toast(@StringRes resId: Int) {
     Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
 }
 
-fun Context.browse(url: String) {
+fun Context.browse(url: String, chooser: Boolean = true) {
     val web = Intent(Intent.ACTION_VIEW)
         .setData(url)
         .newTask()
-        .toChooser(R.string.chooser_label_browse)
-    startActivity(web)
+    if (chooser) {
+        startActivity(web.toChooser(R.string.chooser_label_browse))
+    } else {
+        web.runCatching(this::startActivity).onFailure(Throwable::printStackTrace)
+    }
 }
 
-fun Context.browse(@StringRes urlId: Int) {
-    this.browse(this.getString(urlId))
+fun Context.browse(@StringRes urlId: Int, chooser: Boolean = true) {
+    this.browse(this.getString(urlId), chooser)
 }
 
 fun Context.market(packageName: String) {
@@ -137,6 +143,14 @@ fun Context.share(@StringRes textId: Int) {
         .setType("text/plain")
         .newTask()
         .toChooser(R.string.action_share)
+    startActivity(intent)
+}
+
+fun Context.emailTo(@StringRes addressRes: Int) {
+    val uri = Uri.parse("mailto:${getString(addressRes)}")
+    val intent = Intent(Intent(Intent.ACTION_SENDTO, uri))
+        .newTask()
+        .toChooser(R.string.action_feedback)
     startActivity(intent)
 }
 

@@ -3,7 +3,6 @@ package com.dede.nativetools.netspeed.stats
 import android.net.TrafficStats
 import com.dede.nativetools.netspeed.stats.INetStats.Companion.isSupported
 import com.dede.nativetools.util.method
-import com.dede.nativetools.util.safely
 import java.lang.reflect.Method
 
 class ReflectNetStats : INetStats {
@@ -12,12 +11,14 @@ class ReflectNetStats : INetStats {
     private var methodGetTxBytes: Method? = null
 
     init {
-        safely {
-            methodGetRxBytes =
-                TrafficStats::class.java.method("getRxBytes", String::class.java)
-            methodGetTxBytes =
-                TrafficStats::class.java.method("getTxBytes", String::class.java)
-        }
+        methodGetRxBytes = TrafficStats::class.java
+            .runCatching { method("getRxBytes", String::class.java) }
+            .onFailure(Throwable::printStackTrace)
+            .getOrNull()
+        methodGetTxBytes = TrafficStats::class.java
+            .runCatching { method("getTxBytes", String::class.java) }
+            .onFailure(Throwable::printStackTrace)
+            .getOrNull()
     }
 
     override fun supported(): Boolean {
@@ -49,8 +50,7 @@ class ReflectNetStats : INetStats {
 
     private fun getIFaceBytes(method: Method?, iface: String): Long {
         if (method == null) return INetStats.UNSUPPORTED
-        return safely(INetStats.UNSUPPORTED) {
-            method.invoke(null, iface) as Long
-        }
+        return method.runCatching { invoke(null, iface) as Long }
+            .getOrDefault(INetStats.UNSUPPORTED)
     }
 }

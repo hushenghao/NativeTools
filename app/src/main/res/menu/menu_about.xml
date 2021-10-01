@@ -8,6 +8,21 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/action_get_beta"
-        app:showAsAction="ifRoom"
-        android:title="@string/action_beta" />
+        android:title="@string/action_beta"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_donate"
+        android:icon="@drawable/ic_outline_volunteer_activism_24"
+        android:title="@string/action_donate"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_like"
+        android:icon="@drawable/ic_outline_star_border_24"
+        android:title="@string/action_like"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_feedback"
+        android:icon="@drawable/ic_outline_feedback_24"
+        android:title="@string/action_feedback"
+        app:showAsAction="ifRoom" />
 </menu>

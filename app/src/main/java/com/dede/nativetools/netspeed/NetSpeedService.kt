@@ -13,6 +13,7 @@ import com.dede.nativetools.netspeed.utils.DebugClipboardUtil
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.addActions
 import com.dede.nativetools.util.startService
+import kotlinx.coroutines.*
 
 
 class NetSpeedService : Service() {
@@ -20,7 +21,10 @@ class NetSpeedService : Service() {
     class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
         override fun updateConfiguration(configuration: NetSpeedConfiguration?) {
-            service.updateConfiguration(configuration)
+            if (configuration == null) return
+            service.lifecycleScope.launch(Dispatchers.Main) {
+                service.updateConfiguration(configuration)
+            }
         }
     }
 
@@ -55,7 +59,11 @@ class NetSpeedService : Service() {
         }
     }
 
-    private var notificationManager: NotificationManager? = null
+    private val notificationManager: NotificationManager? by lazy(LazyThreadSafetyMode.NONE) {
+        getSystemService<NotificationManager>()
+    }
+
+    val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
         val notify =
@@ -71,7 +79,6 @@ class NetSpeedService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        notificationManager = getSystemService<NotificationManager>()
         val intentFilter = IntentFilter().addActions(
             Intent.ACTION_SCREEN_ON,// 打开屏幕
             Intent.ACTION_SCREEN_OFF,// 关闭屏幕
@@ -113,7 +120,10 @@ class NetSpeedService : Service() {
     }
 
     private fun updateConfiguration(configuration: NetSpeedConfiguration?) {
-        this.configuration.copy(configuration ?: return)
+        if (configuration ?: return == this.configuration) {
+            return
+        }
+        this.configuration.copy(configuration)
             .also { netSpeedHelper.interval = it.interval }
         val notification = NetSpeedNotificationHelper.createNotification(
             this,
@@ -127,10 +137,13 @@ class NetSpeedService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val configuration = intent?.getParcelableExtra<NetSpeedConfiguration>(EXTRA_CONFIGURATION)
         updateConfiguration(configuration)
-        return super.onStartCommand(intent, flags, startId)
+        // https://developer.android.google.cn/guide/components/services#CreatingAService
+        // https://developer.android.google.cn/reference/android/app/Service#START_REDELIVER_INTENT
+        return START_REDELIVER_INTENT// 重建时再次传递Intent
     }
 
     override fun onDestroy() {
+        lifecycleScope.cancel()
         pause()
         unregisterReceiver(innerReceiver)
         DebugClipboardUtil.unregister(this)

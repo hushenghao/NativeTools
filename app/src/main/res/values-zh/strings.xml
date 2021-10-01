@@ -34,7 +34,6 @@
     <string name="summary_net_speed_scale">虚线边框为状态栏图标的最大范围</string>
     <string name="label_about">关于</string>
     <string name="chooser_label_browse">选择浏览器打开</string>
-    <string name="label_like_app">喜欢本应用，点击去应用商店评分</string>
     <string name="chooser_label_market">选择应用商店</string>
     <string name="label_open_source">开源相关</string>
     <string name="action_share">分享</string>
@@ -52,7 +51,7 @@
     <string name="label_net_speed_hide_notification">隐藏通知栏通知</string>
     <string name="summary_net_speed_hide_notification">通过替换默认通知样式来隐藏通知（可能不支持所有设备）</string>
     <string name="i_know">我知道了</string>
-    <string name="tip_easter_egg">Easter Egg</string>
+    <string name="tip_easter_egg">彩蛋</string>
 
     <string-array name="net_speed_mode">
         <item>仅下载</item>
@@ -66,4 +65,9 @@
         <item>圆角矩形</item>
         <item>椭圆矩形</item>
     </string-array>
+    <string name="action_feedback">反馈</string>
+    <string name="action_like">喜欢本应用</string>
+    <string name="action_donate">捐赠</string>
+    <string name="label_coffee">请我喝一杯咖啡？</string>
+    <string name="toast_wx_payment_tip">微信付款码请截图后扫描</string>
 </resources>

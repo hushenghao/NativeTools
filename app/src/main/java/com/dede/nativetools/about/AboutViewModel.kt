@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModel
  */
 class AboutViewModel : ViewModel() {
 
+    var animatored = false
+
     val followCount = MutableLiveData(0)
 
     fun setFollowCount(count: Int) {

@@ -29,7 +29,6 @@ class NativeToolsApp : Application() {
         super.onCreate()
         if (this.isMainProcess()) {
             NetSpeedNotificationHelper.checkNotificationChannelAndUpgrade(this)
-            NetSpeedService.launchForeground(this)
         }
     }
 }
