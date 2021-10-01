@@ -155,8 +155,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 requireContext().emailTo(R.string.email)
             }
             R.id.action_donate -> {
-                val donateDialogFragment = DonateDialogFragment()
-                donateDialogFragment.show(childFragmentManager, "Donate")
+                DonateDialogFragment.show(childFragmentManager)
             }
             else -> return super.onOptionsItemSelected(item)
         }
