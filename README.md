@@ -1,6 +1,6 @@
 # 网速指示器
 
-<img height="80px" src="app/src/main/ic_launcher-web.png"/>
+<img height="80px" src="app/src/main/ic_launcher-playstore.png"/>
 
 一个在系统状态栏显示当前网速的App，并在通知栏显示详细数据，主要针对原生ROM。
 
@@ -28,3 +28,6 @@
 
 ## 联系我
 Email：dede.hu@qq.com
+
+## 捐赠
+<img height="150px" src="app/src/main/res/drawable/alipay_payment_code.webp"/> <img height="150px" src="app/src/main/res/drawable/wx_payment_code.webp"/>
