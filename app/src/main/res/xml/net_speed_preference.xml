@@ -112,6 +112,12 @@
         app:key="key_other"
         app:title="@string/label_other">
 
+        <Preference
+            app:icon="@drawable/ic_baseline_remove_circle_outline_24"
+            app:key="ignore_battery_optimize"
+            app:summary="@string/summary_ignore_battery_optimize"
+            app:title="@string/label_ignore_battery_optimize" />
+
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_outline_dark_mode_24"

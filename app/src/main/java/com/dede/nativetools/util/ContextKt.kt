@@ -26,7 +26,7 @@ val globalContext: Context
     get() = NativeToolsApp.getInstance()
 
 fun Context.safelyStartActivity(intent: Intent) {
-    intent.runCatching(this::startActivity)
+    intent.runCatching(this::startActivity).onFailure(Throwable::printStackTrace)
 }
 
 fun Context.startService(intent: Intent, foreground: Boolean) {
@@ -122,7 +122,7 @@ fun Context.browse(url: String, chooser: Boolean = true) {
     if (chooser) {
         startActivity(web.toChooser(R.string.chooser_label_browse))
     } else {
-        web.runCatching(this::startActivity).onFailure(Throwable::printStackTrace)
+        this.safelyStartActivity(web)
     }
 }
 

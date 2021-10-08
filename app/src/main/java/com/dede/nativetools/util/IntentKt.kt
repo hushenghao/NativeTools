@@ -45,6 +45,8 @@ fun Intent.setData(uri: String): Intent = setData(Uri.parse(uri))
 fun Intent.toChooser(@StringRes titleId: Int): Intent =
     Intent.createChooser(this, globalContext.getString(titleId))
 
+fun Intent.safelyStartActivity(context: Context) = context.safelyStartActivity(this)
+
 fun Intent.toPendingActivity(context: Context, flags: Int): PendingIntent =
     PendingIntent.getActivity(context, 0, this, flags)
 

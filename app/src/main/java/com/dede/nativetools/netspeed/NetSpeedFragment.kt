@@ -5,9 +5,11 @@ import android.content.*
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.IBinder
+import android.os.PowerManager
 import android.os.RemoteException
 import android.provider.Settings
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
 import androidx.preference.*
@@ -35,6 +37,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
 
         private const val KEY_ABOUT = "about"
+        private const val KEY_IGNORE_BATTERY_OPTIMIZE = "ignore_battery_optimize"
     }
 
     private val configuration by lazy { NetSpeedConfiguration.initialize() }
@@ -80,9 +83,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             override fun onBindViewHolder(holder: PreferenceViewHolder, position: Int) {
                 super.onBindViewHolder(holder, position)
                 val preference = getItem(position) ?: return
-//                if (preference.javaClass.name == "androidx.preference.ExpandButton") {
-//                    holder.findViewById(androidx.preference.R.id.icon_frame)?.gone()
-//                } else
                 if (preference.key == NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION) {
                     holder.findViewById(R.id.iv_preference_help)?.setOnClickListener {
                         showHideLockNotificationDialog()
@@ -93,9 +93,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun initOtherPreference() {
-//        requirePreference<SwitchPreferenceCompat>(NetSpeedPreferences.KEY_NIGHT_MODE_TOGGLE).also {
-//            it.isVisible = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
-//        }
         requirePreference<Preference>(KEY_ABOUT).also {
             it.summary = getString(
                 R.string.summary_about_version,
@@ -107,6 +104,20 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 findNavController().navigate(R.id.action_netSpeed_to_about)
                 return@setOnPreferenceClickListener true
             }
+        }
+        requirePreference<Preference>(KEY_IGNORE_BATTERY_OPTIMIZE).also {
+            val context = requireContext()
+            val packageName = context.packageName
+            it.setOnPreferenceClickListener {
+                Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                    .setData("package:$packageName")
+                    .newTask()
+                    .safelyStartActivity(context)
+                return@setOnPreferenceClickListener true
+            }
+
+            val powerManager = context.getSystemService<PowerManager>() ?: return@also
+            it.isVisible = !powerManager.isIgnoringBatteryOptimizations(packageName)
         }
     }
 
@@ -228,9 +239,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
         context.alert(R.string.usage_states_title, R.string.usage_stats_msg) {
             positiveButton(R.string.access) {
-                val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                requireContext().safelyStartActivity(intent)
+                Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+                    .newTask()
+                    .safelyStartActivity(requireContext())
             }
             neutralButton(R.string.dont_ask) {
                 NetSpeedPreferences.dontAskOps = true
