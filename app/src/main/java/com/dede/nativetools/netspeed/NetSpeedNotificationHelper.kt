@@ -86,8 +86,7 @@ object NetSpeedNotificationHelper {
             // Settings.ACTION_NOTIFICATION_SETTINGS
             Intent("android.settings.NOTIFICATION_SETTINGS")
         }
-        intent.newTask()
-        context.safelyStartActivity(intent)
+        intent.newTask().safelyStartActivity(context)
     }
 
     fun goNotificationSetting(context: Context) {
@@ -99,11 +98,9 @@ object NetSpeedNotificationHelper {
                 Settings.EXTRA_CHANNEL_ID to CHANNEL_ID
             )
         } else {
-            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                .setData("package:$packageName")
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:$packageName")
         }
-        intent.newTask()
-        context.safelyStartActivity(intent)
+        intent.newTask().safelyStartActivity(context)
     }
 
     fun areNotificationEnabled(context: Context): Boolean {

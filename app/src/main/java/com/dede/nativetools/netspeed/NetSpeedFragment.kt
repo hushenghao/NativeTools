@@ -1,6 +1,7 @@
 package com.dede.nativetools.netspeed
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.*
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
@@ -8,14 +9,18 @@ import android.os.IBinder
 import android.os.PowerManager
 import android.os.RemoteException
 import android.provider.Settings
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.registerForActivityResult
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
 import androidx.preference.*
-import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
+import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.ui.SliderPreference
 import com.dede.nativetools.util.*
 import java.util.*
@@ -48,6 +53,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private lateinit var statusSwitchPreference: SwitchPreferenceCompat
     private lateinit var usageSwitchPreference: SwitchPreferenceCompat
 
+    private lateinit var opsResultLauncher: ActivityResultLauncher<Intent>
+
     private val closeReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             stopService()
@@ -57,42 +64,47 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         launchService()
+        checkNotificationEnable()
 
-        checkOps()
-        checkNotification()
-
-        val intentFilter = IntentFilter(NetSpeedService.ACTION_CLOSE)
-        requireContext().registerReceiver(closeReceiver, intentFilter)
+        requireContext().registerReceiver(closeReceiver, IntentFilter(NetSpeedService.ACTION_CLOSE))
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.net_speed_preference)
-        scaleSliderPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_SCALE)
-        statusSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
-        usageSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_USAGE)
-        updateScalePreferenceIcon()
-        initOtherPreference()
-        updateNotificationConfig()
+        initGeneralPreferenceGroup()
+        initNotificationPreferenceGroup()
+        initOtherPreferenceGroup()
     }
 
-    override fun onCreateAdapter(preferenceScreen: PreferenceScreen?): RecyclerView.Adapter<*> {
-        return object : PreferenceGroupAdapter(preferenceScreen) {
-            @SuppressLint("RestrictedApi")
-            override fun onBindViewHolder(holder: PreferenceViewHolder, position: Int) {
-                super.onBindViewHolder(holder, position)
-                val preference = getItem(position) ?: return
-                if (preference.key == NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION) {
-                    holder.findViewById(R.id.iv_preference_help)?.setOnClickListener {
-                        showHideLockNotificationDialog()
-                    }
-                }
+    private fun initGeneralPreferenceGroup() {
+        scaleSliderPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_SCALE)
+        statusSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
+
+        updateScalePreferenceIcon()
+    }
+
+    private fun initNotificationPreferenceGroup() {
+        usageSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_USAGE)
+        opsResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                usageSwitchPreference.isChecked = requireContext().checkAppOps()
+            }
+        if (!requireContext().checkAppOps()) {
+            usageSwitchPreference.isChecked = false
+        }
+
+        updateNotificationPreferenceEnable()
+
+        requirePreference<CustomWidgetLayoutSwitchPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION)
+            .bindCustomWidget = {
+            it.findViewById(R.id.iv_preference_help)?.setOnClickListener {
+                showHideLockNotificationDialog()
             }
         }
     }
 
-    private fun initOtherPreference() {
+    private fun initOtherPreferenceGroup() {
         requirePreference<Preference>(KEY_ABOUT).also {
             it.summary = getString(
                 R.string.summary_about_version,
@@ -100,24 +112,39 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 BuildConfig.VERSION_CODE
             )
 
-            it.setOnPreferenceClickListener {
+            it.onPreferenceClickListener {
                 findNavController().navigate(R.id.action_netSpeed_to_about)
-                return@setOnPreferenceClickListener true
             }
         }
         requirePreference<Preference>(KEY_IGNORE_BATTERY_OPTIMIZE).also {
             val context = requireContext()
             val packageName = context.packageName
-            it.setOnPreferenceClickListener {
-                Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-                    .setData("package:$packageName")
-                    .newTask()
-                    .safelyStartActivity(context)
-                return@setOnPreferenceClickListener true
+
+            fun setVisible() {
+                val powerManager = context.getSystemService<PowerManager>() ?: return
+                it.isVisible = !powerManager.isIgnoringBatteryOptimizations(packageName)
             }
 
-            val powerManager = context.getSystemService<PowerManager>() ?: return@also
-            it.isVisible = !powerManager.isIgnoringBatteryOptimizations(packageName)
+            setVisible()
+
+            if (!it.isVisible) return@also
+
+            @SuppressLint("BatteryLife")
+            val activityResult: ActivityResultLauncher<Unit> =
+                registerForActivityResult<Intent, ActivityResult>(
+                    ActivityResultContracts.StartActivityForResult(),
+                    Intent(
+                        Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, "package:$packageName"
+                    )
+                ) { result ->
+                    if (result.resultCode == Activity.RESULT_OK) {
+                        setVisible()
+                    }
+                }
+
+            it.onPreferenceClickListener {
+                activityResult.safelyLaunch()
+            }
         }
     }
 
@@ -157,7 +184,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             }
             NetSpeedPreferences.KEY_NET_SPEED_USAGE -> {
                 updateConfiguration()
-                checkOps()
+                checkOpsPermission()
             }
             NetSpeedPreferences.KEY_NET_SPEED_MODE,
             NetSpeedPreferences.KEY_NET_SPEED_SCALE,
@@ -166,13 +193,13 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 updateScalePreferenceIcon()
             }
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
-                updateNotificationConfig()
+                updateNotificationPreferenceEnable()
                 updateConfiguration()
             }
         }
     }
 
-    private fun updateNotificationConfig() {
+    private fun updateNotificationPreferenceEnable() {
         val keys = arrayOf(
             NetSpeedPreferences.KEY_NET_SPEED_USAGE,
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
@@ -228,23 +255,23 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
     }
 
-    private fun checkOps() {
+    private fun checkOpsPermission() {
         if (!configuration.usage) {
             return
         }
-        val dontAskOps = NetSpeedPreferences.dontAskOps
         val context = requireContext()
-        if (dontAskOps || context.checkAppOps()) {
+        if (context.checkAppOps()) {
             return
         }
         context.alert(R.string.usage_states_title, R.string.usage_stats_msg) {
             positiveButton(R.string.access) {
-                Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-                    .newTask()
-                    .safelyStartActivity(requireContext())
-            }
-            neutralButton(R.string.dont_ask) {
-                NetSpeedPreferences.dontAskOps = true
+                val intent = Intent(
+                    Settings.ACTION_USAGE_ACCESS_SETTINGS, "package:${context.packageName}"
+                )
+                if (!intent.queryActivity(context)) {
+                    intent.data = null
+                }
+                opsResultLauncher.safelyLaunch(intent)
             }
             negativeButton(android.R.string.cancel) {
                 usageSwitchPreference.isChecked = false
@@ -252,7 +279,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
     }
 
-    private fun checkNotification() {
+    private fun checkNotificationEnable() {
         val context = requireContext()
         val areNotificationsEnabled = NetSpeedNotificationHelper.areNotificationEnabled(context)
         val dontAskNotify = NetSpeedPreferences.dontAskNotify

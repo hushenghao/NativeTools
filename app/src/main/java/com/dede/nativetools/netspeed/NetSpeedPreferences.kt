@@ -27,7 +27,7 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION = "net_speed_locked_hide"
     const val KEY_NET_SPEED_HIDE_NOTIFICATION = "net_speed_hide_notification"
 
-    const val KEY_OPS_DONT_ASK = "ops_dont_ask"
+    //const val KEY_OPS_DONT_ASK = "ops_dont_ask"
     const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
 
     const val DEFAULT_INTERVAL = 1000
@@ -45,9 +45,9 @@ object NetSpeedPreferences {
     val autoStart: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_AUTO_START, false)
 
-    var dontAskOps: Boolean
-        get() = globalPreferences.get(KEY_OPS_DONT_ASK, false)
-        set(value) = globalPreferences.set(KEY_OPS_DONT_ASK, value)
+    //var dontAskOps: Boolean
+    //    get() = globalPreferences.get(KEY_OPS_DONT_ASK, false)
+    //    set(value) = globalPreferences.set(KEY_OPS_DONT_ASK, value)
 
     var dontAskNotify: Boolean
         get() = globalPreferences.get(KEY_NOTIFICATION_DONT_ASK, false)
@@ -87,8 +87,9 @@ object NetSpeedPreferences {
             defaultConfiguration.quickCloseable
         )
 
-    val usage: Boolean
+    var usage: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_USAGE, defaultConfiguration.usage)
+        set(value) = globalPreferences.set(KEY_NET_SPEED_USAGE, value)
 
     val hideNotification: Boolean
         get() = globalPreferences.get(

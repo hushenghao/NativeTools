@@ -3,6 +3,7 @@
 package com.dede.nativetools.util
 
 import android.content.SharedPreferences
+import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 
 
@@ -31,4 +32,11 @@ fun SharedPreferences.set(key: String, value: Boolean) {
 
 fun SharedPreferences.set(key: String, value: Int) {
     this.edit().putInt(key, value).apply()
+}
+
+fun Preference.onPreferenceClickListener(listener: (preference: Preference) -> Unit) {
+    this.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
+        listener.invoke(preference)
+        true
+    }
 }
