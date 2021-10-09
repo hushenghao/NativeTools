@@ -15,7 +15,6 @@ import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
 import androidx.preference.*
-import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.ui.SliderPreference
@@ -103,11 +102,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private fun initOtherPreferenceGroup() {
         requirePreference<Preference>(KEY_ABOUT).also {
-            it.summary = getString(
-                R.string.summary_about_version,
-                BuildConfig.VERSION_NAME,
-                BuildConfig.VERSION_CODE
-            )
+            it.summary = requireContext().getVersionSummary()
 
             it.onPreferenceClickListener {
                 findNavController().navigate(R.id.action_netSpeed_to_about)

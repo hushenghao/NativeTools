@@ -15,11 +15,11 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
+import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
 import java.io.File
 import java.io.InputStream
-import androidx.core.content.ContextCompat.startActivity
 
 
 val globalContext: Context
@@ -167,3 +167,6 @@ fun Context.readClipboard(): String? {
     }
     return null
 }
+
+fun Context.getVersionSummary() =
+    getString(R.string.summary_about_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
