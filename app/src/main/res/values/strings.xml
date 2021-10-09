@@ -70,7 +70,7 @@
     <string name="summary_net_speed_hide_notification">通过替换默认通知样式来隐藏通知（可能不支持所有设备）</string>
     <string name="i_know">我知道了</string>
     <string name="tip_easter_egg">彩蛋</string>
-    <string name="action_like">喜欢本应用</string>
+    <string name="action_rate">打个分</string>
     <string name="action_donate">捐赠</string>
     <string name="label_coffee">请我喝一杯咖啡?</string>
 

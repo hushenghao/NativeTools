@@ -143,7 +143,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             R.id.action_get_beta -> {
                 requireContext().browse(getString(R.string.url_pgyer))
             }
-            R.id.action_like -> {
+            R.id.action_rate -> {
                 requireContext().market(requireContext().packageName)
             }
             R.id.action_feedback -> {
