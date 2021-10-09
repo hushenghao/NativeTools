@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
 import android.graphics.drawable.LayerDrawable
-import android.os.Bundle
-import android.os.IBinder
-import android.os.PowerManager
-import android.os.RemoteException
+import android.os.*
 import android.provider.Settings
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -200,6 +197,11 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun updateNotificationPreferenceEnable() {
+        if (NetSpeedNotificationHelper.isSS(requireContext())) {
+            requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION)
+                .isVisible = false
+            return
+        }
         val keys = arrayOf(
             NetSpeedPreferences.KEY_NET_SPEED_USAGE,
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
