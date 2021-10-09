@@ -23,7 +23,7 @@ class ReflectNetStats : INetStats {
 
     override fun supported(): Boolean {
         return methodGetRxBytes != null && methodGetTxBytes != null
-                && getRxBytes(INetStats.WLAN_IFACE).isSupported()
+                && getRxBytes(INetStats.WLAN_IFACE).isSupported
     }
 
     override fun getRxBytes(): Long {
