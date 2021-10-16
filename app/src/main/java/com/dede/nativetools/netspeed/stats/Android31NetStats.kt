@@ -11,7 +11,7 @@ class Android31NetStats : INetStats {
     @RequiresApi(Build.VERSION_CODES.S)
     private var supportWlan0 = kotlin.runCatching {
         // no hide ???
-        TrafficStats.getRxBytes(INetStats.WLAN_IFACE).isSupported()
+        TrafficStats.getRxBytes(INetStats.WLAN_IFACE).isSupported
     }.onFailure(Throwable::printStackTrace).getOrDefault(false)
 
     override fun supported(): Boolean {

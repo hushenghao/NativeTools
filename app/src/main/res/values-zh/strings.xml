@@ -66,8 +66,10 @@
         <item>椭圆矩形</item>
     </string-array>
     <string name="action_feedback">反馈</string>
-    <string name="action_like">喜欢本应用</string>
+    <string name="action_rate">打个分</string>
     <string name="action_donate">捐赠</string>
     <string name="label_coffee">请我喝一杯咖啡？</string>
     <string name="toast_wx_payment_tip">微信付款码请截图后扫描</string>
+    <string name="label_ignore_battery_optimize">忽略电池优化</string>
+    <string name="summary_ignore_battery_optimize">添加电池优化白名单，防止前台服务无法保活（针对部分设备）</string>
 </resources>

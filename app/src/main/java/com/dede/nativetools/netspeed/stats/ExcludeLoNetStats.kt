@@ -9,7 +9,7 @@ class ExcludeLoNetStats : INetStats {
 
     override fun supported(): Boolean {
         return methodGetLoopbackRxBytes != null && methodGetLoopbackTxBytes != null
-                && getLoopbackRxBytes().isSupported()
+                && getLoopbackRxBytes().isSupported
     }
 
     override fun getRxBytes(): Long {
@@ -44,7 +44,8 @@ class ExcludeLoNetStats : INetStats {
 
     private fun getLoopbackBytes(method: Method?): Long {
         if (method == null) return INetStats.UNSUPPORTED
-        return method.runCatching { invoke(null) as Long }.getOrDefault(INetStats.UNSUPPORTED)
+        return method.runCatching { invoke(null) as Long }
+            .getOrDefault(INetStats.UNSUPPORTED)
     }
 
 }

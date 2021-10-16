@@ -7,9 +7,11 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Parcelable
 import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
 
 
@@ -19,6 +21,10 @@ inline fun <reified T> Intent(context: Context, vararg extras: Pair<String, Any>
 
 fun Intent(action: String, vararg extras: Pair<String, Any>): Intent {
     return Intent(action).putExtras(*extras)
+}
+
+fun Intent(action: String, data: String): Intent {
+    return Intent(action).setData(data)
 }
 
 fun Intent.putExtras(vararg extras: Pair<String, Any>): Intent {
@@ -45,6 +51,8 @@ fun Intent.setData(uri: String): Intent = setData(Uri.parse(uri))
 fun Intent.toChooser(@StringRes titleId: Int): Intent =
     Intent.createChooser(this, globalContext.getString(titleId))
 
+inline fun Intent.safelyStartActivity(context: Context) = context.safelyStartActivity(this)
+
 fun Intent.toPendingActivity(context: Context, flags: Int): PendingIntent =
     PendingIntent.getActivity(context, 0, this, flags)
 
@@ -59,4 +67,12 @@ fun IntentFilter.addActions(vararg actions: String): IntentFilter {
         this.addAction(action)
     }
     return this
+}
+
+fun Intent.queryImplicitActivity(context: Context): Boolean {
+    return this.resolveActivityInfo(context.packageManager, PackageManager.MATCH_DEFAULT_ONLY) != null
+}
+
+fun <I> ActivityResultLauncher<I>.safelyLaunch(i: I? = null) {
+    i.runCatching(this::launch).onFailure(Throwable::printStackTrace)
 }

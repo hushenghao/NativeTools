@@ -20,6 +20,7 @@
     <string name="label_night_mode">夜间模式</string>
     <string name="label_net_speed_usage">显示每日和每月流量使用</string>
     <string name="label_about">关于</string>
+    <string name="label_ignore_battery_optimize">忽略电池优化</string>
 
     <string name="summary_net_speed">在状态栏显示当前网速</string>
     <string name="summary_net_speed_hide_lock_notification">锁屏时默认会隐藏通知，如果无效时才需要去设置隐藏锁屏通知</string>
@@ -30,6 +31,7 @@
     <string name="summary_night_mode_follow_system">跟随系统</string>
     <string name="summary_net_speed_usage">通知显示移动数据和WLAN流量使用总和</string>
     <string name="summary_about_version" translatable="false">v%s (%d)</string>
+    <string name="summary_ignore_battery_optimize">添加电池优化白名单，防止前台服务无法保活（针对部分设备）</string>
 
     <string name="usage_states_title">使用情况访问授权</string>
     <string name="usage_stats_msg">统计每日流量使用情况时需要允许使用情况访问权限。</string>
@@ -58,6 +60,7 @@
     <string name="email" translatable="false">dede.hu@qq.com</string>
     <string name="url_pgyer" translatable="false">https://www.pgyer.com/U9kJ</string>
     <string name="toast_copyed">已复制</string>
+    <string name="toast_wx_payment_tip">微信付款码请截图后扫描</string>
     <string name="label_net_speed_toggle">切换</string>
     <string name="alert_msg_hide_lock_notification">有时候通知无法隐藏可能是锁屏设置引起的。在设置中找到\'隐藏锁屏通知\"，选择\"仅显示敏感内容\"或\"隐藏所有通知\"。</string>
     <string name="label_general">通用</string>
@@ -67,7 +70,7 @@
     <string name="summary_net_speed_hide_notification">通过替换默认通知样式来隐藏通知（可能不支持所有设备）</string>
     <string name="i_know">我知道了</string>
     <string name="tip_easter_egg">彩蛋</string>
-    <string name="action_like">喜欢本应用</string>
+    <string name="action_rate">打个分</string>
     <string name="action_donate">捐赠</string>
     <string name="label_coffee">请我喝一杯咖啡?</string>
 
@@ -111,5 +114,4 @@
         <item>2</item>
         <item>3</item>
     </string-array>
-    <string name="toast_wx_payment_tip">微信付款码请截图后扫描</string>
 </resources>

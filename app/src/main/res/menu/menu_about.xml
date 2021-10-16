@@ -16,9 +16,9 @@
         android:title="@string/action_donate"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_like"
+        android:id="@+id/action_rate"
         android:icon="@drawable/ic_outline_star_border_24"
-        android:title="@string/action_like"
+        android:title="@string/action_rate"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_feedback"

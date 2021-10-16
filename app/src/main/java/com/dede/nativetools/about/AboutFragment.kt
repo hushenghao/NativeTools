@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
 import com.dede.nativetools.donate.DonateDialogFragment
@@ -40,11 +39,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvVersion.text = getString(
-            R.string.summary_about_version,
-            BuildConfig.VERSION_NAME,
-            BuildConfig.VERSION_CODE
-        )
+        binding.tvVersion.text = requireContext().getVersionSummary()
         binding.ivGithub.setOnClickListener {
             requireContext().browse(R.string.url_github)
         }
@@ -148,7 +143,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             R.id.action_get_beta -> {
                 requireContext().browse(getString(R.string.url_pgyer))
             }
-            R.id.action_like -> {
+            R.id.action_rate -> {
                 requireContext().market(requireContext().packageName)
             }
             R.id.action_feedback -> {

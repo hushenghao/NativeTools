@@ -12,12 +12,12 @@ interface INetStats {
         const val WLAN_IFACE = "wlan0"
         const val MOBILE_IFACE = "rmnet_data0"
 
-        fun Long.isSupported(): Boolean = this != UNSUPPORTED
+        val Long.isSupported: Boolean get() = this != UNSUPPORTED
 
         fun addIfSupported(vararg stats: Long): Long {
             var allStat: Long = 0
             for (stat in stats) {
-                allStat += if (stat.isSupported()) stat else 0
+                allStat += if (stat.isSupported) stat else 0
             }
             return allStat
         }
@@ -59,12 +59,12 @@ interface INetStats {
     fun supported(): Boolean
 
     /**
-     * 下载字节
+     * 下载的字节
      */
     fun getRxBytes(): Long
 
     /**
-     * 长传字节
+     * 长传的字节
      */
     fun getTxBytes(): Long
 

@@ -69,7 +69,7 @@
         app:key="key_notification"
         app:title="@string/label_notification">
 
-        <SwitchPreferenceCompat
+        <com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
             android:key="net_speed_locked_hide"
             android:title="@string/label_net_speed_hide_lock_notification"
             app:defaultValue="true"
@@ -111,6 +111,12 @@
         app:iconSpaceReserved="false"
         app:key="key_other"
         app:title="@string/label_other">
+
+        <Preference
+            app:icon="@drawable/ic_baseline_remove_circle_outline_24"
+            app:key="ignore_battery_optimize"
+            app:summary="@string/summary_ignore_battery_optimize"
+            app:title="@string/label_ignore_battery_optimize" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"

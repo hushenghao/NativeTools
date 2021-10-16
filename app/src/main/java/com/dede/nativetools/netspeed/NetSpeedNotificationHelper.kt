@@ -86,8 +86,7 @@ object NetSpeedNotificationHelper {
             // Settings.ACTION_NOTIFICATION_SETTINGS
             Intent("android.settings.NOTIFICATION_SETTINGS")
         }
-        intent.newTask()
-        context.safelyStartActivity(intent)
+        intent.newTask().safelyStartActivity(context)
     }
 
     fun goNotificationSetting(context: Context) {
@@ -99,11 +98,9 @@ object NetSpeedNotificationHelper {
                 Settings.EXTRA_CHANNEL_ID to CHANNEL_ID
             )
         } else {
-            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                .setData("package:$packageName")
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:$packageName")
         }
-        intent.newTask()
-        context.safelyStartActivity(intent)
+        intent.newTask().safelyStartActivity(context)
     }
 
     fun areNotificationEnabled(context: Context): Boolean {
@@ -148,6 +145,15 @@ object NetSpeedNotificationHelper {
             )
                 .splicing()
         )
+    }
+
+    /**
+     * 系统版本>=S 且 targetVersion>=S 时，返回true
+     */
+    fun isSS(context: Context): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
+                context.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.S
     }
 
     fun createNotification(
@@ -196,7 +202,7 @@ object NetSpeedNotificationHelper {
             pendingFlag = PendingIntent.FLAG_MUTABLE
         }
 
-        if (configuration.hideNotification) {
+        if (configuration.hideNotification && !isSS(context)) {
             val remoteViews = RemoteViews(context.packageName, R.layout.notification_empty_view)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 // context.applicationInfo.targetSdkVersion < Build.VERSION_CODES.S

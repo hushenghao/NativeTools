@@ -1,13 +1,13 @@
 package com.dede.nativetools.donate
 
 import android.app.Dialog
-import android.content.res.TypedArray
-import android.graphics.drawable.ColorDrawable
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.TypedArrayUtils
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
@@ -17,6 +17,7 @@ import com.dede.nativetools.util.toast
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlin.math.roundToInt
 
 /**
  * 捐赠页
@@ -47,6 +48,15 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
         }
         binding.ivWxpay.setOnClickListener {
             toast("微信付款码请截图后扫描")
+        }
+        binding.ivWxpay.run {
+            post {
+                val padding = (1.5f / 51.5f * width).roundToInt()
+                ViewCompat.setPaddingRelative(this, padding, padding, padding, padding)
+                background = GradientDrawable().apply {
+                    setStroke(padding, Color.WHITE)
+                }
+            }
         }
     }
 
