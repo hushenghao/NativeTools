@@ -30,4 +30,4 @@
 Email：dede.hu@qq.com
 
 ## 捐赠
-<img height="150px" src="app/src/main/res/drawable-xhdpi/alipay_payment_code.webp"/> <img height="150px" src="app/src/main/res/drawable-xhdpi/wx_payment_code.webp"/>
+<img height="150px" src="app/src/main/res/drawable-xhdpi/alipay_payment_code.webp"/> <img height="140px" src="app/src/main/res/drawable-xhdpi/wx_payment_code.webp" style="border:5px solid white" />
