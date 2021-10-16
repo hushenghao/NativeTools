@@ -265,7 +265,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 val intent = Intent(
                     Settings.ACTION_USAGE_ACCESS_SETTINGS, "package:${context.packageName}"
                 )
-                if (!intent.queryActivity(context)) {
+                if (!intent.queryImplicitActivity(context)) {
                     intent.data = null
                 }
                 opsResultLauncher.safelyLaunch(intent)
