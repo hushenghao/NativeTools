@@ -75,23 +75,21 @@ android {
 
 dependencies {
     implementation(deps.kotlin.stdlib)
-    implementation(deps.appcompat)
-    implementation(deps.material)
-    implementation(deps.preference.ktx)
-    implementation(deps.bundles.navigation)
+    implementation(deps.androidx.appcompat)
+    implementation(deps.androidx.preference.ktx)
+    implementation(deps.bundles.androidx.navigation)
+    implementation(deps.google.material)
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)
 
-    debugImplementation(deps.leakcanary)
+    debugImplementation(deps.squareup.leakcanary)
 
     testImplementation(deps.junit)
-    androidTestImplementation(deps.bundles.android.test)
+    androidTestImplementation(deps.bundles.androidx.test)
 }
 
 configurations.all {
-    //exclude("androidx.drawerlayout", "drawerlayout")
-    //exclude("androidx.coordinatorlayout", "coordinatorlayout")
     exclude("androidx.viewpager2", "viewpager2")
     exclude("androidx.viewpager", "viewpager")
     exclude("androidx.slidingpanelayout", "slidingpanelayout")
@@ -99,7 +97,6 @@ configurations.all {
     exclude("androidx.asynclayoutinflater", "asynclayoutinflater")
     exclude("androidx.transition", "transition")
     exclude("androidx.dynamicanimation", "dynamicanimation")
-    //exclude("androidx.vectordrawable", "vectordrawable-animated")
     exclude("androidx.versionedparcelable", "versionedparcelable")
     exclude("androidx.localbroadcastmanager", "localbroadcastmanager")
     exclude("androidx.documentfile", "documentfile")

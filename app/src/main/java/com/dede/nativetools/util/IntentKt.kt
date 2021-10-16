@@ -69,10 +69,8 @@ fun IntentFilter.addActions(vararg actions: String): IntentFilter {
     return this
 }
 
-fun Intent.queryActivity(context: Context): Boolean {
-    val activities =
-        context.packageManager.queryIntentActivities(this, PackageManager.MATCH_DEFAULT_ONLY)
-    return activities.size > 0
+fun Intent.queryImplicitActivity(context: Context): Boolean {
+    return this.resolveActivityInfo(context.packageManager, PackageManager.MATCH_DEFAULT_ONLY) != null
 }
 
 fun <I> ActivityResultLauncher<I>.safelyLaunch(i: I? = null) {
