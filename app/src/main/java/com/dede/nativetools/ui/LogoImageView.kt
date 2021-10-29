@@ -18,8 +18,8 @@ import androidx.core.view.ViewCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.util.XProperty
 import com.dede.nativetools.util.YProperty
-import com.dede.nativetools.util.hide
-import com.dede.nativetools.util.show
+import com.dede.nativetools.util.invisible
+import com.dede.nativetools.util.visible
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -122,7 +122,7 @@ class LogoImageView @JvmOverloads constructor(
         val followViews = this.followViews ?: return
 
         val items = followViews.map {
-            it.show()
+            it.visible()
             createAnimator(it, property, start, end)
         }
         AnimatorSet().apply {
@@ -172,7 +172,7 @@ class LogoImageView @JvmOverloads constructor(
         if (followViews != null && hasFollowView) {
             animator.doOnEnd {
                 postDelayed({
-                    followViews.forEach { it.hide() }
+                    followViews.forEach { it.invisible() }
                 }, FOLLOW_ANIMATOR_DURATION * followViews.size)
             }
         }

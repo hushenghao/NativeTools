@@ -65,7 +65,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private fun createFollowView(template: ImageView): ImageView {
         return AppCompatImageView(requireContext()).apply {
             elevation = 1.dpf
-            hide()
+            invisible()
             setImageResource(R.mipmap.ic_launcher_round)
             layoutParams = LayoutParams(template.layoutParams as LayoutParams)
         }

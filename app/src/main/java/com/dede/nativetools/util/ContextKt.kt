@@ -2,7 +2,6 @@
 
 package com.dede.nativetools.util
 
-import android.app.ActivityManager
 import android.app.AppOpsManager
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -18,7 +17,6 @@ import androidx.core.content.getSystemService
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
-import java.io.File
 import java.io.InputStream
 
 
@@ -55,54 +53,6 @@ fun Context.checkAppOps(): Boolean {
     return result == AppOpsManager.MODE_ALLOWED
 }
 
-fun Context.isMainProcess(): Boolean {
-    val mainProcessName = this.packageName
-    val currentProcessName = getCurrentProcessName()
-    return mainProcessName.isNotEmpty &&
-            currentProcessName.isNotEmpty &&
-            mainProcessName == currentProcessName
-}
-
-private fun getProcessName(pid: Int): String? {
-    val file = File("/proc/$pid/cmdline")
-    if (!file.exists()) return null
-
-    file.bufferedReader().use { reader ->
-        var str = reader.readLine()
-        if (str.isNotEmpty) {
-            str = str.trim { it <= ' ' }
-        }
-        return str
-    }
-}
-
-private var currentProcessName: String = ""
-
-private fun Context.getCurrentProcessName(): String {
-    if (currentProcessName.isNotEmpty) {
-        return currentProcessName
-    }
-
-    val pid = Process.myPid()
-    val processName = getProcessName(pid)
-    if (processName != null && processName.isNotEmpty) {
-        currentProcessName = processName
-    } else {
-        val activityManager = this.getSystemService<ActivityManager>() ?: return currentProcessName
-        val list = activityManager.runningAppProcesses
-        if (list == null || list.isEmpty()) {
-            return currentProcessName
-        }
-        for (info in list) {
-            if (info.pid == pid) {
-                currentProcessName = info.processName
-                break
-            }
-        }
-    }
-    return currentProcessName
-}
-
 fun Context.assets(fileName: String): InputStream {
     return assets.open(fileName)
 }
@@ -115,19 +65,15 @@ fun Context.toast(@StringRes resId: Int) {
     Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
 }
 
-fun Context.browse(url: String, chooser: Boolean = true) {
+fun Context.browse(url: String) {
     val web = Intent(Intent.ACTION_VIEW)
         .setData(url)
         .newTask()
-    if (chooser) {
-        startActivity(web.toChooser(R.string.chooser_label_browse))
-    } else {
-        this.safelyStartActivity(web)
-    }
+    startActivity(web.toChooser(R.string.chooser_label_browse))
 }
 
-fun Context.browse(@StringRes urlId: Int, chooser: Boolean = true) {
-    this.browse(this.getString(urlId), chooser)
+fun Context.browse(@StringRes urlId: Int) {
+    this.browse(this.getString(urlId))
 }
 
 fun Context.market(packageName: String) {
