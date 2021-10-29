@@ -25,7 +25,7 @@
     <string name="summary_net_speed">在状态栏显示当前网速</string>
     <string name="summary_net_speed_hide_lock_notification">锁屏时默认会隐藏通知，如果无效时才需要去设置隐藏锁屏通知</string>
     <string name="summary_net_speed_notify_clickable">点击通知打开应用设置界面</string>
-    <string name="summary_net_speed_auto_start">跟随系统启动后台服务</string>
+    <string name="summary_net_speed_auto_start">跟随系统启动前台服务</string>
     <string name="summary_net_speed_scale">虚线边框为状态栏图标的最大范围</string>
     <string name="summary_net_speed_notify_quick_closeable">在网速通知上添加一个关闭按钮</string>
     <string name="summary_night_mode_follow_system">跟随系统</string>

@@ -18,7 +18,7 @@
     <string name="summary_net_speed">在状态栏显示当前网速</string>
     <string name="summary_net_speed_hide_lock_notification">锁屏时默认会隐藏通知，如果无效时才需要去设置隐藏锁屏通知</string>
     <string name="summary_net_speed_notify_clickable">点击通知打开应用设置界面</string>
-    <string name="summary_net_speed_auto_start">跟随系统启动后台服务</string>
+    <string name="summary_net_speed_auto_start">跟随系统启动前台服务</string>
     <string name="usage_states_title">使用情况访问授权</string>
     <string name="usage_stats_msg">统计每日流量使用情况时需要允许使用情况访问权限。</string>
     <string name="settings">去设置</string>
