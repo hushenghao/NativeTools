@@ -15,12 +15,17 @@ import com.dede.nativetools.util.splicing
 @RequiresApi(Build.VERSION_CODES.N)
 class NetTileService : TileService() {
 
+    private val configuration = NetSpeedConfiguration.initialize()
+
     private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
         update(rxSpeed, txSpeed)
     }
 
     override fun onStartListening() {
-        netSpeedHelper.interval = NetSpeedPreferences.interval
+        // 获取最新的配置
+        configuration.reinitialize().also {
+            netSpeedHelper.interval = it.interval
+        }
         netSpeedHelper.resume()
     }
 
@@ -52,13 +57,13 @@ class NetTileService : TileService() {
 
         qsTile.apply {
             state = Tile.STATE_ACTIVE
-            icon = Icon.createWithBitmap(
-                NetTextIconFactory.createIconBitmap(
-                    rxSpeed,
-                    txSpeed,
-                    NetSpeedConfiguration.initialize()
-                )
+            val bitmap = NetTextIconFactory.createIconBitmap(
+                rxSpeed,
+                txSpeed,
+                configuration
             )
+            configuration.cachedBitmap = bitmap
+            icon = Icon.createWithBitmap(bitmap)
             label = getString(R.string.tile_net_speed_label, downloadSpeedStr, uploadSpeedStr)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 subtitle = getString(R.string.label_net_speed)

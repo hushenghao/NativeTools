@@ -1,6 +1,7 @@
 package com.dede.nativetools.netspeed
 
 import android.graphics.*
+import android.util.DisplayMetrics
 import androidx.core.graphics.toXfermode
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.util.displayMetrics
@@ -16,7 +17,6 @@ import kotlin.math.roundToInt
 object NetTextIconFactory {
 
     private val DEFAULT_CONFIG = Bitmap.Config.ARGB_8888
-    private var cachedBitmap: Bitmap? = null
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         typeface = Typeface.DEFAULT_BOLD
@@ -30,35 +30,28 @@ object NetTextIconFactory {
     init {
         val dpi = displayMetrics().densityDpi
         this.iconSize = when {
-            dpi <= 160 -> 24 // mdpi
-            dpi <= 240 -> 36 // hdpi
-            dpi <= 320 -> 48 // xhdpi
-            dpi <= 480 -> 72 // xxhdpi
-            dpi <= 640 -> 96 // xxxhdpi
+            dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
+            dpi <= DisplayMetrics.DENSITY_HIGH -> 36 // hdpi
+            dpi <= DisplayMetrics.DENSITY_XHIGH -> 48 // xhdpi
+            dpi <= DisplayMetrics.DENSITY_XXHIGH -> 72 // xxhdpi
+            dpi <= DisplayMetrics.DENSITY_XXXHIGH -> 96 // xxxhdpi
             else -> 96
         }
     }
 
-    private fun createBitmap(size: Int, useCache: Boolean): Bitmap {
-        if (!useCache) {
+    private fun createBitmapInternal(size: Int, cache: Bitmap?): Bitmap {
+        if (cache == null) {
             return Bitmap.createBitmap(size, size, DEFAULT_CONFIG)
         }
-        var bitmap = this.cachedBitmap
-        if (bitmap == null) {
-            bitmap = Bitmap.createBitmap(size, size, DEFAULT_CONFIG)
-            this.cachedBitmap = bitmap
-            return bitmap
-        }
-
-        if (bitmap.config != DEFAULT_CONFIG || bitmap.width != size || bitmap.height != size) {
-            bitmap.reconfigure(size, size, DEFAULT_CONFIG)
+        if (cache.config != DEFAULT_CONFIG || cache.width != size || cache.height != size) {
+            cache.reconfigure(size, size, DEFAULT_CONFIG)
         }
 
         // Bitmaps in the pool contain random data that in some cases must be cleared for an image
         // to be rendered correctly. we shouldn't force all consumers to independently erase the
         // contents individually, so we do so here.
-        bitmap.eraseColor(Color.TRANSPARENT)
-        return bitmap
+        cache.eraseColor(Color.TRANSPARENT)
+        return cache
     }
 
     private sealed class IconConfig(val size: Int) {
@@ -103,8 +96,7 @@ object NetTextIconFactory {
         rxSpeed: Long,
         txSpeed: Long,
         configuration: NetSpeedConfiguration,
-        size: Int = iconSize,
-        fromCache: Boolean = false
+        size: Int = iconSize
     ): Bitmap {
         val text1: String
         val text2: String
@@ -148,7 +140,7 @@ object NetTextIconFactory {
         iconConfig.scale = configuration.scale
         iconConfig.background = configuration.background
 
-        return createIconInternal(text1, text2, iconConfig, fromCache)
+        return createIconInternal(text1, text2, iconConfig, configuration.cachedBitmap)
     }
 
     private val DST_OUT_XFERMODE = PorterDuff.Mode.DST_OUT.toXfermode()
@@ -157,9 +149,9 @@ object NetTextIconFactory {
         text1: String,
         text2: String,
         icon: IconConfig,
-        fromCache: Boolean = false
+        cache: Bitmap? = null
     ): Bitmap {
-        val bitmap = createBitmap(icon.size, fromCache)
+        val bitmap = createBitmapInternal(icon.size, cache)
         val canvas = Canvas(bitmap)
 
         when (icon.background) {

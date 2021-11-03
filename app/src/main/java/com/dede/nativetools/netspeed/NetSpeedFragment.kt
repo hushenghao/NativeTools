@@ -225,7 +225,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         } else {
             MODE_SINGLE_BYTES
         }
-        val bitmap = NetTextIconFactory.createIconBitmap(speed, speed, configuration, size, false)
+        val bitmap = NetTextIconFactory.createIconBitmap(speed, speed, configuration, size)
         val layerDrawable = drawable as LayerDrawable
         layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmap.toDrawable(resources))
         scaleSliderPreference.setRightIcon(drawable)
