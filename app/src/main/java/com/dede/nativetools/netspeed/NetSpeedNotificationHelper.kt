@@ -32,7 +32,6 @@ object NetSpeedNotificationHelper {
      */
     fun checkNotificationChannelAndUpgrade(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
-        val notificationManager = context.getSystemService<NotificationManager>() ?: return
         val target = NOTIFICATION_CHANNEL_VERSION
         val old = globalPreferences.get(KEY_NOTIFICATION_CHANNEL_VERSION, 0)
         if (old == 0) {// 第一次安装
@@ -45,6 +44,7 @@ object NetSpeedNotificationHelper {
                 "version downgrade, old: $old, target: $target"
             )
         }
+        val notificationManager = context.getSystemService<NotificationManager>() ?: return
         for (v in (old..target)) {
             when (v) {
                 1 -> {

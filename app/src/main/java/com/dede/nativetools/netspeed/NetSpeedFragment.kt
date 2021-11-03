@@ -35,13 +35,13 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         private const val MODE_ALL_BYTES = (2 shl 19) * 888L
 
         // 88.8M 93113549L
-        private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
+        private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
 
         private const val KEY_ABOUT = "about"
         private const val KEY_IGNORE_BATTERY_OPTIMIZE = "ignore_battery_optimize"
     }
 
-    private val configuration by lazy { NetSpeedConfiguration.initialize() }
+    private val configuration = NetSpeedConfiguration.initialize()
 
     private var netSpeedBinder: INetSpeedInterface? = null
 

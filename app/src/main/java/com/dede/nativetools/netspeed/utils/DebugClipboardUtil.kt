@@ -33,7 +33,7 @@ class DebugClipboardUtil : BroadcastReceiver() {
         private const val EXTRA_TEXT = "text"
         private const val EXTRA_BASE64 = "base64"
 
-        private val debugClipboardUtil by lazy { DebugClipboardUtil() }
+        private val debugClipboardUtil = DebugClipboardUtil()
 
         fun register(context: Context) {
             val clipboardIntentFilter = IntentFilter()

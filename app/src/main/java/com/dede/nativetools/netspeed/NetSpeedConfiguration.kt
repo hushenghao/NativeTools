@@ -31,10 +31,10 @@ data class NetSpeedConfiguration constructor(
     )
 
     fun reinitialize(): NetSpeedConfiguration {
-        return this.copy(initialize())
+        return this.updateFrom(initialize())
     }
 
-    fun copy(configuration: NetSpeedConfiguration): NetSpeedConfiguration {
+    fun updateFrom(configuration: NetSpeedConfiguration): NetSpeedConfiguration {
         this.interval = configuration.interval
         this.notifyClickable = configuration.notifyClickable
         this.mode = configuration.mode

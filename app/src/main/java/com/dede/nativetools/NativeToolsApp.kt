@@ -4,8 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import com.dede.nativetools.netspeed.NetSpeedNotificationHelper
-import com.dede.nativetools.netspeed.NetSpeedService
-import com.dede.nativetools.util.isMainProcess
 import me.weishu.reflection.Reflection
 
 class NativeToolsApp : Application() {
@@ -27,8 +25,6 @@ class NativeToolsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        if (this.isMainProcess()) {
-            NetSpeedNotificationHelper.checkNotificationChannelAndUpgrade(this)
-        }
+        NetSpeedNotificationHelper.checkNotificationChannelAndUpgrade(this)
     }
 }

@@ -9,10 +9,14 @@ import android.os.Looper
  * @author hsh
  * @since 2021/5/31 1:59 下午
  */
-class IntervalHelper(
-    private var interval: Long,
-    private val onTick: Function0<Unit>
-) {
+class HandlerTick(interval: Long, private val onTick: () -> Unit) {
+
+    var interval: Long = interval
+        set(value) {
+            field = value
+            handler.removeCallbacks(tickRunnable)
+            handler.post(tickRunnable)
+        }
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -21,11 +25,6 @@ class IntervalHelper(
             handler.postDelayed(this, interval)
             onTick.invoke()
         }
-    }
-
-    fun setInterval(interval: Long) {
-        this.interval = interval
-        start()
     }
 
     fun start(first: Boolean = true) {

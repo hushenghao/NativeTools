@@ -17,20 +17,20 @@ class NetTileService : TileService() {
 
     private val configuration = NetSpeedConfiguration.initialize()
 
-    private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
+    private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
         update(rxSpeed, txSpeed)
     }
 
     override fun onStartListening() {
         // 获取最新的配置
         configuration.reinitialize().also {
-            netSpeedHelper.interval = it.interval
+            netSpeedCompute.interval = it.interval
         }
-        netSpeedHelper.resume()
+        netSpeedCompute.start()
     }
 
     override fun onStopListening() {
-        netSpeedHelper.pause()
+        netSpeedCompute.stop()
     }
 
     private fun startMain() {
@@ -72,7 +72,7 @@ class NetTileService : TileService() {
     }
 
     override fun onDestroy() {
-        netSpeedHelper.pause()
+        netSpeedCompute.stop()
         super.onDestroy()
     }
 }

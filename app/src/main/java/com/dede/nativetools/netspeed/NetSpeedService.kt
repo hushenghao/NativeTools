@@ -65,7 +65,7 @@ class NetSpeedService : Service() {
 
     val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-    private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
+    private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
         val notify =
             NetSpeedNotificationHelper.createNotification(this, configuration, rxSpeed, txSpeed)
         notificationManager?.notify(NOTIFY_ID, notify)
@@ -103,14 +103,14 @@ class NetSpeedService : Service() {
      */
     private fun resume() {
         startForeground()
-        netSpeedHelper.resume()
+        netSpeedCompute.start()
     }
 
     /**
      * 暂停指示器
      */
     private fun pause(stopForeground: Boolean = true) {
-        netSpeedHelper.pause()
+        netSpeedCompute.stop()
         if (stopForeground) {
             notificationManager?.cancel(NOTIFY_ID)
             stopForeground(true)
@@ -123,13 +123,13 @@ class NetSpeedService : Service() {
         if (configuration ?: return == this.configuration) {
             return
         }
-        this.configuration.copy(configuration)
-            .also { netSpeedHelper.interval = it.interval }
+        this.configuration.updateFrom(configuration)
+            .also { netSpeedCompute.interval = it.interval }
         val notification = NetSpeedNotificationHelper.createNotification(
             this,
             this.configuration,
-            this.netSpeedHelper.rxSpeed,
-            this.netSpeedHelper.txSpeed
+            this.netSpeedCompute.rxSpeed,
+            this.netSpeedCompute.txSpeed
         )
         notificationManager?.notify(NOTIFY_ID, notification)
     }
