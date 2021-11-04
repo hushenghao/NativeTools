@@ -4,12 +4,19 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.dede.nativetools.util.*
 
 
 /**
  * 添加了一个小的开发工具
  * 使用adb修改/获取剪切板内容
+ *
+ * 开启
+ * adb shell setprop debug.clipboard.util true
+ * 关闭
+ * adb shell setprop debug.clipboard.util false
+ * 重启应用生效
  *
  * 修改剪切板
  * adb shell am broadcast -a clipboard.set -e text "Hello World!"
@@ -32,14 +39,28 @@ class DebugClipboardUtil : BroadcastReceiver() {
         private const val EXTRA_TEXT = "text"
         private const val EXTRA_BASE64 = "base64"
 
+        private const val ENV_DEBUG_CLIPBOARD_UTIL = "debug.clipboard.util"
+
         private val debugClipboardUtil = DebugClipboardUtil()
 
+        private fun isEnable(): Boolean {
+            val prop = getProp(ENV_DEBUG_CLIPBOARD_UTIL)
+            Log.i(TAG, "${ENV_DEBUG_CLIPBOARD_UTIL}: $prop")
+            return prop.toBoolean()
+        }
+
         fun register(context: Context) {
+            if (!isEnable()) {
+                return
+            }
             val intentFilter = IntentFilter(ACTION_CLIPBOARD_GET, ACTION_CLIPBOARD_SET)
             context.registerReceiver(debugClipboardUtil, intentFilter)
         }
 
         fun unregister(context: Context) {
+            if (!isEnable()) {
+                return
+            }
             context.unregisterReceiver(debugClipboardUtil)
         }
     }
