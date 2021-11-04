@@ -9,35 +9,33 @@ import android.os.Looper
  * @author hsh
  * @since 2021/5/31 1:59 下午
  */
-class HandlerTick(interval: Long, private val onTick: () -> Unit) {
+class HandlerTick(interval: Long, private val onTick: () -> Unit) : Runnable {
 
     var interval: Long = interval
         set(value) {
             field = value
-            handler.removeCallbacks(tickRunnable)
-            handler.post(tickRunnable)
+            handler.removeCallbacks(this)
+            handler.post(this)
         }
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private val tickRunnable = object : Runnable {
-        override fun run() {
-            handler.postDelayed(this, interval)
-            onTick.invoke()
-        }
+    override fun run() {
+        handler.postDelayed(this, this.interval)
+        onTick.invoke()
     }
 
     fun start(first: Boolean = true) {
-        handler.removeCallbacks(tickRunnable)
+        handler.removeCallbacks(this)
         if (first) {
-            handler.post(tickRunnable)
+            handler.post(this)
         } else {
-            handler.postDelayed(tickRunnable, interval)
+            handler.postDelayed(this, this.interval)
         }
     }
 
     fun stop() {
-        handler.removeCallbacks(tickRunnable)
+        handler.removeCallbacks(this)
     }
 
 }

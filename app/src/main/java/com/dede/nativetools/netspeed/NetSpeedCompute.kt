@@ -14,7 +14,15 @@ typealias OnTickNetSpeed = (Long, Long) -> Unit
 class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
 
     private var rxBytes: Long = 0L
+        set(value) {
+            rxSpeed = env(value, field, interval)
+            field = value
+        }
     private var txBytes: Long = 0L
+        set(value) {
+            txSpeed = env(value, field, interval)
+            field = value
+        }
     private val netStats: INetStats = INetStats.getInstance()
 
     var interval: Int by Delegates.observable(NetSpeedPreferences.DEFAULT_INTERVAL) { _, old, new ->
@@ -30,20 +38,9 @@ class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
 
     private val handlerTick: HandlerTick = HandlerTick(interval.toLong()) {
         synchronized(this) {
-//            this.rxBytes = netStats.getRxBytes().also {
-//                this.rxSpeed = env(it, this.rxBytes, interval)
-//            }
-//            this.txBytes = netStats.getTxBytes().also {
-//                this.txSpeed = env(it, this.txBytes, interval)
-//            }
-            val rxBytes = netStats.getRxBytes()
-            val txBytes = netStats.getTxBytes()
-            this.rxSpeed = env(rxBytes, this.rxBytes, interval)
-            this.txSpeed = env(txBytes, this.txBytes, interval)
-            this.rxBytes = rxBytes
-            this.txBytes = txBytes
-
-            onTick?.invoke(this.rxSpeed, this.txSpeed)
+            rxBytes = netStats.getRxBytes()
+            txBytes = netStats.getTxBytes()
+            onTick?.invoke(rxSpeed, txSpeed)
         }
     }
 
@@ -53,6 +50,8 @@ class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
         private set
 
     private fun reset() {
+        rxSpeed = 0L
+        txSpeed = 0L
         rxBytes = netStats.getRxBytes()
         txBytes = netStats.getTxBytes()
     }
