@@ -28,14 +28,21 @@ object NetSpeedNotificationHelper {
     private const val CHANNEL_ID = "net_speed_${NOTIFICATION_CHANNEL_VERSION}"
 
     /**
+     * 通知渠道版本号
+     */
+    private var notificationChannelVersion: Int
+        get() = globalPreferences.get(KEY_NOTIFICATION_CHANNEL_VERSION, 0)
+        set(value) = globalPreferences.set(KEY_NOTIFICATION_CHANNEL_VERSION, value)
+
+    /**
      * 更新通知渠道版本
      */
     fun checkNotificationChannelAndUpgrade(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         val target = NOTIFICATION_CHANNEL_VERSION
-        val old = globalPreferences.get(KEY_NOTIFICATION_CHANNEL_VERSION, 0)
+        val old = notificationChannelVersion
         if (old == 0) {// 第一次安装
-            globalPreferences.set(KEY_NOTIFICATION_CHANNEL_VERSION, target)
+            notificationChannelVersion = target
             return
         }
         if (old > target) {
@@ -54,7 +61,7 @@ object NetSpeedNotificationHelper {
                 }
                 target -> {
                     // 更新版本号
-                    globalPreferences.set(KEY_NOTIFICATION_CHANNEL_VERSION, target)
+                    notificationChannelVersion = target
                 }
             }
         }
@@ -136,14 +143,12 @@ object NetSpeedNotificationHelper {
                 todayBytes,
                 NetFormatter.FLAG_BYTE,
                 NetFormatter.ACCURACY_EXACT
-            )
-                .splicing(),
+            ).splicing(),
             NetFormatter.format(
                 monthBytes,
                 NetFormatter.FLAG_BYTE,
                 NetFormatter.ACCURACY_EXACT
-            )
-                .splicing()
+            ).splicing()
         )
     }
 
@@ -195,7 +200,6 @@ object NetSpeedNotificationHelper {
 
         var pendingFlag = PendingIntent.FLAG_UPDATE_CURRENT
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            // support Android S
             // https://developer.android.com/about/versions/12/behavior-changes-all#foreground-service-notification-delay
             builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
             // https://developer.android.com/about/versions/12/behavior-changes-12#pending-intent-mutability

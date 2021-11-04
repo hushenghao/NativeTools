@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import com.dede.nativetools.util.*
 
@@ -46,7 +47,7 @@ class DebugClipboardUtil : BroadcastReceiver() {
         private fun isEnable(): Boolean {
             val prop = getProp(ENV_DEBUG_CLIPBOARD_UTIL)
             Log.i(TAG, "${ENV_DEBUG_CLIPBOARD_UTIL}: $prop")
-            return prop.toBoolean()
+            return prop != Build.UNKNOWN && prop.toBoolean()
         }
 
         fun register(context: Context) {

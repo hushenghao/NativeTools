@@ -43,28 +43,26 @@ object NetworkUsageUtil {
         val networkStatsManager = context.getSystemService<NetworkStatsManager>() ?: return 0L
         val startTime = start.timeInMillis
         val endTime = System.currentTimeMillis()
-        val wifiRxBytes = queryNetworkUsageBytes(
-            networkStatsManager,
+        val wifiUsageBytes = networkStatsManager.queryNetworkUsageBytes(
             ConnectivityManager.TYPE_WIFI,
             startTime,
             endTime
         )
-        val mobileRxBytes = queryNetworkUsageBytes(
-            networkStatsManager,
+        val mobileUsageBytes = networkStatsManager.queryNetworkUsageBytes(
             ConnectivityManager.TYPE_MOBILE,
             startTime,
             endTime
         )
-        return wifiRxBytes + mobileRxBytes
+        return wifiUsageBytes + mobileUsageBytes
     }
 
-    private inline fun queryNetworkUsageBytes(
-        networkStatsManager: NetworkStatsManager,
+    private fun NetworkStatsManager.queryNetworkUsageBytes(
         networkType: Int,
-        startTime: Long, endTime: Long
+        startTime: Long,
+        endTime: Long
     ): Long {
-        return kotlin.runCatching {
-            val bucket = networkStatsManager.querySummaryForDevice(
+        return this.runCatching {
+            val bucket = querySummaryForDevice(
                 networkType, null, startTime, endTime
             )
             bucket.rxBytes + bucket.txBytes

@@ -2,9 +2,11 @@ package com.dede.nativetools.netspeed
 
 import android.graphics.*
 import android.util.DisplayMetrics
+import android.util.Log
 import androidx.core.graphics.toXfermode
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.util.displayMetrics
+import com.dede.nativetools.util.globalContext
 import com.dede.nativetools.util.splicing
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -28,15 +30,24 @@ object NetTextIconFactory {
     private val iconSize: Int
 
     init {
-        val dpi = displayMetrics().densityDpi
-        this.iconSize = when {
-            dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
-            dpi <= DisplayMetrics.DENSITY_HIGH -> 36 // hdpi
-            dpi <= DisplayMetrics.DENSITY_XHIGH -> 48 // xhdpi
-            dpi <= DisplayMetrics.DENSITY_XXHIGH -> 72 // xxhdpi
-            dpi <= DisplayMetrics.DENSITY_XXXHIGH -> 96 // xxxhdpi
-            else -> 96
-        }
+        // android.R.dimen.status_bar_icon_size
+        val resources = globalContext.resources
+        val id = resources.getIdentifier("status_bar_icon_size", "dimen", "android")
+        val statusBarIconSize = id.runCatching(resources::getDimensionPixelSize)
+            .onFailure(Throwable::printStackTrace)
+            .getOrElse {
+                val dpi = displayMetrics().densityDpi
+                when {
+                    dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
+                    dpi <= DisplayMetrics.DENSITY_HIGH -> 36 // hdpi
+                    dpi <= DisplayMetrics.DENSITY_XHIGH -> 48 // xhdpi
+                    dpi <= DisplayMetrics.DENSITY_XXHIGH -> 72 // xxhdpi
+                    dpi <= DisplayMetrics.DENSITY_XXXHIGH -> 96 // xxxhdpi
+                    else -> 96
+                }
+            }
+        Log.i("NetTextIconFactory", "status_bar_icon_size: $statusBarIconSize")
+        this.iconSize = statusBarIconSize
     }
 
     private fun createBitmapInternal(size: Int, cache: Bitmap?): Bitmap {
