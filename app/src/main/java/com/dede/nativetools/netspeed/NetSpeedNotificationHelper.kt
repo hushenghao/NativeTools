@@ -86,7 +86,7 @@ object NetSpeedNotificationHelper {
             // Settings.ACTION_NOTIFICATION_SETTINGS
             Intent("android.settings.NOTIFICATION_SETTINGS")
         }
-        intent.newTask().safelyStartActivity(context)
+        intent.newTask().launchActivity(context)
     }
 
     fun goNotificationSetting(context: Context) {
@@ -100,7 +100,7 @@ object NetSpeedNotificationHelper {
         } else {
             Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:$packageName")
         }
-        intent.newTask().safelyStartActivity(context)
+        intent.newTask().launchActivity(context)
     }
 
     fun areNotificationEnabled(context: Context): Boolean {
@@ -132,13 +132,13 @@ object NetSpeedNotificationHelper {
         val monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
         return context.getString(
             R.string.notify_net_speed_sub,
-            NetFormatter.formatBytes(
+            NetFormatter.format(
                 todayBytes,
                 NetFormatter.FLAG_BYTE,
                 NetFormatter.ACCURACY_EXACT
             )
                 .splicing(),
-            NetFormatter.formatBytes(
+            NetFormatter.format(
                 monthBytes,
                 NetFormatter.FLAG_BYTE,
                 NetFormatter.ACCURACY_EXACT
@@ -163,10 +163,10 @@ object NetSpeedNotificationHelper {
         txSpeed: Long = 0L
     ): Notification {
         val downloadSpeedStr: String =
-            NetFormatter.formatBytes(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         val uploadSpeedStr: String =
-            NetFormatter.formatBytes(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.format(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
 
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

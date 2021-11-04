@@ -268,7 +268,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 if (!intent.queryImplicitActivity(context)) {
                     intent.data = null
                 }
-                opsResultLauncher.safelyLaunch(intent)
+                opsResultLauncher.launch(intent)
             }
             negativeButton(android.R.string.cancel) {
                 usageSwitchPreference.isChecked = false

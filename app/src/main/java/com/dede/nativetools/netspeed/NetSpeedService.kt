@@ -6,12 +6,11 @@ import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.IBinder
 import androidx.core.content.getSystemService
 import com.dede.nativetools.netspeed.utils.DebugClipboardUtil
 import com.dede.nativetools.util.Intent
-import com.dede.nativetools.util.addActions
+import com.dede.nativetools.util.IntentFilter
 import com.dede.nativetools.util.startService
 import kotlinx.coroutines.*
 
@@ -79,7 +78,7 @@ class NetSpeedService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        val intentFilter = IntentFilter().addActions(
+        val intentFilter = IntentFilter(
             Intent.ACTION_SCREEN_ON,// 打开屏幕
             Intent.ACTION_SCREEN_OFF,// 关闭屏幕
             Intent.ACTION_USER_PRESENT,// 解锁

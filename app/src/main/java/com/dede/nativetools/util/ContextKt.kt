@@ -23,7 +23,7 @@ import java.io.InputStream
 val globalContext: Context
     get() = NativeToolsApp.getInstance()
 
-fun Context.safelyStartActivity(intent: Intent) {
+fun Context.launchActivity(intent: Intent) {
     intent.runCatching(this::startActivity).onFailure(Throwable::printStackTrace)
 }
 

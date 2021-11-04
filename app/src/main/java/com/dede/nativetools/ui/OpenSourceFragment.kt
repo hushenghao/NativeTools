@@ -10,8 +10,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentOpenSourceBinding
 import com.dede.nativetools.databinding.ItemOpenSourceBinding
-import com.dede.nativetools.util.browse
-import com.dede.nativetools.util.isEmpty
+import com.dede.nativetools.util.*
 
 /**
  * 开源相关
@@ -33,8 +32,7 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val openSource = list[position]
-            holder.bindViewData(openSource)
+            holder.bindViewData(list[position])
         }
 
         override fun getItemCount(): Int {
@@ -49,10 +47,22 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
             binding.tvProjectName.text = openSource.name
             binding.tvAuthorName.text = openSource.author
             binding.tvProjectDesc.text = openSource.desc
-            itemView.setOnClickListener {
-                val url = openSource.url
-                if (url == null || url.isEmpty) return@setOnClickListener
-                it.context.browse(url)
+
+            val url = openSource.url
+            if (url == null || url.isEmpty) {
+                itemView.setOnClickListener(null)
+                itemView.setOnLongClickListener(null)
+            } else {
+                itemView.setOnClickListener {
+                    it.context.browse(url)
+                }
+                itemView.setOnLongClickListener {
+                    it.context.apply {
+                        copy(url)
+                        toast(R.string.toast_copyed)
+                    }
+                    return@setOnLongClickListener true
+                }
             }
         }
     }

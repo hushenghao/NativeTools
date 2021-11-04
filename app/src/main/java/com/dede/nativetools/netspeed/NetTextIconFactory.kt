@@ -92,6 +92,14 @@ object NetTextIconFactory {
         }
     }
 
+    /**
+     * 创建网速图标
+     *
+     * @param rxSpeed 下行网速
+     * @param txSpeed 上行网速
+     * @param configuration 图标配置
+     * @param size Bitmap大小
+     */
     fun createIconBitmap(
         rxSpeed: Long,
         txSpeed: Long,
@@ -102,15 +110,19 @@ object NetTextIconFactory {
         val text2: String
         when (configuration.mode) {
             NetSpeedConfiguration.MODE_ALL -> {
-                val down = NetFormatter.formatBytes(rxSpeed, 0, NetFormatter.ACCURACY_EQUAL_WIDTH)
-                    .splicing()
-                val up = NetFormatter.formatBytes(txSpeed, 0, NetFormatter.ACCURACY_EQUAL_WIDTH)
-                    .splicing()
-                text1 = up
-                text2 = down
+                text1 = NetFormatter.format(
+                    rxSpeed,
+                    NetFormatter.FLAG_NULL,
+                    NetFormatter.ACCURACY_EQUAL_WIDTH
+                ).splicing()
+                text2 = NetFormatter.format(
+                    txSpeed,
+                    NetFormatter.FLAG_NULL,
+                    NetFormatter.ACCURACY_EQUAL_WIDTH
+                ).splicing()
             }
             NetSpeedConfiguration.MODE_UP -> {
-                val upSplit = NetFormatter.formatBytes(
+                val upSplit = NetFormatter.format(
                     txSpeed,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
@@ -119,7 +131,7 @@ object NetTextIconFactory {
                 text2 = upSplit.second
             }
             else -> {
-                val downSplit = NetFormatter.formatBytes(
+                val downSplit = NetFormatter.format(
                     rxSpeed,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT

@@ -49,10 +49,10 @@ class NetTileService : TileService() {
 
     private fun update(rxSpeed: Long, txSpeed: Long) {
         val downloadSpeedStr =
-            NetFormatter.formatBytes(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         val uploadSpeedStr =
-            NetFormatter.formatBytes(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.format(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
 
         qsTile.apply {

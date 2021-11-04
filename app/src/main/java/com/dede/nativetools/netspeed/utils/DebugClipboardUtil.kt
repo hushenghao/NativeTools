@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import com.dede.nativetools.util.*
 
 
@@ -36,9 +35,8 @@ class DebugClipboardUtil : BroadcastReceiver() {
         private val debugClipboardUtil = DebugClipboardUtil()
 
         fun register(context: Context) {
-            val clipboardIntentFilter = IntentFilter()
-                .addActions(ACTION_CLIPBOARD_GET, ACTION_CLIPBOARD_SET)
-            context.registerReceiver(debugClipboardUtil, clipboardIntentFilter)
+            val intentFilter = IntentFilter(ACTION_CLIPBOARD_GET, ACTION_CLIPBOARD_SET)
+            context.registerReceiver(debugClipboardUtil, intentFilter)
         }
 
         fun unregister(context: Context) {
