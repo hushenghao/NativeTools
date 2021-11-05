@@ -1,7 +1,7 @@
 package com.dede.nativetools.netspeed
 
 import com.dede.nativetools.netspeed.stats.INetStats
-import com.dede.nativetools.util.HandlerTick
+import com.dede.nativetools.util.HandlerTicker
 import kotlin.math.max
 import kotlin.math.roundToLong
 import kotlin.properties.Delegates
@@ -28,7 +28,7 @@ class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
     var interval: Int by Delegates.observable(NetSpeedPreferences.DEFAULT_INTERVAL) { _, old, new ->
         if (old != new) {
             reset()
-            handlerTick.interval = new.toLong()
+            handlerTicker.interval = new.toLong()
         }
     }
 
@@ -36,7 +36,7 @@ class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
         return max((ms / 1000.0 * (a - b)).roundToLong(), 0L)
     }
 
-    private val handlerTick: HandlerTick = HandlerTick(interval.toLong()) {
+    private val handlerTicker: HandlerTicker = HandlerTicker(interval.toLong()) {
         synchronized(this) {
             rxBytes = netStats.getRxBytes()
             txBytes = netStats.getTxBytes()
@@ -58,11 +58,11 @@ class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
 
     fun start() {
         reset()
-        handlerTick.start()
+        handlerTicker.start()
     }
 
     fun stop() {
-        handlerTick.stop()
+        handlerTicker.stop()
     }
 
 }

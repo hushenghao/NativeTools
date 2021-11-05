@@ -24,7 +24,7 @@ import com.dede.nativetools.util.*
 class AboutFragment : Fragment(R.layout.fragment_about) {
 
     companion object {
-        const val MAX_FOLLOW_COUNT = 8
+        private const val MAX_FOLLOW_COUNT = 8
         private const val ENABLE_FOLLOW_COUNT = 2
     }
 
@@ -56,22 +56,13 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         }
         binding.ivLogo.dragEnable = false
         binding.ivLogo.setOnClickListener {
-            viewModel.appendFollowCount()
+            viewModel.addFollowCount()
         }
         playAnimator()
     }
 
-    private fun createFollowView(template: ImageView): ImageView {
-        return AppCompatImageView(requireContext()).apply {
-            elevation = 1.dpf
-            invisible()
-            setImageResource(R.mipmap.ic_launcher_round)
-            layoutParams = LayoutParams(template.layoutParams as LayoutParams)
-        }
-    }
-
     private fun appendFollowView(followViews: ArrayList<ImageView>, template: ImageView) {
-        val count = followViews.size
+        var count = followViews.size
         if (count >= MAX_FOLLOW_COUNT) {
             if (!toasted) {
                 toast("BZZZTT!!1!💥")
@@ -81,19 +72,22 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             return
         }
         val insert = if (count == 0) template else {
-            createFollowView(template).apply {
-                binding.container.addView(this, binding.container.indexOfChild(template) + 1)
+            AppCompatImageView(requireContext()).apply {
+                elevation = 1.dpf
+                invisible()
+                setImageResource(R.mipmap.ic_launcher_round)
+
+                binding.container.addView(
+                    this,
+                    binding.container.indexOfChild(template) + 1,
+                    LayoutParams(template.layoutParams as LayoutParams)
+                )
             }
         }
         followViews.add(insert)
-        updateFollowView(followViews)
-        playAnimator()
-    }
 
-    private fun updateFollowView(followViews: List<ImageView>) {
         val floatEvaluator = FloatEvaluator()
-        val count = followViews.size
-        for (i in 0 until count) {
+        for (i in 0 until ++count) {
             val value = floatEvaluator.evaluate((i + 1f) / count, 1f, 0.6f)
             followViews[i].apply {
                 scaleX = value
@@ -101,8 +95,13 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 alpha = value
             }
         }
-        binding.ivLogo.dragEnable = count >= ENABLE_FOLLOW_COUNT
+        if (count == ENABLE_FOLLOW_COUNT) {
+            toast("BZZZTT!!1!🥚")
+            binding.ivLogo.dragEnable = true
+        }
         binding.ivLogo.followViews = followViews.toTypedArray()
+
+        playAnimator()
     }
 
     private fun playAnimator() {

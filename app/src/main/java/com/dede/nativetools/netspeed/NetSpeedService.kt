@@ -7,11 +7,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import androidx.core.content.getSystemService
 import com.dede.nativetools.netspeed.utils.DebugClipboardUtil
-import com.dede.nativetools.util.Intent
-import com.dede.nativetools.util.IntentFilter
-import com.dede.nativetools.util.startService
+import com.dede.nativetools.util.*
 import kotlinx.coroutines.*
 
 
@@ -58,16 +55,14 @@ class NetSpeedService : Service() {
         }
     }
 
-    private val notificationManager: NotificationManager? by lazy(LazyThreadSafetyMode.NONE) {
-        getSystemService<NotificationManager>()
-    }
+    private val notificationManager by systemService<NotificationManager>()
 
     val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
         val notify =
             NetSpeedNotificationHelper.createNotification(this, configuration, rxSpeed, txSpeed)
-        notificationManager?.notify(NOTIFY_ID, notify)
+        notificationManager.notify(NOTIFY_ID, notify)
     }
 
     private val configuration = NetSpeedConfiguration.defaultConfiguration
@@ -134,7 +129,7 @@ class NetSpeedService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val configuration = intent?.getParcelableExtra<NetSpeedConfiguration>(EXTRA_CONFIGURATION)
+        val configuration = intent?.extra<NetSpeedConfiguration>(EXTRA_CONFIGURATION)
         updateConfiguration(configuration)
         // https://developer.android.google.cn/guide/components/services#CreatingAService
         // https://developer.android.google.cn/reference/android/app/Service#START_REDELIVER_INTENT

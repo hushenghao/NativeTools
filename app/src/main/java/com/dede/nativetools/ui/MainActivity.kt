@@ -3,13 +3,14 @@ package com.dede.nativetools.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.NetSpeedService
+import com.dede.nativetools.util.extra
+import com.dede.nativetools.util.navController
 import com.dede.nativetools.util.setNightMode
 
 /**
@@ -17,14 +18,18 @@ import com.dede.nativetools.util.setNightMode
  */
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        private const val EXTRA_TOGGLE = "extra_toggle"
+    }
+
     private val binding by viewBinding(ActivityMainBinding::bind)
-    private val navController by lazy { findNavController(R.id.nav_host_fragment) }
+    private val navController by navController(R.id.nav_host_fragment)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.ThemeOverlay_Shapes_Rounded)
         setTheme(R.style.ThemeOverlay_ShapeSize_Large)
         super.onCreate(savedInstanceState)
-        val isToggle = intent.getBooleanExtra("extra_toggle", false)
+        val isToggle = intent.extra(EXTRA_TOGGLE, false)
         if (isToggle) {
             NetSpeedService.toggle(this)
             finish()

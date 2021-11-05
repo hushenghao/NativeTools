@@ -10,7 +10,6 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.getSystemService
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
@@ -51,7 +50,7 @@ object NetSpeedNotificationHelper {
                 "version downgrade, old: $old, target: $target"
             )
         }
-        val notificationManager = context.getSystemService<NotificationManager>() ?: return
+        val notificationManager = context.requireSystemService<NotificationManager>()
         for (v in (old..target)) {
             when (v) {
                 1 -> {
@@ -75,7 +74,7 @@ object NetSpeedNotificationHelper {
     }
 
     private fun isSecure(context: Context): Boolean {
-        val keyguardManager = context.getSystemService<KeyguardManager>() ?: return true
+        val keyguardManager = context.requireSystemService<KeyguardManager>()
         return keyguardManager.isDeviceSecure || keyguardManager.isKeyguardSecure
     }
 
@@ -113,8 +112,7 @@ object NetSpeedNotificationHelper {
     fun areNotificationEnabled(context: Context): Boolean {
         val areNotificationsEnabled =
             NotificationManagerCompat.from(context).areNotificationsEnabled()
-        val notificationManager =
-            context.getSystemService<NotificationManager>() ?: return areNotificationsEnabled
+        val notificationManager = context.requireSystemService<NotificationManager>()
         var channelDisabled = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
@@ -244,7 +242,7 @@ object NetSpeedNotificationHelper {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel(context: Context) {
-        val notificationManager = context.getSystemService<NotificationManager>() ?: return
+        val notificationManager = context.requireSystemService<NotificationManager>()
         val notificationChannel = NotificationChannel(
             CHANNEL_ID,
             context.getString(R.string.label_net_speed),

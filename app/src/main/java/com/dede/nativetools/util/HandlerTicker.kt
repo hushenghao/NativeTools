@@ -9,7 +9,7 @@ import android.os.Looper
  * @author hsh
  * @since 2021/5/31 1:59 下午
  */
-class HandlerTick(interval: Long, private val onTick: () -> Unit) : Runnable {
+class HandlerTicker(interval: Long, private val onTick: () -> Unit) : Runnable {
 
     var interval: Long = interval
         set(value) {

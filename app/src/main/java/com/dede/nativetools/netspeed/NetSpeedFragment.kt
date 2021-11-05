@@ -11,7 +11,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.registerForActivityResult
 import androidx.core.content.ContextCompat
-import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
 import androidx.preference.*
@@ -113,7 +112,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             val packageName = context.packageName
 
             fun setVisible() {
-                val powerManager = context.getSystemService<PowerManager>() ?: return
+                val powerManager = context.requireSystemService<PowerManager>()
                 it.isVisible = !powerManager.isIgnoringBatteryOptimizations(packageName)
             }
 

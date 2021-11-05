@@ -4,7 +4,6 @@ package com.dede.nativetools.util
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Process
-import androidx.core.content.getSystemService
 import java.io.File
 
 
@@ -20,7 +19,7 @@ fun Context.getProcessName(): String {
     if (processName != null && processName.isNotEmpty) {
         currentProcessName = processName
     } else {
-        val activityManager = this.getSystemService<ActivityManager>() ?: return currentProcessName
+        val activityManager = this.requireSystemService<ActivityManager>()
         val list = activityManager.runningAppProcesses
         if (list == null || list.isEmpty()) {
             return currentProcessName

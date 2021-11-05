@@ -36,10 +36,34 @@ fun Intent.putExtras(vararg extras: Pair<String, Any>): Intent {
             is Boolean -> this.putExtra(key, value)
             is String -> this.putExtra(key, value)
             is Parcelable -> this.putExtra(key, value)
-            else -> Log.w("IntentKt", "Intent: ${value.javaClass} don`t impl")
+            else -> Log.w("IntentKt", "Intent: put ${value.javaClass} don`t impl")
         }
     }
     return this
+}
+
+inline fun <reified T : Any> Intent.extra(name: String, default: T): T {
+    return when (T::class.java) {
+        Int::class.java -> this.getIntExtra(name, default as Int) as T
+        Boolean::class.java -> this.getBooleanExtra(name, default as Boolean) as T
+        String::class.java -> (this.getStringExtra(name) as? T) ?: default
+        Parcelable::class.java -> (this.getParcelableExtra(name) as? T) ?: default
+        else -> {
+            Log.w("IntentKt", "Intent: get ${T::class.java} don`t impl")
+            default
+        }
+    }
+}
+
+inline fun <reified T : Any> Intent.extra(name: String): T? {
+    return when (T::class.java) {
+        String::class.java -> this.getStringExtra(name) as? T
+        Parcelable::class.java -> this.getParcelableExtra(name) as? T
+        else -> {
+            Log.w("IntentKt", "Intent: get ${T::class.java} don`t impl")
+            null
+        }
+    }
 }
 
 fun Intent.newTask(): Intent = this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -71,7 +95,10 @@ fun IntentFilter(vararg actions: String): IntentFilter {
 }
 
 fun Intent.queryImplicitActivity(context: Context): Boolean {
-    return this.resolveActivityInfo(context.packageManager, PackageManager.MATCH_DEFAULT_ONLY) != null
+    return this.resolveActivityInfo(
+        context.packageManager,
+        PackageManager.MATCH_DEFAULT_ONLY
+    ) != null
 }
 
 fun <I> ActivityResultLauncher<I>.safelyLaunch(input: I? = null) {

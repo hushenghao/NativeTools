@@ -18,10 +18,19 @@ import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
 import java.io.InputStream
+import kotlin.properties.ReadOnlyProperty
 
 
 val globalContext: Context
     get() = NativeToolsApp.getInstance()
+
+inline fun <reified T : Any> Context.requireSystemService(): T {
+    return checkNotNull(getSystemService())
+}
+
+inline fun <reified T : Any> Context.systemService(): ReadOnlyProperty<Context, T> {
+    return ReadOnlyProperty { _, _ -> requireSystemService() }
+}
 
 fun Context.launchActivity(intent: Intent) {
     intent.runCatching(this::startActivity).onFailure(Throwable::printStackTrace)
@@ -36,7 +45,7 @@ fun Context.startService(intent: Intent, foreground: Boolean) {
 }
 
 fun Context.checkAppOps(): Boolean {
-    val appOpsManager = getSystemService<AppOpsManager>() ?: return true
+    val appOpsManager = requireSystemService<AppOpsManager>()
     val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         appOpsManager.unsafeCheckOpNoThrow(
             AppOpsManager.OPSTR_GET_USAGE_STATS,
@@ -101,12 +110,12 @@ fun Context.emailTo(@StringRes addressRes: Int) {
 }
 
 fun Context.copy(text: String) {
-    val clipboardManager = this.getSystemService<ClipboardManager>() ?: return
+    val clipboardManager = this.requireSystemService<ClipboardManager>()
     clipboardManager.setPrimaryClip(ClipData.newPlainText("text", text))
 }
 
 fun Context.readClipboard(): String? {
-    val clipboardManager = getSystemService<ClipboardManager>() ?: return null
+    val clipboardManager = this.requireSystemService<ClipboardManager>()
     val primaryClip = clipboardManager.primaryClip ?: return null
     if (primaryClip.itemCount > 0) {
         return primaryClip.getItemAt(0)?.text?.toString()
