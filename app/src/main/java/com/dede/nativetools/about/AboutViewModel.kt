@@ -2,6 +2,7 @@ package com.dede.nativetools.about
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dede.nativetools.about.AboutFragment.Companion.MAX_FOLLOW_COUNT
 
 /**
  * 关于页，保存followCount
@@ -11,11 +12,13 @@ import androidx.lifecycle.ViewModel
  */
 class AboutViewModel : ViewModel() {
 
-    var animatored = false
-
     val followCount = MutableLiveData(0)
 
-    fun setFollowCount(count: Int) {
+    fun appendFollowCount() {
+        var count = followCount.value ?: 0
+        if (count++ > MAX_FOLLOW_COUNT) {
+            return
+        }
         followCount.value = count
     }
 
