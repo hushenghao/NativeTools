@@ -55,7 +55,7 @@ class NetSpeedService : Service() {
         }
     }
 
-    private val notificationManager by systemService<NotificationManager>()
+    private val notificationManager: NotificationManager by systemService()
 
     val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 

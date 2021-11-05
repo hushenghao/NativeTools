@@ -11,6 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.animation.addListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.DialogFragmentNavigator
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
@@ -139,7 +141,12 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 requireContext().emailTo(R.string.email)
             }
             R.id.action_donate -> {
-                DonateDialogFragment.show(childFragmentManager)
+                val navigator =
+                    findNavController().navigatorProvider.getNavigator(DialogFragmentNavigator::class.java)
+                val destination = navigator.createDestination()
+                    .setClassName(DonateDialogFragment::class.java.name)
+                navigator.navigate(destination,null,null,null)
+                //DonateDialogFragment.show(childFragmentManager)
             }
             else -> return super.onOptionsItemSelected(item)
         }

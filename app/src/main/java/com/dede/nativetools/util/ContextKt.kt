@@ -25,7 +25,7 @@ val globalContext: Context
     get() = NativeToolsApp.getInstance()
 
 inline fun <reified T : Any> Context.requireSystemService(): T {
-    return checkNotNull(getSystemService())
+    return checkNotNull(applicationContext.getSystemService())
 }
 
 inline fun <reified T : Any> Context.systemService(): ReadOnlyProperty<Context, T> {
