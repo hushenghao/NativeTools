@@ -25,3 +25,7 @@
 -keepclassmembers class * extends com.dede.nativetools.netspeed.stats.INetStats {
    public <init>();
 }
+
+-keepclassmembers class androidx.navigation.fragment.DialogFragmentNavigator {
+    private androidx.lifecycle.LifecycleEventObserver mObserver;
+}

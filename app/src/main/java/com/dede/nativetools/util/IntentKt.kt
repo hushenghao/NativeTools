@@ -43,24 +43,27 @@ fun Intent.putExtras(vararg extras: Pair<String, Any>): Intent {
 }
 
 inline fun <reified T : Any> Intent.extra(name: String, default: T): T {
-    return when (T::class.java) {
-        Int::class.java -> this.getIntExtra(name, default as Int) as T
-        Boolean::class.java -> this.getBooleanExtra(name, default as Boolean) as T
-        String::class.java -> (this.getStringExtra(name) as? T) ?: default
-        Parcelable::class.java -> (this.getParcelableExtra(name) as? T) ?: default
+    val tClass = T::class.java
+    return when {
+        tClass == Int::class.java -> this.getIntExtra(name, default as Int) as T
+        tClass == Boolean::class.java -> this.getBooleanExtra(name, default as Boolean) as T
+        tClass == String::class.java -> (this.getStringExtra(name) as? T) ?: default
+        Parcelable::class.java.isAssignableFrom(tClass) ->
+            (this.getParcelableExtra(name) as? T) ?: default
         else -> {
-            Log.w("IntentKt", "Intent: get ${T::class.java} don`t impl")
+            Log.w("IntentKt", "Intent: get $tClass don`t impl")
             default
         }
     }
 }
 
 inline fun <reified T : Any> Intent.extra(name: String): T? {
-    return when (T::class.java) {
-        String::class.java -> this.getStringExtra(name) as? T
-        Parcelable::class.java -> this.getParcelableExtra(name) as? T
+    val tClass = T::class.java
+    return when {
+        tClass == String::class.java -> this.getStringExtra(name) as? T
+        Parcelable::class.java.isAssignableFrom(tClass) -> this.getParcelableExtra(name) as? T
         else -> {
-            Log.w("IntentKt", "Intent: get ${T::class.java} don`t impl")
+            Log.w("IntentKt", "Intent: get $tClass don`t impl")
             null
         }
     }

@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
+import android.util.Log
 import com.dede.nativetools.netspeed.utils.DebugClipboardUtil
 import com.dede.nativetools.util.*
 import kotlinx.coroutines.*
@@ -106,7 +107,7 @@ class NetSpeedService : Service() {
     private fun pause(stopForeground: Boolean = true) {
         netSpeedCompute.stop()
         if (stopForeground) {
-            notificationManager?.cancel(NOTIFY_ID)
+            notificationManager.cancel(NOTIFY_ID)
             stopForeground(true)
         } else {
             startForeground()
@@ -125,7 +126,7 @@ class NetSpeedService : Service() {
             this.netSpeedCompute.rxSpeed,
             this.netSpeedCompute.txSpeed
         )
-        notificationManager?.notify(NOTIFY_ID, notification)
+        notificationManager.notify(NOTIFY_ID, notification)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
