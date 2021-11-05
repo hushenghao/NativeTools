@@ -76,7 +76,10 @@ android {
 dependencies {
     implementation(deps.kotlin.stdlib)
     implementation(deps.androidx.appcompat)
+    implementation(deps.androidx.core.ktx)
     implementation(deps.androidx.preference.ktx)
+    implementation(deps.androidx.recyclerview)
+    implementation(deps.bundles.androidx.lifecycle)
     implementation(deps.bundles.androidx.navigation)
     implementation(deps.google.material)
 

@@ -163,7 +163,9 @@ object NetTextIconFactory {
         iconConfig.scale = configuration.scale
         iconConfig.background = configuration.background
 
-        return createIconInternal(text1, text2, iconConfig, configuration.cachedBitmap)
+        return createIconInternal(text1, text2, iconConfig, configuration.cachedBitmap).apply {
+            configuration.cachedBitmap = this
+        }
     }
 
     private val DST_OUT_XFERMODE = PorterDuff.Mode.DST_OUT.toXfermode()

@@ -267,7 +267,6 @@ object NetSpeedNotificationHelper {
     ): Icon {
         val bitmap =
             NetTextIconFactory.createIconBitmap(rxSpeed, txSpeed, configuration)
-        configuration.cachedBitmap = bitmap
         return Icon.createWithBitmap(bitmap)
     }
 

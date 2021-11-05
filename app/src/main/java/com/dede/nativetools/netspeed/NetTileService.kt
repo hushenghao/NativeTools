@@ -62,7 +62,6 @@ class NetTileService : TileService() {
                 txSpeed,
                 configuration
             )
-            configuration.cachedBitmap = bitmap
             icon = Icon.createWithBitmap(bitmap)
             label = getString(R.string.tile_net_speed_label, downloadSpeedStr, uploadSpeedStr)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

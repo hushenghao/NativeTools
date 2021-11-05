@@ -6,12 +6,12 @@ import android.animation.ObjectAnimator
 import android.util.Property
 import android.view.View
 import androidx.core.animation.addListener
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 
 
-fun Fragment.lifecycleAnimator(
+fun LifecycleOwner.lifecycleAnimator(
     target: View,
     property: Property<View, Float>,
     vararg values: Float
