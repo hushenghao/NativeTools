@@ -1,6 +1,8 @@
 package com.dede.nativetools.netspeed
 
+import android.graphics.Bitmap
 import android.os.Parcelable
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 
@@ -20,12 +22,19 @@ data class NetSpeedConfiguration constructor(
     var hideLockNotification: Boolean
 ) : Parcelable {
 
+    @IgnoredOnParcel
+    var cachedBitmap: Bitmap? = null
+
     constructor() : this(
         NetSpeedPreferences.DEFAULT_INTERVAL, true, MODE_DOWN, 1f,
         false, BACKGROUND_NONE, false, false, true
     )
 
-    fun copy(configuration: NetSpeedConfiguration): NetSpeedConfiguration {
+    fun reinitialize(): NetSpeedConfiguration {
+        return this.updateFrom(initialize())
+    }
+
+    fun updateFrom(configuration: NetSpeedConfiguration): NetSpeedConfiguration {
         this.interval = configuration.interval
         this.notifyClickable = configuration.notifyClickable
         this.mode = configuration.mode

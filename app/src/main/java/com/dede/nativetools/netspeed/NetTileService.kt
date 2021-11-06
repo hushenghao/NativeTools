@@ -15,17 +15,22 @@ import com.dede.nativetools.util.splicing
 @RequiresApi(Build.VERSION_CODES.N)
 class NetTileService : TileService() {
 
-    private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
+    private val configuration = NetSpeedConfiguration.initialize()
+
+    private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
         update(rxSpeed, txSpeed)
     }
 
     override fun onStartListening() {
-        netSpeedHelper.interval = NetSpeedPreferences.interval
-        netSpeedHelper.resume()
+        // 获取最新的配置
+        configuration.reinitialize().also {
+            netSpeedCompute.interval = it.interval
+        }
+        netSpeedCompute.start()
     }
 
     override fun onStopListening() {
-        netSpeedHelper.pause()
+        netSpeedCompute.stop()
     }
 
     private fun startMain() {
@@ -44,21 +49,20 @@ class NetTileService : TileService() {
 
     private fun update(rxSpeed: Long, txSpeed: Long) {
         val downloadSpeedStr =
-            NetFormatter.formatBytes(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         val uploadSpeedStr =
-            NetFormatter.formatBytes(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.format(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
 
         qsTile.apply {
             state = Tile.STATE_ACTIVE
-            icon = Icon.createWithBitmap(
-                NetTextIconFactory.createIconBitmap(
-                    rxSpeed,
-                    txSpeed,
-                    NetSpeedConfiguration.initialize()
-                )
+            val bitmap = NetTextIconFactory.createIconBitmap(
+                rxSpeed,
+                txSpeed,
+                configuration
             )
+            icon = Icon.createWithBitmap(bitmap)
             label = getString(R.string.tile_net_speed_label, downloadSpeedStr, uploadSpeedStr)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 subtitle = getString(R.string.label_net_speed)
@@ -67,7 +71,7 @@ class NetTileService : TileService() {
     }
 
     override fun onDestroy() {
-        netSpeedHelper.pause()
+        netSpeedCompute.stop()
         super.onDestroy()
     }
 }

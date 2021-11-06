@@ -10,7 +10,6 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.getSystemService
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
@@ -28,15 +27,21 @@ object NetSpeedNotificationHelper {
     private const val CHANNEL_ID = "net_speed_${NOTIFICATION_CHANNEL_VERSION}"
 
     /**
+     * 通知渠道版本号
+     */
+    private var notificationChannelVersion: Int
+        get() = globalPreferences.get(KEY_NOTIFICATION_CHANNEL_VERSION, 0)
+        set(value) = globalPreferences.set(KEY_NOTIFICATION_CHANNEL_VERSION, value)
+
+    /**
      * 更新通知渠道版本
      */
     fun checkNotificationChannelAndUpgrade(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
-        val notificationManager = context.getSystemService<NotificationManager>() ?: return
         val target = NOTIFICATION_CHANNEL_VERSION
-        val old = globalPreferences.get(KEY_NOTIFICATION_CHANNEL_VERSION, 0)
+        val old = notificationChannelVersion
         if (old == 0) {// 第一次安装
-            globalPreferences.set(KEY_NOTIFICATION_CHANNEL_VERSION, target)
+            notificationChannelVersion = target
             return
         }
         if (old > target) {
@@ -45,6 +50,7 @@ object NetSpeedNotificationHelper {
                 "version downgrade, old: $old, target: $target"
             )
         }
+        val notificationManager = context.requireSystemService<NotificationManager>()
         for (v in (old..target)) {
             when (v) {
                 1 -> {
@@ -54,7 +60,7 @@ object NetSpeedNotificationHelper {
                 }
                 target -> {
                     // 更新版本号
-                    globalPreferences.set(KEY_NOTIFICATION_CHANNEL_VERSION, target)
+                    notificationChannelVersion = target
                 }
             }
         }
@@ -68,7 +74,7 @@ object NetSpeedNotificationHelper {
     }
 
     private fun isSecure(context: Context): Boolean {
-        val keyguardManager = context.getSystemService<KeyguardManager>() ?: return true
+        val keyguardManager = context.requireSystemService<KeyguardManager>()
         return keyguardManager.isDeviceSecure || keyguardManager.isKeyguardSecure
     }
 
@@ -86,7 +92,7 @@ object NetSpeedNotificationHelper {
             // Settings.ACTION_NOTIFICATION_SETTINGS
             Intent("android.settings.NOTIFICATION_SETTINGS")
         }
-        intent.newTask().safelyStartActivity(context)
+        intent.newTask().launchActivity(context)
     }
 
     fun goNotificationSetting(context: Context) {
@@ -100,14 +106,13 @@ object NetSpeedNotificationHelper {
         } else {
             Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:$packageName")
         }
-        intent.newTask().safelyStartActivity(context)
+        intent.newTask().launchActivity(context)
     }
 
     fun areNotificationEnabled(context: Context): Boolean {
         val areNotificationsEnabled =
             NotificationManagerCompat.from(context).areNotificationsEnabled()
-        val notificationManager =
-            context.getSystemService<NotificationManager>() ?: return areNotificationsEnabled
+        val notificationManager = context.requireSystemService<NotificationManager>()
         var channelDisabled = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
@@ -132,18 +137,16 @@ object NetSpeedNotificationHelper {
         val monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
         return context.getString(
             R.string.notify_net_speed_sub,
-            NetFormatter.formatBytes(
+            NetFormatter.format(
                 todayBytes,
                 NetFormatter.FLAG_BYTE,
                 NetFormatter.ACCURACY_EXACT
-            )
-                .splicing(),
-            NetFormatter.formatBytes(
+            ).splicing(),
+            NetFormatter.format(
                 monthBytes,
                 NetFormatter.FLAG_BYTE,
                 NetFormatter.ACCURACY_EXACT
-            )
-                .splicing()
+            ).splicing()
         )
     }
 
@@ -163,10 +166,10 @@ object NetSpeedNotificationHelper {
         txSpeed: Long = 0L
     ): Notification {
         val downloadSpeedStr: String =
-            NetFormatter.formatBytes(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         val uploadSpeedStr: String =
-            NetFormatter.formatBytes(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.format(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
 
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -195,7 +198,6 @@ object NetSpeedNotificationHelper {
 
         var pendingFlag = PendingIntent.FLAG_UPDATE_CURRENT
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            // support Android S
             // https://developer.android.com/about/versions/12/behavior-changes-all#foreground-service-notification-delay
             builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
             // https://developer.android.com/about/versions/12/behavior-changes-12#pending-intent-mutability
@@ -240,7 +242,7 @@ object NetSpeedNotificationHelper {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel(context: Context) {
-        val notificationManager = context.getSystemService<NotificationManager>() ?: return
+        val notificationManager = context.requireSystemService<NotificationManager>()
         val notificationChannel = NotificationChannel(
             CHANNEL_ID,
             context.getString(R.string.label_net_speed),
@@ -262,7 +264,7 @@ object NetSpeedNotificationHelper {
         txSpeed: Long
     ): Icon {
         val bitmap =
-            NetTextIconFactory.createIconBitmap(rxSpeed, txSpeed, configuration, fromCache = true)
+            NetTextIconFactory.createIconBitmap(rxSpeed, txSpeed, configuration)
         return Icon.createWithBitmap(bitmap)
     }
 

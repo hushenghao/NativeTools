@@ -17,7 +17,6 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_STATUS = "net_speed_status"
     const val KEY_NET_SPEED_INTERVAL = "net_speed_interval"
     const val KEY_NET_SPEED_NOTIFY_CLICKABLE = "net_speed_notify_clickable"
-    const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
     const val KEY_NET_SPEED_MODE = "net_speed_mode"
     const val KEY_NET_SPEED_SCALE = "net_speed_scale"
     const val KEY_NET_SPEED_QUICK_CLOSEABLE = "net_speed_notify_quick_closeable"
@@ -28,7 +27,8 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_HIDE_NOTIFICATION = "net_speed_hide_notification"
 
     //const val KEY_OPS_DONT_ASK = "ops_dont_ask"
-    const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
+    private const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
+    private const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
 
     const val DEFAULT_INTERVAL = 1000
 

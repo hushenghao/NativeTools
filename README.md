@@ -19,7 +19,8 @@
 
 ## 应用截图
 
-<img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269610882462412.png"/> <img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269610958174546.png"/> <img height="500px" src="https://assets.che300.com/wiki/2021-07-22/16269612711209232.png"/>
+<img height="500px" src="docs/images/screenshot_1.png"/> <img height="500px" src="docs/images/screenshot_2.png"/> 
+<img height="500px" src="docs/images/screenshot_3.png"/> <img height="500px" src="docs/images/screenshot_4.png"/>
 
 ## 应用下载
 
@@ -30,4 +31,4 @@
 Email：dede.hu@qq.com
 
 ## 捐赠
-<img height="150px" src="app/src/main/res/drawable-xhdpi/alipay_payment_code.webp"/> <img height="150px" src="app/src/main/res/drawable-xhdpi/wx_payment_code.webp"/>
+<img height="150px" src="app/src/main/res/drawable-xhdpi/alipay_payment_code.webp"/> <img height="140px" src="app/src/main/res/drawable-xhdpi/wx_payment_code.webp" style="border:5px solid white" />

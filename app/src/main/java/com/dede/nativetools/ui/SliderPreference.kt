@@ -3,7 +3,6 @@ package com.dede.nativetools.ui
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.widget.ImageView
@@ -14,6 +13,9 @@ import com.dede.nativetools.R
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
 
+/**
+ * SliderBar Preference like SeekBarPreference
+ */
 class SliderPreference @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
     SeekBarPreference(context, attrs) {
 
@@ -44,7 +46,6 @@ class SliderPreference @JvmOverloads constructor(context: Context, attrs: Attrib
         }
 
         rightImage = view.findViewById(R.id.iv_right_icon) as? ImageView
-        Log.i("TAG", "onBindViewHolder: " + rightImage)
         setRightIcon(rightDrawable)
     }
 

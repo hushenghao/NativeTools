@@ -1,9 +1,12 @@
 package com.dede.nativetools.netspeed
 
 import android.graphics.*
+import android.util.DisplayMetrics
+import android.util.Log
 import androidx.core.graphics.toXfermode
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.util.displayMetrics
+import com.dede.nativetools.util.globalContext
 import com.dede.nativetools.util.splicing
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -16,7 +19,6 @@ import kotlin.math.roundToInt
 object NetTextIconFactory {
 
     private val DEFAULT_CONFIG = Bitmap.Config.ARGB_8888
-    private var cachedBitmap: Bitmap? = null
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         typeface = Typeface.DEFAULT_BOLD
@@ -28,37 +30,39 @@ object NetTextIconFactory {
     private val iconSize: Int
 
     init {
-        val dpi = displayMetrics().densityDpi
-        this.iconSize = when {
-            dpi <= 160 -> 24 // mdpi
-            dpi <= 240 -> 36 // hdpi
-            dpi <= 320 -> 48 // xhdpi
-            dpi <= 480 -> 72 // xxhdpi
-            dpi <= 640 -> 96 // xxxhdpi
-            else -> 96
-        }
+        // android.R.dimen.status_bar_icon_size
+        val resources = globalContext.resources
+        val id = resources.getIdentifier("status_bar_icon_size", "dimen", "android")
+        val statusBarIconSize = id.runCatching(resources::getDimensionPixelSize)
+            .onFailure(Throwable::printStackTrace)
+            .getOrElse {
+                val dpi = displayMetrics().densityDpi
+                when {
+                    dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
+                    dpi <= DisplayMetrics.DENSITY_HIGH -> 36 // hdpi
+                    dpi <= DisplayMetrics.DENSITY_XHIGH -> 48 // xhdpi
+                    dpi <= DisplayMetrics.DENSITY_XXHIGH -> 72 // xxhdpi
+                    dpi <= DisplayMetrics.DENSITY_XXXHIGH -> 96 // xxxhdpi
+                    else -> 96
+                }
+            }
+        Log.i("NetTextIconFactory", "status_bar_icon_size: $statusBarIconSize")
+        this.iconSize = statusBarIconSize
     }
 
-    private fun createBitmap(size: Int, useCache: Boolean): Bitmap {
-        if (!useCache) {
+    private fun createBitmapInternal(size: Int, cache: Bitmap?): Bitmap {
+        if (cache == null) {
             return Bitmap.createBitmap(size, size, DEFAULT_CONFIG)
         }
-        var bitmap = this.cachedBitmap
-        if (bitmap == null) {
-            bitmap = Bitmap.createBitmap(size, size, DEFAULT_CONFIG)
-            this.cachedBitmap = bitmap
-            return bitmap
-        }
-
-        if (bitmap.config != DEFAULT_CONFIG || bitmap.width != size || bitmap.height != size) {
-            bitmap.reconfigure(size, size, DEFAULT_CONFIG)
+        if (cache.config != DEFAULT_CONFIG || cache.width != size || cache.height != size) {
+            cache.reconfigure(size, size, DEFAULT_CONFIG)
         }
 
         // Bitmaps in the pool contain random data that in some cases must be cleared for an image
         // to be rendered correctly. we shouldn't force all consumers to independently erase the
         // contents individually, so we do so here.
-        bitmap.eraseColor(Color.TRANSPARENT)
-        return bitmap
+        cache.eraseColor(Color.TRANSPARENT)
+        return cache
     }
 
     private sealed class IconConfig(val size: Int) {
@@ -99,26 +103,37 @@ object NetTextIconFactory {
         }
     }
 
+    /**
+     * 创建网速图标
+     *
+     * @param rxSpeed 下行网速
+     * @param txSpeed 上行网速
+     * @param configuration 图标配置
+     * @param size Bitmap大小
+     */
     fun createIconBitmap(
         rxSpeed: Long,
         txSpeed: Long,
         configuration: NetSpeedConfiguration,
-        size: Int = iconSize,
-        fromCache: Boolean = false
+        size: Int = iconSize
     ): Bitmap {
         val text1: String
         val text2: String
         when (configuration.mode) {
             NetSpeedConfiguration.MODE_ALL -> {
-                val down = NetFormatter.formatBytes(rxSpeed, 0, NetFormatter.ACCURACY_EQUAL_WIDTH)
-                    .splicing()
-                val up = NetFormatter.formatBytes(txSpeed, 0, NetFormatter.ACCURACY_EQUAL_WIDTH)
-                    .splicing()
-                text1 = up
-                text2 = down
+                text1 = NetFormatter.format(
+                    rxSpeed,
+                    NetFormatter.FLAG_NULL,
+                    NetFormatter.ACCURACY_EQUAL_WIDTH
+                ).splicing()
+                text2 = NetFormatter.format(
+                    txSpeed,
+                    NetFormatter.FLAG_NULL,
+                    NetFormatter.ACCURACY_EQUAL_WIDTH
+                ).splicing()
             }
             NetSpeedConfiguration.MODE_UP -> {
-                val upSplit = NetFormatter.formatBytes(
+                val upSplit = NetFormatter.format(
                     txSpeed,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
@@ -127,7 +142,7 @@ object NetTextIconFactory {
                 text2 = upSplit.second
             }
             else -> {
-                val downSplit = NetFormatter.formatBytes(
+                val downSplit = NetFormatter.format(
                     rxSpeed,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
@@ -148,7 +163,9 @@ object NetTextIconFactory {
         iconConfig.scale = configuration.scale
         iconConfig.background = configuration.background
 
-        return createIconInternal(text1, text2, iconConfig, fromCache)
+        return createIconInternal(text1, text2, iconConfig, configuration.cachedBitmap).apply {
+            configuration.cachedBitmap = this
+        }
     }
 
     private val DST_OUT_XFERMODE = PorterDuff.Mode.DST_OUT.toXfermode()
@@ -157,9 +174,9 @@ object NetTextIconFactory {
         text1: String,
         text2: String,
         icon: IconConfig,
-        fromCache: Boolean = false
+        cache: Bitmap? = null
     ): Bitmap {
-        val bitmap = createBitmap(icon.size, fromCache)
+        val bitmap = createBitmapInternal(icon.size, cache)
         val canvas = Canvas(bitmap)
 
         when (icon.background) {

@@ -6,13 +6,10 @@ import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.IBinder
-import androidx.core.content.getSystemService
+import android.util.Log
 import com.dede.nativetools.netspeed.utils.DebugClipboardUtil
-import com.dede.nativetools.util.Intent
-import com.dede.nativetools.util.addActions
-import com.dede.nativetools.util.startService
+import com.dede.nativetools.util.*
 import kotlinx.coroutines.*
 
 
@@ -59,16 +56,14 @@ class NetSpeedService : Service() {
         }
     }
 
-    private val notificationManager: NotificationManager? by lazy(LazyThreadSafetyMode.NONE) {
-        getSystemService<NotificationManager>()
-    }
+    private val notificationManager: NotificationManager by systemService()
 
     val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-    private val netSpeedHelper = NetSpeedHelper { rxSpeed, txSpeed ->
+    private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
         val notify =
             NetSpeedNotificationHelper.createNotification(this, configuration, rxSpeed, txSpeed)
-        notificationManager?.notify(NOTIFY_ID, notify)
+        notificationManager.notify(NOTIFY_ID, notify)
     }
 
     private val configuration = NetSpeedConfiguration.defaultConfiguration
@@ -79,7 +74,7 @@ class NetSpeedService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        val intentFilter = IntentFilter().addActions(
+        val intentFilter = IntentFilter(
             Intent.ACTION_SCREEN_ON,// 打开屏幕
             Intent.ACTION_SCREEN_OFF,// 关闭屏幕
             Intent.ACTION_USER_PRESENT,// 解锁
@@ -103,16 +98,16 @@ class NetSpeedService : Service() {
      */
     private fun resume() {
         startForeground()
-        netSpeedHelper.resume()
+        netSpeedCompute.start()
     }
 
     /**
      * 暂停指示器
      */
     private fun pause(stopForeground: Boolean = true) {
-        netSpeedHelper.pause()
+        netSpeedCompute.stop()
         if (stopForeground) {
-            notificationManager?.cancel(NOTIFY_ID)
+            notificationManager.cancel(NOTIFY_ID)
             stopForeground(true)
         } else {
             startForeground()
@@ -123,19 +118,19 @@ class NetSpeedService : Service() {
         if (configuration ?: return == this.configuration) {
             return
         }
-        this.configuration.copy(configuration)
-            .also { netSpeedHelper.interval = it.interval }
+        this.configuration.updateFrom(configuration)
+            .also { netSpeedCompute.interval = it.interval }
         val notification = NetSpeedNotificationHelper.createNotification(
             this,
             this.configuration,
-            this.netSpeedHelper.rxSpeed,
-            this.netSpeedHelper.txSpeed
+            this.netSpeedCompute.rxSpeed,
+            this.netSpeedCompute.txSpeed
         )
-        notificationManager?.notify(NOTIFY_ID, notification)
+        notificationManager.notify(NOTIFY_ID, notification)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val configuration = intent?.getParcelableExtra<NetSpeedConfiguration>(EXTRA_CONFIGURATION)
+        val configuration = intent?.extra<NetSpeedConfiguration>(EXTRA_CONFIGURATION)
         updateConfiguration(configuration)
         // https://developer.android.google.cn/guide/components/services#CreatingAService
         // https://developer.android.google.cn/reference/android/app/Service#START_REDELIVER_INTENT

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
-import androidx.fragment.app.FragmentManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.DialogFragmentDonateBinding
@@ -23,13 +22,6 @@ import kotlin.math.roundToInt
  * 捐赠页
  */
 class DonateDialogFragment : BottomSheetDialogFragment() {
-
-    companion object {
-        fun show(manager: FragmentManager) {
-            val donateDialogFragment = DonateDialogFragment()
-            donateDialogFragment.show(manager, "Donate")
-        }
-    }
 
     private val binding by viewBinding(DialogFragmentDonateBinding::bind)
 

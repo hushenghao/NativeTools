@@ -20,11 +20,11 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 31
-        versionName = "2.6.4"
+        versionCode = 33
+        versionName = "2.7.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        resourceConfigurations.addAll(arrayListOf("en", "zh"))
+        resourceConfigurations.addAll(listOf("zh-rCN", "zh-rHK", "ja-rJP", "en-rUS"))
 
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797
@@ -76,7 +76,10 @@ android {
 dependencies {
     implementation(deps.kotlin.stdlib)
     implementation(deps.androidx.appcompat)
+    implementation(deps.androidx.core.ktx)
     implementation(deps.androidx.preference.ktx)
+    implementation(deps.androidx.recyclerview)
+    implementation(deps.bundles.androidx.lifecycle)
     implementation(deps.bundles.androidx.navigation)
     implementation(deps.google.material)
 

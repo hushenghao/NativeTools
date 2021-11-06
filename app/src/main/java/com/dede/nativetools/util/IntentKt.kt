@@ -36,10 +36,37 @@ fun Intent.putExtras(vararg extras: Pair<String, Any>): Intent {
             is Boolean -> this.putExtra(key, value)
             is String -> this.putExtra(key, value)
             is Parcelable -> this.putExtra(key, value)
-            else -> Log.w("IntentKt", "Intent: ${value.javaClass} don`t impl")
+            else -> Log.w("IntentKt", "Intent: put ${value.javaClass} don`t impl")
         }
     }
     return this
+}
+
+inline fun <reified T : Any> Intent.extra(name: String, default: T): T {
+    val tClass = T::class.java
+    return when {
+        tClass == Int::class.java -> this.getIntExtra(name, default as Int) as T
+        tClass == Boolean::class.java -> this.getBooleanExtra(name, default as Boolean) as T
+        tClass == String::class.java -> (this.getStringExtra(name) as? T) ?: default
+        Parcelable::class.java.isAssignableFrom(tClass) ->
+            (this.getParcelableExtra(name) as? T) ?: default
+        else -> {
+            Log.w("IntentKt", "Intent: get $tClass don`t impl")
+            default
+        }
+    }
+}
+
+inline fun <reified T : Any> Intent.extra(name: String): T? {
+    val tClass = T::class.java
+    return when {
+        tClass == String::class.java -> this.getStringExtra(name) as? T
+        Parcelable::class.java.isAssignableFrom(tClass) -> this.getParcelableExtra(name) as? T
+        else -> {
+            Log.w("IntentKt", "Intent: get $tClass don`t impl")
+            null
+        }
+    }
 }
 
 fun Intent.newTask(): Intent = this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -51,7 +78,7 @@ fun Intent.setData(uri: String): Intent = setData(Uri.parse(uri))
 fun Intent.toChooser(@StringRes titleId: Int): Intent =
     Intent.createChooser(this, globalContext.getString(titleId))
 
-inline fun Intent.safelyStartActivity(context: Context) = context.safelyStartActivity(this)
+inline fun Intent.launchActivity(context: Context) = context.launchActivity(this)
 
 fun Intent.toPendingActivity(context: Context, flags: Int): PendingIntent =
     PendingIntent.getActivity(context, 0, this, flags)
@@ -62,17 +89,21 @@ fun Intent.toPendingBroadcast(context: Context, flags: Int): PendingIntent =
 fun PendingIntent.toNotificationAction(@StringRes titleId: Int): Notification.Action =
     Notification.Action.Builder(null, globalContext.getString(titleId), this).build()
 
-fun IntentFilter.addActions(vararg actions: String): IntentFilter {
+fun IntentFilter(vararg actions: String): IntentFilter {
+    val intentFilter = IntentFilter()
     for (action in actions) {
-        this.addAction(action)
+        intentFilter.addAction(action)
     }
-    return this
+    return intentFilter
 }
 
 fun Intent.queryImplicitActivity(context: Context): Boolean {
-    return this.resolveActivityInfo(context.packageManager, PackageManager.MATCH_DEFAULT_ONLY) != null
+    return this.resolveActivityInfo(
+        context.packageManager,
+        PackageManager.MATCH_DEFAULT_ONLY
+    ) != null
 }
 
-fun <I> ActivityResultLauncher<I>.safelyLaunch(i: I? = null) {
-    i.runCatching(this::launch).onFailure(Throwable::printStackTrace)
+fun <I> ActivityResultLauncher<I>.safelyLaunch(input: I? = null) {
+    input.runCatching(this::launch).onFailure(Throwable::printStackTrace)
 }

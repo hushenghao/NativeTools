@@ -11,7 +11,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.registerForActivityResult
 import androidx.core.content.ContextCompat
-import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
 import androidx.preference.*
@@ -35,13 +34,13 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         private const val MODE_ALL_BYTES = (2 shl 19) * 888L
 
         // 88.8M 93113549L
-        private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8).toLong()
+        private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
 
         private const val KEY_ABOUT = "about"
         private const val KEY_IGNORE_BATTERY_OPTIMIZE = "ignore_battery_optimize"
     }
 
-    private val configuration by lazy { NetSpeedConfiguration.initialize() }
+    private val configuration = NetSpeedConfiguration.initialize()
 
     private var netSpeedBinder: INetSpeedInterface? = null
 
@@ -113,7 +112,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             val packageName = context.packageName
 
             fun setVisible() {
-                val powerManager = context.getSystemService<PowerManager>() ?: return
+                val powerManager = context.requireSystemService<PowerManager>()
                 it.isVisible = !powerManager.isIgnoringBatteryOptimizations(packageName)
             }
 
@@ -225,7 +224,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         } else {
             MODE_SINGLE_BYTES
         }
-        val bitmap = NetTextIconFactory.createIconBitmap(speed, speed, configuration, size, false)
+        val bitmap = NetTextIconFactory.createIconBitmap(speed, speed, configuration, size)
         val layerDrawable = drawable as LayerDrawable
         layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmap.toDrawable(resources))
         scaleSliderPreference.setRightIcon(drawable)
@@ -268,7 +267,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 if (!intent.queryImplicitActivity(context)) {
                     intent.data = null
                 }
-                opsResultLauncher.safelyLaunch(intent)
+                opsResultLauncher.launch(intent)
             }
             negativeButton(android.R.string.cancel) {
                 usageSwitchPreference.isChecked = false

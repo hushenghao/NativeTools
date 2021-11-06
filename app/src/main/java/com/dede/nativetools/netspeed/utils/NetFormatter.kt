@@ -31,24 +31,45 @@ object NetFormatter {
      */
     const val ACCURACY_EQUAL_WIDTH = 3
 
+    /**
+     * 单位B字符的标志位
+     *
+     * Pair(8.8, B), Pair(8.8, KB)
+     */
     const val FLAG_BYTE = 1
-    const val FLAG_INFIX = 1 shl 1
-    const val FLAG_SECOND = 1 shl 2
 
-    const val FLAG_FULL = FLAG_BYTE or FLAG_INFIX or FLAG_SECOND
+    /**
+     * /s字符的标志位
+     *
+     * Pair(8.8, /s)
+     */
+    const val FLAG_INFIX_SECOND = 1 shl 1
+
+    /**
+     * 全量字符标志位
+     *
+     * Pair(8.8, KB/s)
+     */
+    const val FLAG_FULL = FLAG_BYTE or FLAG_INFIX_SECOND
+
+    /**
+     * 无拼接字符标志位
+     *
+     * Pair(8.8, B), Pair(8.8, K)
+     */
+    const val FLAG_NULL = 0
 
     private const val CHAR_BYTE = 'B'
-    private const val CHAR_INFIX = '/'
-    private const val CHAR_SECOND = 's'
+    private const val CHARS_INFIX_SECOND = "/s"
 
-    private val UNIT_CHARS = charArrayOf('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y', 'B')
+    private val UNIT_CHARS = charArrayOf('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y', 'B', 'N', 'D')
 
     // android.text.format.Formatter.formatFileSize(android.content.Context, long)
     // 8.0以后使用的单位是1000，非1024
     private const val UNIT_SIZE = 1024
     private const val THRESHOLD = 900
 
-    fun formatBytes(bytes: Long, flags: Int, accuracy: Int): Pair<String, String> {
+    fun format(bytes: Long, flags: Int, accuracy: Int): Pair<String, String> {
 
         fun hasFlag(flag: Int): Boolean = (flags and flag) > 0
 
@@ -71,14 +92,11 @@ object NetFormatter {
         if (hasFlag(FLAG_BYTE) && unit != CHAR_BYTE) {
             sb.append(CHAR_BYTE)// 拼接B
         }
-        if (hasFlag(FLAG_INFIX)) {
-            sb.append(CHAR_INFIX)// 拼接/
-        }
-        if (hasFlag(FLAG_SECOND)) {
-            sb.append(CHAR_SECOND)// 拼接s
+        if (hasFlag(FLAG_INFIX_SECOND)) {
+            sb.append(CHARS_INFIX_SECOND)// 拼接/s
         }
 
-        return Pair(format, sb.toString())
+        return format to sb.toString()
     }
 
 

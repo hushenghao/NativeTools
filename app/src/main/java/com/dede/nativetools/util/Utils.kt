@@ -1,5 +1,6 @@
 package com.dede.nativetools.util
 
+import android.os.Build
 import android.text.Spanned
 import android.text.TextUtils
 import android.util.Base64
@@ -37,4 +38,11 @@ fun String.trimZeroAndDot(): String {
 
 fun String.decodeBase64(): String? {
     return runCatching { String(Base64.decode(this, Base64.DEFAULT)) }.getOrNull()
+}
+
+fun getProp(key: String): String? {
+    return Build::class.java.runCatching {
+        declaredMethod("getString", String::class.java)
+            .invoke(null, key) as? String
+    }.getOrNull()
 }
