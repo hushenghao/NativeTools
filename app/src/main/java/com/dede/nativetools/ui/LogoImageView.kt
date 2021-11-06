@@ -49,6 +49,32 @@ class LogoImageView @JvmOverloads constructor(
     private val yProperty = YProperty()
 
     var followViews: Array<View>? = null
+        set(value) {
+            field = value
+            prepareFollowViews(field)
+        }
+
+    private fun prepareFollowViews(followViews: Array<View>?) {
+        if (isInLayout) {
+            return
+        }
+        if (followViews == null || followViews.isEmpty()) {
+            return
+        }
+        val size = followViews.size
+        for (i in (0 until size)) {
+            val view = followViews[i]
+            view.isInvisible = true
+            val elevation =
+                elevationEvaluator.evaluate(
+                    (i + 1f) / size,
+                    maxElevation - 1,
+                    maxElevation - 2
+                )
+            ViewCompat.setElevation(view, elevation)
+        }
+    }
+
     var enableFeedback = true
         set(value) {
             field = value
@@ -59,6 +85,7 @@ class LogoImageView @JvmOverloads constructor(
     private val hasFollowView: Boolean get() = followViews?.isNotEmpty() ?: false
 
     private var savedElevation: Float = 0f
+    private var maxElevation: Float = 0f
     private val elevationEvaluator = FloatEvaluator()
 
     private fun filterMove(event: MotionEvent): Boolean {
@@ -68,6 +95,9 @@ class LogoImageView @JvmOverloads constructor(
     override fun layout(l: Int, t: Int, r: Int, b: Int) {
         super.layout(l, t, r, b)
         layoutPoint.set(this.x, this.y)
+        savedElevation = ViewCompat.getElevation(this)
+        maxElevation = max(rootView.allViews.maxOf(ViewCompat::getElevation) + 3, savedElevation)
+        prepareFollowViews(followViews)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -79,24 +109,10 @@ class LogoImageView @JvmOverloads constructor(
             MotionEvent.ACTION_DOWN -> {
                 eventPoint.set(event.x, event.y)
                 downPoint.set(event.rawX, event.rawY)
-                cleanAnimator()
+                cleanUpAnimator()
                 moved = false
                 super.onTouchEvent(event)
-
-                savedElevation = ViewCompat.getElevation(this)
-                val maxElevation = rootView.allViews.maxOf(ViewCompat::getElevation) + 2
                 ViewCompat.setElevation(this, maxElevation)
-                val followViews = this.followViews
-                if (followViews != null && hasFollowView) {
-                    val minElevation = maxElevation - 1
-                    val size = followViews.size
-                    for (i in (0 until size)) {
-                        val view = followViews[i]
-                        val elevation =
-                            elevationEvaluator.evaluate((i + 1f) / size, maxElevation, minElevation)
-                        ViewCompat.setElevation(view, elevation)
-                    }
-                }
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
@@ -158,8 +174,9 @@ class LogoImageView @JvmOverloads constructor(
         return ObjectAnimator.ofFloat(target, property, start, end)
     }
 
-    private fun cleanAnimator() {
+    private fun cleanUpAnimator() {
         (getTag(TAG_ID) as? Animator)?.cancel()
+        removeCallbacks(upAnimatorEndDelayCallback)
     }
 
     override fun setX(x: Float) {
@@ -174,6 +191,12 @@ class LogoImageView @JvmOverloads constructor(
 
     private val inUpAnimator: Boolean get() = (getTag(TAG_ID) as? Animator)?.isRunning ?: false
 
+    private val upAnimatorEndDelayCallback = Runnable {
+        this.followViews?.forEach { it.isInvisible = true }
+        // resume elevation
+        ViewCompat.setElevation(this, savedElevation)
+    }
+
     private fun startUpAnimator(start: PointF, end: PointF) {
         val xOfFloat = createAnimator(this, xProperty, start.x, end.x)
         val yOfFloat = createAnimator(this, yProperty, start.y, end.y)
@@ -186,18 +209,14 @@ class LogoImageView @JvmOverloads constructor(
         val followViews = this.followViews
         if (followViews != null && hasFollowView) {
             animator.doOnEnd {
-                postDelayed({
-                    followViews.forEach { it.isInvisible = true }
-                    // resume elevation
-                    ViewCompat.setElevation(this, savedElevation)
-                }, FOLLOW_ANIMATOR_DURATION * followViews.size)
+                postDelayed(upAnimatorEndDelayCallback, FOLLOW_ANIMATOR_DURATION * followViews.size)
             }
         }
         setTag(TAG_ID, animator)
     }
 
     override fun onDetachedFromWindow() {
-        cleanAnimator()
+        cleanUpAnimator()
         super.onDetachedFromWindow()
     }
 
