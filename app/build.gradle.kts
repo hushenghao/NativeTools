@@ -21,10 +21,10 @@ android {
         minSdk = 23
         targetSdk = 30
         versionCode = 33
-        versionName = "2.6.6"
+        versionName = "2.7.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        resourceConfigurations.addAll(arrayListOf("en", "zh"))
+        resourceConfigurations.addAll(listOf("zh-rCN", "zh-rHK", "ja-rJP", "en-rUS"))
 
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797
