@@ -3,12 +3,14 @@ package com.dede.nativetools.about
 import android.animation.Animator
 import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
+import android.graphics.Outline
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.animation.addListener
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.DialogFragmentNavigator
@@ -59,6 +61,12 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.ivLogo.setOnClickListener {
             viewModel.addFollowCount()
         }
+        binding.ivLogo.clipToOutline = true
+        binding.ivLogo.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setOval(0, 0, view.width, view.height)
+            }
+        }
         playAnimator()
     }
 
@@ -75,7 +83,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         val insert = if (count == 0) template else {
             AppCompatImageView(requireContext()).apply {
                 elevation = 1.dpf
-                invisible()
+                isInvisible = true
                 setImageResource(R.mipmap.ic_launcher_round)
 
                 binding.container.addView(

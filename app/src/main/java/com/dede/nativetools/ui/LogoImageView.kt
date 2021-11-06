@@ -1,9 +1,6 @@
 package com.dede.nativetools.ui
 
-import android.animation.Animator
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
+import android.animation.*
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PointF
@@ -15,11 +12,12 @@ import android.view.animation.OvershootInterpolator
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.animation.doOnEnd
 import androidx.core.view.ViewCompat
+import androidx.core.view.allViews
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.dede.nativetools.R
 import com.dede.nativetools.util.XProperty
 import com.dede.nativetools.util.YProperty
-import com.dede.nativetools.util.invisible
-import com.dede.nativetools.util.visible
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -60,6 +58,9 @@ class LogoImageView @JvmOverloads constructor(
     var dragEnable = true
     private val hasFollowView: Boolean get() = followViews?.isNotEmpty() ?: false
 
+    private var savedElevation: Float = 0f
+    private val elevationEvaluator = FloatEvaluator()
+
     private fun filterMove(event: MotionEvent): Boolean {
         return max(abs(event.rawX - downPoint.x), abs(event.rawY - downPoint.y)) > slop
     }
@@ -79,9 +80,23 @@ class LogoImageView @JvmOverloads constructor(
                 eventPoint.set(event.x, event.y)
                 downPoint.set(event.rawX, event.rawY)
                 cleanAnimator()
-                //playSoundEffect(SoundEffectConstants.CLICK)
                 moved = false
                 super.onTouchEvent(event)
+
+                savedElevation = ViewCompat.getElevation(this)
+                val maxElevation = rootView.allViews.maxOf(ViewCompat::getElevation) + 2
+                ViewCompat.setElevation(this, maxElevation)
+                val followViews = this.followViews
+                if (followViews != null && hasFollowView) {
+                    val minElevation = maxElevation - 1
+                    val size = followViews.size
+                    for (i in (0 until size)) {
+                        val view = followViews[i]
+                        val elevation =
+                            elevationEvaluator.evaluate((i + 1f) / size, maxElevation, minElevation)
+                        ViewCompat.setElevation(view, elevation)
+                    }
+                }
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
@@ -122,7 +137,7 @@ class LogoImageView @JvmOverloads constructor(
         val followViews = this.followViews ?: return
 
         val items = followViews.map {
-            it.visible()
+            it.isVisible = true
             createAnimator(it, property, start, end)
         }
         AnimatorSet().apply {
@@ -172,7 +187,9 @@ class LogoImageView @JvmOverloads constructor(
         if (followViews != null && hasFollowView) {
             animator.doOnEnd {
                 postDelayed({
-                    followViews.forEach { it.invisible() }
+                    followViews.forEach { it.isInvisible = true }
+                    // resume elevation
+                    ViewCompat.setElevation(this, savedElevation)
                 }, FOLLOW_ANIMATOR_DURATION * followViews.size)
             }
         }

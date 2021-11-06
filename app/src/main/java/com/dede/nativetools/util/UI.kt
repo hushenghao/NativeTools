@@ -2,10 +2,8 @@ package com.dede.nativetools.util
 
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Build
 import android.util.DisplayMetrics
 import android.util.TypedValue
-import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -40,18 +38,6 @@ val Number.dpf: Float
         this.toFloat(),
         displayMetrics()
     )
-
-fun View.gone() {
-    this.visibility = View.GONE
-}
-
-fun View.visible() {
-    this.visibility = View.VISIBLE
-}
-
-fun View.invisible() {
-    this.visibility = View.INVISIBLE
-}
 
 fun <T : Preference> PreferenceFragmentCompat.requirePreference(key: CharSequence): T {
     return findPreference(key) as? T
