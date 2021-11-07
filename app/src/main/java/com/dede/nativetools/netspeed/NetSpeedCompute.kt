@@ -27,19 +27,18 @@ class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
 
     var interval: Int by Delegates.observable(NetSpeedPreferences.DEFAULT_INTERVAL) { _, old, new ->
         if (old != new) {
-            reset()
+            refresh()
             handlerTicker.interval = new.toLong()
         }
     }
 
-    private fun env(a: Long, b: Long, ms: Int): Long {
-        return max((ms / 1000.0 * (a - b)).roundToLong(), 0L)
+    private fun env(n: Long, o: Long, interval: Int): Long {
+        return max((1000.0 / interval * (n - o)).roundToLong(), 0L)
     }
 
     private val handlerTicker: HandlerTicker = HandlerTicker(interval.toLong()) {
         synchronized(this) {
-            rxBytes = netStats.getRxBytes()
-            txBytes = netStats.getTxBytes()
+            refresh()
             onTick?.invoke(rxSpeed, txSpeed)
         }
     }
@@ -49,15 +48,13 @@ class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
     var txSpeed: Long = 0L
         private set
 
-    private fun reset() {
-        rxSpeed = 0L
-        txSpeed = 0L
+    private fun refresh() {
         rxBytes = netStats.getRxBytes()
         txBytes = netStats.getTxBytes()
     }
 
     fun start() {
-        reset()
+        refresh()
         handlerTicker.start()
     }
 
