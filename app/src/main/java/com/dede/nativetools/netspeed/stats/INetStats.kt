@@ -47,9 +47,13 @@ interface INetStats {
         }
 
         private fun create(clazz: Class<out INetStats>): INetStats? {
-            return runCatching(clazz::newInstance)
-                .onFailure(Throwable::printStackTrace)
-                .getOrNull()
+            return when (clazz) {
+                Android31NetStats::class.java -> Android31NetStats()
+                ReflectNetStats::class.java -> ReflectNetStats()
+                ExcludeLoNetStats::class.java -> ExcludeLoNetStats()
+                NormalNetStats::class.java -> NormalNetStats()
+                else -> null
+            }
         }
     }
 
