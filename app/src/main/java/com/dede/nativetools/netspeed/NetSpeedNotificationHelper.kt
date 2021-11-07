@@ -215,7 +215,7 @@ object NetSpeedNotificationHelper {
             }
         } else {
             val contentStr =
-                context.getString(R.string.notify_net_speed_msg, downloadSpeedStr, uploadSpeedStr)
+                context.getString(R.string.notify_net_speed_msg, uploadSpeedStr, downloadSpeedStr)
             builder.setContentTitle(contentStr)
             if (configuration.usage) {
                 val usageText = getUsageText(context)
