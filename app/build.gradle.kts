@@ -20,8 +20,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 34
-        versionName = "2.7.1"
+        versionCode = 35
+        versionName = "2.7.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(listOf("zh-rCN", "zh-rHK", "ja-rJP", "en-rUS"))
