@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">网速指示器</string>
-    <string name="notify_net_speed_msg">下載:%s • 上載:%s</string>
-    <string name="notify_net_speed_sub">今日:%s • 今月:%s</string>
+    <string name="notify_net_speed_msg">上載: %s • 下載: %s</string>
+    <string name="notify_net_speed_sub">今日: %s • 今月: %s</string>
     <string name="switch_on">开き</string>
     <string name="switch_off">閉鎖</string>
     <string name="action_close">閉鎖</string>
