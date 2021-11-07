@@ -27,8 +27,10 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MainActivity"
+            android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

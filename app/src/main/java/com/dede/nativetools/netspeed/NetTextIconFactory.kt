@@ -122,12 +122,12 @@ object NetTextIconFactory {
         when (configuration.mode) {
             NetSpeedConfiguration.MODE_ALL -> {
                 text1 = NetFormatter.format(
-                    rxSpeed,
+                    txSpeed,
                     NetFormatter.FLAG_NULL,
                     NetFormatter.ACCURACY_EQUAL_WIDTH
                 ).splicing()
                 text2 = NetFormatter.format(
-                    txSpeed,
+                    rxSpeed,
                     NetFormatter.FLAG_NULL,
                     NetFormatter.ACCURACY_EQUAL_WIDTH
                 ).splicing()
