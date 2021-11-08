@@ -42,7 +42,7 @@
     <string name="chooser_label_market">アプリストアを選ぶ</string>
     <string name="label_open_source">オープンソース関係</string>
     <string name="action_share">分かち合い</string>
-    <string name="share_text">便利なガジェット「网速指示器」を見つけたらダウンロードしてください!https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text">便利なガジェット「网速指示器」を見つけたらダウンロードしてください! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
     <string name="action_feedback">フィードバック</string>
     <string name="toast_copyed">複製済み</string>
     <string name="toast_wx_payment_tip">微信の支払いコードをスクリーンショットしてスキャンしてください</string>

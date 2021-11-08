@@ -55,7 +55,7 @@
     <string name="label_net_speed_toggle">Toggle</string>
     <string name="label_net_speed_usage">Displays daily and monthly traffic usage</string>
     <string name="summary_net_speed_usage">Notifications display the total usage of mobile data and WLAN traffic</string>
-    <string name="alert_msg_hide_lock_notification">Sometimes the inability to hide notifications can be caused by the lock screen setting. Find \'Hide lock screen notifications\' in Settings and select\' Show sensitive content only \'or\' Hide all notifications\'.</string>
+    <string name="alert_msg_hide_lock_notification">Sometimes the inability to hide notifications can be caused by the lock screen setting. Find \"Hide lock screen notifications\" in Settings and select \"Show sensitive content only\" or \"Hide all notifications\".</string>
     <string name="label_general">General</string>
     <string name="label_notification">Notification</string>
     <string name="label_other">Other</string>

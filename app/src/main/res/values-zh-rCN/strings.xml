@@ -52,7 +52,7 @@
     <string name="toast_copyed">已复制</string>
     <string name="toast_wx_payment_tip">微信付款码请截图后扫描</string>
     <string name="label_net_speed_toggle">切换</string>
-    <string name="alert_msg_hide_lock_notification">有时候通知无法隐藏可能是锁屏设置引起的。在设置中找到\'隐藏锁屏通知\"，选择\"仅显示敏感内容\"或\"隐藏所有通知\"。</string>
+    <string name="alert_msg_hide_lock_notification">有时候通知无法隐藏可能是锁屏设置引起的。在设置中找到“隐藏锁屏通知”，选择“仅显示敏感内容”或“隐藏所有通知”。</string>
     <string name="label_general">通用</string>
     <string name="label_notification">通知</string>
     <string name="label_other">其他</string>
