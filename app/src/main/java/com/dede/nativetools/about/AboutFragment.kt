@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
@@ -173,6 +174,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 requireContext().emailTo(R.string.email)
             }
             R.id.action_donate -> {
+                // item.onNavDestinationSelected(findNavController())
                 findNavController().navigate(R.id.action_about_to_dialogDonate)
             }
             else -> return super.onOptionsItemSelected(item)
