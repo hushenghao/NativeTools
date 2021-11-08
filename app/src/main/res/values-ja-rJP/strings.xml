@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">网速指示器</string>
-    <string name="notify_net_speed_msg">上載: %s • 下載: %s</string>
-    <string name="notify_net_speed_sub">今日: %s • 今月: %s</string>
+    <string name="notify_net_speed_msg">上載: <xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • 下載: <xliff:g example="10.1KB/s" id="speed">%s</xliff:g></string>
+    <string name="notify_net_speed_sub">今日: <xliff:g example="10.5GB" id="usage">%s</xliff:g> • 今月: <xliff:g example="10.5GB" id="usage">%s</xliff:g></string>
     <string name="switch_on">开き</string>
     <string name="switch_off">閉鎖</string>
     <string name="action_close">閉鎖</string>
@@ -42,7 +42,7 @@
     <string name="chooser_label_market">アプリストアを選ぶ</string>
     <string name="label_open_source">オープンソース関係</string>
     <string name="action_share">分かち合い</string>
-    <string name="share_text">便利なガジェット「网速指示器」を見つけたらダウンロードしてください! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text">便利なガジェット「网速指示器」を見つけたらダウンロードしてください! <xliff:g id="app_store_detail">https://play.google.com/store/apps/details?id=com.dede.nativetools</xliff:g></string>
     <string name="action_feedback">フィードバック</string>
     <string name="toast_copyed">複製済み</string>
     <string name="toast_wx_payment_tip">微信の支払いコードをスクリーンショットしてスキャンしてください</string>
