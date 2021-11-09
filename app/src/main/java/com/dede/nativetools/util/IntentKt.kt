@@ -103,7 +103,3 @@ fun Intent.queryImplicitActivity(context: Context): Boolean {
         PackageManager.MATCH_DEFAULT_ONLY
     ) != null
 }
-
-fun <I> ActivityResultLauncher<I>.safelyLaunch(input: I? = null) {
-    input.runCatching(this::launch).onFailure(Throwable::printStackTrace)
-}

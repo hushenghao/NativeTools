@@ -6,10 +6,7 @@ import android.content.*
 import android.graphics.drawable.LayerDrawable
 import android.os.*
 import android.provider.Settings
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
@@ -48,7 +45,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private lateinit var statusSwitchPreference: SwitchPreferenceCompat
     private lateinit var usageSwitchPreference: SwitchPreferenceCompat
 
-    private lateinit var opsResultLauncher: ActivityResultLauncher<Intent>
+    private val activityResultLauncherCompat =
+        ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
 
     private val closeReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -81,10 +79,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private fun initNotificationPreferenceGroup() {
         usageSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_USAGE)
-        opsResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                usageSwitchPreference.isChecked = requireContext().checkAppOps()
-            }
+
         if (!requireContext().checkAppOps()) {
             usageSwitchPreference.isChecked = false
         }
@@ -120,21 +115,16 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
             if (!it.isVisible) return@also
 
-            @SuppressLint("BatteryLife")
-            val activityResult: ActivityResultLauncher<Unit> =
-                registerForActivityResult<Intent, ActivityResult>(
-                    ActivityResultContracts.StartActivityForResult(),
-                    Intent(
-                        Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, "package:$packageName"
-                    )
-                ) { result ->
+            it.onPreferenceClickListener {
+                @SuppressLint("BatteryLife")
+                val intent = Intent(
+                    Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, "package:$packageName"
+                )
+                activityResultLauncherCompat.launch(intent) { result ->
                     if (result.resultCode == Activity.RESULT_OK) {
                         setVisible()
                     }
                 }
-
-            it.onPreferenceClickListener {
-                activityResult.safelyLaunch()
             }
         }
     }
@@ -267,7 +257,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 if (!intent.queryImplicitActivity(context)) {
                     intent.data = null
                 }
-                opsResultLauncher.launch(intent)
+                activityResultLauncherCompat.launch(intent) {
+                    usageSwitchPreference.isChecked = requireContext().checkAppOps()
+                }
             }
             negativeButton(android.R.string.cancel) {
                 usageSwitchPreference.isChecked = false
