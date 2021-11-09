@@ -2,7 +2,7 @@
     <string name="app_name">网速指示器</string>
     <string name="notify_net_speed_msg">上传：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • 下载：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g></string>
     <string name="notify_net_speed_sub">今日：<xliff:g example="10.5GB" id="usage">%s</xliff:g> • 本月：<xliff:g example="10.5GB" id="usage">%s</xliff:g></string>
-    <string name="tile_net_speed_label" translatable="false">⇃<xliff:g example="10.1KB/s" id="speed">%s</xliff:g>   ↿<xliff:g example="10.1KB/s" id="speed">%s</xliff:g></string>
+    <string name="tile_net_speed_label" translatable="false">↿%s ⇃%s</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
     <string name="action_close">关闭</string>
@@ -30,7 +30,7 @@
     <string name="summary_net_speed_notify_quick_closeable">在网速通知上添加一个关闭按钮</string>
     <string name="summary_night_mode_follow_system">跟随系统</string>
     <string name="summary_net_speed_usage">通知显示移动数据和WLAN流量使用总和</string>
-    <string name="summary_about_version" translatable="false">v<xliff:g example="2.7.1" id="versionName">%s</xliff:g> (<xliff:g example="32" id="versionCode">%d</xliff:g>)</string>
+    <string name="summary_about_version" translatable="false">v%s (%d)</string>
     <string name="summary_ignore_battery_optimize">添加电池优化白名单，防止前台服务无法保活（针对部分设备）</string>
 
     <string name="usage_states_title">使用情况访问授权</string>
