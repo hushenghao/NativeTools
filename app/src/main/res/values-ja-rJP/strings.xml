@@ -45,7 +45,7 @@
     <string name="share_text">便利なガジェット「网速指示器」を見つけたらダウンロードしてください! <xliff:g id="app_store_detail">https://play.google.com/store/apps/details?id=com.dede.nativetools</xliff:g></string>
     <string name="action_feedback">フィードバック</string>
     <string name="toast_copyed">複製済み</string>
-    <string name="toast_wx_payment_tip">微信の支払いコードをスクリーンショットしてスキャンしてください</string>
+    <string name="toast_wx_payment_tip">WeChat決済コードは保存画像を押してスキャンしてください</string>
     <string name="label_net_speed_toggle">换</string>
     <string name="alert_msg_hide_lock_notification">通知が隠されない場合はロック画面の設定に起因する可能性があります。設定で「ロック画面の通知を隠す」を見つけ、「デリケートな内容のみを表示する」または「すべての通知を隠す」を選択します。</string>
     <string name="label_general">ユニバーサル設定</string>
@@ -71,4 +71,5 @@
         <item>楕円の矩形</item>
     </string-array>
     <string name="label_notification">通知</string>
+    <string name="toast_saved">保存済み</string>
 </resources>

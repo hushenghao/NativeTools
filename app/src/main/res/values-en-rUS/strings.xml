@@ -67,7 +67,8 @@
     <string name="action_donate">Donation</string>
     <string name="action_rate">Rate</string>
     <string name="label_coffee">Buy me a cup of coffee?</string>
-    <string name="toast_wx_payment_tip">Please scan the screenshot of wechat payment code</string>
+    <string name="toast_wx_payment_tip">Please hold down the wechat payment code to save the picture and scan it</string>
     <string name="label_ignore_battery_optimize">Ignore battery optimization</string>
     <string name="summary_ignore_battery_optimize">Add battery optimization whitelist to prevent foreground service failure (for some devices)</string>
+    <string name="toast_saved">Saved</string>
 </resources>

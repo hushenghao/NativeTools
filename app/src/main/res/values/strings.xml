@@ -60,7 +60,7 @@
     <string name="email" translatable="false">dede.hu@qq.com</string>
     <string name="url_pgyer" translatable="false">https://www.pgyer.com/U9kJ</string>
     <string name="toast_copyed">已复制</string>
-    <string name="toast_wx_payment_tip">微信付款码请截图后扫描</string>
+    <string name="toast_wx_payment_tip">微信付款码请长按保存图片后扫描</string>
     <string name="label_net_speed_toggle">切换</string>
     <string name="alert_msg_hide_lock_notification">有时候通知无法隐藏可能是锁屏设置引起的。在设置中找到“隐藏锁屏通知”，选择“仅显示敏感内容”或“隐藏所有通知”。</string>
     <string name="label_general">通用</string>
@@ -114,4 +114,5 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string name="toast_saved">已保存</string>
 </resources>
