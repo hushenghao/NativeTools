@@ -3,6 +3,7 @@ package com.dede.nativetools.ui
 import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.PreferenceViewHolder
+import androidx.preference.R
 import androidx.preference.SwitchPreferenceCompat
 
 /**
@@ -11,17 +12,13 @@ import androidx.preference.SwitchPreferenceCompat
  * @author hsh
  * @since 2021/10/9 1:40 下午
  */
-class CustomWidgetLayoutSwitchPreference : SwitchPreferenceCompat {
+class CustomWidgetLayoutSwitchPreference @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = R.attr.switchPreferenceCompatStyle
+) : SwitchPreferenceCompat(context, attrs, defStyleAttr) {
 
     var bindCustomWidget: ((holder: PreferenceViewHolder) -> Unit)? = null
-
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    )
 
     override fun onBindViewHolder(holder: PreferenceViewHolder?) {
         super.onBindViewHolder(holder)

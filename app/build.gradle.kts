@@ -20,8 +20,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 35
-        versionName = "2.7.2"
+        versionCode = 36
+        versionName = "2.7.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(listOf("zh-rCN", "zh-rHK", "ja-rJP", "en-rUS"))
@@ -84,6 +84,7 @@ dependencies {
     implementation(deps.google.material)
 
     implementation(deps.free.reflection)
+    implementation(deps.airbnb.lottie)
     implementation(deps.viewbinding.property.delegate)
 
     debugImplementation(deps.squareup.leakcanary)

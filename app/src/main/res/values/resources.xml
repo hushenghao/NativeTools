@@ -4,4 +4,13 @@
     <dimen name="percent_preference_icon_size">40dp</dimen>
 
     <integer name="config_navAnimTime">300</integer>
+
+    <style name="ShapeAppearanceComponent.MediumCornerSize" parent="">
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="ShapeAppearanceComponent.LargeCornerSize" parent="">
+        <item name="cornerSize">16dp</item>
+    </style>
+
 </resources>

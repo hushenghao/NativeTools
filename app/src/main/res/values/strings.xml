@@ -1,8 +1,8 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">网速指示器</string>
-    <string name="notify_net_speed_msg" formatted="false">上传：%s • 下载：%s</string>
-    <string name="notify_net_speed_sub" formatted="false">今日：%s • 本月：%s</string>
-    <string name="tile_net_speed_label" formatted="false" translatable="false">⇃%s   ↿%s</string>
+    <string name="notify_net_speed_msg">上传：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • 下载：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g></string>
+    <string name="notify_net_speed_sub">今日：<xliff:g example="10.5GB" id="usage">%s</xliff:g> • 本月：<xliff:g example="10.5GB" id="usage">%s</xliff:g></string>
+    <string name="tile_net_speed_label" translatable="false">↿%s ⇃%s</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
     <string name="action_close">关闭</string>
@@ -54,15 +54,15 @@
     <string name="label_open_source">开源相关</string>
     <string name="action_share">分享</string>
 
-    <string name="share_text">发现了一个好用的小工具“网速指示器”快去下载吧！https://www.coolapk.com/apk/com.dede.nativetools</string>
+    <string name="share_text">发现了一个好用的小工具“网速指示器”快去下载吧！<xliff:g id="app_store_detail">https://www.coolapk.com/apk/com.dede.nativetools</xliff:g></string>
     <string name="action_beta" translatable="false">Beta</string>
     <string name="action_feedback">反馈</string>
     <string name="email" translatable="false">dede.hu@qq.com</string>
     <string name="url_pgyer" translatable="false">https://www.pgyer.com/U9kJ</string>
     <string name="toast_copyed">已复制</string>
-    <string name="toast_wx_payment_tip">微信付款码请截图后扫描</string>
+    <string name="toast_wx_payment_tip">微信付款码请长按保存图片后扫描</string>
     <string name="label_net_speed_toggle">切换</string>
-    <string name="alert_msg_hide_lock_notification">有时候通知无法隐藏可能是锁屏设置引起的。在设置中找到\'隐藏锁屏通知\"，选择\"仅显示敏感内容\"或\"隐藏所有通知\"。</string>
+    <string name="alert_msg_hide_lock_notification">有时候通知无法隐藏可能是锁屏设置引起的。在设置中找到“隐藏锁屏通知”，选择“仅显示敏感内容”或“隐藏所有通知”。</string>
     <string name="label_general">通用</string>
     <string name="label_notification">通知</string>
     <string name="label_other">其他</string>
@@ -72,7 +72,7 @@
     <string name="tip_easter_egg">彩蛋</string>
     <string name="action_rate">打个分</string>
     <string name="action_donate">捐赠</string>
-    <string name="label_coffee">请我喝一杯咖啡?</string>
+    <string name="label_coffee">请我喝一杯咖啡？</string>
 
     <string-array name="net_speed_interval">
         <item>500 ms</item>
@@ -114,4 +114,5 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string name="toast_saved">已保存</string>
 </resources>

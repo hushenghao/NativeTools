@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
-import android.graphics.Outline
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.*
@@ -13,16 +12,14 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.animation.addListener
-import androidx.core.view.isInvisible
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.DialogFragmentNavigator
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
-import com.dede.nativetools.donate.DonateDialogFragment
 import com.dede.nativetools.util.*
 import kotlin.random.Random
 
@@ -65,9 +62,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.ivGithub.setOnClickListener {
             requireContext().browse(R.string.url_github)
         }
-        binding.tvOpenSource.setOnClickListener {
-            findNavController().navigate(R.id.action_about_to_openSource)
-        }
+        binding.tvOpenSource.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_about_to_openSource))
         binding.ivGithub.enableFeedback = false
 
         val followViews = ArrayList<ImageView>()
@@ -81,11 +76,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             viewModel.addFollowCount()
         }
         binding.ivLogo.clipToOutline = true
-        binding.ivLogo.outlineProvider = object : ViewOutlineProvider() {
-            override fun getOutline(view: View, outline: Outline) {
-                outline.setOval(0, 0, view.width, view.height)
-            }
-        }
+        binding.ivLogo.outlineProvider = ViewOvalOutlineProvider()
         playAnimator()
     }
 
@@ -177,9 +168,8 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 requireContext().emailTo(R.string.email)
             }
             R.id.action_donate -> {
-                findNavController()
-                    .getNavigator<DialogFragmentNavigator>()
-                    .navigate<DonateDialogFragment>()
+                // item.onNavDestinationSelected(findNavController())
+                findNavController().navigate(R.id.action_about_to_dialogDonate)
             }
             else -> return super.onOptionsItemSelected(item)
         }

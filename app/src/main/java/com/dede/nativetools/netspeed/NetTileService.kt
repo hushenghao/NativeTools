@@ -63,7 +63,7 @@ class NetTileService : TileService() {
                 configuration
             )
             icon = Icon.createWithBitmap(bitmap)
-            label = getString(R.string.tile_net_speed_label, downloadSpeedStr, uploadSpeedStr)
+            label = getString(R.string.tile_net_speed_label, uploadSpeedStr, downloadSpeedStr)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 subtitle = getString(R.string.label_net_speed)
             }

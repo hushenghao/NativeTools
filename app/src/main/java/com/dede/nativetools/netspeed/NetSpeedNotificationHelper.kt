@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
+import androidx.navigation.NavDeepLinkBuilder
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
@@ -231,9 +232,11 @@ object NetSpeedNotificationHelper {
         }
 
         if (configuration.notifyClickable) {
-            val pendingIntent = Intent<MainActivity>(context)
-                .newClearTask()
-                .toPendingActivity(context, pendingFlag)
+            val pendingIntent = NavDeepLinkBuilder(context)
+                .setGraph(R.navigation.nav_graph)
+                .setDestination(R.id.netSpeed)
+                .setComponentName(MainActivity::class.java)
+                .createPendingIntent()
             builder.setContentIntent(pendingIntent)
         }
 
