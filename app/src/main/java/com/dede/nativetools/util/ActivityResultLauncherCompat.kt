@@ -1,6 +1,5 @@
 package com.dede.nativetools.util
 
-import android.util.Log
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
@@ -23,10 +22,10 @@ class ActivityResultLauncherCompat<I, O> constructor(
     private val contract: ActivityResultContract<I, O>,
     private val registry: ActivityResultRegistry?,
     private val lifecycleOwner: LifecycleOwner
-) : ActivityResultLauncher<I>(), DefaultLifecycleObserver, ActivityResultCallback<O> {
+) : DefaultLifecycleObserver, ActivityResultCallback<O> {
 
     private var activityResultLauncher: ActivityResultLauncher<I>? = null
-    var activityResultCallback: ActivityResultCallback<O>? = null
+    private var activityResultCallback: ActivityResultCallback<O>? = null
 
     constructor(
         caller: ActivityResultCaller,
@@ -67,26 +66,12 @@ class ActivityResultLauncherCompat<I, O> constructor(
     }
 
     fun launch(input: I, callback: ActivityResultCallback<O>) {
-        activityResultCallback = callback
-        launch(input)
+        launch(input, null, callback)
     }
 
     fun launch(input: I, options: ActivityOptionsCompat?, callback: ActivityResultCallback<O>) {
         activityResultCallback = callback
-        launch(input, options)
-    }
-
-    override fun launch(input: I, options: ActivityOptionsCompat?) {
-        if (activityResultCallback == null) {
-            Log.w("ActivityResultLauncherCompat", "launch: activityResultCallback is null")
-        }
         activityResultLauncher?.launch(input, options)
     }
 
-    override fun unregister() {
-    }
-
-    override fun getContract(): ActivityResultContract<I, *> {
-        return contract
-    }
 }
