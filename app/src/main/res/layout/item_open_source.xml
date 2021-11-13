@@ -3,12 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginTop="12dp"
-    android:background="?attr/selectableItemBackground"
-    app:cardCornerRadius="6dp"
-    app:cardElevation="@dimen/cardview_default_elevation">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,20 +15,21 @@
             android:id="@+id/iv_project_logo"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@android:color/white"
             android:contentDescription="@null"
             android:padding="2dp"
-            android:src="@drawable/inset_kotlin_for_android_hero"
             app:layout_constraintBottom_toBottomOf="@id/tv_project_name"
             app:layout_constraintDimensionRatio="W,1:1"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_project_name" />
+            app:layout_constraintTop_toTopOf="@id/tv_project_name"
+            tools:src="@drawable/inset_kotlin_for_android_hero" />
 
         <TextView
             android:id="@+id/tv_project_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/iv_project_logo"

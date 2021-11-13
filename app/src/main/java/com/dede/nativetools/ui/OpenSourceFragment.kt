@@ -1,5 +1,6 @@
 package com.dede.nativetools.ui
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,22 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = Adapter(loadOpenSource())
+        binding.recyclerView.addItemDecoration(ItemDecoration())
+    }
+
+    private class ItemDecoration : RecyclerView.ItemDecoration() {
+        private val height = 12.dp
+
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            val itemCount = parent.adapter?.itemCount ?: return
+            val position = parent.getChildAdapterPosition(view)
+            outRect.set(height, height, height, if (position >= itemCount - 1) height else 0)
+        }
     }
 
     private class Adapter(val list: List<OpenSource>) : RecyclerView.Adapter<ViewHolder>() {
@@ -41,10 +58,12 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
     }
 
     private class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val binding = ItemOpenSourceBinding.bind(view)
+        private val binding = ItemOpenSourceBinding.bind(view)
+        private val ovalOutlineProvider = ViewOvalOutlineProvider(true)
 
         fun bindViewData(openSource: OpenSource) {
             binding.ivProjectLogo.setImageResource(openSource.logo)
+            binding.ivProjectLogo.outlineProvider = ovalOutlineProvider
             binding.tvProjectName.text = openSource.name
             binding.tvAuthorName.text = openSource.author
             binding.tvProjectDesc.text = openSource.desc
@@ -112,6 +131,13 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
                 "Make work with Android View Binding simpler.",
                 "https://github.com/kirich1409/ViewBindingPropertyDelegate",
                 R.drawable.ic_github_logo
+            ),
+            OpenSource(
+                "Lottie",
+                "airbnb",
+                "Lottie is a mobile library for Android and iOS that parses Adobe After Effects animations exported as json with Bodymovin and renders them natively on mobile!",
+                "https://github.com/airbnb/lottie-android",
+                R.drawable.inset_lottie_logo
             )
         )
     }

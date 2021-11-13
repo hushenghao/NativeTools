@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
-import android.graphics.Outline
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.*
@@ -18,7 +17,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.onNavDestinationSelected
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
@@ -78,11 +76,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             viewModel.addFollowCount()
         }
         binding.ivLogo.clipToOutline = true
-        binding.ivLogo.outlineProvider = object : ViewOutlineProvider() {
-            override fun getOutline(view: View, outline: Outline) {
-                outline.setOval(0, 0, view.width, view.height)
-            }
-        }
+        binding.ivLogo.outlineProvider = ViewOvalOutlineProvider()
         playAnimator()
     }
 

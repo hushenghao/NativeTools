@@ -26,8 +26,6 @@ class MainActivity : AppCompatActivity() {
     private val navController by navController(R.id.nav_host_fragment)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.ThemeOverlay_Shapes_Rounded)
-        setTheme(R.style.ThemeOverlay_ShapeSize_Large)
         super.onCreate(savedInstanceState)
         val isToggle = intent.extra(EXTRA_TOGGLE, false)
         if (isToggle) {

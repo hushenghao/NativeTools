@@ -133,4 +133,6 @@
             app:icon="@drawable/ic_outline_info"
             app:summary="@string/summary_about_version" />
     </PreferenceCategory>
+
+    <com.dede.nativetools.ui.FooterPreference />
 </PreferenceScreen>

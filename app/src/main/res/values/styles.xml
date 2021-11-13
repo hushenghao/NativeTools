@@ -1,7 +1,8 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+<!--    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/appPrimary</item>
         <item name="colorPrimaryDark">@color/appPrimary</item>
@@ -16,6 +17,14 @@
         <item name="android:listPreferredItemPaddingLeft">16dp</item>
 
         <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
+
+        <item name="cornerFamily">rounded</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearanceComponent.LargeCornerSize</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearanceComponent.LargeCornerSize</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearanceComponent.MediumCornerSize</item>
+
+        <item name="materialCardViewStyle">?attr/materialCardViewElevatedStyle</item>
+        <item name="switchStyle">@style/Widget.AppCompat.CompoundButton.Switch</item>
     </style>
 
     <style name="OverflowMenu" parent="Widget.MaterialComponents.PopupMenu.Overflow">
