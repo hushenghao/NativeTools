@@ -4,4 +4,49 @@
     <dimen name="percent_preference_icon_size">40dp</dimen>
 
     <integer name="config_navAnimTime">300</integer>
+
+    <!--  theme_overlays_shape_family  -->
+    <style name="ThemeOverlay.Shapes.Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="ThemeOverlay.Shapes.Cut" parent="">
+        <item name="cornerFamily">cut</item>
+    </style>
+
+    <!--  theme_overlays_shape_size  -->
+    <style name="ThemeOverlay.ShapeSize.Small" parent="">
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearanceComponent.SmallCornerSize</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearanceComponent.SmallCornerSize</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearanceComponent.ExtraSmall</item>
+    </style>
+
+    <style name="ThemeOverlay.ShapeSize.Medium" parent="">
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearanceComponent.MediumCornerSize</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearanceComponent.MediumCornerSize</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearanceComponent.SmallCornerSize</item>
+    </style>
+
+    <style name="ThemeOverlay.ShapeSize.Large" parent="">
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearanceComponent.LargeCornerSize</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearanceComponent.LargeCornerSize</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearanceComponent.MediumCornerSize</item>
+    </style>
+
+    <style name="ShapeAppearanceComponent.ExtraSmall" parent="">
+        <item name="cornerSize">0dp</item>
+    </style>
+
+    <style name="ShapeAppearanceComponent.SmallCornerSize" parent="">
+        <item name="cornerSize">4dp</item>
+    </style>
+
+    <style name="ShapeAppearanceComponent.MediumCornerSize" parent="">
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="ShapeAppearanceComponent.LargeCornerSize" parent="">
+        <item name="cornerSize">16dp</item>
+    </style>
+
 </resources>
