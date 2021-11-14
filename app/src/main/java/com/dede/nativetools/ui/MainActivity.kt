@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration.Builder(R.id.netSpeed, R.id.about)
             .build()
         setupActionBarWithNavController(this, navController, appBarConfiguration)
-        setupWithNavController(binding.bottomNavigation, navController)
+        setupWithNavController(binding.bottomNavigationView, navController)
 
         navController.handleDeepLink(intent)
     }
