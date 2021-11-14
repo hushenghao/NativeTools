@@ -3,6 +3,8 @@ package com.dede.nativetools.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -40,10 +42,18 @@ class MainActivity : AppCompatActivity() {
         setNightMode(NetSpeedPreferences.isNightMode)
         setSupportActionBar(binding.toolbar)
 
-        val appBarConfiguration = AppBarConfiguration.Builder(R.id.netSpeed, R.id.other, R.id.about)
+        val topLevelDestinationIds = intArrayOf(R.id.netSpeed, R.id.other, R.id.about)
+        val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds)
             .build()
         setupActionBarWithNavController(this, navController, appBarConfiguration)
         setupWithNavController(binding.bottomNavigationView, navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (topLevelDestinationIds.contains(destination.id)) {
+                binding.bottomNavigationView.isVisible = true
+            } else {
+                binding.bottomNavigationView.isGone = true
+            }
+        }
 
         navController.handleDeepLink(intent)
     }
