@@ -125,14 +125,14 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
                 "tiann",
                 "FreeReflection is a library that lets you use reflection without any restriction above Android P (includes Q and R).",
                 "https://github.com/tiann/FreeReflection",
-                R.drawable.layer_logo_github
+                R.drawable.ic_logo_github
             ),
             OpenSource(
                 "ViewBindingPropertyDelegate",
                 "kirich1409",
                 "Make work with Android View Binding simpler.",
                 "https://github.com/kirich1409/ViewBindingPropertyDelegate",
-                R.drawable.layer_logo_github
+                R.drawable.ic_logo_github
             ),
             OpenSource(
                 "Lottie",

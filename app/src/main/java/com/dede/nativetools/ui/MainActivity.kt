@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         setNightMode(NetSpeedPreferences.isNightMode)
         setSupportActionBar(binding.toolbar)
 
-        val appBarConfiguration = AppBarConfiguration.Builder(R.id.netSpeed, R.id.about)
+        val appBarConfiguration = AppBarConfiguration.Builder(R.id.netSpeed, R.id.other, R.id.about)
             .build()
         setupActionBarWithNavController(this, navController, appBarConfiguration)
         setupWithNavController(binding.bottomNavigationView, navController)

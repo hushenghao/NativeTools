@@ -15,8 +15,9 @@ import androidx.preference.SwitchPreferenceCompat
 class CustomWidgetLayoutSwitchPreference @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.switchPreferenceCompatStyle
-) : SwitchPreferenceCompat(context, attrs, defStyleAttr) {
+    defStyleAttr: Int = R.attr.switchPreferenceCompatStyle,
+    defStyleRes: Int = 0
+) : SwitchPreferenceCompat(context, attrs, defStyleAttr, defStyleRes) {
 
     var bindCustomWidget: ((holder: PreferenceViewHolder) -> Unit)? = null
 
