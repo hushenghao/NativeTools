@@ -33,7 +33,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         // 88.8M 93113549L
         private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
 
-        private const val KEY_ABOUT = "about"
         private const val KEY_IGNORE_BATTERY_OPTIMIZE = "ignore_battery_optimize"
     }
 
@@ -95,13 +94,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun initOtherPreferenceGroup() {
-        requirePreference<Preference>(KEY_ABOUT).also {
-            it.summary = requireContext().getVersionSummary()
-
-            it.onPreferenceClickListener {
-                findNavController().navigate(R.id.action_netSpeed_to_about)
-            }
-        }
         requirePreference<Preference>(KEY_IGNORE_BATTERY_OPTIMIZE).also {
             val context = requireContext()
             val packageName = context.packageName

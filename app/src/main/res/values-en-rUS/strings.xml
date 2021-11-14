@@ -71,4 +71,5 @@
     <string name="label_ignore_battery_optimize">Ignore battery optimization</string>
     <string name="summary_ignore_battery_optimize">Add battery optimization whitelist to prevent foreground service failure (for some devices)</string>
     <string name="toast_saved">Saved</string>
+    <string name="label_home">Home</string>
 </resources>

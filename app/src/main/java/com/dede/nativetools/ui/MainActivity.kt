@@ -3,7 +3,9 @@ package com.dede.nativetools.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import androidx.navigation.ui.NavigationUI.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
@@ -37,7 +39,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setNightMode(NetSpeedPreferences.isNightMode)
         setSupportActionBar(binding.toolbar)
-        setupActionBarWithNavController(this, navController)
+
+        val appBarConfiguration = AppBarConfiguration.Builder(R.id.netSpeed, R.id.about)
+            .build()
+        setupActionBarWithNavController(this, navController, appBarConfiguration)
+        setupWithNavController(binding.bottomNavigation, navController)
 
         navController.handleDeepLink(intent)
     }

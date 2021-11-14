@@ -126,12 +126,6 @@
             app:summaryOn="@string/switch_on"
             app:title="@string/label_night_mode" />
 
-        <Preference
-            android:fragment="com.dede.nativetools.about.AboutFragment"
-            android:key="about"
-            android:title="@string/label_about"
-            app:icon="@drawable/ic_outline_info"
-            app:summary="@string/summary_about_version" />
     </PreferenceCategory>
 
     <com.dede.nativetools.ui.FooterPreference />

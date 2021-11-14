@@ -99,7 +99,6 @@ configurations.all {
     exclude("androidx.slidingpanelayout", "slidingpanelayout")
     exclude("androidx.swiperefreshlayout", "swiperefreshlayout")
     exclude("androidx.asynclayoutinflater", "asynclayoutinflater")
-    exclude("androidx.transition", "transition")
     exclude("androidx.dynamicanimation", "dynamicanimation")
     exclude("androidx.versionedparcelable", "versionedparcelable")
     exclude("androidx.localbroadcastmanager", "localbroadcastmanager")

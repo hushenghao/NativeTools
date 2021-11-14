@@ -3,9 +3,8 @@ package com.dede.nativetools.donate
 import android.Manifest
 import android.app.Dialog
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,7 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
-import androidx.core.view.ViewCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
@@ -25,7 +24,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlin.math.roundToInt
 
 /**
  * 捐赠页
@@ -55,16 +53,6 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
         }
         binding.ivWxpay.setOnLongClickListener(createOnLongClickSaveQrCodeListener(R.drawable.wx_payment_code))
         binding.ivAlipay.setOnLongClickListener(createOnLongClickSaveQrCodeListener(R.drawable.alipay_payment_code))
-
-        binding.ivWxpay.run {
-            post {
-                val padding = (1.5f / 51.5f * width).roundToInt()
-                ViewCompat.setPaddingRelative(this, padding, padding, padding, padding)
-                background = GradientDrawable().apply {
-                    setStroke(padding, Color.WHITE)
-                }
-            }
-        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -110,8 +98,11 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
 
     private suspend fun saveToAlbum(context: Context, @DrawableRes resId: Int): Uri? =
         withContext(Dispatchers.IO) {
-            val bitmap =
-                BitmapFactory.decodeResource(context.resources, resId) ?: return@withContext null
+            val drawable = ContextCompat.getDrawable(context, resId) ?: return@withContext null
+            val bitmap = Bitmap.createBitmap(400, 400, Bitmap.Config.RGB_565)
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, bitmap.width, bitmap.height)
+            drawable.draw(canvas)
             bitmap.saveToAlbum(requireContext(), "QrCode_${resId}.jpeg", "Net Monitor")
         }
 

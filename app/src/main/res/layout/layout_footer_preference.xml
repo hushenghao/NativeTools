@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="86dp"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="-32dp"
+        android:layout_marginBottom="-32.5dp"
         lottie:lottie_autoPlay="true"
         lottie:lottie_loop="false"
         lottie:lottie_url="https://assets4.lottiefiles.com/packages/lf20_enkk4mul.json" />

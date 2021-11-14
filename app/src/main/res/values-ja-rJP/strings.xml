@@ -72,4 +72,5 @@
     </string-array>
     <string name="label_notification">通知</string>
     <string name="toast_saved">保存済み</string>
+    <string name="label_home">トップページ</string>
 </resources>

@@ -115,4 +115,5 @@
         <item>3</item>
     </string-array>
     <string name="toast_saved">已保存</string>
+    <string name="label_home">首页</string>
 </resources>
