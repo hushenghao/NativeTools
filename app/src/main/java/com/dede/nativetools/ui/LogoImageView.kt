@@ -123,9 +123,9 @@ class LogoImageView @JvmOverloads constructor(
                     // fix background
                     isPressed = false
                 }
-                this.x += dx
-                this.y += dy
                 if (moved) {
+                    this.x += dx
+                    this.y += dy
                     performHapticFeedback(
                         HapticFeedbackConstants.CLOCK_TICK,
                         HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
@@ -137,6 +137,7 @@ class LogoImageView @JvmOverloads constructor(
                 upPoint.set(this.x, this.y)
                 startUpAnimator(upPoint, layoutPoint)
                 if (moved) {
+                    moved = false
                     playSoundEffect(SoundEffectConstants.CLICK)
                     return false
                 }

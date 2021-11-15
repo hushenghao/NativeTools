@@ -12,6 +12,7 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.animation.addListener
+import androidx.core.view.isInvisible
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -74,10 +75,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.ivLogo.dragEnable = false
         binding.ivLogo.setOnClickListener {
             viewModel.addFollowCount()
+            playAnimator(true)
         }
         binding.ivLogo.clipToOutline = true
         binding.ivLogo.outlineProvider = ViewOvalOutlineProvider()
-        playAnimator()
+        playAnimator(false)
     }
 
     private fun appendFollowView(
@@ -89,7 +91,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         if (count >= MAX_FOLLOW_COUNT) {
             if (!toasted) {
                 toast("BZZZTT!!1!💥")
-                playAnimator()
                 toasted = true
             }
             return
@@ -120,11 +121,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             }
             binding.ivLogo.dragEnable = true
         }
-        if (count >= ENABLE_FOLLOW_COUNT) {
-            binding.ivLogo.setTintColor(colorIds[Random.nextInt(colorIds.size)])
-        }
-
-        playAnimator()
     }
 
     private fun ImageView.setTintColor(@ColorRes colorId: Int) {
@@ -133,7 +129,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         ImageViewCompat.setImageTintMode(this, PorterDuff.Mode.ADD)
     }
 
-    private fun playAnimator() {
+    private fun playAnimator(feedback: Boolean) {
         binding.ivLogo.clearAnimation()
         lifecycleAnimator(binding.ivLogo, ScaleProperty(), 1f, 1.3f, 0.7f)
             .apply {
@@ -141,14 +137,16 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 startDelay = 300
                 repeatMode = ValueAnimator.REVERSE
                 repeatCount = 1
-                val feedback: (Animator) -> Unit = {
-                    // BZZZTT!!1!
-                    binding.ivLogo.performHapticFeedback(
-                        HapticFeedbackConstants.CONTEXT_CLICK,
-                        HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
-                    )
+                if (feedback) {
+                    val feedbackCallback: (Animator) -> Unit = {
+                        // BZZZTT!!1!
+                        binding.ivLogo.performHapticFeedback(
+                            HapticFeedbackConstants.CONTEXT_CLICK,
+                            HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                        )
+                    }
+                    addListener(onStart = feedbackCallback, onRepeat = feedbackCallback)
                 }
-                addListener(onStart = feedback, onRepeat = feedback)
                 start()
             }
     }
