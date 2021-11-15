@@ -3,8 +3,6 @@ package com.dede.nativetools.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -49,9 +47,13 @@ class MainActivity : AppCompatActivity() {
         setupWithNavController(binding.bottomNavigationView, navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (topLevelDestinationIds.contains(destination.id)) {
-                binding.bottomNavigationView.isVisible = true
+                if (binding.motionLayout.progress != 0f) {
+                    binding.motionLayout.transitionToStart()
+                }
             } else {
-                binding.bottomNavigationView.isGone = true
+                if (binding.motionLayout.progress != 100f) {
+                    binding.motionLayout.transitionToEnd()
+                }
             }
         }
 
