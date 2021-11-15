@@ -7,7 +7,7 @@
         app:key="key_other"
         app:title="@string/label_other">
 
-        <Preference
+        <SwitchPreferenceCompat
             app:icon="@drawable/ic_baseline_remove_circle_24"
             app:key="ignore_battery_optimize"
             app:summary="@string/summary_ignore_battery_optimize"

@@ -72,4 +72,5 @@
     <string name="summary_ignore_battery_optimize">Add battery optimization whitelist to prevent foreground service failure (for some devices)</string>
     <string name="toast_saved">Saved</string>
     <string name="label_home">Home</string>
+    <string name="toast_close_battery_optimization">Find the \"Network speed Indicator\" and turn it off manually</string>
 </resources>

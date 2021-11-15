@@ -1,7 +1,6 @@
 package com.dede.nativetools.other
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.PowerManager
@@ -10,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.util.*
@@ -25,6 +25,8 @@ class OtherFragment : PreferenceFragmentCompat(),
     private val activityResultLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
 
+    private lateinit var preferenceIgnoreBatteryOptimize: SwitchPreferenceCompat
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.other_preference)
         initOtherPreferenceGroup()
@@ -35,40 +37,48 @@ class OtherFragment : PreferenceFragmentCompat(),
             it.summary = requireContext().getVersionSummary()
 
             it.onPreferenceClickListener {
-                findNavController().navigate(R.id.about)
+                findNavController().navigate(R.id.action_other_to_about)
             }
         }
 
-        requirePreference<Preference>(KEY_IGNORE_BATTERY_OPTIMIZE).also {
-            val context = requireContext()
-            val packageName = context.packageName
-
-            fun setVisible() {
-                val powerManager = context.requireSystemService<PowerManager>()
-                it.isVisible = !powerManager.isIgnoringBatteryOptimizations(packageName)
-            }
-
-            setVisible()
-
-            if (!it.isVisible) return@also
-
-            it.onPreferenceClickListener {
-                @SuppressLint("BatteryLife")
-                val intent = Intent(
-                    Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, "package:$packageName"
-                )
-                activityResultLauncherCompat.launch(intent) { result ->
-                    if (result.resultCode == Activity.RESULT_OK) {
-                        setVisible()
+        preferenceIgnoreBatteryOptimize =
+            requirePreference<SwitchPreferenceCompat>(KEY_IGNORE_BATTERY_OPTIMIZE).apply {
+                setOnPreferenceChangeListener { _, newValue ->
+                    val ignoreBatteryOptimization = newValue as Boolean
+                    if (ignoreBatteryOptimization) {
+                        @SuppressLint("BatteryLife")
+                        val intent = Intent(
+                            Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                            "package:${requireContext().packageName}"
+                        )
+                        activityResultLauncherCompat.launch(intent) { result ->
+                            //if (result.resultCode == Activity.RESULT_OK) {
+                            checkIgnoreBatteryOptimize()
+                            //}
+                        }
+                    } else {
+                        val intent =
+                            Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+                        startActivity(intent)
+                        toast(getString(R.string.toast_close_battery_optimization))
                     }
+                    return@setOnPreferenceChangeListener true
                 }
             }
-        }
+    }
+
+    private fun checkIgnoreBatteryOptimize() {
+        val context = requireContext()
+        val powerManager = context.requireSystemService<PowerManager>()
+        preferenceIgnoreBatteryOptimize.isChecked =
+            powerManager.isIgnoringBatteryOptimizations(context.packageName)
     }
 
     override fun onStart() {
         super.onStart()
         globalPreferences.registerOnSharedPreferenceChangeListener(this)
+
+        checkIgnoreBatteryOptimize()
     }
 
     override fun onStop() {

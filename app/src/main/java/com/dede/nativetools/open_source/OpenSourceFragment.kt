@@ -1,4 +1,4 @@
-package com.dede.nativetools.ui
+package com.dede.nativetools.open_source
 
 import android.graphics.Rect
 import android.os.Bundle

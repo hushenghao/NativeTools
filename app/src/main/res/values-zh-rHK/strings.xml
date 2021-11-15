@@ -73,4 +73,5 @@
     <string name="tip_easter_egg">彩蛋</string>
     <string name="toast_saved">已保存</string>
     <string name="label_home">首頁</string>
+    <string name="toast_close_battery_optimization">請找到“網速指示器”，並手動關閉</string>
 </resources>
