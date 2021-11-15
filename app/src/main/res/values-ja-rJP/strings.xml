@@ -73,5 +73,5 @@
     <string name="label_notification">通知</string>
     <string name="toast_saved">保存済み</string>
     <string name="label_home">トップページ</string>
-    <string name="toast_close_battery_optimization">「网速指示器」を見つけて、手動で消してください</string>
+    <string name="toast_open_battery_optimization">「网速指示器」を見つけて、手動でバッテリーを開けて最適化してください</string>
 </resources>

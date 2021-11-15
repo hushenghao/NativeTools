@@ -87,5 +87,5 @@
     </string-array>
     <string name="toast_saved">已保存</string>
     <string name="label_home">首页</string>
-    <string name="toast_close_battery_optimization">请找到“网速指示器”，并手动关闭</string>
+    <string name="toast_open_battery_optimization">请找到“网速指示器”，并手动开启电池优化</string>
 </resources>

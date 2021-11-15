@@ -60,7 +60,7 @@ class OtherFragment : PreferenceFragmentCompat(),
                         val intent =
                             Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
                         startActivity(intent)
-                        toast(getString(R.string.toast_close_battery_optimization))
+                        toast(getString(R.string.toast_open_battery_optimization))
                     }
                     return@setOnPreferenceChangeListener true
                 }
