@@ -3,6 +3,7 @@ package com.dede.nativetools.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -46,6 +47,9 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(this, navController, appBarConfiguration)
         setupWithNavController(binding.bottomNavigationView, navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination is DialogFragmentNavigator.Destination) {
+                return@addOnDestinationChangedListener
+            }
             if (topLevelDestinationIds.contains(destination.id)) {
                 if (binding.motionLayout.progress != 0f) {
                     binding.motionLayout.transitionToStart()
