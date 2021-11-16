@@ -13,6 +13,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.animation.addListener
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -98,8 +99,9 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         val insert = if (count == 0) template else {
             AppCompatImageView(requireContext()).apply {
                 setImageResource(R.mipmap.ic_launcher_round)
+                isInvisible = true
                 layoutParams = LayoutParams(template.layoutParams as LayoutParams)
-                binding.container.addView(this, binding.container.indexOfChild(template) + 1)
+                binding.container.addView(this, binding.container.indexOfChild(template))
             }
         }
         followViews.add(insert)
@@ -131,7 +133,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     private fun playAnimator(feedback: Boolean) {
         binding.ivLogo.clearAnimation()
-        lifecycleAnimator(binding.ivLogo, ScaleProperty(), 1f, 1.3f, 0.7f)
+        lifecycleAnimator(binding.ivLogo, ScaleProperty(), 1f, 1.3f, 0.9f)
             .apply {
                 duration = 200
                 startDelay = 300

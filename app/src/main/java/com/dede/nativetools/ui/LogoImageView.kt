@@ -21,6 +21,9 @@ import com.dede.nativetools.util.YProperty
 import kotlin.math.abs
 import kotlin.math.max
 
+/**
+ * Egg LogoImageView
+ */
 class LogoImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -96,7 +99,8 @@ class LogoImageView @JvmOverloads constructor(
         super.layout(l, t, r, b)
         layoutPoint.set(this.x, this.y)
         savedElevation = ViewCompat.getElevation(this)
-        maxElevation = max(rootView.allViews.maxOf(ViewCompat::getElevation) + 3, savedElevation)
+        maxElevation =
+            max((parent as ViewGroup).allViews.maxOf(ViewCompat::getElevation) + 3, savedElevation)
         prepareFollowViews(followViews)
     }
 
@@ -130,16 +134,16 @@ class LogoImageView @JvmOverloads constructor(
                         HapticFeedbackConstants.CLOCK_TICK,
                         HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
                     )
+                    return true
                 }
-                return true
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                upPoint.set(this.x, this.y)
-                startUpAnimator(upPoint, layoutPoint)
                 if (moved) {
+                    upPoint.set(this.x, this.y)
+                    startUpAnimator(upPoint, layoutPoint)
                     moved = false
                     playSoundEffect(SoundEffectConstants.CLICK)
-                    return false
+                    return true
                 }
             }
         }
