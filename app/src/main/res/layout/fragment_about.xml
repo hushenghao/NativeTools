@@ -68,7 +68,7 @@
         app:layout_constraintBottom_toTopOf="@id/tv_open_source"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:tint="@color/github_tint" />
+        app:tint="@color/githubTint" />
 
     <TextView
         android:id="@+id/tv_open_source"

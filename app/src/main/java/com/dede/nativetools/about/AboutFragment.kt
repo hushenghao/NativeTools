@@ -39,8 +39,8 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private val viewModel by viewModels<AboutViewModel>()
     private var toasted = false
     private val colorIds: IntArray = intArrayOf(
-        R.color.appAccent,
-        R.color.appPrimary,
+        R.color.secondaryColor,
+        R.color.primaryColor,
         android.R.color.black,
         android.R.color.holo_red_light,
         android.R.color.holo_blue_light,

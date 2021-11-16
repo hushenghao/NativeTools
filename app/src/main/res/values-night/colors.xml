@@ -1,10 +1,13 @@
 <resources>
-
-    <color name="appPrimary">#004d40</color>
-    <color name="appAccent">#a00037</color>
-
-<!--    <color name="appPrimary">#121212</color>-->
-<!--    <color name="appAccent">#D81B60</color>-->
     <color name="maskBgColor">#353535</color>
-    <color name="github_tint">#F0F6FC</color>
+    <color name="githubTint">#F0F6FC</color>
+
+    <color name="primaryColor">#212121</color>
+    <color name="primaryLightColor">#484848</color>
+    <color name="primaryDarkColor">#000000</color>
+    <color name="secondaryColor">#d81b60</color>
+    <color name="secondaryLightColor">#ff5c8d</color>
+    <color name="secondaryDarkColor">#a00037</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
 </resources>

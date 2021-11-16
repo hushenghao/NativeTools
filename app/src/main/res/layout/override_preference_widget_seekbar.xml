@@ -126,8 +126,8 @@
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_below="@android:id/summary"
-            android:layout_marginTop="-4dp"
             android:layout_marginHorizontal="-8dp"
+            android:layout_marginTop="-4dp"
             android:clipChildren="false"
             android:clipToPadding="false">
 
@@ -137,10 +137,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 app:labelBehavior="floating"
-                app:thumbColor="@color/appAccent"
+                app:thumbColor="?attr/colorSecondary"
+                app:labelStyle="@style/ToolTipStyle"
                 app:thumbRadius="8dp"
                 app:tickVisible="false"
-                app:trackColorActive="@color/appAccent"
+                app:trackColorActive="?attr/colorSecondary"
                 app:trackHeight="2dp" />
         </FrameLayout>
 
