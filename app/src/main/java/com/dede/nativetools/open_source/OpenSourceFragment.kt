@@ -63,7 +63,7 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
     }
 
     private class ItemDecoration : RecyclerView.ItemDecoration() {
-        private val height = 12.dp
+        private val offset = 12.dp
 
         override fun getItemOffsets(
             outRect: Rect,
@@ -71,9 +71,8 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
             parent: RecyclerView,
             state: RecyclerView.State
         ) {
-            val itemCount = parent.adapter?.itemCount ?: return
             val position = parent.getChildAdapterPosition(view)
-            outRect.set(height, height, height, if (position >= itemCount - 1) height else 0)
+            outRect.set(offset, if (position == 0) offset else 0, offset, offset)
         }
     }
 

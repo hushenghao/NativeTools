@@ -32,7 +32,7 @@
     </style>
 
     <style name="ToolTipStyle" parent="Widget.Material3.Tooltip">
-        <item name="backgroundTint">@color/secondaryDarkColor</item>
+        <item name="backgroundTint">@color/secondaryColor</item>
         <item name="android:textColor">@color/primaryTextColor</item>
     </style>
 
