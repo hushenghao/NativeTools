@@ -23,6 +23,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
 import com.dede.nativetools.util.*
+import com.google.android.material.transition.MaterialFadeThrough
 import kotlin.random.Random
 
 /**
@@ -58,8 +59,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         setHasOptionsMenu(true)
     }
 
+    private val materialFadeThrough = MaterialFadeThrough()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        enterTransition = materialFadeThrough.addTarget(view)
         binding.tvVersion.text = requireContext().getVersionSummary()
         binding.ivGithub.setOnClickListener {
             requireContext().browse(R.string.url_github)
@@ -185,7 +189,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     }
 
     override fun onDestroyView() {
-//        exitTransition = null
+        materialFadeThrough.removeTarget(requireView())
         super.onDestroyView()
     }
 

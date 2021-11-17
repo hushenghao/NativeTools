@@ -6,16 +6,21 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
 import android.provider.Settings
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.ui.SliderPreference
 import com.dede.nativetools.util.*
+import com.google.android.material.transition.MaterialFadeThrough
 
 /**
  * 网速指示器设置页
@@ -58,6 +63,13 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         checkNotificationEnable()
 
         requireContext().registerReceiver(closeReceiver, IntentFilter(NetSpeedService.ACTION_CLOSE))
+    }
+
+    private val materialFadeThrough = MaterialFadeThrough()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        enterTransition = materialFadeThrough.addTarget(view)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -177,6 +189,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmap.toDrawable(resources))
         scaleSliderPreference.setRightIcon(drawable)
     }
+
+    override fun onDestroyView() {
+        materialFadeThrough.removeTarget(requireView())
+        super.onDestroyView()
+    }
+
 
     override fun onDestroy() {
         requireContext().unregisterReceiver(closeReceiver)

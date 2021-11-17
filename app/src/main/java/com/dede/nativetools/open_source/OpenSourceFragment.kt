@@ -51,7 +51,7 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
             )
             setAllContainerColors(surface)
             this.drawingViewId = drawingViewId
-            fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
+            fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
         }
     }
 
