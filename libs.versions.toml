@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.5.31"
+kotlin = "1.6.0"
 
 [libraries]
 android-gradle = "com.android.tools.build:gradle:7.0.3"

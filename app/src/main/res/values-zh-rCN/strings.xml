@@ -48,7 +48,7 @@
     <string name="action_share">分享</string>
 
     <string name="share_text">发现了一个好用的小工具“网速指示器”快去下载吧！<xliff:g id="app_store_detail">https://www.coolapk.com/apk/com.dede.nativetools</xliff:g></string>
-    <string name="action_feedback">反馈</string>
+    <string name="action_feedback">问题反馈</string>
     <string name="toast_copyed">已复制</string>
     <string name="toast_wx_payment_tip">微信付款码请长按保存图片后扫描</string>
     <string name="label_net_speed_toggle">切换</string>
@@ -60,7 +60,7 @@
     <string name="summary_net_speed_hide_notification">通过替换默认通知样式来隐藏通知（可能不支持所有设备）</string>
     <string name="i_know">我知道了</string>
     <string name="tip_easter_egg">彩蛋</string>
-    <string name="action_rate">打个分</string>
+    <string name="action_rate">给个好评</string>
     <string name="action_donate">捐赠</string>
     <string name="label_coffee">请我喝一杯咖啡？</string>
 
