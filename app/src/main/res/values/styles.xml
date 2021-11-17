@@ -17,6 +17,7 @@
         <item name="colorOnSecondary">@color/primaryColor</item>
 
         <item name="colorContainer">@color/primaryLightColor</item>
+        <item name="colorPrimaryContainer">@color/primaryLightColor</item>
         <item name="colorSecondaryContainer">@color/secondaryLightColor</item>
 
         <!-- Panel attributes -->
@@ -27,7 +28,7 @@
         <item name="android:listPreferredItemPaddingLeft">16dp</item>
 
         <item name="materialCardViewStyle">?attr/materialCardViewElevatedStyle</item>
-        <item name="switchStyle">@style/Widget.AppCompat.CompoundButton.Switch</item>
+        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     </style>
 
     <style name="ToolTipStyle" parent="Widget.Material3.Tooltip">
