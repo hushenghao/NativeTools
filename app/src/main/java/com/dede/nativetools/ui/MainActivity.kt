@@ -50,11 +50,16 @@ class MainActivity : AppCompatActivity() {
             if (destination is DialogFragmentNavigator.Destination) {
                 return@addOnDestinationChangedListener
             }
+//            val materialFade = MaterialFade()
+//            materialFade.addTarget(binding.bottomNavigationView)
+//            TransitionManager.beginDelayedTransition(binding.motionLayout, materialFade)
             if (topLevelDestinationIds.contains(destination.id)) {
+//                binding.bottomNavigationView.isVisible = true
                 if (binding.motionLayout.progress != 0f) {
                     binding.motionLayout.transitionToStart()
                 }
             } else {
+//                binding.bottomNavigationView.isGone = true
                 if (binding.motionLayout.progress != 100f) {
                     binding.motionLayout.transitionToEnd()
                 }

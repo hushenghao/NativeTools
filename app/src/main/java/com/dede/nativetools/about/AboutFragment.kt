@@ -12,11 +12,12 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.animation.addListener
+import androidx.core.view.ViewCompat
 import androidx.core.view.isInvisible
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
@@ -63,7 +64,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.ivGithub.setOnClickListener {
             requireContext().browse(R.string.url_github)
         }
-        binding.tvOpenSource.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_about_to_openSource))
+        ViewCompat.setTransitionName(binding.tvOpenSource, "open_source")
+        binding.tvOpenSource.setOnClickListener {
+            val extras = FragmentNavigatorExtras(it to "open_source")
+            findNavController().navigate(R.id.openSource, null, null, extras)
+        }
         binding.ivGithub.enableFeedback = false
 
         val followViews = ArrayList<ImageView>()
@@ -100,7 +105,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 setImageResource(R.mipmap.ic_launcher_round)
                 isInvisible = true
                 layoutParams = LayoutParams(template.layoutParams as LayoutParams)
-                binding.container.addView(this, binding.container.indexOfChild(template))
+                binding.rootAbout.addView(this, binding.rootAbout.indexOfChild(template))
             }
         }
         followViews.add(insert)
@@ -177,6 +182,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_about, menu)
+    }
+
+    override fun onDestroyView() {
+//        exitTransition = null
+        super.onDestroyView()
     }
 
 }
