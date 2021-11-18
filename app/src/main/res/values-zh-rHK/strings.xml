@@ -74,4 +74,6 @@
     <string name="toast_saved">已保存</string>
     <string name="label_home">首頁</string>
     <string name="toast_open_battery_optimization">請找到“網速指示器”，並手動關閉</string>
+    <string name="action_open_link">查看</string>
+    <string name="action_copy_link">複製連結</string>
 </resources>

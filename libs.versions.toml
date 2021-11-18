@@ -17,6 +17,8 @@ androidx-lifecycle-viewmodel-ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2
 androidx-preference-ktx = "androidx.preference:preference-ktx:1.1.1"
 androidx-navigation-ui-ktx = "androidx.navigation:navigation-ui-ktx:2.3.5"
 androidx-navigation-fragment-ktx = "androidx.navigation:navigation-fragment-ktx:2.3.5"
+androidx-browser = "androidx.browser:browser:1.4.0"
+google-browserhelper = "com.google.androidbrowserhelper:androidbrowserhelper:2.3.0"
 google-material = "com.google.android.material:material:1.5.0-beta01"
 
 airbnb-lottie = "com.airbnb.android:lottie:4.2.1"
