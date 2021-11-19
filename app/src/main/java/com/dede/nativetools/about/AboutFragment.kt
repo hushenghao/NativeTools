@@ -141,24 +141,23 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     private fun playAnimator(feedback: Boolean) {
         binding.ivLogo.clearAnimation()
-        lifecycleAnimator(binding.ivLogo, ScaleProperty(), 1f, 1.3f, 0.9f)
-            .apply {
-                duration = 200
-                startDelay = 300
-                repeatMode = ValueAnimator.REVERSE
-                repeatCount = 1
-                if (feedback) {
-                    val feedbackCallback: (Animator) -> Unit = {
-                        // BZZZTT!!1!
-                        binding.ivLogo.performHapticFeedback(
-                            HapticFeedbackConstants.CONTEXT_CLICK,
-                            HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
-                        )
-                    }
-                    addListener(onStart = feedbackCallback, onRepeat = feedbackCallback)
+        lifecycleAnimator(binding.ivLogo, ScaleProperty(), 1f, 1.3f, 0.9f) {
+            duration = 200
+            startDelay = 300
+            repeatMode = ValueAnimator.REVERSE
+            repeatCount = 1
+            if (feedback) {
+                val feedbackCallback: (Animator) -> Unit = {
+                    // BZZZTT!!1!
+                    binding.ivLogo.performHapticFeedback(
+                        HapticFeedbackConstants.CONTEXT_CLICK,
+                        HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                    )
                 }
-                start()
+                addListener(onStart = feedbackCallback, onRepeat = feedbackCallback)
             }
+            start()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
