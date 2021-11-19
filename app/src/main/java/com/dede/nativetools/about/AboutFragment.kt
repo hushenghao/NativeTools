@@ -5,6 +5,7 @@ import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -53,6 +54,13 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         com.google.android.material.R.color.material_blue_grey_950,
         com.google.android.material.R.color.material_grey_900,
     )
+
+    init {
+        ChromeTabsBrowser.warmup(
+            globalContext,
+            Uri.parse(globalContext.getString(R.string.url_github))
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

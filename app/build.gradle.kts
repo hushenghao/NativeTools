@@ -83,7 +83,6 @@ dependencies {
     implementation(deps.bundles.androidx.navigation)
     implementation(deps.google.material)
     implementation(deps.androidx.browser)
-    implementation(deps.google.browserhelper)
 
     implementation(deps.free.reflection)
     implementation(deps.airbnb.lottie)

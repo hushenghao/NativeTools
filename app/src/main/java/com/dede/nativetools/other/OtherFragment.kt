@@ -5,15 +5,12 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
-import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.util.*

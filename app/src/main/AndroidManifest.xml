@@ -23,9 +23,6 @@
             <action android:name="android.settings.USAGE_ACCESS_SETTINGS" />
             <data android:scheme="package" />
         </intent>
-        <intent>
-            <action android:name="android.support.customtabs.action.CustomTabsService" />
-        </intent>
     </queries>
 
     <application

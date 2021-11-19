@@ -12,17 +12,11 @@ import android.os.Build
 import android.os.Process
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.browser.customtabs.*
-import androidx.browser.trusted.TrustedWebActivityIntent
-import androidx.browser.trusted.TrustedWebActivityIntentBuilder
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
-import androidx.lifecycle.*
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
-import com.google.androidbrowserhelper.trusted.TwaLauncher
 import java.io.InputStream
 import kotlin.properties.ReadOnlyProperty
 
@@ -81,30 +75,7 @@ fun Context.toast(@StringRes resId: Int) {
 }
 
 fun Context.browse(url: String) {
-    val twaLauncher = TwaLauncher(this)
-    (this@browse as LifecycleOwner).lifecycle.addObserver(object : DefaultLifecycleObserver {
-        override fun onDestroy(owner: LifecycleOwner) {
-            // release
-            twaLauncher.destroy()
-        }
-    })
-    val colorScheme =
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
-            CustomTabsIntent.COLOR_SCHEME_DARK else CustomTabsIntent.COLOR_SCHEME_LIGHT
-    val params = CustomTabColorSchemeParams.Builder()
-        .setToolbarColor(getColor(R.color.primaryColor))
-        .build()
-    val twaBuilder = object : TrustedWebActivityIntentBuilder(Uri.parse(url)) {
-        override fun build(session: CustomTabsSession): TrustedWebActivityIntent {
-            return super.build(session).apply {
-                // untrusted
-                intent.removeExtra(TrustedWebUtils.EXTRA_LAUNCH_AS_TRUSTED_WEB_ACTIVITY)
-            }
-        }
-    }
-        .setColorScheme(colorScheme)
-        .setDefaultColorSchemeParams(params)
-    twaLauncher.launch(twaBuilder, null, null, null)
+    ChromeTabsBrowser.launchUrl(this, Uri.parse(url))
 }
 
 fun Context.browse(@StringRes urlId: Int) {
