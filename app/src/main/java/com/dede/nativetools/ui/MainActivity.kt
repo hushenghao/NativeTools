@@ -54,10 +54,9 @@ class MainActivity : AppCompatActivity() {
         setupWithNavController(binding.bottomNavigationView, navController)
         binding.bottomNavigationView.setOnItemSelectedListener {
             if (it.itemId == navController.currentDestination?.id) {
-                return@setOnItemSelectedListener true
+                return@setOnItemSelectedListener false
             }
-            NavigationUI.onNavDestinationSelected(it, navController)
-            return@setOnItemSelectedListener true
+            return@setOnItemSelectedListener NavigationUI.onNavDestinationSelected(it, navController)
         }
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination is DialogFragmentNavigator.Destination) {
