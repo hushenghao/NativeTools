@@ -3,7 +3,7 @@ package com.dede.nativetools.donate
 import android.Manifest
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
-import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
@@ -30,12 +30,12 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
     private val binding by viewBinding(DialogFragmentDonateBinding::bind)
 
     private val activityResultLauncherCompat =
-            ActivityResultLauncherCompat(this, ActivityResultContracts.RequestMultiplePermissions())
+        ActivityResultLauncherCompat(this, ActivityResultContracts.RequestMultiplePermissions())
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.dialog_fragment_donate, container, false)
     }
@@ -66,8 +66,8 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
         return View.OnLongClickListener {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                 val permissions = arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
                 if (!checkPermissions(*permissions)) {
                     activityResultLauncherCompat.launch(permissions) {
@@ -85,13 +85,10 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
     }
 
     private suspend fun saveToAlbum(context: Context, @DrawableRes resId: Int): Uri? =
-            withContext(Dispatchers.IO) {
-                val drawable = ContextCompat.getDrawable(context, resId) ?: return@withContext null
-                val bitmap = Bitmap.createBitmap(400, 400, Bitmap.Config.RGB_565)
-                val canvas = Canvas(bitmap)
-                drawable.setBounds(0, 0, bitmap.width, bitmap.height)
-                drawable.draw(canvas)
-                bitmap.saveToAlbum(requireContext(), "QrCode_${resId}.jpeg", "Net Monitor")
-            }
+        withContext(Dispatchers.IO) {
+            context.requireDrawable<Drawable>(resId)
+                .toBitmap(400, 400, Bitmap.Config.RGB_565)
+                .saveToAlbum(requireContext(), "QrCode_${resId}.jpeg", "Net Monitor")
+        }
 
 }

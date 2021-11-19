@@ -13,18 +13,15 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.animation.addListener
-import androidx.core.view.ViewCompat
 import androidx.core.view.isInvisible
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
 import com.dede.nativetools.util.*
-import com.google.android.material.transition.MaterialFadeThrough
 import kotlin.random.Random
 
 /**
@@ -67,19 +64,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         setHasOptionsMenu(true)
     }
 
-    private val materialFadeThrough = MaterialFadeThrough()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        enterTransition = materialFadeThrough.addTarget(view)
         binding.tvVersion.text = requireContext().getVersionSummary()
         binding.ivGithub.setOnClickListener {
             requireContext().browse(R.string.url_github)
-        }
-        ViewCompat.setTransitionName(binding.tvOpenSource, "open_source")
-        binding.tvOpenSource.setOnClickListener {
-            val extras = FragmentNavigatorExtras(it to "open_source")
-            findNavController().navigate(R.id.openSource, null, null, extras)
         }
         binding.ivGithub.enableFeedback = false
 
@@ -182,9 +171,10 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             R.id.action_feedback -> {
                 requireContext().emailTo(R.string.email)
             }
-            R.id.action_donate -> {
+            R.id.action_about_to_openSource,
+            R.id.action_about_to_dialogDonate -> {
                 // item.onNavDestinationSelected(findNavController())
-                findNavController().navigate(R.id.action_about_to_dialogDonate)
+                findNavController().navigate(item.itemId)
             }
             else -> return super.onOptionsItemSelected(item)
         }
@@ -193,11 +183,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_about, menu)
-    }
-
-    override fun onDestroyView() {
-        materialFadeThrough.removeTarget(requireView())
-        super.onDestroyView()
     }
 
 }

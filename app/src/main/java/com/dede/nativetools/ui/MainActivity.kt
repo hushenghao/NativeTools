@@ -2,9 +2,14 @@ package com.dede.nativetools.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -15,6 +20,7 @@ import com.dede.nativetools.netspeed.NetSpeedService
 import com.dede.nativetools.util.extra
 import com.dede.nativetools.util.navController
 import com.dede.nativetools.util.setNightMode
+import com.google.android.material.transition.MaterialFadeThrough
 
 /**
  * Main
@@ -46,6 +52,13 @@ class MainActivity : AppCompatActivity() {
             .build()
         setupActionBarWithNavController(this, navController, appBarConfiguration)
         setupWithNavController(binding.bottomNavigationView, navController)
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            if (it.itemId == navController.currentDestination?.id) {
+                return@setOnItemSelectedListener true
+            }
+            NavigationUI.onNavDestinationSelected(it, navController)
+            return@setOnItemSelectedListener true
+        }
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination is DialogFragmentNavigator.Destination) {
                 return@addOnDestinationChangedListener
@@ -71,6 +84,47 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    class NavHostFragment : androidx.navigation.fragment.NavHostFragment() {
+
+        private val materialFadeThrough = MaterialFadeThrough()
+
+        private val transitionLifecycleCallbacks =
+            object : FragmentManager.FragmentLifecycleCallbacks() {
+                override fun onFragmentViewCreated(
+                    fm: FragmentManager,
+                    f: Fragment,
+                    v: View,
+                    savedInstanceState: Bundle?
+                ) {
+                    if (f is DialogFragment) {
+                        return
+                    }
+                    f.enterTransition = materialFadeThrough.addTarget(v)
+                }
+
+                override fun onFragmentViewDestroyed(fm: FragmentManager, f: Fragment) {
+                    if (f is DialogFragment) {
+                        return
+                    }
+                    f.exitTransition = materialFadeThrough
+                    materialFadeThrough.removeTarget(f.requireView())
+                }
+            }
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            childFragmentManager.registerFragmentLifecycleCallbacks(
+                transitionLifecycleCallbacks,
+                true
+            )
+        }
+
+        override fun onDestroy() {
+            childFragmentManager.unregisterFragmentLifecycleCallbacks(transitionLifecycleCallbacks)
+            super.onDestroy()
+        }
     }
 
 }

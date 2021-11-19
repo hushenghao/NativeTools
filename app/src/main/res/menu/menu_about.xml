@@ -13,7 +13,7 @@
         android:title="@string/action_beta"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_donate"
+        android:id="@+id/action_about_to_dialogDonate"
         android:enabled="true"
         android:icon="@drawable/ic_outline_volunteer_activism_24"
         android:title="@string/action_donate"
@@ -30,4 +30,9 @@
         android:icon="@drawable/ic_outline_feedback_24"
         android:title="@string/action_feedback"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_about_to_openSource"
+        android:enabled="true"
+        android:title="@string/label_open_source"
+        app:showAsAction="never" />
 </menu>

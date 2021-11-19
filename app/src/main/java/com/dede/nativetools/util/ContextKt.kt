@@ -7,11 +7,14 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import com.dede.nativetools.BuildConfig
@@ -64,6 +67,10 @@ fun Context.checkAppOps(): Boolean {
 
 fun Context.assets(fileName: String): InputStream {
     return assets.open(fileName)
+}
+
+fun <T : Drawable> Context.requireDrawable(@DrawableRes drawableId: Int): T {
+    return checkNotNull(AppCompatResources.getDrawable(this, drawableId) as T)
 }
 
 fun Context.toast(text: String) {

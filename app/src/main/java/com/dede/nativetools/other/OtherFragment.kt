@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -14,7 +13,6 @@ import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.util.*
-import com.google.android.material.transition.MaterialFadeThrough
 
 class OtherFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -28,12 +26,6 @@ class OtherFragment : PreferenceFragmentCompat(),
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
 
     private lateinit var preferenceIgnoreBatteryOptimize: SwitchPreferenceCompat
-    private val materialFadeThrough = MaterialFadeThrough()
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        enterTransition = materialFadeThrough.addTarget(view)
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.other_preference)
@@ -100,11 +92,6 @@ class OtherFragment : PreferenceFragmentCompat(),
                 setNightMode(NetSpeedPreferences.isNightMode)
             }
         }
-    }
-
-    override fun onDestroyView() {
-        materialFadeThrough.removeTarget(requireView())
-        super.onDestroyView()
     }
 
 }

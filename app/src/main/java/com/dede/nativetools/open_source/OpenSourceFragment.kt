@@ -1,14 +1,11 @@
 package com.dede.nativetools.open_source
 
-import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.annotation.IdRes
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -17,9 +14,6 @@ import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentOpenSourceBinding
 import com.dede.nativetools.databinding.ItemOpenSourceBinding
 import com.dede.nativetools.util.*
-import com.google.android.material.color.MaterialColors
-import com.google.android.material.transition.Hold
-import com.google.android.material.transition.MaterialContainerTransform
 
 /**
  * 开源相关
@@ -28,38 +22,8 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
 
     private val binding by viewBinding(FragmentOpenSourceBinding::bind)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        sharedElementEnterTransition = buildContainerTransform(true, R.id.root_open_source).apply {
-            val hold = Hold()
-            // Add root view as target for the Hold so that the entire view hierarchy is held in place as
-            // one instead of each child view individually. Helps keep shadows during the transition.
-            hold.addTarget(R.id.root_open_source)
-            hold.duration = duration
-            exitTransition = hold
-        }
-
-        sharedElementReturnTransition = buildContainerTransform(false, R.id.tv_open_source)
-    }
-
-    private fun buildContainerTransform(
-        entering: Boolean,
-        @IdRes drawingViewId: Int
-    ): MaterialContainerTransform {
-        return MaterialContainerTransform(requireContext(), entering).apply {
-            val surface = MaterialColors.getColor(
-                requireContext(), com.google.android.material.R.attr.colorSurface,
-                Color.TRANSPARENT
-            )
-            setAllContainerColors(surface)
-            this.drawingViewId = drawingViewId
-            fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ViewCompat.setTransitionName(view, "open_source")
         val list = loadOpenSource()
         binding.recyclerView.adapter = Adapter(list)
         binding.recyclerView.addItemDecoration(ItemDecoration())

@@ -3,8 +3,6 @@
     <dimen name="net_speed_icon_padding">5dp</dimen>
     <dimen name="percent_preference_icon_size">40dp</dimen>
 
-    <integer name="config_navAnimTime">300</integer>
-
     <!-- Base application theme. -->
     <!--    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
