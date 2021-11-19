@@ -22,13 +22,14 @@
 
         <!-- Panel attributes -->
         <item name="windowActionModeOverlay">true</item>
-        <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
+        <item name="actionOverflowMenuStyle">@style/ActionMenuStyle</item>
 
         <item name="android:listPreferredItemPaddingStart">16dp</item>
         <item name="android:listPreferredItemPaddingLeft">16dp</item>
 
         <item name="materialCardViewStyle">?attr/materialCardViewElevatedStyle</item>
         <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
+        <item name="popupMenuStyle">@style/PopuMenuStyle</item>
     </style>
 
     <style name="ToolTipStyle" parent="Widget.Material3.Tooltip">
@@ -36,9 +37,13 @@
         <item name="android:textColor">@color/primaryTextColor</item>
     </style>
 
-    <style name="OverflowMenu" parent="Widget.Material3.PopupMenu.Overflow">
+    <style name="ActionMenuStyle" parent="Widget.Material3.PopupMenu">
         <item name="android:dropDownVerticalOffset">6dp</item>
-        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownHorizontalOffset">-4dp</item>
+    </style>
+
+    <style name="PopuMenuStyle" parent="Widget.Material3.PopupMenu">
+        <item name="android:dropDownHorizontalOffset">-4dp</item>
     </style>
 
 </resources>

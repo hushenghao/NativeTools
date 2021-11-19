@@ -3,7 +3,6 @@ package com.dede.nativetools.open_source
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -148,7 +147,7 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
 
         private fun showMenu(view: View, openSource: OpenSource) {
             val context = view.context
-            val popupMenu = PopupMenu(context, view, Gravity.START)
+            val popupMenu = PopupMenu(context, view)
             popupMenu.inflate(R.menu.menu_open_source)
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
