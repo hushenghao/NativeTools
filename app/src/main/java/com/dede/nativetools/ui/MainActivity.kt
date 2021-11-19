@@ -2,11 +2,14 @@ package com.dede.nativetools.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -20,12 +23,14 @@ import com.dede.nativetools.netspeed.NetSpeedService
 import com.dede.nativetools.util.extra
 import com.dede.nativetools.util.navController
 import com.dede.nativetools.util.setNightMode
+import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.transition.MaterialFadeThrough
 
 /**
  * Main
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener,
+    NavController.OnDestinationChangedListener {
 
     companion object {
         private const val EXTRA_TOGGLE = "extra_toggle"
@@ -33,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private val binding by viewBinding(ActivityMainBinding::bind)
     private val navController by navController(R.id.nav_host_fragment)
+    private val topLevelDestinationIds = intArrayOf(R.id.netSpeed, R.id.other, R.id.about)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,31 +53,11 @@ class MainActivity : AppCompatActivity() {
         setNightMode(NetSpeedPreferences.isNightMode)
         setSupportActionBar(binding.toolbar)
 
-        val topLevelDestinationIds = intArrayOf(R.id.netSpeed, R.id.other, R.id.about)
-        val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds)
-            .build()
+        val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds).build()
         setupActionBarWithNavController(this, navController, appBarConfiguration)
         setupWithNavController(binding.bottomNavigationView, navController)
-        binding.bottomNavigationView.setOnItemSelectedListener {
-            if (it.itemId == navController.currentDestination?.id) {
-                return@setOnItemSelectedListener false
-            }
-            return@setOnItemSelectedListener NavigationUI.onNavDestinationSelected(it, navController)
-        }
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination is DialogFragmentNavigator.Destination) {
-                return@addOnDestinationChangedListener
-            }
-            if (topLevelDestinationIds.contains(destination.id)) {
-                if (binding.motionLayout.progress != 0f) {
-                    binding.motionLayout.transitionToStart()
-                }
-            } else {
-                if (binding.motionLayout.progress != 100f) {
-                    binding.motionLayout.transitionToEnd()
-                }
-            }
-        }
+        binding.bottomNavigationView.setOnItemSelectedListener(this)
+        navController.addOnDestinationChangedListener(this)
 
         navController.handleDeepLink(intent)
     }
@@ -83,6 +69,32 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
+        if (destination is DialogFragmentNavigator.Destination) {
+            return
+        }
+        if (topLevelDestinationIds.contains(destination.id)) {
+            if (binding.motionLayout.progress != 0f) {
+                binding.motionLayout.transitionToStart()
+            }
+        } else {
+            if (binding.motionLayout.progress != 100f) {
+                binding.motionLayout.transitionToEnd()
+            }
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == navController.currentDestination?.id) {
+            return false
+        }
+        return NavigationUI.onNavDestinationSelected(item, navController)
     }
 
     class NavHostFragment : androidx.navigation.fragment.NavHostFragment() {
