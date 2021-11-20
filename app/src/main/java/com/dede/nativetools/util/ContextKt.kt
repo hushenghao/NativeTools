@@ -7,11 +7,14 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import com.dede.nativetools.BuildConfig
@@ -66,6 +69,10 @@ fun Context.assets(fileName: String): InputStream {
     return assets.open(fileName)
 }
 
+fun <T : Drawable> Context.requireDrawable(@DrawableRes drawableId: Int): T {
+    return checkNotNull(AppCompatResources.getDrawable(this, drawableId) as T)
+}
+
 fun Context.toast(text: String) {
     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 }
@@ -75,10 +82,7 @@ fun Context.toast(@StringRes resId: Int) {
 }
 
 fun Context.browse(url: String) {
-    val web = Intent(Intent.ACTION_VIEW)
-        .setData(url)
-        .newTask()
-    startActivity(web.toChooser(R.string.chooser_label_browse))
+    ChromeTabsBrowser.launchUrl(this, Uri.parse(url))
 }
 
 fun Context.browse(@StringRes urlId: Int) {

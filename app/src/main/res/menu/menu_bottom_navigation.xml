@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/other"
+        android:enabled="true"
+        android:icon="@drawable/ic_more_horiz"
+        android:title="@string/label_other" />
+
+    <item
+        android:id="@+id/netSpeed"
+        android:checked="true"
+        android:enabled="true"
+        android:icon="@drawable/selector_nav_home"
+        android:title="@string/label_home" />
+
+    <item
+        android:id="@+id/about"
+        android:enabled="true"
+        android:icon="@drawable/selector_nav_about"
+        android:title="@string/label_about" />
+</menu>

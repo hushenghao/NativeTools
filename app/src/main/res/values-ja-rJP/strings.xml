@@ -43,7 +43,7 @@
     <string name="label_open_source">オープンソース関係</string>
     <string name="action_share">分かち合い</string>
     <string name="share_text">便利なガジェット「网速指示器」を見つけたらダウンロードしてください! <xliff:g id="app_store_detail">https://play.google.com/store/apps/details?id=com.dede.nativetools</xliff:g></string>
-    <string name="action_feedback">フィードバック</string>
+    <string name="action_feedback">問題フィードバック</string>
     <string name="toast_copyed">複製済み</string>
     <string name="toast_wx_payment_tip">WeChat決済コードは保存画像を押してスキャンしてください</string>
     <string name="label_net_speed_toggle">换</string>
@@ -54,7 +54,7 @@
     <string name="summary_net_speed_hide_notification">デフォルトの通知スタイルを置き換えることで通知を隠す(全てのデバイスをサポートしているわけではないかもしれない)</string>
     <string name="i_know">分かりました</string>
     <string name="tip_easter_egg">エッグ</string>
-    <string name="action_rate">点数をつける</string>
+    <string name="action_rate">好評をあたえる</string>
     <string name="action_donate">寄付</string>
     <string name="label_coffee">コーヒーを一杯おごってくれる?</string>
 
@@ -72,4 +72,8 @@
     </string-array>
     <string name="label_notification">通知</string>
     <string name="toast_saved">保存済み</string>
+    <string name="label_home">トップページ</string>
+    <string name="toast_open_battery_optimization">「网速指示器」を見つけて、手動でバッテリーを開けて最適化してください</string>
+    <string name="action_open_link">チェック</string>
+    <string name="action_copy_link">リンクをコピーする</string>
 </resources>

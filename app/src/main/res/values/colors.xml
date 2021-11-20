@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- Material颜色工具 https://material.io/tools/color -->
-    <color name="appPrimary">#00796b</color>
-    <color name="appAccent">#d81b60</color>
-
     <color name="maskBgColor">#00796B</color>
-    <color name="github_tint">#000</color>
+    <color name="githubTint">#000</color>
 
+    <!-- https://material.io/tools/color -->
+    <color name="primaryColor">#00796b</color>
+    <color name="primaryLightColor">#48a999</color>
+    <color name="primaryDarkColor">#004c40</color>
+    <color name="secondaryColor">#e81e62</color>
+    <color name="secondaryLightColor">#ff608f</color>
+    <color name="secondaryDarkColor">#af0039</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#000000</color>
 </resources>

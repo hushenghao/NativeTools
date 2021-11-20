@@ -5,6 +5,7 @@ import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -12,10 +13,10 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.animation.addListener
+import androidx.core.view.isInvisible
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
@@ -37,8 +38,8 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private val viewModel by viewModels<AboutViewModel>()
     private var toasted = false
     private val colorIds: IntArray = intArrayOf(
-        R.color.appAccent,
-        R.color.appPrimary,
+        R.color.secondaryColor,
+        R.color.primaryColor,
         android.R.color.black,
         android.R.color.holo_red_light,
         android.R.color.holo_blue_light,
@@ -54,6 +55,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        ChromeTabsBrowser.warmup(requireContext(), Uri.parse(getString(R.string.url_github)))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,7 +64,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.ivGithub.setOnClickListener {
             requireContext().browse(R.string.url_github)
         }
-        binding.tvOpenSource.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_about_to_openSource))
         binding.ivGithub.enableFeedback = false
 
         val followViews = ArrayList<ImageView>()
@@ -74,10 +75,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.ivLogo.dragEnable = false
         binding.ivLogo.setOnClickListener {
             viewModel.addFollowCount()
+            playAnimator(true)
         }
         binding.ivLogo.clipToOutline = true
         binding.ivLogo.outlineProvider = ViewOvalOutlineProvider()
-        playAnimator()
+        playAnimator(false)
     }
 
     private fun appendFollowView(
@@ -89,7 +91,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         if (count >= MAX_FOLLOW_COUNT) {
             if (!toasted) {
                 toast("BZZZTT!!1!💥")
-                playAnimator()
                 toasted = true
             }
             return
@@ -97,8 +98,9 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         val insert = if (count == 0) template else {
             AppCompatImageView(requireContext()).apply {
                 setImageResource(R.mipmap.ic_launcher_round)
+                isInvisible = true
                 layoutParams = LayoutParams(template.layoutParams as LayoutParams)
-                binding.container.addView(this, binding.container.indexOfChild(template) + 1)
+                binding.rootAbout.addView(this, binding.rootAbout.indexOfChild(template))
             }
         }
         followViews.add(insert)
@@ -120,11 +122,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             }
             binding.ivLogo.dragEnable = true
         }
-        if (count >= ENABLE_FOLLOW_COUNT) {
-            binding.ivLogo.setTintColor(colorIds[Random.nextInt(colorIds.size)])
-        }
-
-        playAnimator()
     }
 
     private fun ImageView.setTintColor(@ColorRes colorId: Int) {
@@ -133,24 +130,25 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         ImageViewCompat.setImageTintMode(this, PorterDuff.Mode.ADD)
     }
 
-    private fun playAnimator() {
+    private fun playAnimator(feedback: Boolean) {
         binding.ivLogo.clearAnimation()
-        lifecycleAnimator(binding.ivLogo, ScaleProperty(), 1f, 1.3f, 0.7f)
-            .apply {
-                duration = 200
-                startDelay = 300
-                repeatMode = ValueAnimator.REVERSE
-                repeatCount = 1
-                val feedback: (Animator) -> Unit = {
+        lifecycleAnimator(binding.ivLogo, ScaleProperty(), 1f, 1.3f, 0.9f) {
+            duration = 200
+            startDelay = 300
+            repeatMode = ValueAnimator.REVERSE
+            repeatCount = 1
+            if (feedback) {
+                val feedbackCallback: (Animator) -> Unit = {
                     // BZZZTT!!1!
                     binding.ivLogo.performHapticFeedback(
                         HapticFeedbackConstants.CONTEXT_CLICK,
                         HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
                     )
                 }
-                addListener(onStart = feedback, onRepeat = feedback)
-                start()
+                addListener(onStart = feedbackCallback, onRepeat = feedbackCallback)
             }
+            start()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -167,9 +165,10 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             R.id.action_feedback -> {
                 requireContext().emailTo(R.string.email)
             }
-            R.id.action_donate -> {
+            R.id.action_about_to_openSource,
+            R.id.action_about_to_dialogDonate -> {
                 // item.onNavDestinationSelected(findNavController())
-                findNavController().navigate(R.id.action_about_to_dialogDonate)
+                findNavController().navigate(item.itemId)
             }
             else -> return super.onOptionsItemSelected(item)
         }

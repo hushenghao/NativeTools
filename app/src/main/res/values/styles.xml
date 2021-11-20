@@ -1,43 +1,48 @@
 <resources>
 
+    <dimen name="net_speed_icon_padding">5dp</dimen>
+    <dimen name="percent_preference_icon_size">40dp</dimen>
+
     <!-- Base application theme. -->
-<!--    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
+    <!--    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/appPrimary</item>
-        <item name="colorPrimaryDark">@color/appPrimary</item>
-        <item name="colorSecondary">@color/appAccent</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+<!--        <item name="colorPrimaryDark">@color/primaryDarkColor</item>-->
+        <item name="colorSecondary">@color/secondaryColor</item>
+
+        <item name="colorOnPrimary">@color/primaryColor</item>
+        <item name="colorOnSecondary">@color/primaryColor</item>
+
+        <item name="colorContainer">@color/primaryLightColor</item>
+        <item name="colorPrimaryContainer">@color/primaryLightColor</item>
+        <item name="colorSecondaryContainer">@color/secondaryLightColor</item>
 
         <!-- Panel attributes -->
         <item name="windowActionModeOverlay">true</item>
+        <item name="actionOverflowMenuStyle">@style/ActionMenuStyle</item>
 
-        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="materialAlertDialogTheme">@style/MaterialAlertDialogTheme</item>
         <item name="android:listPreferredItemPaddingStart">16dp</item>
         <item name="android:listPreferredItemPaddingLeft">16dp</item>
 
-        <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
-
-        <item name="cornerFamily">rounded</item>
-        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearanceComponent.LargeCornerSize</item>
-        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearanceComponent.LargeCornerSize</item>
-        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearanceComponent.MediumCornerSize</item>
-
         <item name="materialCardViewStyle">?attr/materialCardViewElevatedStyle</item>
-        <item name="switchStyle">@style/Widget.AppCompat.CompoundButton.Switch</item>
+        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
+        <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
     </style>
 
-    <style name="OverflowMenu" parent="Widget.MaterialComponents.PopupMenu.Overflow">
-        <item name="android:dropDownVerticalOffset">4dp</item>
-        <item name="overlapAnchor">false</item>
-    </style>
-
-    <style name="MaterialAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <style name="MaterialAlertDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
         <item name="colorPrimary">?attr/colorControlNormal</item>
     </style>
 
-    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="colorPrimary">?attr/colorControlNormal</item>
+    <style name="ToolTipStyle" parent="Widget.Material3.Tooltip">
+        <item name="backgroundTint">@color/secondaryColor</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
+
+    <style name="ActionMenuStyle" parent="Widget.Material3.PopupMenu">
+        <item name="android:dropDownVerticalOffset">6dp</item>
+        <item name="android:dropDownHorizontalOffset">-6dp</item>
     </style>
 
 </resources>

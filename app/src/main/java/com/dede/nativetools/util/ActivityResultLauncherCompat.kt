@@ -12,7 +12,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
 /**
- * ActivityResultLaucher ext
+ * ActivityResultLauncher ext
  *
  * @author hsh
  * @since 2021/11/9 3:19 下午

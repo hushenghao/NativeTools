@@ -9,15 +9,7 @@
     <fragment
         android:id="@+id/netSpeed"
         android:name="com.dede.nativetools.netspeed.NetSpeedFragment"
-        android:label="@string/label_net_speed">
-        <action
-            android:id="@+id/action_netSpeed_to_about"
-            app:destination="@id/about"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
+        android:label="@string/label_net_speed" />
 
     <fragment
         android:id="@+id/about"
@@ -39,7 +31,7 @@
 
     <fragment
         android:id="@+id/openSource"
-        android:name="com.dede.nativetools.ui.OpenSourceFragment"
+        android:name="com.dede.nativetools.open_source.OpenSourceFragment"
         android:label="@string/label_open_source"
         tools:layout="@layout/fragment_open_source" />
 
@@ -48,4 +40,18 @@
         android:name="com.dede.nativetools.donate.DonateDialogFragment"
         android:label="@string/action_donate"
         tools:layout="@layout/dialog_fragment_donate" />
+
+    <fragment
+        android:id="@+id/other"
+        android:name="com.dede.nativetools.other.OtherFragment"
+        android:label="@string/label_other">
+        <action
+            android:id="@+id/action_other_to_about"
+            app:destination="@id/about"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/netSpeed" />
+    </fragment>
 </navigation>

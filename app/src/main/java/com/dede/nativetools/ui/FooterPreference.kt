@@ -22,7 +22,6 @@ class FooterPreference @JvmOverloads constructor(
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         val binding = LayoutFooterPreferenceBinding.bind(holder.itemView)
-        binding.ivLogo.removeAllAnimatorListeners()
         binding.ivLogo.addAnimatorListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator?) {
                 binding.ivLogo.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)

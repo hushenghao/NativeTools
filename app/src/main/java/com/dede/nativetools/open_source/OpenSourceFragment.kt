@@ -1,11 +1,14 @@
-package com.dede.nativetools.ui
+package com.dede.nativetools.open_source
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
@@ -22,12 +25,39 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.adapter = Adapter(loadOpenSource())
+        val list = loadOpenSource()
+        binding.recyclerView.adapter = Adapter(list)
         binding.recyclerView.addItemDecoration(ItemDecoration())
+        ItemTouchHelper(ItemTouchHelperCallback(list)).attachToRecyclerView(binding.recyclerView)
+    }
+
+    private class ItemTouchHelperCallback(private val list: MutableList<OpenSource>) :
+        ItemTouchHelper.Callback() {
+        override fun getMovementFlags(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder
+        ): Int {
+            return makeMovementFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0)
+        }
+
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            val from = viewHolder.bindingAdapterPosition
+            val to = target.absoluteAdapterPosition
+            list.add(to, list.removeAt(from))
+            recyclerView.adapter?.notifyItemMoved(from, to)
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        }
     }
 
     private class ItemDecoration : RecyclerView.ItemDecoration() {
-        private val height = 12.dp
+        private val offset = 12.dp
 
         override fun getItemOffsets(
             outRect: Rect,
@@ -35,9 +65,8 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
             parent: RecyclerView,
             state: RecyclerView.State
         ) {
-            val itemCount = parent.adapter?.itemCount ?: return
             val position = parent.getChildAdapterPosition(view)
-            outRect.set(height, height, height, if (position >= itemCount - 1) height else 0)
+            outRect.set(offset, if (position == 0) offset else 0, offset, offset)
         }
     }
 
@@ -62,28 +91,48 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         private val ovalOutlineProvider = ViewOvalOutlineProvider(true)
 
         fun bindViewData(openSource: OpenSource) {
-            binding.ivProjectLogo.setImageResource(openSource.logo)
-            binding.ivProjectLogo.outlineProvider = ovalOutlineProvider
+            binding.ivProjectLogo.apply {
+                setImageResource(openSource.foregroundLogo)
+                outlineProvider = ovalOutlineProvider
+            }
             binding.tvProjectName.text = openSource.name
             binding.tvAuthorName.text = openSource.author
             binding.tvProjectDesc.text = openSource.desc
 
-            val url = openSource.url
-            if (url == null || url.isEmpty) {
-                itemView.setOnClickListener(null)
-                itemView.setOnLongClickListener(null)
-            } else {
-                itemView.setOnClickListener {
+            binding.ivMenu.setOnClickListener {
+                showMenu(it, openSource)
+            }
+            itemView.setOnClickListener {
+                val url = openSource.url
+                if (url != null && url.isNotEmpty) {
                     it.context.browse(url)
                 }
-                itemView.setOnLongClickListener {
-                    it.context.apply {
-                        copy(url)
-                        toast(R.string.toast_copyed)
-                    }
-                    return@setOnLongClickListener true
-                }
             }
+        }
+
+        private fun showMenu(view: View, openSource: OpenSource) {
+            val context = view.context
+            val popupMenu = PopupMenu(context, view, Gravity.END)
+            popupMenu.inflate(R.menu.menu_open_source)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.action_copy -> {
+                        val url = openSource.url
+                        if (url != null && url.isNotEmpty) {
+                            context.copy(url)
+                            context.toast(R.string.toast_copyed)
+                        }
+                    }
+                    R.id.action_open -> {
+                        val url = openSource.url
+                        if (url != null && url.isNotEmpty) {
+                            context.browse(url)
+                        }
+                    }
+                }
+                return@setOnMenuItemClickListener true
+            }
+            popupMenu.show()
         }
     }
 
@@ -92,52 +141,52 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         val author: String?,
         val desc: String,
         val url: String?,
-        val logo: Int
+        val foregroundLogo: Int
     )
 
-    private fun loadOpenSource(): List<OpenSource> {
+    private fun loadOpenSource(): MutableList<OpenSource> {
         return arrayListOf(
             OpenSource(
                 "Kotlin",
                 "JetBrains",
                 "Write better Android apps faster with Kotlin.",
                 "https://developer.android.google.cn/kotlin",
-                R.drawable.inset_kotlin_for_android_hero
+                R.drawable.layer_logo_kotlin_for_android
             ),
             OpenSource(
                 "Jetpack",
                 "Google",
                 "Jetpack is a suite of libraries to help developers follow best practices, reduce boilerplate code, and write code that works consistently across Android versions and devices so that developers can focus on the code they care about.",
                 "https://developer.android.google.cn/jetpack",
-                R.drawable.ic_jetpack_hero
+                R.drawable.layer_logo_jetpack
             ),
             OpenSource(
                 "Material Design",
                 "Google",
                 "Material is a design system – backed by open-source code – that helps teams build high-quality digital experiences.",
                 "https://material.io/",
-                R.drawable.ic_material_logo
+                R.drawable.layer_logo_material
             ),
             OpenSource(
                 "FreeReflection",
                 "tiann",
                 "FreeReflection is a library that lets you use reflection without any restriction above Android P (includes Q and R).",
                 "https://github.com/tiann/FreeReflection",
-                R.drawable.ic_github_logo
+                R.drawable.ic_logo_github
             ),
             OpenSource(
                 "ViewBindingPropertyDelegate",
                 "kirich1409",
                 "Make work with Android View Binding simpler.",
                 "https://github.com/kirich1409/ViewBindingPropertyDelegate",
-                R.drawable.ic_github_logo
+                R.drawable.ic_logo_github
             ),
             OpenSource(
                 "Lottie",
                 "airbnb",
                 "Lottie is a mobile library for Android and iOS that parses Adobe After Effects animations exported as json with Bodymovin and renders them natively on mobile!",
-                "https://github.com/airbnb/lottie-android",
-                R.drawable.inset_lottie_logo
+                "http://airbnb.io/lottie",
+                R.drawable.layer_logo_lottie
             )
         )
     }

@@ -65,7 +65,6 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:initialExpandedChildrenCount="2"
         app:key="key_notification"
         app:title="@string/label_notification">
 
@@ -105,33 +104,6 @@
             app:icon="@drawable/ic_outline_cancel"
             app:summary="@string/summary_net_speed_notify_quick_closeable" />
 
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        app:iconSpaceReserved="false"
-        app:key="key_other"
-        app:title="@string/label_other">
-
-        <Preference
-            app:icon="@drawable/ic_baseline_remove_circle_outline_24"
-            app:key="ignore_battery_optimize"
-            app:summary="@string/summary_ignore_battery_optimize"
-            app:title="@string/label_ignore_battery_optimize" />
-
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_outline_dark_mode_24"
-            app:key="v28_night_mode_toggle"
-            app:summaryOff="@string/summary_night_mode_follow_system"
-            app:summaryOn="@string/switch_on"
-            app:title="@string/label_night_mode" />
-
-        <Preference
-            android:fragment="com.dede.nativetools.about.AboutFragment"
-            android:key="about"
-            android:title="@string/label_about"
-            app:icon="@drawable/ic_outline_info"
-            app:summary="@string/summary_about_version" />
     </PreferenceCategory>
 
     <com.dede.nativetools.ui.FooterPreference />

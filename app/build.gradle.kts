@@ -20,8 +20,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 36
-        versionName = "2.7.3"
+        versionCode = 38
+        versionName = "3.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(listOf("zh-rCN", "zh-rHK", "ja-rJP", "en-rUS"))
@@ -82,6 +82,7 @@ dependencies {
     implementation(deps.bundles.androidx.lifecycle)
     implementation(deps.bundles.androidx.navigation)
     implementation(deps.google.material)
+    implementation(deps.androidx.browser)
 
     implementation(deps.free.reflection)
     implementation(deps.airbnb.lottie)
@@ -99,7 +100,6 @@ configurations.all {
     exclude("androidx.slidingpanelayout", "slidingpanelayout")
     exclude("androidx.swiperefreshlayout", "swiperefreshlayout")
     exclude("androidx.asynclayoutinflater", "asynclayoutinflater")
-    exclude("androidx.transition", "transition")
     exclude("androidx.dynamicanimation", "dynamicanimation")
     exclude("androidx.versionedparcelable", "versionedparcelable")
     exclude("androidx.localbroadcastmanager", "localbroadcastmanager")

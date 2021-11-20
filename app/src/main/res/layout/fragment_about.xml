@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
+    android:id="@+id/root_about"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -59,28 +59,15 @@
         android:id="@+id/iv_github"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/github"
         android:padding="5dp"
-        android:src="@drawable/ic_github_logo"
+        android:src="@drawable/ic_logo_github"
         android:tooltipText="@string/github"
-        app:layout_constraintBottom_toTopOf="@id/tv_open_source"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:tint="@color/github_tint" />
-
-    <TextView
-        android:id="@+id/tv_open_source"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:background="?attr/selectableItemBackground"
-        android:padding="6dp"
-        android:text="@string/label_open_source"
-        android:textAppearance="?attr/textAppearanceBodySmall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:tint="@color/githubTint" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,12 +2,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/appPrimary"/>
+            <solid android:color="@color/primaryColor" />
         </shape>
     </item>
+
     <item>
         <inset
-            android:drawable="@drawable/ic_outline_info"
+            android:drawable="@drawable/ic_outline_toggle_on_24"
             android:inset="20%" />
     </item>
 </layer-list>

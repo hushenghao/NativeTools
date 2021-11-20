@@ -1,21 +1,20 @@
 package com.dede.nativetools.netspeed
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.*
 import android.graphics.drawable.LayerDrawable
-import android.os.*
+import android.os.Bundle
+import android.os.IBinder
+import android.os.RemoteException
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
-import androidx.navigation.fragment.findNavController
-import androidx.preference.*
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.ui.SliderPreference
 import com.dede.nativetools.util.*
-import java.util.*
 
 /**
  * 网速指示器设置页
@@ -32,9 +31,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
         // 88.8M 93113549L
         private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
-
-        private const val KEY_ABOUT = "about"
-        private const val KEY_IGNORE_BATTERY_OPTIMIZE = "ignore_battery_optimize"
     }
 
     private val configuration = NetSpeedConfiguration.initialize()
@@ -67,7 +63,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         addPreferencesFromResource(R.xml.net_speed_preference)
         initGeneralPreferenceGroup()
         initNotificationPreferenceGroup()
-        initOtherPreferenceGroup()
     }
 
     private fun initGeneralPreferenceGroup() {
@@ -90,41 +85,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             .bindCustomWidget = {
             it.findViewById(R.id.iv_preference_help)?.setOnClickListener {
                 showHideLockNotificationDialog()
-            }
-        }
-    }
-
-    private fun initOtherPreferenceGroup() {
-        requirePreference<Preference>(KEY_ABOUT).also {
-            it.summary = requireContext().getVersionSummary()
-
-            it.onPreferenceClickListener {
-                findNavController().navigate(R.id.action_netSpeed_to_about)
-            }
-        }
-        requirePreference<Preference>(KEY_IGNORE_BATTERY_OPTIMIZE).also {
-            val context = requireContext()
-            val packageName = context.packageName
-
-            fun setVisible() {
-                val powerManager = context.requireSystemService<PowerManager>()
-                it.isVisible = !powerManager.isIgnoringBatteryOptimizations(packageName)
-            }
-
-            setVisible()
-
-            if (!it.isVisible) return@also
-
-            it.onPreferenceClickListener {
-                @SuppressLint("BatteryLife")
-                val intent = Intent(
-                    Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, "package:$packageName"
-                )
-                activityResultLauncherCompat.launch(intent) { result ->
-                    if (result.resultCode == Activity.RESULT_OK) {
-                        setVisible()
-                    }
-                }
             }
         }
     }
@@ -153,9 +113,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_STATUS -> {
                 val status = NetSpeedPreferences.status
                 if (status) startService() else stopService()
-            }
-            NetSpeedPreferences.KEY_NIGHT_MODE_TOGGLE -> {
-                setNightMode(NetSpeedPreferences.isNightMode)
             }
             NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
@@ -206,8 +163,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun updateScalePreferenceIcon() {
-        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.layer_icon_mask)
-
         val size = resources.getDimensionPixelSize(R.dimen.percent_preference_icon_size)
         val speed: Long = if (configuration.mode == NetSpeedConfiguration.MODE_ALL) {
             MODE_ALL_BYTES
@@ -215,9 +170,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             MODE_SINGLE_BYTES
         }
         val bitmap = NetTextIconFactory.createIconBitmap(speed, speed, configuration, size)
-        val layerDrawable = drawable as LayerDrawable
+        val layerDrawable: LayerDrawable =
+            requireContext().requireDrawable(R.drawable.layer_icon_mask)
         layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmap.toDrawable(resources))
-        scaleSliderPreference.setRightIcon(drawable)
+        scaleSliderPreference.setRightIcon(layerDrawable)
     }
 
     override fun onDestroy() {

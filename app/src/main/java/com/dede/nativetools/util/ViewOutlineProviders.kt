@@ -11,3 +11,12 @@ class ViewOvalOutlineProvider(private val clip: Boolean = false) : ViewOutlinePr
         outline.setOval(0, 0, view.width, view.height)
     }
 }
+
+class ViewRoundRectOutlineProvider(private val radius: Float, private val clip: Boolean = false) :
+    ViewOutlineProvider() {
+
+    override fun getOutline(view: View, outline: Outline) {
+        view.clipToOutline = clip
+        outline.setRoundRect(0, 0, view.width, view.height, radius)
+    }
+}

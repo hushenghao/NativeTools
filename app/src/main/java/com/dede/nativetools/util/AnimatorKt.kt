@@ -14,12 +14,17 @@ import androidx.lifecycle.LifecycleOwner
 fun LifecycleOwner.lifecycleAnimator(
     target: View,
     property: Property<View, Float>,
-    vararg values: Float
-): ObjectAnimator {
+    vararg values: Float,
+    block: ObjectAnimator.() -> Unit
+) {
     val lifecycle = this.lifecycle
+    if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
+        return
+    }
     val animator = ObjectAnimator.ofFloat(target, property, *values)
     val observer = LifecycleEventObserver { _, event ->
         if (event == Lifecycle.Event.ON_DESTROY) {
+            animator.removeAllListeners()
             animator.cancel()
         }
     }
@@ -27,7 +32,7 @@ fun LifecycleOwner.lifecycleAnimator(
     animator.addListener(onEnd = {
         lifecycle.removeObserver(observer)
     })
-    return animator
+    block.invoke(animator)
 }
 
 class XProperty : Property<View, Float>(Float::class.java, "x") {

@@ -43,14 +43,14 @@
     <string name="label_open_source">開源相關</string>
     <string name="action_share">分享</string>
     <string name="share_text">發現了一個好用的小工具“網速指示器”快去下載吧！<xliff:g id="app_store_detail">https://play.google.com/store/apps/details?id=com.dede.nativetools</xliff:g></string>
-    <string name="action_feedback">迴響</string>
+    <string name="action_feedback">問題迴響</string>
     <string name="toast_copyed">已複製</string>
     <string name="toast_wx_payment_tip">微信付款碼請長按保存圖片後掃描</string>
     <string name="label_net_speed_toggle">切換</string>
     <string name="alert_msg_hide_lock_notification">有時候通知無法隱藏可能是鎖屏設定引起的。 在設定中找到“隱藏鎖屏通知”，選擇“僅顯示敏感內容”或“隱藏所有通知”。</string>
     <string name="label_net_speed_hide_notification">隱藏通知欄通知</string>
     <string name="summary_net_speed_hide_notification">通過替換默認通知樣式來隱藏通知（可能不支持所有設備）</string>
-    <string name="action_rate">打個分</string>
+    <string name="action_rate">給個好評</string>
     <string name="action_donate">捐贈</string>
     <string name="label_coffee">請我喝一杯咖啡？</string>
 
@@ -72,4 +72,8 @@
     <string name="i_know">我知道了</string>
     <string name="tip_easter_egg">彩蛋</string>
     <string name="toast_saved">已保存</string>
+    <string name="label_home">首頁</string>
+    <string name="toast_open_battery_optimization">請找到“網速指示器”，並手動關閉</string>
+    <string name="action_open_link">查看</string>
+    <string name="action_copy_link">複製連結</string>
 </resources>
