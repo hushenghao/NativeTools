@@ -8,6 +8,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.browser.customtabs.*
 import androidx.core.graphics.drawable.toBitmap
+import com.google.android.material.R
 import com.google.android.material.color.MaterialColors
 
 /**
@@ -48,6 +49,9 @@ object ChromeTabsBrowser {
         }
     }
 
+    /**
+     * 预热并预加载
+     */
     fun warmup(context: Context, mayLaunchUrl: Uri? = null) {
         if (customTabsSession != null) return
         this.mayLaunchUrl = mayLaunchUrl
@@ -69,12 +73,10 @@ object ChromeTabsBrowser {
             .setToolbarColor(color)
             .build()
 
-        val backBt =
-            context.requireDrawable<Drawable>(com.google.android.material.R.drawable.abc_ic_ab_back_material)
-                .let {
-                    it.setTint(Color.WHITE)
-                    it.toBitmap()
-                }
+        val backBt = context.requireDrawable<Drawable>(R.drawable.abc_ic_ab_back_material).let {
+            it.setTint(Color.WHITE)
+            it.toBitmap()
+        }
         val builder = CustomTabsIntent.Builder()
             .setCloseButtonIcon(backBt)
             .setColorScheme(colorScheme)

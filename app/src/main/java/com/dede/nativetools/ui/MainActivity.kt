@@ -3,18 +3,12 @@ package com.dede.nativetools.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
-import androidx.navigation.ui.NavigationUI.setupWithNavController
+import androidx.navigation.ui.NavigationUI.*
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
@@ -24,7 +18,6 @@ import com.dede.nativetools.util.extra
 import com.dede.nativetools.util.navController
 import com.dede.nativetools.util.setNightMode
 import com.google.android.material.navigation.NavigationBarView
-import com.google.android.material.transition.MaterialFadeThrough
 
 /**
  * Main
@@ -53,6 +46,8 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         setNightMode(NetSpeedPreferences.isNightMode)
         setSupportActionBar(binding.toolbar)
 
+        FragmentTransitionManager()
+            .attach(supportFragmentManager.findFragmentById(R.id.nav_host_fragment))
         val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds).build()
         setupActionBarWithNavController(this, navController, appBarConfiguration)
         setupWithNavController(binding.bottomNavigationView, navController)
@@ -94,48 +89,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         if (item.itemId == navController.currentDestination?.id) {
             return false
         }
-        return NavigationUI.onNavDestinationSelected(item, navController)
-    }
-
-    class NavHostFragment : androidx.navigation.fragment.NavHostFragment() {
-
-        private val materialFadeThrough = MaterialFadeThrough()
-
-        private val transitionLifecycleCallbacks =
-            object : FragmentManager.FragmentLifecycleCallbacks() {
-                override fun onFragmentViewCreated(
-                    fm: FragmentManager,
-                    f: Fragment,
-                    v: View,
-                    savedInstanceState: Bundle?
-                ) {
-                    if (f is DialogFragment) {
-                        return
-                    }
-                    f.enterTransition = materialFadeThrough.addTarget(v)
-                }
-
-                override fun onFragmentViewDestroyed(fm: FragmentManager, f: Fragment) {
-                    if (f is DialogFragment) {
-                        return
-                    }
-                    f.exitTransition = materialFadeThrough
-                    materialFadeThrough.removeTarget(f.requireView())
-                }
-            }
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            childFragmentManager.registerFragmentLifecycleCallbacks(
-                transitionLifecycleCallbacks,
-                true
-            )
-        }
-
-        override fun onDestroy() {
-            childFragmentManager.unregisterFragmentLifecycleCallbacks(transitionLifecycleCallbacks)
-            super.onDestroy()
-        }
+        return onNavDestinationSelected(item, navController)
     }
 
 }

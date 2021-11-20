@@ -52,16 +52,10 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         com.google.android.material.R.color.material_grey_900,
     )
 
-    init {
-        ChromeTabsBrowser.warmup(
-            globalContext,
-            Uri.parse(globalContext.getString(R.string.url_github))
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        ChromeTabsBrowser.warmup(requireContext(), Uri.parse(getString(R.string.url_github)))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
