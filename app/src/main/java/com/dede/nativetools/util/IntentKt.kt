@@ -10,7 +10,6 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Parcelable
-import android.util.Log
 import androidx.annotation.StringRes
 
 
@@ -35,23 +34,22 @@ fun Intent.putExtras(vararg extras: Pair<String, Any>): Intent {
             is Boolean -> this.putExtra(key, value)
             is String -> this.putExtra(key, value)
             is Parcelable -> this.putExtra(key, value)
-            else -> Log.w("IntentKt", "Intent: put ${value.javaClass} don`t impl")
+            else -> throw IllegalArgumentException("IntentKt: put ${value.javaClass} don`t impl")
         }
     }
     return this
 }
 
 inline fun <reified T : Any> Intent.extra(name: String, default: T): T {
-    val tClass = T::class.java
+    val tClass = T::class
     return when {
-        tClass == Int::class.java -> this.getIntExtra(name, default as Int) as T
-        tClass == Boolean::class.java -> this.getBooleanExtra(name, default as Boolean) as T
-        tClass == String::class.java -> (this.getStringExtra(name) as? T) ?: default
-        Parcelable::class.java.isAssignableFrom(tClass) ->
+        tClass == Int::class -> this.getIntExtra(name, default as Int) as T
+        tClass == Boolean::class -> this.getBooleanExtra(name, default as Boolean) as T
+        tClass == String::class -> (this.getStringExtra(name) as? T) ?: default
+        Parcelable::class.java.isAssignableFrom(tClass.java) ->
             (this.getParcelableExtra(name) as? T) ?: default
         else -> {
-            Log.w("IntentKt", "Intent: get $tClass don`t impl")
-            default
+            throw IllegalArgumentException("IntentKt: get $tClass don`t impl")
         }
     }
 }
@@ -62,8 +60,7 @@ inline fun <reified T : Any> Intent.extra(name: String): T? {
         tClass == String::class.java -> this.getStringExtra(name) as? T
         Parcelable::class.java.isAssignableFrom(tClass) -> this.getParcelableExtra(name) as? T
         else -> {
-            Log.w("IntentKt", "Intent: get $tClass don`t impl")
-            null
+            throw IllegalArgumentException("IntentKt: get $tClass don`t impl")
         }
     }
 }
