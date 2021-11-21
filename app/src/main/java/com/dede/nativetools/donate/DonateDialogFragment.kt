@@ -2,7 +2,6 @@ package com.dede.nativetools.donate
 
 import android.Manifest
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
@@ -48,8 +47,8 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
         binding.ivWxpay.setOnClickListener {
             toast(R.string.toast_wx_payment_tip)
         }
-        binding.ivWxpay.setOnLongClickListener(createOnLongClickSaveQrCodeListener(R.drawable.wx_payment_code))
-        binding.ivAlipay.setOnLongClickListener(createOnLongClickSaveQrCodeListener(R.drawable.alipay_payment_code))
+        binding.ivWxpay.setOnLongClickListener(createOnLongClickSaveQrCodeListener(R.drawable.layer_wx_payment_code))
+        binding.ivAlipay.setOnLongClickListener(createOnLongClickSaveQrCodeListener(R.drawable.layer_alipay_payment_code))
     }
 
     private fun createOnLongClickSaveQrCodeListener(@DrawableRes resId: Int): View.OnLongClickListener {
@@ -87,8 +86,8 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
     private suspend fun saveToAlbum(context: Context, @DrawableRes resId: Int): Uri? =
         withContext(Dispatchers.IO) {
             context.requireDrawable<Drawable>(resId)
-                .toBitmap(400, 400, Bitmap.Config.RGB_565)
-                .saveToAlbum(requireContext(), "QrCode_${resId}.jpeg", "Net Monitor")
+                .toBitmap()
+                .saveToAlbum(requireContext(), "QrCode_${resId}.jpeg", "Net Monitor", 50)
         }
 
 }
