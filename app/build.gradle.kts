@@ -85,7 +85,6 @@ dependencies {
     implementation(deps.androidx.browser)
 
     implementation(deps.free.reflection)
-    implementation(deps.airbnb.lottie)
     implementation(deps.viewbinding.property.delegate)
 
     debugImplementation(deps.squareup.leakcanary)

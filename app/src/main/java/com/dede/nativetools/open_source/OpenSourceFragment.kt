@@ -180,13 +180,6 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
                 "Make work with Android View Binding simpler.",
                 "https://github.com/kirich1409/ViewBindingPropertyDelegate",
                 R.drawable.ic_logo_github
-            ),
-            OpenSource(
-                "Lottie",
-                "airbnb",
-                "Lottie is a mobile library for Android and iOS that parses Adobe After Effects animations exported as json with Bodymovin and renders them natively on mobile!",
-                "http://airbnb.io/lottie",
-                R.drawable.layer_logo_lottie
             )
         )
     }
