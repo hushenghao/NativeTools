@@ -1,6 +1,6 @@
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.util.*
+import java.util.Properties
 
 val keystoreProperties = Properties().apply {
     rootProject.file("key.properties")
@@ -11,6 +11,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-parcelize")
+    id("com.diffplug.spotless")
 }
 
 android {
@@ -28,7 +29,7 @@ android {
 
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797
-        setProperty("archivesBaseName", "native_tools_${versionName}_${versionCode}")
+        setProperty("archivesBaseName", "native_tools_${versionName}_$versionCode")
     }
 
     signingConfigs {
@@ -91,6 +92,22 @@ dependencies {
 
     testImplementation(deps.junit)
     androidTestImplementation(deps.bundles.androidx.test)
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+    }
+    kotlin {
+        ktfmt()
+        ktlint()
+        diktat()
+        prettier()
+    }
+    kotlinGradle {
+        target("*.gradle.kts")
+        ktlint()
+    }
 }
 
 configurations.all {
