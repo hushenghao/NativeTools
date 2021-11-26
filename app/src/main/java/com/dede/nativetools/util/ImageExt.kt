@@ -32,24 +32,12 @@ private class OutputFileTaker(var file: File? = null)
  */
 fun File.copyToAlbum(context: Context, fileName: String, relativePath: String?): Uri? {
     if (!this.canRead() || !this.exists()) {
-        Log.w(TAG, "check: read error: $this")
+        Log.w(TAG, "check: read file error: $this")
         return null
     }
-    val resolver = context.contentResolver
-    val outputFile = OutputFileTaker()
-    val imageUri = resolver.insertMediaImage(fileName, relativePath, outputFile)
-    if (imageUri == null) {
-        Log.w(TAG, "insert: error: uri == null")
-        return null
+    return this.inputStream().use {
+        it.saveToAlbum(context, fileName, relativePath)
     }
-
-    (imageUri.outputStream(resolver) ?: return null).use { output ->
-        this.inputStream().use { input ->
-            input.copyTo(output)
-            imageUri.finishPending(context, resolver, outputFile.file)
-        }
-    }
-    return imageUri
 }
 
 /**

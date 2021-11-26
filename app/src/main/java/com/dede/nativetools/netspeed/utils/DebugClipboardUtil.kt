@@ -79,12 +79,12 @@ class DebugClipboardUtil : BroadcastReceiver() {
         var result: String? = null
         val text = intent.getStringExtra(EXTRA_TEXT)
         val base64 = intent.getStringExtra(EXTRA_BASE64)
-        if (text != null && text.isNotEmpty) {
+        if (text.isNotEmpty()) {
             result = text
-        } else if (base64 != null && base64.isNotEmpty) {
+        } else if (base64.isNotEmpty()) {
             result = base64.decodeBase64()
         }
-        if (result != null && result.isNotEmpty) {
+        if (result.isNotEmpty()) {
             context.copy(result)
             setResult(Activity.RESULT_OK, "set clipboard ok")
         } else {

@@ -11,13 +11,13 @@ import java.io.File
 private var currentProcessName: String = ""
 
 fun Context.getProcessName(): String {
-    if (currentProcessName.isNotEmpty) {
+    if (currentProcessName.isNotEmpty()) {
         return currentProcessName
     }
 
     val pid = Process.myPid()
     val processName = getProcessName(pid)
-    if (processName != null && processName.isNotEmpty) {
+    if (processName.isNotEmpty()) {
         currentProcessName = processName
     } else {
         val activityManager = this.requireSystemService<ActivityManager>()
@@ -41,7 +41,7 @@ private fun getProcessName(pid: Int): String? {
 
     file.bufferedReader().use { reader ->
         var str = reader.readLine()
-        if (str.isNotEmpty) {
+        if (str.isNotEmpty()) {
             str = str.trim { it <= ' ' }
         }
         return str
@@ -51,7 +51,7 @@ private fun getProcessName(pid: Int): String? {
 fun Context.isMainProcess(): Boolean {
     val mainProcessName = this.packageName
     val currentProcessName = getProcessName()
-    return mainProcessName.isNotEmpty &&
-            currentProcessName.isNotEmpty &&
+    return mainProcessName.isNotEmpty() &&
+            currentProcessName.isNotEmpty() &&
             mainProcessName == currentProcessName
 }

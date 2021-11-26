@@ -104,7 +104,7 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
             }
             itemView.setOnClickListener {
                 val url = openSource.url
-                if (url != null && url.isNotEmpty) {
+                if (url.isNotEmpty()) {
                     it.context.browse(url)
                 }
             }
@@ -118,14 +118,14 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
                 when (menuItem.itemId) {
                     R.id.action_copy -> {
                         val url = openSource.url
-                        if (url != null && url.isNotEmpty) {
+                        if (url.isNotEmpty()) {
                             context.copy(url)
                             context.toast(R.string.toast_copyed)
                         }
                     }
                     R.id.action_open -> {
                         val url = openSource.url
-                        if (url != null && url.isNotEmpty) {
+                        if (url.isNotEmpty()) {
                             context.browse(url)
                         }
                     }

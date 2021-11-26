@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_REFERENCE", "INVISIBLE_MEMBER")
+
 package com.dede.nativetools.util
 
 import android.os.Build
@@ -5,20 +7,31 @@ import android.text.Spanned
 import android.text.TextUtils
 import android.util.Base64
 import androidx.core.text.HtmlCompat
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
-
-fun String?.safeInt(default: Int): Int {
-    if (this == null) return default
-    return runCatching(String::toInt).onFailure(Throwable::printStackTrace).getOrDefault(default)
-}
 
 fun String?.fromHtml(): Spanned? {
     return HtmlCompat.fromHtml(this ?: return null, HtmlCompat.FROM_HTML_MODE_LEGACY)
 }
 
-inline val String?.isEmpty: Boolean get() = TextUtils.isEmpty(this)
+@OptIn(ExperimentalContracts::class)
+@kotlin.internal.InlineOnly
+inline fun String?.isEmpty(): Boolean {
+    contract {
+        returns(false) implies (this@isEmpty != null)
+    }
+    return TextUtils.isEmpty(this)
+}
 
-inline val String?.isNotEmpty: Boolean get() = !TextUtils.isEmpty(this)
+@OptIn(ExperimentalContracts::class)
+@kotlin.internal.InlineOnly
+inline fun String?.isNotEmpty(): Boolean {
+    contract {
+        returns(true) implies (this@isNotEmpty != null)
+    }
+    return !TextUtils.isEmpty(this)
+}
 
 fun Pair<String, String>.splicing(): String = this.first + this.second
 
