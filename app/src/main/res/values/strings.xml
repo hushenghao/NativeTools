@@ -119,4 +119,5 @@
     <string name="toast_open_battery_optimization">请找到“网速指示器”，并手动开启电池优化</string>
     <string name="action_copy_link">复制链接</string>
     <string name="action_open_link">查看</string>
+    <string name="label_android" translatable="false">Android</string>
 </resources>

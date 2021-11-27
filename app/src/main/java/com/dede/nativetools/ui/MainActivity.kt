@@ -3,7 +3,9 @@ package com.dede.nativetools.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
@@ -17,13 +19,16 @@ import com.dede.nativetools.netspeed.NetSpeedService
 import com.dede.nativetools.util.extra
 import com.dede.nativetools.util.navController
 import com.dede.nativetools.util.setNightMode
+import com.dede.nativetools.util.setupWithNavController
 import com.google.android.material.navigation.NavigationBarView
+import com.google.android.material.navigation.NavigationView
 
 /**
  * Main
  */
-class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener,
-    NavController.OnDestinationChangedListener {
+class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
+    NavigationBarView.OnItemSelectedListener,
+    NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
         private const val EXTRA_TOGGLE = "extra_toggle"
@@ -35,6 +40,12 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val option =
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        val decorView = window.decorView
+        val visibility: Int = decorView.systemUiVisibility
+        decorView.systemUiVisibility = visibility or option
+
         val isToggle = intent.extra(EXTRA_TOGGLE, false)
         if (isToggle) {
             NetSpeedService.toggle(this)
@@ -50,8 +61,22 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
             .attach(supportFragmentManager.findFragmentById(R.id.nav_host_fragment))
         val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds).build()
         setupActionBarWithNavController(this, navController, appBarConfiguration)
-        setupWithNavController(binding.bottomNavigationView, navController)
-        binding.bottomNavigationView.setOnItemSelectedListener(this)
+        // sw320dp
+        binding.bottomNavigationView?.let {
+            setupWithNavController(it, navController)
+            it.setOnItemSelectedListener(this)
+        }
+        // sw600dp
+        binding.navigationRailView?.let {
+            setupWithNavController(it, navController)
+            it.setOnItemSelectedListener(this)
+        }
+        //sw720dp
+        binding.navigationView?.let {
+            setupWithNavController(it, navController)
+            it.setNavigationItemSelectedListener(this)
+        }
+
         navController.addOnDestinationChangedListener(this)
 
         navController.handleDeepLink(intent)
@@ -74,13 +99,14 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         if (destination is DialogFragmentNavigator.Destination) {
             return
         }
+        val motionLayout = binding.root as? MotionLayout ?: return
         if (topLevelDestinationIds.contains(destination.id)) {
-            if (binding.motionLayout.progress != 0f) {
-                binding.motionLayout.transitionToStart()
+            if (motionLayout.progress != 0f) {
+                motionLayout.transitionToStart()
             }
         } else {
-            if (binding.motionLayout.progress != 100f) {
-                binding.motionLayout.transitionToEnd()
+            if (motionLayout.progress != 100f) {
+                motionLayout.transitionToEnd()
             }
         }
     }

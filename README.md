@@ -19,8 +19,7 @@
 
 ## 应用截图
 
-<img height="500px" src="docs/images/screenshot_1.png"/> <img height="500px" src="docs/images/screenshot_2.png"/> 
-<img height="500px" src="docs/images/screenshot_3.png"/> <img height="500px" src="docs/images/screenshot_4.png"/>
+![screenshot](docs/images/screenshot.png)
 
 ## 应用下载
 
