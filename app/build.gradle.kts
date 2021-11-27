@@ -1,6 +1,6 @@
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.util.*
+import java.util.Properties
 
 val keystoreProperties = Properties().apply {
     rootProject.file("key.properties")
@@ -11,6 +11,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-parcelize")
+    id("com.diffplug.spotless")
 }
 
 android {
@@ -20,15 +21,15 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 38
-        versionName = "3.0.0"
+        versionCode = 40
+        versionName = "3.1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(listOf("zh-rCN", "zh-rHK", "ja-rJP", "en-rUS"))
 
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797
-        setProperty("archivesBaseName", "native_tools_${versionName}_${versionCode}")
+        setProperty("archivesBaseName", "native_tools_${versionName}_$versionCode")
     }
 
     signingConfigs {
@@ -70,6 +71,7 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     }
 }
 
@@ -85,13 +87,28 @@ dependencies {
     implementation(deps.androidx.browser)
 
     implementation(deps.free.reflection)
-    implementation(deps.airbnb.lottie)
     implementation(deps.viewbinding.property.delegate)
 
     debugImplementation(deps.squareup.leakcanary)
 
     testImplementation(deps.junit)
     androidTestImplementation(deps.bundles.androidx.test)
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+    }
+    kotlin {
+        ktfmt()
+        ktlint()
+        diktat()
+        prettier()
+    }
+    kotlinGradle {
+        target("*.gradle.kts")
+        ktlint()
+    }
 }
 
 configurations.all {
@@ -109,8 +126,9 @@ configurations.all {
 }
 
 tasks.register<Exec>("pgyer") {
-    val apiKey = keystoreProperties["pgyer.api_key"]
-        ?: throw IllegalArgumentException("pgyer.api_key not found")
+    val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
+        "pgyer.api_key not found"
+    }
 
     val assemble = tasks.named("assembleRelease").get()
     dependsOn("clean", assemble)

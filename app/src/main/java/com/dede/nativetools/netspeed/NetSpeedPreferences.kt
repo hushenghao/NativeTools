@@ -3,7 +3,6 @@ package com.dede.nativetools.netspeed
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultConfiguration
 import com.dede.nativetools.util.get
 import com.dede.nativetools.util.globalPreferences
-import com.dede.nativetools.util.safeInt
 import com.dede.nativetools.util.set
 
 /**
@@ -57,7 +56,7 @@ object NetSpeedPreferences {
         get() = globalPreferences.get(
             KEY_NET_SPEED_INTERVAL,
             DEFAULT_INTERVAL.toString()
-        ).safeInt(defaultConfiguration.interval)
+        ).toIntOrNull() ?: defaultConfiguration.interval
 
     val mode: String
         get() = globalPreferences.get(KEY_NET_SPEED_MODE, defaultConfiguration.mode)

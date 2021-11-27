@@ -19,8 +19,7 @@
 
 ## 应用截图
 
-<img height="500px" src="docs/images/screenshot_1.png"/> <img height="500px" src="docs/images/screenshot_2.png"/> 
-<img height="500px" src="docs/images/screenshot_3.png"/> <img height="500px" src="docs/images/screenshot_4.png"/>
+![screenshot](docs/images/screenshot.png)
 
 ## 应用下载
 
@@ -31,4 +30,4 @@
 Email：dede.hu@qq.com
 
 ## 捐赠
-<img height="150px" src="app/src/main/res/drawable-xhdpi/alipay_payment_code.webp"/> <img height="140px" src="app/src/main/res/drawable-xhdpi/wx_payment_code.webp" style="border:5px solid white" />
+<img height="150px" src="docs/images/qrcode_alipay.jpeg"/> <img height="150px" src="docs/images/qrcode_wx.jpeg" />

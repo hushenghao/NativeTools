@@ -3,12 +3,9 @@ package com.dede.nativetools.util
 import android.content.ComponentName
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.browser.customtabs.*
-import androidx.core.graphics.drawable.toBitmap
-import com.google.android.material.R
 import com.google.android.material.color.MaterialColors
 
 /**
@@ -73,12 +70,7 @@ object ChromeTabsBrowser {
             .setToolbarColor(color)
             .build()
 
-        val backBt = context.requireDrawable<Drawable>(R.drawable.abc_ic_ab_back_material).let {
-            it.setTint(Color.WHITE)
-            it.toBitmap()
-        }
         val builder = CustomTabsIntent.Builder()
-            .setCloseButtonIcon(backBt)
             .setColorScheme(colorScheme)
             .setDefaultColorSchemeParams(params)
         val session = customTabsSession

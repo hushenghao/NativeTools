@@ -51,10 +51,8 @@ class OtherFragment : PreferenceFragmentCompat(),
                             Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
                             "package:${requireContext().packageName}"
                         )
-                        activityResultLauncherCompat.launch(intent) { result ->
-                            //if (result.resultCode == Activity.RESULT_OK) {
+                        activityResultLauncherCompat.launch(intent) { _ ->
                             checkIgnoreBatteryOptimize()
-                            //}
                         }
                     } else {
                         val intent =

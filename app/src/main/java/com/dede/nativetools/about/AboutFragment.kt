@@ -157,7 +157,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 requireContext().share(R.string.share_text)
             }
             R.id.action_get_beta -> {
-                requireContext().browse(getString(R.string.url_pgyer))
+                requireContext().browse(R.string.url_pgyer)
             }
             R.id.action_rate -> {
                 requireContext().market(requireContext().packageName)

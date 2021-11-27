@@ -21,7 +21,7 @@
     <item
         android:id="@+id/action_rate"
         android:enabled="true"
-        android:icon="@drawable/ic_outline_star_border_24"
+        android:icon="@drawable/ic_outline_thumb_up_24"
         android:title="@string/action_rate"
         app:showAsAction="ifRoom" />
     <item
