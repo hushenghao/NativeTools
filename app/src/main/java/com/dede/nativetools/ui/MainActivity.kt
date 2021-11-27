@@ -11,7 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI.*
+import androidx.navigation.ui.NavigationUI
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
@@ -20,7 +20,6 @@ import com.dede.nativetools.netspeed.NetSpeedService
 import com.dede.nativetools.util.extra
 import com.dede.nativetools.util.navController
 import com.dede.nativetools.util.setNightMode
-import com.dede.nativetools.util.setupWithNavController
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 
@@ -61,20 +60,20 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         FragmentTransitionManager()
             .attach(supportFragmentManager.findFragmentById(R.id.nav_host_fragment))
         val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds).build()
-        setupActionBarWithNavController(this, navController, appBarConfiguration)
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
         // sw320dp
         binding.bottomNavigationView?.let {
-            setupWithNavController(it, navController)
+            NavigationUI.setupWithNavController(it, navController)
             it.setOnItemSelectedListener(this)
         }
         // sw600dp
         binding.navigationRailView?.let {
-            setupWithNavController(it, navController)
+            NavigationUI.setupWithNavController(it, navController)
             it.setOnItemSelectedListener(this)
         }
         //sw720dp
         binding.navigationView?.let {
-            setupWithNavController(it, navController)
+            NavigationUI.setupWithNavController(it, navController)
             it.setNavigationItemSelectedListener(this)
         }
 
@@ -116,7 +115,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         if (item.itemId == navController.currentDestination?.id) {
             return false
         }
-        return onNavDestinationSelected(item, navController)
+        return NavigationUI.onNavDestinationSelected(item, navController)
     }
 
 }

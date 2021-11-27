@@ -16,8 +16,8 @@ androidx-lifecycle-livedata-core-ktx = "androidx.lifecycle:lifecycle-livedata-co
 androidx-lifecycle-runtime-ktx = "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
 androidx-lifecycle-viewmodel-ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
 androidx-preference-ktx = "androidx.preference:preference-ktx:1.1.1"
-androidx-navigation-ui-ktx = "androidx.navigation:navigation-ui-ktx:2.3.5"
-androidx-navigation-fragment-ktx = "androidx.navigation:navigation-fragment-ktx:2.3.5"
+androidx-navigation-ui-ktx = "androidx.navigation:navigation-ui-ktx:2.4.0-beta02"
+androidx-navigation-fragment-ktx = "androidx.navigation:navigation-fragment-ktx:2.4.0-beta02"
 androidx-browser = "androidx.browser:browser:1.4.0"
 google-material = "com.google.android.material:material:1.5.0-beta01"
 
