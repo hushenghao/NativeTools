@@ -69,6 +69,7 @@ fun Context.assets(fileName: String): InputStream {
     return assets.open(fileName)
 }
 
+@Suppress("UNCHECKED_CAST")
 fun <T : Drawable> Context.requireDrawable(@DrawableRes drawableId: Int): T {
     return checkNotNull(AppCompatResources.getDrawable(this, drawableId) as T)
 }

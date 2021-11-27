@@ -1,4 +1,5 @@
 @file:JvmName("IntentKt")
+@file:Suppress("INVISIBLE_REFERENCE", "INVISIBLE_MEMBER")
 
 package com.dede.nativetools.util
 
@@ -74,6 +75,7 @@ fun Intent.setData(uri: String): Intent = setData(Uri.parse(uri))
 fun Intent.toChooser(@StringRes titleId: Int): Intent =
     Intent.createChooser(this, globalContext.getString(titleId))
 
+@kotlin.internal.InlineOnly
 inline fun Intent.launchActivity(context: Context) = context.launchActivity(this)
 
 fun Intent.toPendingActivity(context: Context, flags: Int): PendingIntent =
