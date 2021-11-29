@@ -20,6 +20,7 @@ import com.dede.nativetools.netspeed.NetSpeedService
 import com.dede.nativetools.util.extra
 import com.dede.nativetools.util.navController
 import com.dede.nativetools.util.setNightMode
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 
@@ -57,6 +58,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setNightMode(NetSpeedPreferences.isNightMode)
         setSupportActionBar(binding.toolbar)
 
+        val color = MaterialColors.getColor(this, R.attr.colorSurface, Color.WHITE)
+        binding.navHostFragment.setBackgroundColor(color)
         FragmentTransitionManager()
             .attach(supportFragmentManager.findFragmentById(R.id.nav_host_fragment))
         val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds).build()
