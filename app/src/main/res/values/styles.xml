@@ -7,11 +7,12 @@
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowBackgroundFallback" tools:targetApi="n">@drawable/layer_window_bg</item>
-        <item name="android:windowBackground">@null</item>
+        <item name="android:windowBackgroundFallback" tools:targetApi="n">
+            @drawable/layer_window_bg
+        </item>
 
         <item name="colorPrimary">@color/primaryColor</item>
-<!--        <item name="colorPrimaryDark">@color/primaryDarkColor</item>-->
+        <!-- <item name="colorPrimaryDark">@color/primaryDarkColor</item> -->
         <item name="colorSecondary">@color/secondaryColor</item>
 
         <item name="colorOnPrimary">@color/primaryColor</item>

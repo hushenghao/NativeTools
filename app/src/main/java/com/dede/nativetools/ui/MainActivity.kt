@@ -60,6 +60,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         val color = MaterialColors.getColor(this, R.attr.colorSurface, Color.WHITE)
         binding.navHostFragment.setBackgroundColor(color)
+        window.setBackgroundDrawable(null)
+
         FragmentTransitionManager()
             .attach(supportFragmentManager.findFragmentById(R.id.nav_host_fragment))
         val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds).build()
