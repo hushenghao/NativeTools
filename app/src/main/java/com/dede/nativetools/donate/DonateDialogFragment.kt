@@ -87,7 +87,7 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
         withContext(Dispatchers.IO) {
             context.requireDrawable<Drawable>(resId)
                 .toBitmap()
-                .saveToAlbum(requireContext(), "QrCode_${resId}.jpeg", "Net Monitor", 50)
+                .saveToAlbum(requireContext(), "QrCode_${resId}.jpeg", "Net Monitor")
         }
 
 }

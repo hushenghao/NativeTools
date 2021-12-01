@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -22,23 +23,22 @@ import com.dede.nativetools.util.*
 class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
 
     private val binding by viewBinding(FragmentOpenSourceBinding::bind)
+    private val viewModel by viewModels<OpenSourceViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val list = loadOpenSource()
-        binding.recyclerView.adapter = Adapter(list)
+        val adapter = Adapter()
+        binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(ItemDecoration())
-        ItemTouchHelper(ItemTouchHelperCallback(list)).attachToRecyclerView(binding.recyclerView)
+        val itemTouchSwapCallback = ItemTouchSwapCallback(adapter::onSwap)
+        val itemTouchHelper = ItemTouchHelper(itemTouchSwapCallback)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+
+        viewModel.openSourceList.observe(this, adapter::setData)
     }
 
-    private class ItemTouchHelperCallback(private val list: MutableList<OpenSource>) :
-        ItemTouchHelper.Callback() {
-        override fun getMovementFlags(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder
-        ): Int {
-            return makeMovementFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0)
-        }
+    private class ItemTouchSwapCallback(private val onSwap: (from: Int, to: Int) -> Boolean) :
+        ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
 
         override fun onMove(
             recyclerView: RecyclerView,
@@ -46,10 +46,8 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
             target: RecyclerView.ViewHolder
         ): Boolean {
             val from = viewHolder.bindingAdapterPosition
-            val to = target.absoluteAdapterPosition
-            list.add(to, list.removeAt(from))
-            recyclerView.adapter?.notifyItemMoved(from, to)
-            return true
+            val to = target.bindingAdapterPosition
+            return onSwap(from, to)
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -70,7 +68,25 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         }
     }
 
-    private class Adapter(val list: List<OpenSource>) : RecyclerView.Adapter<ViewHolder>() {
+    private class Adapter : RecyclerView.Adapter<ViewHolder>() {
+
+        private val list = mutableListOf<OpenSource>()
+
+        fun setData(data: List<OpenSource>) {
+            val start = this.list.size
+            this.list.addAll(data)
+            notifyItemRangeInserted(start, list.size - 1)
+        }
+
+        fun onSwap(from: Int, to: Int): Boolean {
+            val range = 0 until list.size
+            if (from !in range || to !in range)
+                return false
+            list.add(to, list.removeAt(from))
+            notifyItemMoved(from, to)
+            return true
+        }
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_open_source, parent, false)
@@ -117,16 +133,19 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.action_copy -> {
-                        val url = openSource.url
-                        if (url.isNotEmpty()) {
-                            context.copy(url)
+                        if (openSource.url.isNotEmpty()) {
+                            context.copy(openSource.url)
                             context.toast(R.string.toast_copyed)
                         }
                     }
                     R.id.action_open -> {
-                        val url = openSource.url
-                        if (url.isNotEmpty()) {
-                            context.browse(url)
+                        if (openSource.url.isNotEmpty()) {
+                            context.browse(openSource.url)
+                        }
+                    }
+                    R.id.action_license -> {
+                        if (openSource.license.isNotEmpty()) {
+                            context.browse(openSource.license)
                         }
                     }
                 }
@@ -134,53 +153,5 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
             }
             popupMenu.show()
         }
-    }
-
-    private class OpenSource(
-        val name: String,
-        val author: String?,
-        val desc: String,
-        val url: String?,
-        val foregroundLogo: Int
-    )
-
-    private fun loadOpenSource(): MutableList<OpenSource> {
-        return arrayListOf(
-            OpenSource(
-                "Kotlin",
-                "JetBrains",
-                "Write better Android apps faster with Kotlin.",
-                "https://developer.android.google.cn/kotlin",
-                R.drawable.layer_logo_kotlin_for_android
-            ),
-            OpenSource(
-                "Jetpack",
-                "Google",
-                "Jetpack is a suite of libraries to help developers follow best practices, reduce boilerplate code, and write code that works consistently across Android versions and devices so that developers can focus on the code they care about.",
-                "https://developer.android.google.cn/jetpack",
-                R.drawable.layer_logo_jetpack
-            ),
-            OpenSource(
-                "Material Design",
-                "Google",
-                "Material is a design system – backed by open-source code – that helps teams build high-quality digital experiences.",
-                "https://material.io/",
-                R.drawable.layer_logo_material
-            ),
-            OpenSource(
-                "FreeReflection",
-                "tiann",
-                "FreeReflection is a library that lets you use reflection without any restriction above Android P (includes Q and R).",
-                "https://github.com/tiann/FreeReflection",
-                R.drawable.ic_logo_github
-            ),
-            OpenSource(
-                "ViewBindingPropertyDelegate",
-                "kirich1409",
-                "Make work with Android View Binding simpler.",
-                "https://github.com/kirich1409/ViewBindingPropertyDelegate",
-                R.drawable.ic_logo_github
-            )
-        )
     }
 }
