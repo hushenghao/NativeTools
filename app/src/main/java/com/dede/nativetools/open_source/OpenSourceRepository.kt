@@ -43,7 +43,7 @@ class OpenSourceRepository {
             ),
             OpenSource(
                 "FreeReflection",
-                "tiann",
+                "weishu",
                 "FreeReflection is a library that lets you use reflection without any restriction above Android P (includes Q and R).",
                 "https://github.com/tiann/FreeReflection",
                 R.drawable.ic_logo_github,
@@ -51,10 +51,26 @@ class OpenSourceRepository {
             ),
             OpenSource(
                 "ViewBindingPropertyDelegate",
-                "kirich1409",
+                "Android Broadcast",
                 "Make work with Android View Binding simpler.",
-                "https://github.com/kirich1409/ViewBindingPropertyDelegate",
+                "https://github.com/androidbroadcast/ViewBindingPropertyDelegate",
                 R.drawable.ic_logo_github,
+                "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            ),
+            OpenSource(
+                "LeakCanary",
+                "Square",
+                "LeakCanary is a memory leak detection library for Android.",
+                "https://square.github.io/leakcanary",
+                R.drawable.ic_logo_leak_canary,
+                "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            ),
+            OpenSource(
+                "Spotless",
+                "DiffPlug",
+                "Keep your code spotless.",
+                "https://github.com/diffplug/spotless",
+                R.drawable.ic_logo_spotless,
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
             )
         )

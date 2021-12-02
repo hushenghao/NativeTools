@@ -17,10 +17,10 @@
             android:layout_height="0dp"
             android:layout_marginVertical="2dp"
             android:contentDescription="@null"
-            app:layout_constraintBottom_toBottomOf="@id/tv_project_name"
+            app:layout_constraintBottom_toBottomOf="@id/tv_author_name"
             app:layout_constraintDimensionRatio="W,1:1"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_project_name"
+            app:layout_constraintTop_toTopOf="@id/tv_author_name"
             tools:src="@drawable/layer_logo_kotlin_for_android" />
 
         <TextView
@@ -30,9 +30,8 @@
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:textAppearance="?attr/textAppearanceListItem"
-            android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/iv_project_logo"
             app:layout_constraintRight_toLeftOf="@id/tv_author_name"
             app:layout_constraintTop_toTopOf="parent"
@@ -42,8 +41,8 @@
             android:id="@+id/tv_author_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/tv_project_name"
-            android:textAppearance="?attr/textAppearanceListItemSmall"
+            android:textAppearance="?attr/textAppearanceListItemSecondary"
+            app:layout_constraintBottom_toBottomOf="@id/tv_project_name"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/last_names" />
