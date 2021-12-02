@@ -1,6 +1,7 @@
 package com.dede.nativetools.open_source
 
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -104,12 +105,11 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
 
     private class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ItemOpenSourceBinding.bind(view)
-        private val ovalOutlineProvider = ViewOvalOutlineProvider(true)
 
         fun bindViewData(openSource: OpenSource) {
-            binding.ivProjectLogo.apply {
-                setImageResource(openSource.foregroundLogo)
-                outlineProvider = ovalOutlineProvider
+            itemView.context.requireDrawable<Drawable>(openSource.foregroundLogo).apply {
+                setBounds(0, 0, 18.dp, 18.dp)
+                binding.tvProjectName.setCompoundDrawables(this, null, null, null)
             }
             binding.tvProjectName.text = openSource.name
             binding.tvAuthorName.text = openSource.author

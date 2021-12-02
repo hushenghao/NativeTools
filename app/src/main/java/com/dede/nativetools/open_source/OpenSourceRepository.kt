@@ -22,7 +22,7 @@ class OpenSourceRepository {
                 "JetBrains",
                 "Write better Android apps faster with Kotlin.",
                 "https://developer.android.google.cn/kotlin",
-                R.drawable.layer_logo_kotlin_for_android,
+                R.drawable.insert_logo_kotlin_for_android,
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
             ),
             OpenSource(
@@ -30,7 +30,7 @@ class OpenSourceRepository {
                 "Google",
                 "Jetpack is a suite of libraries to help developers follow best practices, reduce boilerplate code, and write code that works consistently across Android versions and devices so that developers can focus on the code they care about.",
                 "https://developer.android.google.cn/jetpack",
-                R.drawable.layer_logo_jetpack,
+                R.drawable.ic_logo_jetpack,
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
             ),
             OpenSource(
@@ -38,7 +38,7 @@ class OpenSourceRepository {
                 "Google",
                 "Make personal devices feel personal with Material Design 3, Google’s most expressive and adaptable design system yet. Coming first to Android 12.",
                 "https://m3.material.io",
-                R.drawable.layer_logo_material3,
+                R.drawable.ic_logo_material3,
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
             ),
             OpenSource(

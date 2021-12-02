@@ -2,6 +2,7 @@
 <resources>
     <color name="maskBgColor">#00796B</color>
     <color name="githubTint">#000</color>
+    <color name="tintMaterial">#1F1F1F</color>
 
     <!-- https://material.io/tools/color -->
     <color name="primaryColor">#00796b</color>
