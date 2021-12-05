@@ -48,7 +48,7 @@
     <string name="chooser_label_market">Select store</string>
     <string name="label_open_source">Open Source</string>
     <string name="action_share">Share</string>
-    <string name="share_text">I found a useful gadget \"Net Monitor\". Go and download it! <xliff:g id="app_store_detail">https://play.google.com/store/apps/details?id=com.dede.nativetools</xliff:g></string>
+    <string name="share_text">I found a useful gadget \"Net Monitor\". Go and download it! \nCoolApk: https://www.coolapk.com/apk/com.dede.nativetools\nPlayStore: https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
     <string name="toast_copyed">Copied</string>
     <string name="summary_night_mode_follow_system">Follow System</string>
     <string name="label_night_mode">Night Mode</string>

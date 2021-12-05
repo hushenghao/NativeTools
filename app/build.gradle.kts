@@ -1,6 +1,6 @@
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.util.Properties
+import java.util.*
 
 val keystoreProperties = Properties().apply {
     rootProject.file("key.properties")
@@ -21,11 +21,20 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 40
-        versionName = "3.1.0"
+        versionCode = 41
+        versionName = "3.2.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        resourceConfigurations.addAll(listOf("zh-rCN", "zh-rHK", "ja-rJP", "en-rUS"))
+        resourceConfigurations.addAll(
+            listOf(
+                "zh-rCN",
+                "zh-rHK",
+                "ja-rJP",
+                "en-rUS",
+                "ko-rKR",
+                "ru-rRU"
+            )
+        )
 
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797

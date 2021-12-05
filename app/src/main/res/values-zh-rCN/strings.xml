@@ -47,7 +47,7 @@
     <string name="label_open_source">开源相关</string>
     <string name="action_share">分享</string>
 
-    <string name="share_text">发现了一个好用的小工具“网速指示器”快去下载吧！<xliff:g id="app_store_detail">https://www.coolapk.com/apk/com.dede.nativetools</xliff:g></string>
+    <string name="share_text">发现了一个好用的小工具“网速指示器”快去下载吧！\nCoolApk：https://www.coolapk.com/apk/com.dede.nativetools\nPlayStore：https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
     <string name="action_feedback">问题反馈</string>
     <string name="toast_copyed">已复制</string>
     <string name="toast_wx_payment_tip">微信付款码请长按保存图片后扫描</string>
