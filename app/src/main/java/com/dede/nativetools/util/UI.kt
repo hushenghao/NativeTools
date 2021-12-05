@@ -2,6 +2,7 @@ package com.dede.nativetools.util
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.res.Resources
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import androidx.annotation.StringRes
@@ -14,7 +15,7 @@ import kotlin.math.roundToInt
 
 
 fun displayMetrics(): DisplayMetrics {
-    return globalContext.resources.displayMetrics
+    return Resources.getSystem().displayMetrics
 }
 
 fun setNightMode(enable: Boolean) {

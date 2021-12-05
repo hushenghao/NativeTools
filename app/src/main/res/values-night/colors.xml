@@ -1,6 +1,7 @@
 <resources>
     <color name="maskBgColor">#353535</color>
     <color name="githubTint">#F0F6FC</color>
+    <color name="tintMaterial">#8F8F8F</color>
 
     <color name="primaryColor">#212121</color>
     <color name="primaryLightColor">#484848</color>

@@ -1,5 +1,6 @@
 package com.dede.nativetools.about
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -11,11 +12,13 @@ import androidx.lifecycle.ViewModel
  */
 class AboutViewModel : ViewModel() {
 
-    val followCount = MutableLiveData(0)
+    private val _followCount = MutableLiveData(0)
+
+    val followCount: LiveData<Int> = _followCount
 
     fun addFollowCount() {
-        val count = followCount.value ?: 0
-        followCount.value = count + 1
+        val count = _followCount.value ?: 0
+        _followCount.value = count + 1
     }
 
 }

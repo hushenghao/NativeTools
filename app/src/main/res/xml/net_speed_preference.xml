@@ -15,13 +15,13 @@
             android:summaryOn="@string/switch_on"
             android:title="@string/label_net_speed"
             app:defaultValue="false"
-            app:icon="@drawable/ic_baseline_speed_24" />
+            app:icon="@drawable/ic_baseline_speed" />
 
         <SwitchPreferenceCompat
             android:key="net_speed_auto_start"
             android:title="@string/label_net_speed_auto_start"
             app:defaultValue="false"
-            app:icon="@drawable/ic_outline_restart_alt_24"
+            app:icon="@drawable/ic_outline_restart_alt"
             app:summary="@string/summary_net_speed_auto_start" />
 
         <DropDownPreference
@@ -29,7 +29,7 @@
             app:defaultValue="1000"
             app:entries="@array/net_speed_interval"
             app:entryValues="@array/net_speed_interval_value"
-            app:icon="@drawable/ic_baseline_timer_24"
+            app:icon="@drawable/ic_baseline_timer"
             app:title="@string/label_net_speed_interval"
             app:useSimpleSummaryProvider="true" />
 
@@ -38,7 +38,7 @@
             app:defaultValue="0"
             app:entries="@array/net_speed_mode"
             app:entryValues="@array/net_speed_mode_value"
-            app:icon="@drawable/ic_outline_menu_open_24"
+            app:icon="@drawable/ic_outline_menu_open"
             app:title="@string/label_net_speed_mode"
             app:useSimpleSummaryProvider="true" />
 
@@ -47,7 +47,7 @@
             android:key="net_speed_scale"
             android:max="115"
             android:title="@string/label_net_speed_icon_zoom"
-            app:icon="@drawable/ic_outline_zoom_out_24"
+            app:icon="@drawable/ic_outline_zoom_out"
             app:min="80"
             app:showSeekBarValue="true"
             app:summary="@string/summary_net_speed_scale" />
@@ -57,7 +57,7 @@
             app:defaultValue="0"
             app:entries="@array/net_speed_background"
             app:entryValues="@array/net_speed_background_value"
-            app:icon="@drawable/ic_outline_wallpaper_24"
+            app:icon="@drawable/ic_outline_wallpaper"
             app:title="@string/label_net_speed_background"
             app:useSimpleSummaryProvider="true" />
 
@@ -72,20 +72,20 @@
             android:key="net_speed_locked_hide"
             android:title="@string/label_net_speed_hide_lock_notification"
             app:defaultValue="true"
-            app:icon="@drawable/ic_outline_phonelink_lock_24"
+            app:icon="@drawable/ic_outline_phonelink_lock"
             app:summary="@string/summary_net_speed_hide_lock_notification"
             app:widgetLayout="@layout/override_preference_widget_switch_compat" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
-            app:icon="@drawable/ic_outline_notifications_off_24"
+            app:icon="@drawable/ic_outline_notifications_off"
             app:key="net_speed_hide_notification"
             app:summary="@string/summary_net_speed_hide_notification"
             app:title="@string/label_net_speed_hide_notification" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
-            app:icon="@drawable/ic_outline_data_usage_24"
+            app:icon="@drawable/ic_outline_data_usage"
             app:key="net_speed_usage"
             app:summary="@string/summary_net_speed_usage"
             app:title="@string/label_net_speed_usage" />
@@ -94,7 +94,7 @@
             android:key="net_speed_notify_clickable"
             android:title="@string/label_net_speed_notify_clickable"
             app:defaultValue="true"
-            app:icon="@drawable/ic_outline_touch_24"
+            app:icon="@drawable/ic_outline_touch"
             app:summary="@string/summary_net_speed_notify_clickable" />
 
         <SwitchPreferenceCompat

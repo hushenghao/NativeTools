@@ -1,6 +1,5 @@
 package com.dede.nativetools.netspeed.stats
 
-import android.annotation.SuppressLint
 import android.net.TrafficStats
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -18,7 +17,7 @@ class Android31NetStats : INetStats {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && supportWlan0
     }
 
-    @SuppressLint("NewApi")
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun getRxBytes(): Long {
         return INetStats.addIfSupported(
             TrafficStats.getMobileRxBytes(),
@@ -26,7 +25,7 @@ class Android31NetStats : INetStats {
         )
     }
 
-    @SuppressLint("NewApi")
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun getTxBytes(): Long {
         return INetStats.addIfSupported(
             TrafficStats.getMobileTxBytes(),

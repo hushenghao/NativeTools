@@ -6,6 +6,7 @@ import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -125,6 +126,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     }
 
     private fun ImageView.setTintColor(@ColorRes colorId: Int) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         val color = requireContext().getColor(colorId)
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(color))
         ImageViewCompat.setImageTintMode(this, PorterDuff.Mode.ADD)

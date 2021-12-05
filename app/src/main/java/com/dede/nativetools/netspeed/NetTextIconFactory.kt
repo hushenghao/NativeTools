@@ -1,12 +1,11 @@
 package com.dede.nativetools.netspeed
 
+import android.content.res.Resources
 import android.graphics.*
 import android.util.DisplayMetrics
 import android.util.Log
 import androidx.core.graphics.toXfermode
 import com.dede.nativetools.netspeed.utils.NetFormatter
-import com.dede.nativetools.util.displayMetrics
-import com.dede.nativetools.util.globalContext
 import com.dede.nativetools.util.splicing
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -31,12 +30,12 @@ object NetTextIconFactory {
 
     init {
         // android.R.dimen.status_bar_icon_size
-        val resources = globalContext.resources
+        val resources = Resources.getSystem()
         val id = resources.getIdentifier("status_bar_icon_size", "dimen", "android")
         val statusBarIconSize = id.runCatching(resources::getDimensionPixelSize)
             .onFailure(Throwable::printStackTrace)
             .getOrElse {
-                val dpi = displayMetrics().densityDpi
+                val dpi = resources.displayMetrics.densityDpi
                 when {
                     dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
                     dpi <= DisplayMetrics.DENSITY_HIGH -> 36 // hdpi

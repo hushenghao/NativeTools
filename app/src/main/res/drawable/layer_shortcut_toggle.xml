@@ -8,7 +8,7 @@
 
     <item>
         <inset
-            android:drawable="@drawable/ic_outline_toggle_on_24"
+            android:drawable="@drawable/ic_outline_toggle_on"
             android:inset="20%" />
     </item>
 </layer-list>
