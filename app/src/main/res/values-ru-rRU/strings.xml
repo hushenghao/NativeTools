@@ -63,4 +63,16 @@
     <string name="toast_open_battery_optimization">Пожалуйста, найдите \"сетевой указатель скорости\" и вручную включите оптимизацию батареи</string>
     <string name="action_copy_link">Копирование связи</string>
     <string name="action_open_link">провер</string>
+
+    <string-array name="net_speed_mode">
+        <item>Down</item>
+        <item>Up + Down</item>
+        <item>Up</item>
+    </string-array>
+    <string-array name="net_speed_background">
+        <item>без</item>
+        <item>кругл</item>
+        <item>прямоугольник</item>
+        <item>Эллиптический прямоугольник</item>
+    </string-array>
 </resources>
