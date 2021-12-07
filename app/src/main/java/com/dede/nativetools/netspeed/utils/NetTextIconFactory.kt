@@ -1,11 +1,11 @@
-package com.dede.nativetools.netspeed
+package com.dede.nativetools.netspeed.utils
 
 import android.content.res.Resources
 import android.graphics.*
 import android.util.DisplayMetrics
 import android.util.Log
 import androidx.core.graphics.toXfermode
-import com.dede.nativetools.netspeed.utils.NetFormatter
+import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.util.splicing
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -46,7 +46,7 @@ object NetTextIconFactory {
                 }
             }
         Log.i("NetTextIconFactory", "status_bar_icon_size: $statusBarIconSize")
-        this.iconSize = statusBarIconSize
+        iconSize = statusBarIconSize
     }
 
     private fun createBitmapInternal(size: Int, cache: Bitmap?): Bitmap {

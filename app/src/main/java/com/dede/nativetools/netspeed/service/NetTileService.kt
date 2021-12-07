@@ -1,4 +1,4 @@
-package com.dede.nativetools.netspeed
+package com.dede.nativetools.netspeed.service
 
 import android.graphics.drawable.Icon
 import android.os.Build
@@ -6,7 +6,10 @@ import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
 import com.dede.nativetools.R
+import com.dede.nativetools.netspeed.NetSpeedConfiguration
+import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.netspeed.utils.NetFormatter
+import com.dede.nativetools.netspeed.utils.NetSpeedCompute
 import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.newTask

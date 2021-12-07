@@ -1,4 +1,4 @@
-package com.dede.nativetools.netspeed
+package com.dede.nativetools.netspeed.service
 
 import android.app.*
 import android.content.Context
@@ -12,6 +12,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.dede.nativetools.R
+import com.dede.nativetools.netspeed.NetSpeedConfiguration
+import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
 import com.dede.nativetools.ui.MainActivity
@@ -25,7 +27,7 @@ object NetSpeedNotificationHelper {
     private const val KEY_NOTIFICATION_CHANNEL_VERSION = "notification_channel_version"
     private const val NOTIFICATION_CHANNEL_VERSION = 2
 
-    private const val CHANNEL_ID = "net_speed_${NOTIFICATION_CHANNEL_VERSION}"
+    private const val CHANNEL_ID = "net_speed_$NOTIFICATION_CHANNEL_VERSION"
 
     /**
      * 通知渠道版本号

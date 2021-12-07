@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.dede.nativetools.netspeed.NetSpeedPreferences
-import com.dede.nativetools.netspeed.NetSpeedService
+import com.dede.nativetools.netspeed.service.NetSpeedService
 
 class LauncherReceiver : BroadcastReceiver() {
 

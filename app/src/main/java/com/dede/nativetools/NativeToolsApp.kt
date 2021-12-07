@@ -3,7 +3,7 @@ package com.dede.nativetools
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import com.dede.nativetools.netspeed.NetSpeedNotificationHelper
+import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.google.android.material.color.DynamicColors
 import me.weishu.reflection.Reflection
 

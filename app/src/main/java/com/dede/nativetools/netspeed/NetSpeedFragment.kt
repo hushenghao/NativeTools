@@ -12,6 +12,9 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
+import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
+import com.dede.nativetools.netspeed.service.NetSpeedService
+import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.ui.SliderPreference
 import com.dede.nativetools.util.*

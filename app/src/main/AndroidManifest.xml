@@ -53,14 +53,14 @@
 
         <!-- https://developer.android.com/about/versions/12/behavior-changes-12#exported -->
         <service
-            android:name=".netspeed.NetSpeedService"
+            android:name=".netspeed.service.NetSpeedService"
             android:exported="false"
             android:icon="@drawable/ic_baseline_speed"
             android:label="@string/label_net_speed"
             android:process=":netspeed" />
 
         <service
-            android:name=".netspeed.NetTileService"
+            android:name=".netspeed.service.NetTileService"
             android:exported="true"
             android:icon="@drawable/ic_baseline_speed"
             android:label="@string/label_net_speed"
