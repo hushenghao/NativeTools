@@ -1,6 +1,6 @@
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.util.*
+import java.util.Properties
 
 val keystoreProperties = Properties().apply {
     rootProject.file("key.properties")
