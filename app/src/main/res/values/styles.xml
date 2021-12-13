@@ -1,6 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <dimen name="net_speed_icon_padding">5dp</dimen>
     <dimen name="percent_preference_icon_size">40dp</dimen>
 
     <!-- Base application theme. -->
@@ -37,11 +36,6 @@
 
     <style name="MaterialAlertDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
         <item name="colorPrimary">?attr/colorControlNormal</item>
-    </style>
-
-    <style name="ToolTipStyle" parent="Widget.Material3.Tooltip">
-        <item name="backgroundTint">@color/secondaryColor</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
     </style>
 
     <style name="ActionMenuStyle" parent="Widget.Material3.PopupMenu">

@@ -13,9 +13,7 @@
     <string name="label_net_speed_notify_clickable">通知をクリックして</string>
     <string name="label_net_speed_mode">表示モード</string>
     <string name="label_net_speed_auto_start">電源をオンにする</string>
-    <string name="label_net_speed_icon_zoom">アイコン文字スケーリング</string>
     <string name="label_net_speed_notify_quick_closeable">ショートカット閉鎖を通知する</string>
-    <string name="label_net_speed_background">アイコン背景</string>
     <string name="label_night_mode">ナイトモード</string>
     <string name="label_net_speed_usage">毎日と毎月の交通量を表示します</string>
     <string name="label_about">について</string>
@@ -24,7 +22,6 @@
     <string name="summary_net_speed_hide_lock_notification">ロック画面をロックする時、デフォルトで通知を隠すことができ(ありえ)て、もし無効な時にやっと設定して隠しロック画面をロックして通知します</string>
     <string name="summary_net_speed_notify_clickable">通知をクリックしてアプリの設定画面を開く</string>
     <string name="summary_net_speed_auto_start">システムに従ってフロントサービスを開始する</string>
-    <string name="summary_net_speed_scale">点線枠はステータスバーのアイコンの最大範囲</string>
     <string name="summary_net_speed_notify_quick_closeable">通信速度の通知に「off」ボタンを追加する</string>
     <string name="summary_night_mode_follow_system">システムに従う</string>
     <string name="summary_net_speed_usage">通知はモバイルデータとWLANトラフィックの合計使用量を示します</string>
@@ -64,12 +61,6 @@
         <item>アップロードするだけ</item>
     </string-array>
 
-    <string-array name="net_speed_background">
-        <item>無</item>
-        <item>丸い</item>
-        <item>角の丸い矩形</item>
-        <item>楕円の矩形</item>
-    </string-array>
     <string name="label_notification">通知</string>
     <string name="toast_saved">保存済み</string>
     <string name="label_home">トップページ</string>

@@ -23,7 +23,6 @@
     <string name="summary_net_speed">Display the current network speed in the status bar</string>
     <string name="summary_net_speed_hide_lock_notification">By default, the screen-lock notification is hidden. You need to set the screen-lock notification only when the screen-lock notification is invalid</string>
     <string name="summary_net_speed_notify_clickable">Click notification to open the application settings interface</string>
-    <string name="label_net_speed_icon_zoom">Icon text zoom</string>
 
     <string-array name="net_speed_mode">
         <item>Down</item>
@@ -35,14 +34,6 @@
     <string name="alert_title_notification_disable">Notification not enabled</string>
     <string name="alert_msg_notification_disable">If the notification is not enabled, the network speed indicator will not display normally</string>
     <string name="desc_net_speed_notify">The speed indicator needs to be displayed by notification</string>
-    <string name="summary_net_speed_scale">The dotted border is the maximum range of the status bar icon</string>
-    <string name="label_net_speed_background">Icon background</string>
-    <string-array name="net_speed_background">
-        <item>None</item>
-        <item>Circle</item>
-        <item>Square</item>
-        <item>Squircle</item>
-    </string-array>
     <string name="label_about">About</string>
     <string name="chooser_label_browse">Select browser to open</string>
     <string name="chooser_label_market">Select store</string>

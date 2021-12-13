@@ -13,9 +13,7 @@
     <string name="label_net_speed_notify_clickable">Уведомление может быть получено</string>
     <string name="label_net_speed_mode">Режим индикации.</string>
     <string name="label_net_speed_auto_start">включай</string>
-    <string name="label_net_speed_icon_zoom">Сокращение иконы</string>
     <string name="label_net_speed_notify_quick_closeable">Сообщите о закрытии</string>
-    <string name="label_net_speed_background">Фон иконы</string>
     <string name="label_night_mode">Ночной режим</string>
     <string name="label_net_speed_usage">Показывает ежедневное и ежемесячное использование трафика</string>
     <string name="label_about">о</string>
@@ -24,7 +22,6 @@
     <string name="summary_net_speed_hide_lock_notification">Закрытый экран по умолчанию скрывает уведомление, и только если оно не работает, оно должно быть установлено</string>
     <string name="summary_net_speed_notify_clickable">Нажмите на уведомление, чтобы открыть интерфейс приложения</string>
     <string name="summary_net_speed_auto_start">Следуйте за системой и активируйте службу регистрации</string>
-    <string name="summary_net_speed_scale">Мнимая боковая рамка представляет собой максимальный диапазон иконы столбца состояния</string>
     <string name="summary_net_speed_notify_quick_closeable">Добавьте кнопку выключения к уведомлению о скорости сети</string>
     <string name="summary_night_mode_follow_system">Система слежения.</string>
     <string name="summary_net_speed_usage">Уведомления показывают мобильные данные и суммарное использование потока WLAN</string>
@@ -68,11 +65,5 @@
         <item>Down</item>
         <item>Up + Down</item>
         <item>Up</item>
-    </string-array>
-    <string-array name="net_speed_background">
-        <item>без</item>
-        <item>кругл</item>
-        <item>прямоугольник</item>
-        <item>Эллиптический прямоугольник</item>
     </string-array>
 </resources>

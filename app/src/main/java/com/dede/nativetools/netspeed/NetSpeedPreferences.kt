@@ -17,22 +17,16 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_INTERVAL = "net_speed_interval"
     const val KEY_NET_SPEED_NOTIFY_CLICKABLE = "net_speed_notify_clickable"
     const val KEY_NET_SPEED_MODE = "net_speed_mode"
-    const val KEY_NET_SPEED_SCALE = "net_speed_scale"
     const val KEY_NET_SPEED_QUICK_CLOSEABLE = "net_speed_notify_quick_closeable"
-    const val KEY_NET_SPEED_BACKGROUND = "net_speed_background"
     const val KEY_NET_SPEED_USAGE = "net_speed_usage"
     const val KEY_NIGHT_MODE_TOGGLE = "v28_night_mode_toggle"
     const val KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION = "net_speed_locked_hide"
     const val KEY_NET_SPEED_HIDE_NOTIFICATION = "net_speed_hide_notification"
 
-    //const val KEY_OPS_DONT_ASK = "ops_dont_ask"
     private const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
     private const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
 
     const val DEFAULT_INTERVAL = 1000
-
-    private const val DEFAULT_SCALE_INT = 100
-    private const val SCALE_DIVISOR = 100f
 
     var status: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_STATUS, false)
@@ -43,10 +37,6 @@ object NetSpeedPreferences {
 
     val autoStart: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_AUTO_START, false)
-
-    //var dontAskOps: Boolean
-    //    get() = globalPreferences.get(KEY_OPS_DONT_ASK, false)
-    //    set(value) = globalPreferences.set(KEY_OPS_DONT_ASK, value)
 
     var dontAskNotify: Boolean
         get() = globalPreferences.get(KEY_NOTIFICATION_DONT_ASK, false)
@@ -60,19 +50,6 @@ object NetSpeedPreferences {
 
     val mode: String
         get() = globalPreferences.get(KEY_NET_SPEED_MODE, defaultConfiguration.mode)
-
-    val background: String
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_BACKGROUND,
-            NetSpeedConfiguration.BACKGROUND_NONE
-        )
-
-    val scale: Float
-        get() {
-            val scaleInt = globalPreferences
-                .get(KEY_NET_SPEED_SCALE, DEFAULT_SCALE_INT)
-            return scaleInt / SCALE_DIVISOR
-        }
 
     val notifyClickable: Boolean
         get() = globalPreferences.get(

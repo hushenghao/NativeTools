@@ -1,13 +1,11 @@
 package com.dede.nativetools.netspeed
 
 import android.content.*
-import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.graphics.drawable.toDrawable
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -16,7 +14,6 @@ import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
-import com.dede.nativetools.ui.SliderPreference
 import com.dede.nativetools.util.*
 
 /**
@@ -29,18 +26,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     companion object {
         private const val TAG = "NetSpeedFragment"
 
-        // 888M 931135488L
-        private const val MODE_ALL_BYTES = (2 shl 19) * 888L
-
-        // 88.8M 93113549L
-        private const val MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
     }
 
     private val configuration = NetSpeedConfiguration.initialize()
 
     private var netSpeedBinder: INetSpeedInterface? = null
 
-    private lateinit var scaleSliderPreference: SliderPreference
     private lateinit var statusSwitchPreference: SwitchPreferenceCompat
     private lateinit var usageSwitchPreference: SwitchPreferenceCompat
 
@@ -69,10 +60,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun initGeneralPreferenceGroup() {
-        scaleSliderPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_SCALE)
         statusSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
-
-        updateScalePreferenceIcon()
     }
 
     private fun initNotificationPreferenceGroup() {
@@ -127,11 +115,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 updateConfiguration()
                 checkOpsPermission()
             }
-            NetSpeedPreferences.KEY_NET_SPEED_MODE,
-            NetSpeedPreferences.KEY_NET_SPEED_SCALE,
-            NetSpeedPreferences.KEY_NET_SPEED_BACKGROUND -> {
+            NetSpeedPreferences.KEY_NET_SPEED_MODE -> {
                 updateConfiguration()
-                updateScalePreferenceIcon()
             }
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
                 updateNotificationPreferenceEnable()
@@ -163,20 +148,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         } catch (e: RemoteException) {
             toast("error")
         }
-    }
-
-    private fun updateScalePreferenceIcon() {
-        val size = resources.getDimensionPixelSize(R.dimen.percent_preference_icon_size)
-        val speed: Long = if (configuration.mode == NetSpeedConfiguration.MODE_ALL) {
-            MODE_ALL_BYTES
-        } else {
-            MODE_SINGLE_BYTES
-        }
-        val bitmap = NetTextIconFactory.createIconBitmap(speed, speed, configuration, size)
-        val layerDrawable: LayerDrawable =
-            requireContext().requireDrawable(R.drawable.layer_icon_mask)
-        layerDrawable.setDrawableByLayerId(R.id.icon_frame, bitmap.toDrawable(resources))
-        scaleSliderPreference.setRightIcon(layerDrawable)
     }
 
     override fun onDestroy() {

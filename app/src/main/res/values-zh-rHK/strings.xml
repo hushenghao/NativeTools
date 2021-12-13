@@ -13,9 +13,7 @@
     <string name="label_net_speed_notify_clickable">通知可被點擊</string>
     <string name="label_net_speed_mode">顯示模式</string>
     <string name="label_net_speed_auto_start">開機自啟</string>
-    <string name="label_net_speed_icon_zoom">圖標文字縮放</string>
     <string name="label_net_speed_notify_quick_closeable">通知快捷關閉</string>
-    <string name="label_net_speed_background">圖標背景</string>
     <string name="label_night_mode">夜間模式</string>
     <string name="label_net_speed_usage">顯示每日和每月流量使用</string>
     <string name="label_about">關於</string>
@@ -24,7 +22,6 @@
     <string name="summary_net_speed_hide_lock_notification">鎖屏時默認會隱藏通知，如果無效時才需要去設定隱藏鎖屏通知</string>
     <string name="summary_net_speed_notify_clickable">點擊通知打開應用設定介面</string>
     <string name="summary_net_speed_auto_start">跟隨系統啟動前臺服務</string>
-    <string name="summary_net_speed_scale">虛線邊框為狀態列圖標的最大範圍</string>
     <string name="summary_net_speed_notify_quick_closeable">在網速通知上添加一個關閉按鈕</string>
     <string name="summary_night_mode_follow_system">跟隨系統</string>
     <string name="summary_net_speed_usage">通知顯示移動數據和WLAN流量使用總和</string>
@@ -60,12 +57,6 @@
         <item>僅上傳</item>
     </string-array>
 
-    <string-array name="net_speed_background">
-        <item>無</item>
-        <item>圓形</item>
-        <item>圓角矩形</item>
-        <item>橢圓矩形</item>
-    </string-array>
     <string name="label_general">通用</string>
     <string name="label_notification">通知</string>
     <string name="label_other">其他</string>
