@@ -2,7 +2,7 @@
 kotlin = "1.6.0"
 
 [libraries]
-android-gradle = "com.android.tools.build:gradle:7.0.3"
+android-gradle = "com.android.tools.build:gradle:7.0.4"
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 diffplug-spotless = "com.diffplug.spotless:spotless-plugin-gradle:6.0.0"
 
