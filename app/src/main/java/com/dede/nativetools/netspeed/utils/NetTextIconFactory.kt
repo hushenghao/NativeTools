@@ -4,7 +4,9 @@ import android.content.res.Resources
 import android.graphics.*
 import android.util.DisplayMetrics
 import android.util.Log
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.toXfermode
+import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.util.globalContext
 import com.dede.nativetools.util.splicing
@@ -29,7 +31,7 @@ object NetTextIconFactory {
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         //typeface = Typeface.DEFAULT_BOLD
         //isFakeBoldText = true
-        typeface = Typeface.createFromAsset(globalContext.assets, "Oswald-Bold.ttf")
+        typeface = ResourcesCompat.getFont(globalContext, R.font.oswald_bold)
         textAlign = Paint.Align.CENTER
         color = Color.WHITE
     }
@@ -86,7 +88,7 @@ object NetTextIconFactory {
 
             init {
                 text1Y = size * 0.51f
-                text1Size = size * 0.56f
+                text1Size = size * 0.57f
 
                 text2Y = size * 0.965f
                 text2Size = size * 0.39f
