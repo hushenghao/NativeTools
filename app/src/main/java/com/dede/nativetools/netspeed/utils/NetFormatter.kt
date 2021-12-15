@@ -99,10 +99,6 @@ object NetFormatter {
         return format to sb.toString()
     }
 
-    private val format0 = DecimalFormat("#")
-    private val format1 = DecimalFormat("#.#")
-    private val format2 = DecimalFormat("#.##")
-
     private fun formatNumberInternal(num: Double, accuracy: Int): String {
 //        val format = when (accuracy) {
 //            ACCURACY_EQUAL_WIDTH_EXACT -> when {
@@ -120,21 +116,21 @@ object NetFormatter {
 //        }
 //        return format.format(num).trimZeroAndDot()
 
-        val format = when (accuracy) {
+        val pattern = when (accuracy) {
             ACCURACY_EQUAL_WIDTH_EXACT -> when {
-                num >= 100 -> format0 // 100.2 -> 100
-                num >= 10 -> format1 // 10.22 -> 10.2
-                else -> format2 // 0.223 -> 0.22
+                num >= 100 -> "0" // 100.2 -> 100
+                num >= 10 -> "0.#" // 10.22 -> 10.2
+                else -> "0.##" // 0.223 -> 0.22
             }
             ACCURACY_EQUAL_WIDTH -> when {
-                num >= 10 -> format0 // 10.2 -> 10
-                else -> format1 // 1.22 -> 1.2
+                num >= 10 -> "0" // 10.2 -> 10
+                else -> "0.#" // 1.22 -> 1.2
             }
-            ACCURACY_EXACT -> format2 // 0.223 -> 0.22
-            ACCURACY_SHORTER -> format1
-            else -> format2
+            ACCURACY_EXACT -> "0.##" // 0.223 -> 0.22
+            ACCURACY_SHORTER -> "0.#"
+            else -> "0.##"
         }
-        return format.format(num)
+        return DecimalFormat(pattern).format(num)
     }
 
 }
