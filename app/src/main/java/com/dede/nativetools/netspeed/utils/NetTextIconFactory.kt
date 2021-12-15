@@ -10,6 +10,7 @@ import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.util.globalContext
 import com.dede.nativetools.util.splicing
+import kotlin.math.max
 
 
 /**
@@ -29,7 +30,6 @@ object NetTextIconFactory {
     private const val DEBUG_MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        //typeface = Typeface.DEFAULT_BOLD
         //isFakeBoldText = true
         typeface = ResourcesCompat.getFont(globalContext, R.font.oswald_bold)
         textAlign = Paint.Align.CENTER
@@ -39,24 +39,25 @@ object NetTextIconFactory {
     private val iconSize: Int
 
     init {
-        // android.R.dimen.status_bar_icon_size
         val resources = Resources.getSystem()
+        val dpi = resources.displayMetrics.densityDpi
+        val default = when {
+            dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
+            dpi <= DisplayMetrics.DENSITY_HIGH -> 36 // hdpi
+            dpi <= DisplayMetrics.DENSITY_XHIGH -> 48 // xhdpi
+            dpi <= DisplayMetrics.DENSITY_XXHIGH -> 72 // xxhdpi
+            dpi <= DisplayMetrics.DENSITY_XXXHIGH -> 96 // xxxhdpi
+            else -> 96
+        }
+
+        // android.R.dimen.status_bar_icon_size
         val id = resources.getIdentifier("status_bar_icon_size", "dimen", "android")
         val statusBarIconSize = id.runCatching(resources::getDimensionPixelSize)
             .onFailure(Throwable::printStackTrace)
-            .getOrElse {
-                val dpi = resources.displayMetrics.densityDpi
-                when {
-                    dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
-                    dpi <= DisplayMetrics.DENSITY_HIGH -> 36 // hdpi
-                    dpi <= DisplayMetrics.DENSITY_XHIGH -> 48 // xhdpi
-                    dpi <= DisplayMetrics.DENSITY_XXHIGH -> 72 // xxhdpi
-                    dpi <= DisplayMetrics.DENSITY_XXXHIGH -> 96 // xxxhdpi
-                    else -> 96
-                }
-            }
-        Log.i("NetTextIconFactory", "status_bar_icon_size: $statusBarIconSize")
-        iconSize = statusBarIconSize
+            .getOrDefault(default)
+
+        iconSize = max(statusBarIconSize, default)
+        Log.i("NetTextIconFactory", "status_bar_icon_size: $iconSize")
     }
 
     private fun createBitmapInternal(size: Int, cache: Bitmap?): Bitmap {
