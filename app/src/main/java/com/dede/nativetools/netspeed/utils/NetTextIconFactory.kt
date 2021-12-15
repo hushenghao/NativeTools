@@ -9,6 +9,7 @@ import androidx.core.graphics.toXfermode
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.util.globalContext
+import com.dede.nativetools.util.saveToAlbum
 import com.dede.nativetools.util.splicing
 import kotlin.math.max
 
@@ -89,7 +90,7 @@ object NetTextIconFactory {
 
             init {
                 text1Y = size * 0.51f
-                text1Size = size * 0.57f
+                text1Size = size * 0.565f
 
                 text2Y = size * 0.965f
                 text2Size = size * 0.39f
@@ -99,7 +100,7 @@ object NetTextIconFactory {
         class Pair(size: Int) : IconConfig(size) {
 
             init {
-                text1Y = size * 0.44f
+                text1Y = size * 0.43f
                 text1Size = size * 0.46f
 
                 text2Y = size * 0.95f
@@ -216,6 +217,12 @@ object NetTextIconFactory {
             paint.xfermode = null
         }
         return bitmap
+    }
+
+    private fun createLauncherForeground() {
+        val icon = IconConfig.Single(512)
+        val bitmap = createIconInternal("18.8", "KB/s", icon, null)
+        bitmap.saveToAlbum(globalContext, "ic_launcher_foreground.png", "Net Monitor")
     }
 
 }
