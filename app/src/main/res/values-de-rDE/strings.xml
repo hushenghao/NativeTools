@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Anzeige der Net</string>
+    <string name="notify_net_speed_msg">Up: <xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • Down: <xliff:g id="speed">%s</xliff:g></string>
+    <string name="notify_net_speed_sub">Kröte: <xliff:g example="10.5GB" id="usage">%s</xliff:g> • Monat: <xliff:g id="usage">%s</xliff:g></string>
+    <string name="switch_on">geöffnet</string>
+    <string name="switch_off">schließen</string>
+    <string name="action_close">schließen</string>
+    <string name="expand_button_title">Weitere Einstellungen</string>
+    <string name="label_net_speed">Anzeige der Net</string>
+    <string name="label_net_speed_interval">Intervall aktualisieren</string>
+    <string name="label_net_speed_hide_lock_notification">Ausblenden von Sperrbildschirm-Benachrichtigungen</string>
+    <string name="label_net_speed_notify_clickable">Benachrichtigung kann angeklickt werden</string>
+    <string name="label_net_speed_mode">Modus anzeigen</string>
+    <string name="label_net_speed_auto_start">Start und Start</string>
+    <string name="label_net_speed_notify_quick_closeable">Kurzbefehl für Benachrichtigung</string>
+    <string name="label_night_mode">Nachtmodus</string>
+    <string name="label_net_speed_usage">Anzeige der täglichen und monatlichen Verkehrsnutzung</string>
+    <string name="label_about">Über</string>
+    <string name="label_ignore_battery_optimize">Optimierung der Akkus ignorieren</string>
+    <string name="summary_net_speed">Zeigt die aktuelle Netzwerkgeschwindigkeit in der Statusleiste an</string>
+    <string name="summary_net_speed_hide_lock_notification">Wenn Sie den Bildschirm sperren, wird die Benachrichtigung standardmäßig ausgeblendet. Wenn sie ungültig ist, müssen Sie die Benachrichtigung über den versteckten Sperrbildschirm einstellen.</string>
+    <string name="summary_net_speed_notify_clickable">Klicken Sie auf Benachrichtigung, um die Anwendungseinstellung Schnittstelle zu öffnen</string>
+    <string name="summary_net_speed_auto_start">Folgen Sie dem System, um die Rezeption zu starten</string>
+    <string name="summary_net_speed_notify_quick_closeable">Hinzufügen eines Close Buttons zur Netzwerkgeschwindigkeit</string>
+    <string name="summary_night_mode_follow_system">Folgen des Systems</string>
+    <string name="summary_net_speed_usage">Die Meldung zeigt die Summe der mobilen Daten und der WLAN-Datenverwendung an</string>
+    <string name="summary_ignore_battery_optimize">Fügen Sie die weiße Liste der Batterieoptimierung hinzu, um zu verhindern, dass der Vordergrund-Service nicht am Leben bleibt (für einige Geräte)</string>
+    <string name="usage_states_title">Berechtigung zur Nutzung</string>
+    <string name="usage_stats_msg">Die Zutrittsberechtigung ist erforderlich, um die tägliche Verkehrsnutzung zu zählen.</string>
+    <string name="alert_title_notification_disable">Die Benachrichtigung ist nicht aktiviert</string>
+    <string name="alert_msg_notification_disable">Ist die Anmeldeerlaubnis nicht aktiviert, wird die Netzwerkgeschwindigkeit nicht normal angezeigt</string>
+    <string name="settings">Zu setzen</string>
+    <string name="help">Hilfe</string>
+    <string name="access">Delegierung</string>
+    <string name="dont_ask">Nicht wieder fragen</string>
+    <string name="desc_net_speed_notify">Die Netzwerkgeschwindigkeit muss durch Benachrichtigung angezeigt werden</string>
+    <string name="chooser_label_browse">Wählen Sie den zu öffnenden Browser</string>
+    <string name="chooser_label_market">Speichern auswählen</string>
+    <string name="label_open_source">Offene Quelle</string>
+    <string name="action_share">Aktie</string>
+    <string name="share_text">Ich habe ein einfach zu bedienendes Gadget \"Anzeige der Net\" gefunden. CoolApk: https://www.coolapk.com/apk/com.dede.nativetools PlayStore: https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="action_feedback">Problem Feedback</string>
+    <string name="toast_copyed">Kopiert</string>
+    <string name="toast_wx_payment_tip">WeChat Zahlungscode, bitte lange drücken, um das Bild zu speichern und zu scannen</string>
+    <string name="label_net_speed_toggle">Schalter</string>
+    <string name="alert_msg_hide_lock_notification">Manchmal kann die Meldung nicht ausgeblendet werden, was durch die Einstellung des Sperrbildschirms verursacht werden kann. Suchen Sie in Einstellungen \"Sperrbildschirm-Benachrichtigungen ausblenden\" und wählen Sie \"nur sensible Inhalte anzeigen\" oder \"alle Meldungen ausblenden\".</string>
+    <string name="label_general">Währung</string>
+    <string name="label_notification">Hinweis</string>
+    <string name="label_other">Andere</string>
+    <string name="label_net_speed_hide_notification">Verbergen Sie Benachrichtigungen</string>
+    <string name="summary_net_speed_hide_notification">Verbergen Sie Benachrichtigungen durch Ersetzen der Standardnotifizierungsart (alle Geräte können nicht unterstützt werden)</string>
+    <string name="i_know">Ich hab\'s!</string>
+    <string name="tip_easter_egg">Buntes Ei</string>
+    <string name="action_rate">Gib mir einen guten Kommentar</string>
+    <string name="action_donate">Spende</string>
+    <string name="label_coffee">Gibst du mir eine Tasse Kaffee?</string>
+    <string name="toast_saved">Gespeichert</string>
+    <string name="label_home">Home</string>
+    <string name="toast_open_battery_optimization">Bitte finden Sie die \"Anzeige der Net\" und schalten Sie die Batterieoptimierung manuell ein</string>
+    <string name="action_copy_link">Link kopieren</string>
+    <string name="action_open_link">Siehe</string>
+
+    <string-array name="net_speed_mode">
+        <item>Down</item>
+        <item>Up + Down</item>
+        <item>Up</item>
+    </string-array>
+</resources>
