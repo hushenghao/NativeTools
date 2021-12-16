@@ -2,6 +2,7 @@ package com.dede.nativetools.netspeed.utils
 
 import android.content.res.Resources
 import android.graphics.*
+import android.os.Build
 import android.util.DisplayMetrics
 import android.util.Log
 import androidx.core.content.res.ResourcesCompat
@@ -32,7 +33,16 @@ object NetTextIconFactory {
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         //isFakeBoldText = true
-        typeface = ResourcesCompat.getFont(globalContext, R.font.oswald_bold)
+        typeface = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Typeface.Builder(globalContext.assets, "Oswald-VariableFont_wght.ttf")
+                .setFontVariationSettings("'wght' 900")
+                .setWeight(900)
+                .build()
+        } else {
+            val basic =
+                Typeface.createFromAsset(globalContext.assets, "Oswald-VariableFont_wght.ttf")
+            Typeface.create(basic, Typeface.BOLD)
+        }
         textAlign = Paint.Align.CENTER
         color = Color.WHITE
     }
@@ -90,7 +100,7 @@ object NetTextIconFactory {
 
             init {
                 text1Y = size * 0.51f
-                text1Size = size * 0.565f
+                text1Size = size * 0.56f
 
                 text2Y = size * 0.965f
                 text2Size = size * 0.39f
