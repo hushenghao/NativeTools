@@ -33,16 +33,9 @@ object NetTextIconFactory {
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         //isFakeBoldText = true
-        typeface = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Typeface.Builder(globalContext.assets, "Oswald-VariableFont_wght.ttf")
-                .setFontVariationSettings("'wght' 900")
-                .setWeight(900)
-                .build()
-        } else {
-            val basic =
-                Typeface.createFromAsset(globalContext.assets, "Oswald-VariableFont_wght.ttf")
-            Typeface.create(basic, Typeface.BOLD)
-        }
+        val basic =
+            Typeface.createFromAsset(globalContext.assets, "BebasKai.ttf")
+        typeface = Typeface.create(basic, Typeface.BOLD)
         textAlign = Paint.Align.CENTER
         color = Color.WHITE
     }
@@ -69,6 +62,7 @@ object NetTextIconFactory {
 
         iconSize = max(statusBarIconSize, default)
         Log.i("NetTextIconFactory", "status_bar_icon_size: $iconSize")
+        createLauncherForeground()
     }
 
     private fun createBitmapInternal(size: Int, cache: Bitmap?): Bitmap {
@@ -99,21 +93,21 @@ object NetTextIconFactory {
         class Single(size: Int) : IconConfig(size) {
 
             init {
-                text1Y = size * 0.51f
-                text1Size = size * 0.56f
+                text1Y = size * 0.55f
+                text1Size = size * 0.67f
 
-                text2Y = size * 0.965f
-                text2Size = size * 0.39f
+                text2Y = size * 0.97f
+                text2Size = size * 0.41f
             }
         }
 
         class Pair(size: Int) : IconConfig(size) {
 
             init {
-                text1Y = size * 0.43f
-                text1Size = size * 0.46f
+                text1Y = size * 0.44f
+                text1Size = size * 0.56f
 
-                text2Y = size * 0.95f
+                text2Y = size * 0.96f
                 text2Size = text1Size
             }
         }

@@ -74,12 +74,12 @@ class OpenSourceRepository {
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
             ),
             OpenSource(
-                "OswaldFont",
-                "Google Fonts",
-                "Oswald is a reworking of the classic gothic typeface style historically represented by designs such as 'Alternate Gothic'. The characters of Oswald have been re-drawn and reformed to better fit the pixel grid of standard digital screens.",
-                "https://github.com/googlefonts/OswaldFont",
-                R.drawable.ic_logo_googlefonts,
-                "https://github.com/googlefonts/OswaldFont/raw/main/OFL.txt"
+                "Bebas Kai(改)",
+                "Ryoichi Tsunekawa",
+                "Bebas Kai(改) is a free display font for headline, caption, and titling designed by Ryoichi Tsunekawa.",
+                "http://bebaskai.com",
+                R.drawable.ic_logo_ryoichi_tsunekawa,
+                "https://raw.githubusercontent.com/dharmatype/Bebas-Kai/master/OFL.txt"
             )
         )
     }
