@@ -66,5 +66,6 @@
         <item>업로드 + 다운로드</item>
         <item>업로드만</item>
     </string-array>
+    <string name="label_privacy_agreement">프라이버시 규약</string>
 
 </resources>

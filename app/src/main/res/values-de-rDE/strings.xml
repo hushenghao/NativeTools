@@ -66,4 +66,5 @@
         <item>Up + Down</item>
         <item>Up</item>
     </string-array>
+    <string name="label_privacy_agreement">Es ist ein datengeschäft.</string>
 </resources>
