@@ -36,14 +36,16 @@ inline fun String?.isNotEmpty(): Boolean {
 fun Pair<String, String>.splicing(): String = this.first + this.second
 
 private val regexTrimZero = Regex("0+?$")
-private val regexTrimDot = Regex("[.]$")
+private val regexTrimDot = Regex("[,.]$")
+private val regexDot = Regex("[,.]")
 
 fun String.trimZeroAndDot(): String {
     var s = this
-    if (s.indexOf(".") > 0) {
+    if (s.contains(regexDot)) {
         // 去掉多余的0
         s = s.replace(regexTrimZero, "")
         // 如最后一位是.则去掉
+        // German and French dot ','
         s = s.replace(regexTrimDot, "")
     }
     return s

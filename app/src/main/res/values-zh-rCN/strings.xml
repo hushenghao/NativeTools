@@ -14,9 +14,7 @@
     <string name="label_net_speed_notify_clickable">通知可被点击</string>
     <string name="label_net_speed_mode">显示模式</string>
     <string name="label_net_speed_auto_start">开机自启</string>
-    <string name="label_net_speed_icon_zoom">图标文字缩放</string>
     <string name="label_net_speed_notify_quick_closeable">通知快捷关闭</string>
-    <string name="label_net_speed_background">图标背景</string>
     <string name="label_night_mode">夜间模式</string>
     <string name="label_net_speed_usage">显示每日和每月流量使用</string>
     <string name="label_about">关于</string>
@@ -26,7 +24,6 @@
     <string name="summary_net_speed_hide_lock_notification">锁屏时默认会隐藏通知，如果无效时才需要去设置隐藏锁屏通知</string>
     <string name="summary_net_speed_notify_clickable">点击通知打开应用设置界面</string>
     <string name="summary_net_speed_auto_start">跟随系统启动前台服务</string>
-    <string name="summary_net_speed_scale">虚线边框为状态栏图标的最大范围</string>
     <string name="summary_net_speed_notify_quick_closeable">在网速通知上添加一个关闭按钮</string>
     <string name="summary_night_mode_follow_system">跟随系统</string>
     <string name="summary_net_speed_usage">通知显示移动数据和WLAN流量使用总和</string>
@@ -79,15 +76,10 @@
         <item>仅上传</item>
     </string-array>
 
-    <string-array name="net_speed_background">
-        <item>无</item>
-        <item>圆形</item>
-        <item>圆角矩形</item>
-        <item>椭圆矩形</item>
-    </string-array>
     <string name="toast_saved">已保存</string>
     <string name="label_home">首页</string>
     <string name="toast_open_battery_optimization">请找到“网速指示器”，并手动开启电池优化</string>
     <string name="action_copy_link">复制链接</string>
     <string name="action_open_link">查看</string>
+    <string name="label_privacy_agreement">隐私协议</string>
 </resources>

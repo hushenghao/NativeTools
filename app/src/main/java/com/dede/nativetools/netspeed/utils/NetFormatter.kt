@@ -1,7 +1,7 @@
 package com.dede.nativetools.netspeed.utils
 
 
-import com.dede.nativetools.util.trimZeroAndDot
+import java.text.DecimalFormat
 
 
 /**
@@ -99,23 +99,38 @@ object NetFormatter {
         return format to sb.toString()
     }
 
-
     private fun formatNumberInternal(num: Double, accuracy: Int): String {
-        val format = when (accuracy) {
+//        val format = when (accuracy) {
+//            ACCURACY_EQUAL_WIDTH_EXACT -> when {
+//                num >= 100 -> "%.0f" // 100.2 -> 100
+//                num >= 10 -> "%.1f" // 10.22 -> 10.2
+//                else -> "%.2f" // 0.223 -> 0.22
+//            }
+//            ACCURACY_EQUAL_WIDTH -> when {
+//                num >= 10 -> "%.0f" // 10.2 -> 10
+//                else -> "%.1f" // 1.22 -> 1.2
+//            }
+//            ACCURACY_EXACT -> "%.2f" // 0.223 -> 0.22
+//            ACCURACY_SHORTER -> "%.1f"
+//            else -> "%.2f"
+//        }
+//        return format.format(num).trimZeroAndDot()
+
+        val pattern = when (accuracy) {
             ACCURACY_EQUAL_WIDTH_EXACT -> when {
-                num >= 100 -> "%.0f" // 100.2 -> 100
-                num >= 10 -> "%.1f" // 10.22 -> 10.2
-                else -> "%.2f" // 0.223 -> 0.22
+                num >= 100 -> "0" // 100.2 -> 100
+                num >= 10 -> "0.#" // 10.22 -> 10.2
+                else -> "0.##" // 0.223 -> 0.22
             }
             ACCURACY_EQUAL_WIDTH -> when {
-                num >= 10 -> "%.0f" // 10.2 -> 10
-                else -> "%.1f" // 1.22 -> 1.2
+                num >= 10 -> "0" // 10.2 -> 10
+                else -> "0.#" // 1.22 -> 1.2
             }
-            ACCURACY_EXACT -> "%.2f" // 0.223 -> 0.22
-            ACCURACY_SHORTER -> "%.1f"
-            else -> "%.2f"
+            ACCURACY_EXACT -> "0.##" // 0.223 -> 0.22
+            ACCURACY_SHORTER -> "0.#"
+            else -> "0.##"
         }
-        return format.format(num).trimZeroAndDot()
+        return DecimalFormat(pattern).format(num)
     }
 
 }

@@ -1,14 +1,18 @@
-package com.dede.nativetools.netspeed
+package com.dede.nativetools.netspeed.utils
 
 import android.content.res.Resources
 import android.graphics.*
+import android.os.Build
 import android.util.DisplayMetrics
 import android.util.Log
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.toXfermode
-import com.dede.nativetools.netspeed.utils.NetFormatter
+import com.dede.nativetools.R
+import com.dede.nativetools.netspeed.NetSpeedConfiguration
+import com.dede.nativetools.util.globalContext
+import com.dede.nativetools.util.saveToAlbum
 import com.dede.nativetools.util.splicing
-import kotlin.math.abs
-import kotlin.math.roundToInt
+import kotlin.math.max
 
 
 /**
@@ -19,9 +23,19 @@ object NetTextIconFactory {
 
     private val DEFAULT_CONFIG = Bitmap.Config.ARGB_8888
 
+    private const val DEBUG_MODE = false
+
+    // 888M 931135488L
+    private const val DEBUG_MODE_ALL_BYTES = (2 shl 19) * 888L
+
+    // 88.8M 93113549L
+    private const val DEBUG_MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
+
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        typeface = Typeface.DEFAULT_BOLD
         //isFakeBoldText = true
+        val basic =
+            Typeface.createFromAsset(globalContext.assets, "BebasKai.ttf")
+        typeface = Typeface.create(basic, Typeface.BOLD)
         textAlign = Paint.Align.CENTER
         color = Color.WHITE
     }
@@ -29,24 +43,26 @@ object NetTextIconFactory {
     private val iconSize: Int
 
     init {
-        // android.R.dimen.status_bar_icon_size
         val resources = Resources.getSystem()
+        val dpi = resources.displayMetrics.densityDpi
+        val default = when {
+            dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
+            dpi <= DisplayMetrics.DENSITY_HIGH -> 36 // hdpi
+            dpi <= DisplayMetrics.DENSITY_XHIGH -> 48 // xhdpi
+            dpi <= DisplayMetrics.DENSITY_XXHIGH -> 72 // xxhdpi
+            dpi <= DisplayMetrics.DENSITY_XXXHIGH -> 96 // xxxhdpi
+            else -> 96
+        }
+
+        // android.R.dimen.status_bar_icon_size
         val id = resources.getIdentifier("status_bar_icon_size", "dimen", "android")
         val statusBarIconSize = id.runCatching(resources::getDimensionPixelSize)
             .onFailure(Throwable::printStackTrace)
-            .getOrElse {
-                val dpi = resources.displayMetrics.densityDpi
-                when {
-                    dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
-                    dpi <= DisplayMetrics.DENSITY_HIGH -> 36 // hdpi
-                    dpi <= DisplayMetrics.DENSITY_XHIGH -> 48 // xhdpi
-                    dpi <= DisplayMetrics.DENSITY_XXHIGH -> 72 // xxhdpi
-                    dpi <= DisplayMetrics.DENSITY_XXXHIGH -> 96 // xxxhdpi
-                    else -> 96
-                }
-            }
-        Log.i("NetTextIconFactory", "status_bar_icon_size: $statusBarIconSize")
-        this.iconSize = statusBarIconSize
+            .getOrDefault(default)
+
+        iconSize = max(statusBarIconSize, default)
+        Log.i("NetTextIconFactory", "status_bar_icon_size: $iconSize")
+        createLauncherForeground()
     }
 
     private fun createBitmapInternal(size: Int, cache: Bitmap?): Bitmap {
@@ -68,35 +84,30 @@ object NetTextIconFactory {
 
         val center = size / 2f
 
-        var scale: Float = 1f
-
         var text1Y: Float = 0f
         var text1Size: Float = 0f
 
         var text2Y: Float = 0f
         var text2Size: Float = 0f
 
-        var background: String = NetSpeedConfiguration.BACKGROUND_NONE
-
-
         class Single(size: Int) : IconConfig(size) {
 
             init {
-                text1Y = size * 0.475f
-                text1Size = size * 0.50f
+                text1Y = size * 0.55f
+                text1Size = size * 0.67f
 
-                text2Y = size * 0.87f
-                text2Size = size * 0.37f
+                text2Y = size * 0.97f
+                text2Size = size * 0.41f
             }
         }
 
         class Pair(size: Int) : IconConfig(size) {
 
             init {
-                text1Y = size * 0.42f
-                text1Size = size * 0.40f
+                text1Y = size * 0.44f
+                text1Size = size * 0.56f
 
-                text2Y = size * 0.86f
+                text2Y = size * 0.96f
                 text2Size = text1Size
             }
         }
@@ -116,24 +127,37 @@ object NetTextIconFactory {
         configuration: NetSpeedConfiguration,
         size: Int = iconSize
     ): Bitmap {
+        var rxByte = rxSpeed
+        var txByte = txSpeed
+        if (DEBUG_MODE) {
+            // Check that the text is displayed completely
+            if (configuration.mode == NetSpeedConfiguration.MODE_ALL) {
+                rxByte = DEBUG_MODE_ALL_BYTES
+                txByte = DEBUG_MODE_ALL_BYTES
+            } else {
+                rxByte = DEBUG_MODE_SINGLE_BYTES
+                txByte = DEBUG_MODE_SINGLE_BYTES
+            }
+        }
+
         val text1: String
         val text2: String
         when (configuration.mode) {
             NetSpeedConfiguration.MODE_ALL -> {
                 text1 = NetFormatter.format(
-                    txSpeed,
+                    txByte,
                     NetFormatter.FLAG_NULL,
                     NetFormatter.ACCURACY_EQUAL_WIDTH
                 ).splicing()
                 text2 = NetFormatter.format(
-                    rxSpeed,
+                    rxByte,
                     NetFormatter.FLAG_NULL,
                     NetFormatter.ACCURACY_EQUAL_WIDTH
                 ).splicing()
             }
             NetSpeedConfiguration.MODE_UP -> {
                 val upSplit = NetFormatter.format(
-                    txSpeed,
+                    txByte,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
                 )
@@ -142,7 +166,7 @@ object NetTextIconFactory {
             }
             else -> {
                 val downSplit = NetFormatter.format(
-                    rxSpeed,
+                    rxByte,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
                 )
@@ -159,15 +183,11 @@ object NetTextIconFactory {
                 IconConfig.Single(size)
             }
         }
-        iconConfig.scale = configuration.scale
-        iconConfig.background = configuration.background
 
         return createIconInternal(text1, text2, iconConfig, configuration.cachedBitmap).apply {
             configuration.cachedBitmap = this
         }
     }
-
-    private val DST_OUT_XFERMODE = PorterDuff.Mode.DST_OUT.toXfermode()
 
     private fun createIconInternal(
         text1: String,
@@ -178,67 +198,35 @@ object NetTextIconFactory {
         val bitmap = createBitmapInternal(icon.size, cache)
         val canvas = Canvas(bitmap)
 
-        when (icon.background) {
-            NetSpeedConfiguration.BACKGROUND_CIRCLE -> {
-                canvas.drawOval(
-                    0f,
-                    0f,
-                    icon.size.toFloat(),
-                    icon.size.toFloat(),
-                    paint
-                )
-            }
-            NetSpeedConfiguration.BACKGROUND_ROUNDED_CORNERS -> {
-                canvas.drawRoundRect(
-                    0f,
-                    0f,
-                    icon.size.toFloat(),
-                    icon.size.toFloat(),
-                    icon.size * 0.15f,
-                    icon.size * 0.15f,
-                    paint
-                )
-            }
-            NetSpeedConfiguration.BACKGROUND_SQUIRCLE -> {
-                val squirclePath = getSquirclePath(0, 0, icon.center.roundToInt())
-                canvas.drawPath(squirclePath, paint)
-            }
+        if (DEBUG_MODE) {
+            canvas.drawRoundRect(
+                0f,
+                0f,
+                icon.size.toFloat(),
+                icon.size.toFloat(),
+                icon.size * 0.15f,
+                icon.size * 0.15f,
+                paint
+            )
+            paint.xfermode = PorterDuff.Mode.DST_OUT.toXfermode()
         }
-        if (icon.background != NetSpeedConfiguration.BACKGROUND_NONE) {
-            paint.xfermode = DST_OUT_XFERMODE
-        }
-
-        canvas.scale(icon.scale, icon.scale, icon.center, icon.center)
 
         paint.textSize = icon.text1Size
         canvas.drawText(text1, icon.center, icon.text1Y, paint)
 
         paint.textSize = icon.text2Size
         canvas.drawText(text2, icon.center, icon.text2Y, paint)
-        paint.xfermode = null
+
+        if (DEBUG_MODE) {
+            paint.xfermode = null
+        }
         return bitmap
     }
 
-    private fun getSquirclePath(left: Int, top: Int, radius: Int): Path {
-        //Formula: (|x|)^3 + (|y|)^3 = radius^3
-        val radiusToPow = (radius * radius * radius).toDouble()
-        val path = Path()
-        path.moveTo((-radius).toFloat(), 0f)
-        for (x in -radius..radius)
-            path.lineTo(
-                x.toFloat(),
-                Math.cbrt(radiusToPow - abs(x * x * x)).toFloat()
-            )
-        for (x in radius downTo -radius)
-            path.lineTo(
-                x.toFloat(),
-                (-Math.cbrt(radiusToPow - abs(x * x * x))).toFloat()
-            )
-        path.close()
-        val matrix = Matrix()
-        matrix.postTranslate((left + radius).toFloat(), (top + radius).toFloat())
-        path.transform(matrix)
-        return path
+    private fun createLauncherForeground() {
+        val icon = IconConfig.Single(512)
+        val bitmap = createIconInternal("18.8", "KB/s", icon, null)
+        bitmap.saveToAlbum(globalContext, "ic_launcher_foreground.png", "Net Monitor")
     }
 
 }

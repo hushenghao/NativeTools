@@ -1,4 +1,4 @@
-package com.dede.nativetools.netspeed
+package com.dede.nativetools.netspeed.service
 
 
 import android.app.NotificationManager
@@ -7,7 +7,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import com.dede.nativetools.netspeed.utils.DebugClipboardUtil
+import com.dede.nativetools.netspeed.INetSpeedInterface
+import com.dede.nativetools.netspeed.NetSpeedConfiguration
+import com.dede.nativetools.netspeed.NetSpeedPreferences
+import com.dede.nativetools.netspeed.utils.NetSpeedCompute
 import com.dede.nativetools.util.*
 import kotlinx.coroutines.*
 
@@ -81,9 +84,6 @@ class NetSpeedService : Service() {
         )
         registerReceiver(innerReceiver, intentFilter)
 
-        // adb广播操作剪切板
-        DebugClipboardUtil.register(this)
-
         resume()
     }
 
@@ -140,7 +140,6 @@ class NetSpeedService : Service() {
         lifecycleScope.cancel()
         pause()
         unregisterReceiver(innerReceiver)
-        DebugClipboardUtil.unregister(this)
         super.onDestroy()
     }
 

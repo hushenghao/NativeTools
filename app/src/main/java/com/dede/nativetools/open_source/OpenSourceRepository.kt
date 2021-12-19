@@ -72,6 +72,14 @@ class OpenSourceRepository {
                 "https://github.com/diffplug/spotless",
                 R.drawable.ic_logo_spotless,
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            ),
+            OpenSource(
+                "Bebas Kai(改)",
+                "Ryoichi Tsunekawa",
+                "Bebas Kai(改) is a free display font for headline, caption, and titling designed by Ryoichi Tsunekawa.",
+                "http://bebaskai.com",
+                R.drawable.ic_logo_ryoichi_tsunekawa,
+                "https://raw.githubusercontent.com/dharmatype/Bebas-Kai/master/OFL.txt"
             )
         )
     }

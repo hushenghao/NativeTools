@@ -1,5 +1,6 @@
-package com.dede.nativetools.netspeed
+package com.dede.nativetools.netspeed.utils
 
+import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.stats.INetStats
 import com.dede.nativetools.util.HandlerTicker
 import kotlin.math.max

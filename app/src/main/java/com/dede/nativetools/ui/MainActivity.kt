@@ -16,7 +16,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.NetSpeedPreferences
-import com.dede.nativetools.netspeed.NetSpeedService
+import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.util.extra
 import com.dede.nativetools.util.navController
 import com.dede.nativetools.util.setNightMode
