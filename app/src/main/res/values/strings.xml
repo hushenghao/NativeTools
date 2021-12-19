@@ -43,7 +43,8 @@
 
     <string name="percent_seek_bar_company" translatable="false">%</string>
     <string name="url_github" translatable="false">https://github.com/hushenghao/NativeTools</string>
-    <string name="url_hide_lock_notification" translatable="false">https://github.com/hushenghao/NativeTools/blob/develop/docs/hide_lock_notification.md</string>
+    <string name="url_hide_lock_notification" translatable="false">https://github.com/hushenghao/NativeTools/blob/master/docs/hide_lock_notification.md</string>
+    <string name="url_privacy_agreement" translatable="false">https://github.com/hushenghao/NativeTools/blob/master/docs/privacy_agreement.md</string>
     <string name="url_alipay_payment_code" translatable="false">https://qr.alipay.com/fkx102121bvcoglww05av58</string>
     <string name="url_wx_payment_code" translatable="false">wxp://f2f0HUx189brtInq9P5t6f8ei40cJnbCmh6DdC9gVai6cHBPAb40fxNLfCQBMZCGvxQP</string>
     <string name="github" translatable="false">Github</string>
@@ -105,4 +106,5 @@
     <string name="action_copy_link">复制链接</string>
     <string name="action_open_link">查看</string>
     <string name="label_android" translatable="false">Android</string>
+    <string name="label_privacy_agreement">隐私协议</string>
 </resources>

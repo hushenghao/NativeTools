@@ -66,6 +66,9 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             requireContext().browse(R.string.url_github)
         }
         binding.ivGithub.enableFeedback = false
+        binding.tvPrivacyAgreement.setOnClickListener {
+            requireContext().browse(R.string.url_privacy_agreement)
+        }
 
         val followViews = ArrayList<ImageView>()
         viewModel.followCount.observe(this.viewLifecycleOwner) {
