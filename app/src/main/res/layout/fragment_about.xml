@@ -75,6 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:background="?attr/selectableItemBackground"
         android:padding="4dp"
         android:text="@string/label_privacy_agreement"
         android:textAppearance="?attr/textAppearanceCaption"
