@@ -62,7 +62,6 @@ object NetTextIconFactory {
 
         iconSize = max(statusBarIconSize, default)
         Log.i("NetTextIconFactory", "status_bar_icon_size: $iconSize")
-        createLauncherForeground()
     }
 
     private fun createBitmapInternal(size: Int, cache: Bitmap?): Bitmap {

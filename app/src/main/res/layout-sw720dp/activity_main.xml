@@ -21,7 +21,6 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
-        style="@style/Widget.Material3.NavigationView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:headerLayout="@layout/layout_nav_header"
