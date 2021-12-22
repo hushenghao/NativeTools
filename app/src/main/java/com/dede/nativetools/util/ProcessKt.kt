@@ -5,6 +5,7 @@ package com.dede.nativetools.util
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Process
+import com.google.firebase.perf.metrics.AddTrace
 import java.io.File
 
 
@@ -48,6 +49,7 @@ private fun getProcessName(pid: Int): String? {
     }
 }
 
+@AddTrace(name = "主进程判断")
 fun Context.isMainProcess(): Boolean {
     val mainProcessName = this.packageName
     val currentProcessName = getProcessName()

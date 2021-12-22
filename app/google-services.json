@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "513583875188",
+    "project_id": "nativetools-877ba",
+    "storage_bucket": "nativetools-877ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513583875188:android:fad4a95b9510566a4f7d21",
+        "android_client_info": {
+          "package_name": "com.dede.nativetools"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513583875188-36io53nibubd04tbh9dqh2ktcfovcks5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9q8tMTSwqBQnIJv9_Dj3mIe9V7pIMraY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513583875188-36io53nibubd04tbh9dqh2ktcfovcks5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

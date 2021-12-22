@@ -7,6 +7,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.browser.customtabs.*
 import com.google.android.material.color.MaterialColors
+import com.google.firebase.perf.metrics.AddTrace
 
 /**
  * CustomTabs Help
@@ -49,6 +50,7 @@ object ChromeTabsBrowser {
     /**
      * 预热并预加载
      */
+    @AddTrace(name = "CustomTabs.warmup")
     fun warmup(context: Context, mayLaunchUrl: Uri? = null) {
         if (customTabsSession != null) return
         this.mayLaunchUrl = mayLaunchUrl
@@ -60,6 +62,7 @@ object ChromeTabsBrowser {
         )
     }
 
+    @AddTrace(name = "CustomTabs.launch")
     fun launchUrl(context: Context, uri: Uri) {
         val colorScheme =
             if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)

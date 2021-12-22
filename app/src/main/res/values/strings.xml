@@ -47,6 +47,7 @@
     <string name="url_privacy_agreement" translatable="false">https://github.com/hushenghao/NativeTools/blob/master/docs/privacy_agreement.md</string>
     <string name="url_alipay_payment_code" translatable="false">https://qr.alipay.com/fkx102121bvcoglww05av58</string>
     <string name="url_wx_payment_code" translatable="false">wxp://f2f0HUx189brtInq9P5t6f8ei40cJnbCmh6DdC9gVai6cHBPAb40fxNLfCQBMZCGvxQP</string>
+    <string name="url_paypal_payment_code" translatable="false">https://paypal.me/dede2233?country.x=C2&amp;locale.x=zh_XC</string>
     <string name="github" translatable="false">Github</string>
     <string name="chooser_label_market">选择应用商店</string>
     <string name="label_open_source">开源相关</string>

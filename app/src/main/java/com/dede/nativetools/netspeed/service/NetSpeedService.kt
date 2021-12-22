@@ -154,7 +154,9 @@ class NetSpeedService : Service() {
                     stopSelf()
                 }
                 Intent.ACTION_SCREEN_ON -> {
-                    resume()// 直接更新指示器
+                    track("网速服务广播亮屏恢复") {
+                        resume()// 直接更新指示器
+                    }
                 }
                 Intent.ACTION_SCREEN_OFF -> {
                     pause(false)// 关闭屏幕时显示，只保留服务保活

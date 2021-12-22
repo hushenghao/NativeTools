@@ -4,6 +4,7 @@ import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.net.ConnectivityManager
 import com.dede.nativetools.util.requireSystemService
+import com.google.firebase.perf.metrics.AddTrace
 import java.util.*
 
 /**
@@ -25,6 +26,7 @@ object NetworkUsageUtil {
     /**
      * 获取每月网络使用字节数
      */
+    @AddTrace(name = "每月数据使用量获取")
     fun monthNetworkUsageBytes(context: Context): Long {
         val start = Calendar.getInstance().toZeroH()
         start.set(Calendar.DAY_OF_MONTH, 1)

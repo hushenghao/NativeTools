@@ -8,7 +8,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath(deps.bundles.classpath)
+        classpath(deps.android.gradle)
+        classpath(deps.kotlin.gradle)
+        classpath(deps.google.services)
+        classpath(deps.firebase.crashlytics.gradle)
+        classpath(deps.firebase.perf)
+        classpath(deps.diffplug.spotless)
     }
 }
 
