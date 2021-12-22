@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.imageview.ShapeableImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/iv_logo"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="?attr/selectableItemBackground"
+    app:contentPaddingBottom="10dp"
+    app:contentPaddingTop="10dp"
+    app:shapeAppearance="@style/RoundedCornerImageStyle"
+    app:strokeColor="?colorControlHighlight"
+    app:strokeWidth="1dp"
+    tools:src="@drawable/img_logo_paypal" />
+

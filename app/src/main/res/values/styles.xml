@@ -39,4 +39,9 @@
         <item name="android:dropDownHorizontalOffset">-6dp</item>
     </style>
 
+    <style name="RoundedCornerImageStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+
 </resources>
