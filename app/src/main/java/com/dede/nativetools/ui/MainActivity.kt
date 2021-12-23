@@ -18,6 +18,7 @@ import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.util.extra
+import com.dede.nativetools.util.isNightMode
 import com.dede.nativetools.util.navController
 import com.dede.nativetools.util.setNightMode
 import com.google.android.material.color.MaterialColors
@@ -41,7 +42,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.statusBarColor = Color.TRANSPARENT
         val systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         val decorView = window.decorView
@@ -58,7 +58,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setNightMode(NetSpeedPreferences.isNightMode)
         setSupportActionBar(binding.toolbar)
 
-        val color = MaterialColors.getColor(this, R.attr.colorSurface, Color.WHITE)
+        val color = MaterialColors.getColor(
+            this,
+            R.attr.colorSurface,
+            if (isNightMode()) Color.BLACK else Color.WHITE
+        )
         binding.navHostFragment.setBackgroundColor(color)
         window.setBackgroundDrawable(null)
 

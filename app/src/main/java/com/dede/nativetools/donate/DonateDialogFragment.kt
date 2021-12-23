@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -33,8 +35,8 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
 
     private val binding by viewBinding(DialogFragmentDonateBinding::bind)
 
-    private val activityResultLauncherCompat =
-        ActivityResultLauncherCompat(this, ActivityResultContracts.RequestMultiplePermissions())
+    private val viewModel by viewModels<DonateViewModel>()
+    private val clickHandler = ClickHandler(this)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,39 +48,19 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.adapter = Adapter(data)
+        viewModel.paymentList.observe(this) {
+            binding.recyclerView.adapter = Adapter(it, clickHandler)
+        }
         binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
     }
 
-    private class Payment(
-        @DrawableRes
-        val resId: Int,
-        val click: View.OnClickListener,
-        val longClick: View.OnLongClickListener? = null
-    )
-
-    private val data = arrayOf(
-        Payment(
-            R.drawable.img_logo_wxpay, {
-                toast(R.string.toast_wx_payment_tip)
-            }, createOnLongClickSaveQrCodeListener(R.drawable.img_wx_payment_code)
-        ),
-        Payment(
-            R.drawable.img_logo_alipay, {
-                it.context.browse(R.string.url_alipay_payment_code)
-            }),
-        Payment(
-            R.drawable.img_logo_paypal, {
-                it.context.browse(R.string.url_paypal_payment_code)
-            })
-    )
-
-    private class Adapter(val data: Array<Payment>) : RecyclerView.Adapter<Holder>() {
+    private class Adapter(val data: List<Payment>, val clickHandler: ClickHandler) :
+        RecyclerView.Adapter<Holder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
             val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_payment_layout, parent, false)
-            return Holder(itemView)
+            return Holder(itemView, clickHandler)
         }
 
         override fun onBindViewHolder(holder: Holder, position: Int) {
@@ -90,12 +72,15 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private class Holder(view: View) : RecyclerView.ViewHolder(view) {
+    private class Holder(view: View, val clickHandler: ClickHandler) :
+        RecyclerView.ViewHolder(view) {
         private val binding = ItemPaymentLayoutBinding.bind(itemView)
 
         fun bindViewData(payment: Payment) {
-            binding.root.setOnClickListener(payment.click)
-            binding.root.setOnLongClickListener(payment.longClick)
+            binding.root.setOnClickListener {
+                clickHandler.handleClick(payment)
+            }
+            binding.root.setOnLongClickListener(clickHandler.createOnLongClickListener(payment))
             binding.ivLogo.setImageResource(payment.resId)
             if (isNightMode()) {
                 binding.ivLogo.imageTintList = ColorStateList.valueOf(Color.WHITE)
@@ -103,43 +88,73 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun createOnLongClickSaveQrCodeListener(@DrawableRes resId: Int): View.OnLongClickListener {
+    private class ClickHandler(private val host: Fragment) {
 
-        val func = Runnable {
-            lifecycleScope.launchWhenStarted {
-                val uri = saveToAlbum(requireContext(), resId)
-                if (uri != null) {
-                    toast(R.string.toast_saved)
+        private val activityResultLauncherCompat =
+            ActivityResultLauncherCompat(host, ActivityResultContracts.RequestMultiplePermissions())
+
+        fun handleClick(payment: Payment) {
+            val context = host.requireContext()
+            when (payment.resId) {
+                R.drawable.img_logo_alipay -> {
+                    context.browse(R.string.url_alipay_payment_code)
+                }
+                R.drawable.img_logo_paypal -> {
+                    context.browse(R.string.url_paypal_payment_code)
+                }
+                R.drawable.img_logo_wxpay -> {
+                    context.toast(R.string.toast_wx_payment_tip)
                 }
             }
         }
 
-        return View.OnLongClickListener {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        fun createOnLongClickListener(payment: Payment): View.OnLongClickListener? {
+            return when (payment.resId) {
+                R.drawable.img_logo_wxpay ->
+                    createOnLongClickSaveQrCodeListener(R.drawable.layer_wx_payment_code)
+                else -> null
+            }
+        }
+
+        private fun createOnLongClickSaveQrCodeListener(@DrawableRes resId: Int): View.OnLongClickListener {
+
+            fun save() {
+                host.lifecycleScope.launchWhenStarted {
+                    val uri = saveToAlbum(host.requireContext(), resId)
+                    if (uri != null) {
+                        host.toast(R.string.toast_saved)
+                    }
+                }
+            }
+
+            return View.OnLongClickListener {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    save()
+                    return@OnLongClickListener true
+                }
                 val permissions = arrayOf(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
-                if (!checkPermissions(*permissions)) {
-                    activityResultLauncherCompat.launch(permissions) {
-                        if (it.values.find { r -> !r } != null) {
-                            return@launch
-                        }
-                        func.run()
-                    }
+                if (host.checkPermissions(*permissions)) {
+                    save()
                     return@OnLongClickListener true
                 }
+                activityResultLauncherCompat.launch(permissions) {
+                    if (it.values.find { r -> !r } != null) {
+                        return@launch
+                    }
+                    save()
+                }
+                return@OnLongClickListener true
             }
-            func.run()
-            return@OnLongClickListener true
         }
+
+        private suspend fun saveToAlbum(context: Context, @DrawableRes resId: Int): Uri? =
+            withContext(Dispatchers.IO) {
+                context.requireDrawable<Drawable>(resId)
+                    .toBitmap()
+                    .saveToAlbum(context, "QrCode_${resId}.jpeg", "Net Monitor")
+            }
     }
-
-    private suspend fun saveToAlbum(context: Context, @DrawableRes resId: Int): Uri? =
-        withContext(Dispatchers.IO) {
-            context.requireDrawable<Drawable>(resId)
-                .toBitmap()
-                .saveToAlbum(requireContext(), "QrCode_${resId}.jpeg", "Net Monitor")
-        }
-
 }
