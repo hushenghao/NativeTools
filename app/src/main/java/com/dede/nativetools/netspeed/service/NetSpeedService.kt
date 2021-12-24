@@ -139,6 +139,7 @@ class NetSpeedService : Service() {
     override fun onDestroy() {
         lifecycleScope.cancel()
         pause()
+        netSpeedCompute.destroy()
         unregisterReceiver(innerReceiver)
         super.onDestroy()
     }

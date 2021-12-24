@@ -1,9 +1,8 @@
 package com.dede.nativetools.util
 
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
+import android.os.*
 
+typealias OnTick = () -> Unit
 
 /**
  * 定时回调工具
@@ -11,20 +10,32 @@ import android.os.SystemClock
  * @author hsh
  * @since 2021/5/31 1:59 下午
  */
-class HandlerTicker(interval: Long, private val onTick: () -> Unit) : Runnable {
+class HandlerTicker(
+    interval: Long,
+    private val handler: Handler = uiHandler,
+    onTick: OnTick
+) : Runnable {
 
     var interval: Long = interval
         set(value) {
             field = value
-            handler.removeCallbacks(this)
-            handler.post(this)
+            workHandler.singlePost(this)
         }
 
-    private val handler = Handler(Looper.getMainLooper())
+    private val workHandler: Handler
+
+    init {
+        val handlerThread = HandlerThread("Ticker")
+        handlerThread.start()
+        workHandler = Handler(handlerThread.looper)
+    }
+
+    private val onTickRunnable = Runnable(onTick)
 
     override fun run() {
         val lastTickStart = SystemClock.elapsedRealtime()
-        onTick()
+
+        handler.singlePost(onTickRunnable)
 
         // take into account user's onTick taking time to execute
         val lastTickDuration = SystemClock.elapsedRealtime() - lastTickStart
@@ -34,20 +45,20 @@ class HandlerTicker(interval: Long, private val onTick: () -> Unit) : Runnable {
         // complete, skip to next interval
         while (delay < 0) delay += interval
 
-        handler.postDelayed(this, delay)
+        workHandler.postDelayed(this, delay)
     }
 
-    fun start(first: Boolean = true) {
-        handler.removeCallbacks(this)
-        if (first) {
-            handler.post(this)
-        } else {
-            handler.postDelayed(this, this.interval)
-        }
+    fun start() {
+        workHandler.singlePost(this)
     }
 
     fun stop() {
-        handler.removeCallbacks(this)
+        workHandler.removeCallbacks(this)
+    }
+
+    fun destroy() {
+        workHandler.removeCallbacks(this)
+        workHandler.looper.quitSafely()
     }
 
 }
