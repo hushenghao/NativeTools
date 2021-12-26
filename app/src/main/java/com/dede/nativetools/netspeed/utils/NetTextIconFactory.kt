@@ -120,7 +120,7 @@ object NetTextIconFactory {
      * @param configuration 图标配置
      * @param size Bitmap大小
      */
-    fun createIconBitmap(
+    fun create(
         rxSpeed: Long,
         txSpeed: Long,
         configuration: NetSpeedConfiguration,

@@ -63,4 +63,8 @@ class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
         handlerTicker.stop()
     }
 
+    fun destroy() {
+        handlerTicker.destroy()
+    }
+
 }

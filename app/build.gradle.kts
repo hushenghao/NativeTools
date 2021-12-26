@@ -21,8 +21,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 44
-        versionName = "3.3.1"
+        versionCode = 46
+        versionName = "3.3.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(
@@ -96,6 +96,7 @@ dependencies {
     implementation(deps.bundles.androidx.navigation)
     implementation(deps.google.material)
     implementation(deps.androidx.browser)
+    implementation(deps.androidx.startup)
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)

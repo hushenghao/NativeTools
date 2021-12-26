@@ -2,10 +2,8 @@
 
 package com.dede.nativetools.util
 
-import android.os.Build
 import android.text.Spanned
 import android.text.TextUtils
-import android.util.Base64
 import androidx.core.text.HtmlCompat
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
@@ -34,30 +32,3 @@ inline fun String?.isNotEmpty(): Boolean {
 }
 
 fun Pair<String, String>.splicing(): String = this.first + this.second
-
-private val regexTrimZero = Regex("0+?$")
-private val regexTrimDot = Regex("[,.]$")
-private val regexDot = Regex("[,.]")
-
-fun String.trimZeroAndDot(): String {
-    var s = this
-    if (s.contains(regexDot)) {
-        // 去掉多余的0
-        s = s.replace(regexTrimZero, "")
-        // 如最后一位是.则去掉
-        // German and French dot ','
-        s = s.replace(regexTrimDot, "")
-    }
-    return s
-}
-
-fun String.decodeBase64(): String? {
-    return runCatching { String(Base64.decode(this, Base64.DEFAULT)) }.getOrNull()
-}
-
-fun getProp(key: String): String? {
-    return Build::class.java.runCatching {
-        declaredMethod("getString", String::class.java)
-            .invoke(null, key) as? String
-    }.getOrNull()
-}

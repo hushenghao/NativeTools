@@ -7,9 +7,9 @@ import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
-import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetSpeedCompute
+import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.newTask
@@ -60,11 +60,7 @@ class NetTileService : TileService() {
 
         qsTile.apply {
             state = Tile.STATE_ACTIVE
-            val bitmap = NetTextIconFactory.createIconBitmap(
-                rxSpeed,
-                txSpeed,
-                configuration
-            )
+            val bitmap = NetTextIconFactory.create(rxSpeed, txSpeed, configuration)
             icon = Icon.createWithBitmap(bitmap)
             label = getString(R.string.tile_net_speed_label, uploadSpeedStr, downloadSpeedStr)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -74,7 +70,7 @@ class NetTileService : TileService() {
     }
 
     override fun onDestroy() {
-        netSpeedCompute.stop()
+        netSpeedCompute.destroy()
         super.onDestroy()
     }
 }

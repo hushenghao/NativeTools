@@ -1,6 +1,5 @@
 package com.dede.nativetools.open_source
 
-import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Gravity
@@ -16,6 +15,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentOpenSourceBinding
 import com.dede.nativetools.databinding.ItemOpenSourceBinding
+import com.dede.nativetools.ui.SpaceItemDecoration
 import com.dede.nativetools.util.*
 
 /**
@@ -30,7 +30,7 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = Adapter()
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.addItemDecoration(ItemDecoration())
+        binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
         val itemTouchSwapCallback = ItemTouchSwapCallback(adapter::onSwap)
         val itemTouchHelper = ItemTouchHelper(itemTouchSwapCallback)
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
@@ -52,20 +52,6 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        }
-    }
-
-    private class ItemDecoration : RecyclerView.ItemDecoration() {
-        private val offset = 12.dp
-
-        override fun getItemOffsets(
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            val position = parent.getChildAdapterPosition(view)
-            outRect.set(offset, if (position == 0) offset else 0, offset, offset)
         }
     }
 

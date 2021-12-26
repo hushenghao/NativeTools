@@ -3,7 +3,6 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowBackgroundFallback" tools:targetApi="n">
             @drawable/layer_window_bg
         </item>
@@ -37,6 +36,11 @@
     <style name="ActionMenuStyle" parent="Widget.Material3.PopupMenu">
         <item name="android:dropDownVerticalOffset">6dp</item>
         <item name="android:dropDownHorizontalOffset">-6dp</item>
+    </style>
+
+    <style name="RoundedCornerImageStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
     </style>
 
 </resources>

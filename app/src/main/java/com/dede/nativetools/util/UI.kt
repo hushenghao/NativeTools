@@ -26,6 +26,8 @@ fun setNightMode(enable: Boolean) {
     AppCompatDelegate.setDefaultNightMode(mode)
 }
 
+fun isNightMode() = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+
 val Number.dp: Int
     get() = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,

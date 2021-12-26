@@ -13,8 +13,8 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
-import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.netspeed.utils.NetFormatter
+import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
 import com.dede.nativetools.ui.MainActivity
 import com.dede.nativetools.util.*
@@ -188,6 +188,11 @@ object NetSpeedNotificationHelper {
             .setSmallIcon(createIcon(configuration, rxSpeed, txSpeed))
             .setColor(context.getColor(R.color.primaryColor))
             .setOnlyAlertOnce(false)
+            .setOngoing(true)
+            .setLocalOnly(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            builder.setFlag(Notification.FLAG_BUBBLE, false)
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setBadgeIconType(Notification.BADGE_ICON_NONE)
                 .setColorized(false)
@@ -258,6 +263,9 @@ object NetSpeedNotificationHelper {
             enableVibration(false)
             enableLights(false)
             setSound(null, null)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                setAllowBubbles(false)
+            }
             lockscreenVisibility = Notification.VISIBILITY_SECRET
         }
         notificationManager.createNotificationChannel(notificationChannel)
@@ -268,8 +276,7 @@ object NetSpeedNotificationHelper {
         rxSpeed: Long,
         txSpeed: Long
     ): Icon {
-        val bitmap =
-            NetTextIconFactory.createIconBitmap(rxSpeed, txSpeed, configuration)
+        val bitmap = NetTextIconFactory.create(rxSpeed, txSpeed, configuration)
         return Icon.createWithBitmap(bitmap)
     }
 
