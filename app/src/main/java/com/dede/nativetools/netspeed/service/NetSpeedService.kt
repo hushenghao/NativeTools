@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
+import android.os.PowerManager
+import android.util.Log
 import com.dede.nativetools.netspeed.INetSpeedInterface
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.NetSpeedPreferences
@@ -59,10 +61,15 @@ class NetSpeedService : Service() {
     }
 
     private val notificationManager: NotificationManager by systemService()
+    private val powerManager: PowerManager by systemService()
 
     val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
+        if (!powerManager.isInteractive) {
+            // ACTION_SCREEN_OFF广播有一定的延迟，所以设备不可交互时不处理
+            return@NetSpeedCompute
+        }
         val notify =
             NetSpeedNotificationHelper.createNotification(this, configuration, rxSpeed, txSpeed)
         notificationManager.notify(NOTIFY_ID, notify)
@@ -79,11 +86,11 @@ class NetSpeedService : Service() {
         val intentFilter = IntentFilter(
             Intent.ACTION_SCREEN_ON,// 打开屏幕
             Intent.ACTION_SCREEN_OFF,// 关闭屏幕
-            Intent.ACTION_USER_PRESENT,// 解锁
             ACTION_CLOSE// 关闭
         )
         registerReceiver(innerReceiver, intentFilter)
 
+        startForeground()
         resume()
     }
 
@@ -96,21 +103,14 @@ class NetSpeedService : Service() {
      * 恢复指示器
      */
     private fun resume() {
-        startForeground()
         netSpeedCompute.start()
     }
 
     /**
      * 暂停指示器
      */
-    private fun pause(stopForeground: Boolean = true) {
+    private fun pause() {
         netSpeedCompute.stop()
-        if (stopForeground) {
-            notificationManager.cancel(NOTIFY_ID)
-            stopForeground(true)
-        } else {
-            startForeground()
-        }
     }
 
     private fun updateConfiguration(configuration: NetSpeedConfiguration?) {
@@ -138,8 +138,9 @@ class NetSpeedService : Service() {
 
     override fun onDestroy() {
         lifecycleScope.cancel()
-        pause()
         netSpeedCompute.destroy()
+        stopForeground(true)
+        notificationManager.cancel(NOTIFY_ID)
         unregisterReceiver(innerReceiver)
         super.onDestroy()
     }
@@ -158,7 +159,7 @@ class NetSpeedService : Service() {
                     resume()// 直接更新指示器
                 }
                 Intent.ACTION_SCREEN_OFF -> {
-                    pause(false)// 关闭屏幕时显示，只保留服务保活
+                    pause()// 关闭屏幕时显示，只保留服务保活
                 }
             }
         }
