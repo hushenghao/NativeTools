@@ -96,6 +96,7 @@ dependencies {
     implementation(deps.bundles.androidx.navigation)
     implementation(deps.google.material)
     implementation(deps.androidx.browser)
+    implementation(deps.androidx.startup)
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)
