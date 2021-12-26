@@ -10,7 +10,7 @@ import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetSpeedCompute
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
-import com.dede.nativetools.ui.MainActivity
+import com.dede.nativetools.main.MainActivity
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.newTask
 import com.dede.nativetools.util.splicing

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dede.nativetools.ui;
+package com.dede.nativetools.main;
 
 import static android.graphics.Color.TRANSPARENT;
 import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;

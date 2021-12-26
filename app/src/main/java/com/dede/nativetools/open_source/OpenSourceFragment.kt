@@ -16,11 +16,13 @@ import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentOpenSourceBinding
 import com.dede.nativetools.databinding.ItemOpenSourceBinding
 import com.dede.nativetools.ui.SpaceItemDecoration
+import com.dede.nativetools.main.NavigationBarInsets
 import com.dede.nativetools.util.*
 
 /**
  * 开源相关
  */
+@NavigationBarInsets
 class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
 
     private val binding by viewBinding(FragmentOpenSourceBinding::bind)

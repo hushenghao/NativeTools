@@ -1,4 +1,4 @@
-package com.dede.nativetools.ui
+package com.dede.nativetools.main
 
 import android.content.Intent
 import android.graphics.Color
@@ -8,8 +8,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.core.view.OnApplyWindowInsetsListener
-import androidx.core.view.ViewCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
@@ -32,6 +30,7 @@ import com.google.android.material.navigation.NavigationView
 /**
  * Main
  */
+@StatusBarInsets
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
     NavigationBarView.OnItemSelectedListener,
     NavigationView.OnNavigationItemSelectedListener {
@@ -60,17 +59,10 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setNightMode(NetSpeedPreferences.isNightMode)
         setSupportActionBar(binding.toolbar)
 
-        val smallestScreenWidthDp = resources.configuration.smallestScreenWidthDp
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root,
-            OnApplyWindowInsetsListener { _, insets ->
-                binding.toolbar.setPadding(0, insets.systemWindowInsetTop, 0, 0)
-                if (smallestScreenWidthDp >= 600 && preferencesManager.isEdgeToEdgeEnabled) {
-                    // sw600dp
-                    binding.navHostFragment.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
-                }
-                binding.root.requestLayout()// fix statusBar blocking toolbar
-                return@OnApplyWindowInsetsListener insets
-            })
+        applyBarsInsets(binding.root, binding.toolbar, this) {
+            // fix statusBar blocking toolbar
+            binding.root.requestLayout()
+        }
 
         if (VERSION.SDK_INT >= VERSION_CODES.N) {
             val color = MaterialColors.getColor(
@@ -83,8 +75,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             // Remove the default background, make the 'android:windowBackgroundFallback' effect, to split screen mode.
         }
 
-        FragmentTransitionManager()
-            .attach(supportFragmentManager.findFragmentById(R.id.nav_host_fragment))
+        NavFragmentAssistant(supportFragmentManager)
+            .setupWithNavFragment(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds).build()
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
         // sw320dp

@@ -12,13 +12,14 @@ import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.dede.nativetools.netspeed.service.NetSpeedService
-import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
+import com.dede.nativetools.main.NavigationBarInsets
 import com.dede.nativetools.util.*
 
 /**
  * 网速指示器设置页
  */
+@NavigationBarInsets(smallestScreenWidthDp = 600)
 class NetSpeedFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     ServiceConnection {

@@ -1,4 +1,4 @@
-package com.dede.nativetools.ui
+package com.dede.nativetools.main
 
 import android.os.Bundle
 import android.view.View
@@ -8,12 +8,14 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialFadeThrough
 
 /**
- * 全局Fragment转场动画处理
+ * NavFragment管理扩展
  */
-class FragmentTransitionManager : FragmentManager.FragmentLifecycleCallbacks() {
+class NavFragmentAssistant(private val fragmentManager: FragmentManager) :
+    FragmentManager.FragmentLifecycleCallbacks() {
 
-    fun attach(fragment: Fragment?) {
-        (fragment ?: return).childFragmentManager
+    fun setupWithNavFragment(resId: Int) {
+        val navHostFragment = fragmentManager.findFragmentById(resId) ?: return
+        navHostFragment.childFragmentManager
             .registerFragmentLifecycleCallbacks(this, true)
     }
 
@@ -39,6 +41,7 @@ class FragmentTransitionManager : FragmentManager.FragmentLifecycleCallbacks() {
         if (fragment is DialogFragment) {
             return
         }
+        applyBarsInsets(view, view, fragment)
         materialFadeThrough.addTarget(view)
     }
 

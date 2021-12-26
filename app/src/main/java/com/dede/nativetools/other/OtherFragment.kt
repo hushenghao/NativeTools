@@ -12,8 +12,10 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedPreferences
+import com.dede.nativetools.main.NavigationBarInsets
 import com.dede.nativetools.util.*
 
+@NavigationBarInsets(smallestScreenWidthDp = 600)
 class OtherFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
