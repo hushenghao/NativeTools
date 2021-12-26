@@ -67,7 +67,7 @@ class NetSpeedService : Service() {
 
     private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
         if (!powerManager.isInteractive) {
-            // ACTION_SCREEN_OFF广播有一定的延迟，所以屏幕关闭时不处理
+            // ACTION_SCREEN_OFF广播有一定的延迟，所以设备不可交互时不处理
             return@NetSpeedCompute
         }
         val notify =
