@@ -5,7 +5,9 @@ import android.content.Context
 import android.util.Log
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.google.android.material.color.DynamicColors
+import leakcanary.LeakCanary
 import me.weishu.reflection.Reflection
+import shark.AndroidReferenceMatchers
 
 class NativeToolsApp : Application() {
 
@@ -26,6 +28,14 @@ class NativeToolsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        LeakCanary.config = LeakCanary.config.copy(
+            referenceMatchers = AndroidReferenceMatchers.appDefaults +
+                    AndroidReferenceMatchers.instanceFieldLeak(
+                        className = "android.graphics.animation.RenderNodeAnimator",
+                        fieldName = "mTarget",
+                        description = "DayNightSwitcher"
+                    )
+        )
         DynamicColors.applyToActivitiesIfAvailable(this, R.style.AppTheme)
         NetSpeedNotificationHelper.checkNotificationChannelAndUpgrade(this)
     }

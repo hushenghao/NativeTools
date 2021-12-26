@@ -1,6 +1,7 @@
 package com.dede.nativetools.donate
 
 import android.Manifest
+import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -24,6 +25,7 @@ import com.dede.nativetools.databinding.DialogFragmentDonateBinding
 import com.dede.nativetools.databinding.ItemPaymentLayoutBinding
 import com.dede.nativetools.ui.SpaceItemDecoration
 import com.dede.nativetools.util.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -52,6 +54,13 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
             binding.recyclerView.adapter = Adapter(it, clickHandler)
         }
         binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return super.onCreateDialog(savedInstanceState).apply {
+            val behavior = (this as BottomSheetDialog).behavior
+            behavior.skipCollapsed = true
+        }
     }
 
     private class Adapter(val data: List<Payment>, val clickHandler: ClickHandler) :

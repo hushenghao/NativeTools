@@ -3,7 +3,6 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowBackgroundFallback" tools:targetApi="n">
             @drawable/layer_window_bg
         </item>
