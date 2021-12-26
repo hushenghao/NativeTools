@@ -70,7 +70,6 @@ class NetTileService : TileService() {
     }
 
     override fun onDestroy() {
-        netSpeedCompute.stop()
         netSpeedCompute.destroy()
         super.onDestroy()
     }
