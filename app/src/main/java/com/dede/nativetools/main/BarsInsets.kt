@@ -20,21 +20,23 @@ fun applyBarsInsets(
     listener: OnBarsInsetsListener? = null
 ) {
     val context = root.context
-    var statusBarInsets: StatusBarInsets? = null
-    var navigationBarInsets: NavigationBarInsets? = null
-    if (WindowPreferencesManager(context).isEdgeToEdgeEnabled) {
-        statusBarInsets = fragment.javaClass.getAnnotation(StatusBarInsets::class.java)
-        val smallestScreenWidthDp = context.smallestScreenWidthDp
-        if (statusBarInsets != null) {
-            if (smallestScreenWidthDp < statusBarInsets.smallestScreenWidthDp) {
-                statusBarInsets = null
-            }
+    if (!WindowPreferencesManager(context).isEdgeToEdgeEnabled) {
+        return
+    }
+    var statusBarInsets: StatusBarInsets?
+    var navigationBarInsets: NavigationBarInsets?
+
+    statusBarInsets = fragment.javaClass.getAnnotation(StatusBarInsets::class.java)
+    val smallestScreenWidthDp = context.smallestScreenWidthDp
+    if (statusBarInsets != null) {
+        if (smallestScreenWidthDp < statusBarInsets.smallestScreenWidthDp) {
+            statusBarInsets = null
         }
-        navigationBarInsets = fragment.javaClass.getAnnotation(NavigationBarInsets::class.java)
-        if (navigationBarInsets != null) {
-            if (smallestScreenWidthDp < navigationBarInsets.smallestScreenWidthDp) {
-                navigationBarInsets = null
-            }
+    }
+    navigationBarInsets = fragment.javaClass.getAnnotation(NavigationBarInsets::class.java)
+    if (navigationBarInsets != null) {
+        if (smallestScreenWidthDp < navigationBarInsets.smallestScreenWidthDp) {
+            navigationBarInsets = null
         }
     }
     if (navigationBarInsets == null && statusBarInsets == null) return
