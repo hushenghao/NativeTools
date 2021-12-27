@@ -2,16 +2,9 @@
 
 package com.dede.nativetools.util
 
-import android.text.Spanned
 import android.text.TextUtils
-import androidx.core.text.HtmlCompat
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
-
-
-fun String?.fromHtml(): Spanned? {
-    return HtmlCompat.fromHtml(this ?: return null, HtmlCompat.FROM_HTML_MODE_LEGACY)
-}
 
 @OptIn(ExperimentalContracts::class)
 @kotlin.internal.InlineOnly
