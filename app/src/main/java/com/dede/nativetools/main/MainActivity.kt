@@ -18,13 +18,8 @@ import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.other.OtherPreferences
-import com.dede.nativetools.util.extra
-import com.dede.nativetools.util.isNightMode
-import com.dede.nativetools.util.navController
-import com.dede.nativetools.util.setNightMode
+import com.dede.nativetools.util.*
 import com.google.android.material.color.MaterialColors
-import com.google.android.material.navigation.NavigationBarView
-import com.google.android.material.navigation.NavigationView
 
 
 /**
@@ -32,8 +27,7 @@ import com.google.android.material.navigation.NavigationView
  */
 @StatusBarInsets
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
-    NavigationBarView.OnItemSelectedListener,
-    NavigationView.OnNavigationItemSelectedListener {
+    NavigationBars.NavigationItemSelectedListener {
 
     companion object {
         private const val EXTRA_TOGGLE = "extra_toggle"
@@ -76,21 +70,12 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             .setupWithNavFragment(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds).build()
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
-        // sw320dp
-        binding.bottomNavigationView?.let {
-            NavigationUI.setupWithNavController(it, navController)
-            it.setOnItemSelectedListener(this)
-        }
-        // sw600dp
-        binding.navigationRailView?.let {
-            NavigationUI.setupWithNavController(it, navController)
-            it.setOnItemSelectedListener(this)
-        }
-        //sw720dp
-        binding.navigationView?.let {
-            NavigationUI.setupWithNavController(it, navController)
-            it.setNavigationItemSelectedListener(this)
-        }
+        NavigationBars.setupWithNavController(
+            navController, this,
+            binding.bottomNavigationView,   // default
+            binding.navigationRailView,     // sw600dp
+            binding.navigationView          // sw720dp
+        )
 
         navController.addOnDestinationChangedListener(this)
 

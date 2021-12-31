@@ -26,22 +26,6 @@ class OpenSourceRepository {
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
             ),
             OpenSource(
-                "Kotlin",
-                "JetBrains",
-                "Write better Android apps faster with Kotlin.",
-                "https://developer.android.google.cn/kotlin",
-                R.drawable.insert_logo_kotlin_for_android,
-                "https://www.apache.org/licenses/LICENSE-2.0.txt"
-            ),
-            OpenSource(
-                "Kotlin",
-                "JetBrains",
-                "Write better Android apps faster with Kotlin.",
-                "https://developer.android.google.cn/kotlin",
-                R.drawable.insert_logo_kotlin_for_android,
-                "https://www.apache.org/licenses/LICENSE-2.0.txt"
-            ),
-            OpenSource(
                 "Jetpack",
                 "Google",
                 "Jetpack is a suite of libraries to help developers follow best practices, reduce boilerplate code, and write code that works consistently across Android versions and devices so that developers can focus on the code they care about.",
