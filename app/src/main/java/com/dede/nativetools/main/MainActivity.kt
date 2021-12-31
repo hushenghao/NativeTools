@@ -16,8 +16,8 @@ import androidx.navigation.ui.NavigationUI
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
-import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.service.NetSpeedService
+import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.util.extra
 import com.dede.nativetools.util.isNightMode
 import com.dede.nativetools.util.navController
@@ -56,13 +56,10 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         }
 
         setContentView(R.layout.activity_main)
-        setNightMode(NetSpeedPreferences.isNightMode)
+        setNightMode(OtherPreferences.isNightMode)
         setSupportActionBar(binding.toolbar)
 
-        applyBarsInsets(binding.root, binding.toolbar, this) {
-            // fix statusBar blocking toolbar
-            binding.root.requestLayout()
-        }
+        applyBarsInsets(binding.root, binding.toolbar, this)
 
         if (VERSION.SDK_INT >= VERSION_CODES.N) {
             val color = MaterialColors.getColor(

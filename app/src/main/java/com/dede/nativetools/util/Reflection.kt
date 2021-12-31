@@ -19,3 +19,7 @@ fun <T> Class<T>.declaredMethod(name: String, vararg parameterTypes: Class<*>): 
 fun <T> Class<T>.declaredField(name: String): Field {
     return this.getDeclaredField(name).apply { isAccessible = true }
 }
+
+inline fun <reified T : Annotation> Any.annotation(): T? {
+    return this.javaClass.getAnnotation(T::class.java)
+}

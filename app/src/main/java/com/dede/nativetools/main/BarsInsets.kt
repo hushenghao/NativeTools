@@ -3,7 +3,14 @@ package com.dede.nativetools.main
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.dede.nativetools.R
+import com.dede.nativetools.ui.SpaceItemDecoration
+import com.dede.nativetools.util.annotation
 import com.dede.nativetools.util.smallestScreenWidthDp
+
+const val SW600DP = 600
+const val SW720DP = 720
 
 @Target(AnnotationTarget.CLASS)
 annotation class StatusBarInsets(val smallestScreenWidthDp: Int = 0)
@@ -11,13 +18,47 @@ annotation class StatusBarInsets(val smallestScreenWidthDp: Int = 0)
 @Target(AnnotationTarget.CLASS)
 annotation class NavigationBarInsets(val smallestScreenWidthDp: Int = 0)
 
-typealias OnBarsInsetsListener = () -> Unit
+typealias OnWindowInsetsListener = (insets: WindowInsetsCompat) -> Unit
+
+fun WindowInsetsCompat.statusBar(): Int =
+    this.getInsets(WindowInsetsCompat.Type.statusBars()).top
+
+fun WindowInsetsCompat.navigationBar(): Int =
+    this.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+
+fun View.onWindowInsetsApply(listener: OnWindowInsetsListener) {
+    ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
+        listener.invoke(insets)
+        return@setOnApplyWindowInsetsListener insets
+    }
+}
+
+fun applyRecyclerViewInsets(recyclerView: RecyclerView) {
+    fun isAdded() = (recyclerView.getTag(R.id.tag_recycler_view) as? Boolean) ?: false
+    if (isAdded()) return
+    val itemDecoration = SpaceItemDecoration(0)
+    recyclerView.onWindowInsetsApply {
+        itemDecoration.overrideLastItemOffsets = { outRect ->
+            outRect.bottom = it.navigationBar()
+        }
+        if (!isAdded()) {
+            recyclerView.addItemDecoration(itemDecoration)
+            recyclerView.setTag(R.id.tag_recycler_view, true)
+            return@onWindowInsetsApply
+        }
+        recyclerView.requestLayout()
+    }
+}
+
+fun applyBarsInsets(root: View, host: Any) {
+    applyBarsInsets(root, root, host, null)
+}
 
 fun applyBarsInsets(
     root: View,
     target: View,
-    fragment: Any,
-    listener: OnBarsInsetsListener? = null
+    host: Any,
+    listener: OnWindowInsetsListener? = null
 ) {
     val context = root.context
     if (!WindowPreferencesManager(context).isEdgeToEdgeEnabled) {
@@ -26,14 +67,14 @@ fun applyBarsInsets(
     var statusBarInsets: StatusBarInsets?
     var navigationBarInsets: NavigationBarInsets?
 
-    statusBarInsets = fragment.javaClass.getAnnotation(StatusBarInsets::class.java)
+    statusBarInsets = host.annotation()
     val smallestScreenWidthDp = context.smallestScreenWidthDp
     if (statusBarInsets != null) {
         if (smallestScreenWidthDp < statusBarInsets.smallestScreenWidthDp) {
             statusBarInsets = null
         }
     }
-    navigationBarInsets = fragment.javaClass.getAnnotation(NavigationBarInsets::class.java)
+    navigationBarInsets = host.annotation()
     if (navigationBarInsets != null) {
         if (smallestScreenWidthDp < navigationBarInsets.smallestScreenWidthDp) {
             navigationBarInsets = null
@@ -41,19 +82,17 @@ fun applyBarsInsets(
     }
     if (navigationBarInsets == null && statusBarInsets == null) return
 
-    ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
+    root.onWindowInsetsApply { insets ->
         var top = 0
         var bottom = 0
         if (statusBarInsets != null) {
-            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
-            top = statusBar.top
+            top = insets.statusBar()
         }
         if (navigationBarInsets != null) {
-            val navigationBar = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
-            bottom = navigationBar.bottom
+            bottom = insets.navigationBar()
         }
         target.setPadding(0, top, 0, bottom)
-        listener?.invoke()
-        return@setOnApplyWindowInsetsListener insets
+        root.requestLayout()
+        listener?.invoke(insets)
     }
 }

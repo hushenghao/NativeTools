@@ -5,29 +5,30 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
-import com.dede.nativetools.netspeed.NetSpeedPreferences
-import com.dede.nativetools.main.NavigationBarInsets
+import com.dede.nativetools.main.SW600DP
+import com.dede.nativetools.main.applyRecyclerViewInsets
 import com.dede.nativetools.util.*
 
-@NavigationBarInsets(smallestScreenWidthDp = 600)
 class OtherFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
-
-    companion object {
-        private const val KEY_ABOUT = "about"
-        private const val KEY_IGNORE_BATTERY_OPTIMIZE = "ignore_battery_optimize"
-    }
 
     private val activityResultLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
 
     private lateinit var preferenceIgnoreBatteryOptimize: SwitchPreferenceCompat
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (requireContext().smallestScreenWidthDp < SW600DP) return
+        applyRecyclerViewInsets(listView)
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.other_preference)
@@ -35,7 +36,7 @@ class OtherFragment : PreferenceFragmentCompat(),
     }
 
     private fun initOtherPreferenceGroup() {
-        requirePreference<Preference>(KEY_ABOUT).also {
+        requirePreference<Preference>(OtherPreferences.KEY_ABOUT).also {
             it.summary = requireContext().getVersionSummary()
 
             it.onPreferenceClickListener {
@@ -44,7 +45,7 @@ class OtherFragment : PreferenceFragmentCompat(),
         }
 
         preferenceIgnoreBatteryOptimize =
-            requirePreference<SwitchPreferenceCompat>(KEY_IGNORE_BATTERY_OPTIMIZE).apply {
+            requirePreference<SwitchPreferenceCompat>(OtherPreferences.KEY_IGNORE_BATTERY_OPTIMIZE).apply {
                 setOnPreferenceChangeListener { _, newValue ->
                     val ignoreBatteryOptimization = newValue as Boolean
                     if (ignoreBatteryOptimization) {
@@ -88,8 +89,8 @@ class OtherFragment : PreferenceFragmentCompat(),
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
-            NetSpeedPreferences.KEY_NIGHT_MODE_TOGGLE -> {
-                setNightMode(NetSpeedPreferences.isNightMode)
+            OtherPreferences.KEY_NIGHT_MODE_TOGGLE -> {
+                setNightMode(OtherPreferences.isNightMode)
             }
         }
     }
