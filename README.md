@@ -1,6 +1,6 @@
 # 网速指示器
 
-<img height="80px" src="app/src/main/ic_launcher-playstore.png"/>
+<img height="80px" src="https://github.com/hushenghao/NativeTools/blob/master/app/src/main/ic_launcher-playstore.png"/>
 
 一个在系统状态栏显示当前网速的App，并在通知栏显示详细数据，主要针对原生ROM。
 
@@ -15,11 +15,11 @@
 
 如果你有什么好的想法请提交 [**Issues**](https://github.com/hushenghao/NativeTools/issues) 或 [**Pull requests**](https://github.com/hushenghao/NativeTools/pulls)
 
-[无法隐藏锁屏通知？](./docs/hide_lock_notification.md)
+[无法隐藏锁屏通知？](https://github.com/hushenghao/NativeTools/wiki/Hide-lock-screen-notification)
 
 ## 应用截图
 
-![screenshot](docs/images/screenshot.png)
+![screenshot](https://github.com/hushenghao/NativeTools/blob/master/docs/images/screenshot.png)
 
 ## 应用下载
 
@@ -30,4 +30,4 @@
 Email：dede.hu@qq.com
 
 ## 捐赠
-<img height="150px" src="docs/images/qrcode_alipay.jpeg"/> <img height="150px" src="docs/images/qrcode_wx.jpeg" />
+<img height="150px" src="https://github.com/hushenghao/NativeTools/blob/master/docs/images/qrcode_alipay.jpeg"/> <img height="150px" src="https://github.com/hushenghao/NativeTools/blob/master/docs/images/qrcode_wx.jpeg" />
