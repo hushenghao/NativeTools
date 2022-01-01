@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="githubTint">#000</color>
-    <color name="tintMaterial">#1F1F1F</color>
+    <color name="tint_github_logo">#000</color>
+    <color name="ting_material_logo">#1F1F1F</color>
 
     <!-- https://material.io/tools/color -->
-    <color name="primaryColor">#00796b</color>
-    <color name="primaryLightColor">#48a999</color>
-    <color name="primaryDarkColor">#004c40</color>
-    <color name="secondaryColor">#e81e62</color>
-    <color name="secondaryLightColor">#FF95B5</color>
-    <color name="secondaryDarkColor">#af0039</color>
+    <!-- http://zhongguose.com -->
+    <!-- 高粱红 -->
+    <!-- 莓红 -->
+    <color name="primaryColor">#c02c38</color>
+    <color name="primaryLightColor">#f86162</color>
+    <color name="primaryDarkColor">#890012</color>
+    <color name="secondaryColor">#c45a65</color>
+    <color name="secondaryLightColor">#fa8a93</color>
+    <color name="secondaryDarkColor">#902b3b</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
 </resources>

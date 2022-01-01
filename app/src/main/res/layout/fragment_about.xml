@@ -68,7 +68,7 @@
         app:layout_constraintBottom_toTopOf="@id/tv_privacy_agreement"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:tint="@color/githubTint" />
+        app:tint="@color/tint_github_logo" />
 
     <TextView
         android:id="@+id/tv_privacy_agreement"

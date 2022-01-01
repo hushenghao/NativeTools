@@ -55,7 +55,7 @@ private fun View?.setup(
     navController: NavController,
     listener: NavigationBars.NavigationItemSelectedListener
 ) = when (this) {
-    null -> null
+    null -> Unit
     is NavigationBarView -> {
         this.setOnItemSelectedListener(listener)
         NavigationUI.setupWithNavController(this, navController)

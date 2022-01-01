@@ -1,13 +1,15 @@
 <resources>
-    <color name="githubTint">#F0F6FC</color>
-    <color name="tintMaterial">#8F8F8F</color>
+    <color name="tint_github_logo">#F0F6FC</color>
+    <color name="ting_material_logo">#8F8F8F</color>
 
-    <color name="primaryColor">#212121</color>
-    <color name="primaryLightColor">#484848</color>
-    <color name="primaryDarkColor">#000000</color>
-    <color name="secondaryColor">#d81b60</color>
-    <color name="secondaryLightColor">#ff5c8d</color>
-    <color name="secondaryDarkColor">#a00037</color>
+    <!-- 深灰蓝 -->
+    <!-- 黄昏灰 -->
+    <color name="primaryColor">#132c33</color>
+    <color name="primaryLightColor">#3c555c</color>
+    <color name="primaryDarkColor">#00000c</color>
+    <color name="secondaryColor">#474b4c</color>
+    <color name="secondaryLightColor">#727778</color>
+    <color name="secondaryDarkColor">#202324</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
 </resources>
