@@ -34,7 +34,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".main.MainActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleTask">

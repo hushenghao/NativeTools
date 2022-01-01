@@ -80,6 +80,14 @@ class OpenSourceRepository {
                 "http://bebaskai.com",
                 R.drawable.ic_logo_ryoichi_tsunekawa,
                 "https://raw.githubusercontent.com/dharmatype/Bebas-Kai/master/OFL.txt"
+            ),
+            OpenSource(
+                "中国色",
+                "",
+                "Traditional Chinese colors",
+                "http://zhongguose.com",
+                R.drawable.ic_logo_zhongguose,
+                null
             )
         )
     }

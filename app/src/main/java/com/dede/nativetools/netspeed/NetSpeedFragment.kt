@@ -5,14 +5,16 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
 import android.provider.Settings
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
+import com.dede.nativetools.main.SW600DP
+import com.dede.nativetools.main.applyRecyclerViewInsets
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.dede.nativetools.netspeed.service.NetSpeedService
-import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.util.*
 
@@ -22,11 +24,6 @@ import com.dede.nativetools.util.*
 class NetSpeedFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     ServiceConnection {
-
-    companion object {
-        private const val TAG = "NetSpeedFragment"
-
-    }
 
     private val configuration = NetSpeedConfiguration.initialize()
 
@@ -51,6 +48,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         checkNotificationEnable()
 
         requireContext().registerReceiver(closeReceiver, IntentFilter(NetSpeedService.ACTION_CLOSE))
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (requireContext().smallestScreenWidthDp < SW600DP) return
+        applyRecyclerViewInsets(listView)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

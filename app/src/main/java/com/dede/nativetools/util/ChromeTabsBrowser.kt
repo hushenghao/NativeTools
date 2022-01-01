@@ -61,17 +61,20 @@ object ChromeTabsBrowser {
     }
 
     fun launchUrl(context: Context, uri: Uri) {
+        val isNightMode =
+            AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
         val colorScheme =
-            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
-                CustomTabsIntent.COLOR_SCHEME_DARK else CustomTabsIntent.COLOR_SCHEME_LIGHT
+            if (isNightMode) CustomTabsIntent.COLOR_SCHEME_DARK else CustomTabsIntent.COLOR_SCHEME_LIGHT
 
         val color = MaterialColors.getColor(context, android.R.attr.colorPrimary, Color.WHITE)
         val params = CustomTabColorSchemeParams.Builder()
             .setToolbarColor(color)
+            .setNavigationBarColor(if (isNightMode) Color.BLACK else Color.WHITE)
             .build()
 
         val builder = CustomTabsIntent.Builder()
             .setColorScheme(colorScheme)
+            .setShareState(CustomTabsIntent.SHARE_STATE_ON)
             .setDefaultColorSchemeParams(params)
         val session = customTabsSession
         if (session != null) {

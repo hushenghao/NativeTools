@@ -22,12 +22,15 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
+import com.dede.nativetools.main.NavigationBarInsets
+import com.dede.nativetools.main.SW600DP
 import com.dede.nativetools.util.*
 import kotlin.random.Random
 
 /**
  * 关于项目
  */
+@NavigationBarInsets(smallestScreenWidthDp = SW600DP)
 class AboutFragment : Fragment(R.layout.fragment_about) {
 
     companion object {
@@ -40,7 +43,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private var toasted = false
     private val colorIds: IntArray = intArrayOf(
         R.color.secondaryColor,
+        R.color.secondaryDarkColor,
+        R.color.secondaryLightColor,
         R.color.primaryColor,
+        R.color.primaryDarkColor,
+        R.color.primaryLightColor,
         android.R.color.black,
         android.R.color.holo_red_light,
         android.R.color.holo_blue_light,
@@ -77,6 +84,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             }
         }
         binding.ivLogo.dragEnable = false
+        binding.ivLogo.setTintColor(R.color.primaryColor)
         binding.ivLogo.setOnClickListener {
             viewModel.addFollowCount()
             playAnimator(true)

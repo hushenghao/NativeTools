@@ -15,6 +15,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentOpenSourceBinding
 import com.dede.nativetools.databinding.ItemOpenSourceBinding
+import com.dede.nativetools.main.applyRecyclerViewInsets
 import com.dede.nativetools.ui.SpaceItemDecoration
 import com.dede.nativetools.util.*
 
@@ -31,6 +32,7 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         val adapter = Adapter()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
+        applyRecyclerViewInsets(binding.recyclerView)
         val itemTouchSwapCallback = ItemTouchSwapCallback(adapter::onSwap)
         val itemTouchHelper = ItemTouchHelper(itemTouchSwapCallback)
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
@@ -116,6 +118,9 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
             val context = view.context
             val popupMenu = PopupMenu(context, view, Gravity.END)
             popupMenu.inflate(R.menu.menu_open_source)
+            if (openSource.license.isEmpty()) {
+                popupMenu.menu.findItem(R.id.action_license).isEnabled = false
+            }
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.action_copy -> {
