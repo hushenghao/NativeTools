@@ -43,8 +43,8 @@
 
     <string name="percent_seek_bar_company" translatable="false">%</string>
     <string name="url_github" translatable="false">https://github.com/hushenghao/NativeTools</string>
-    <string name="url_hide_lock_notification" translatable="false">https://github.com/hushenghao/NativeTools/blob/master/docs/hide_lock_notification.md</string>
-    <string name="url_privacy_agreement" translatable="false">https://github.com/hushenghao/NativeTools/blob/master/docs/privacy_agreement.md</string>
+    <string name="url_hide_lock_notification" translatable="false">https://github.com/hushenghao/NativeTools/wiki/Hide-lock-screen-notification</string>
+    <string name="url_privacy_agreement" translatable="false">https://github.com/hushenghao/NativeTools/wiki/%E9%9A%90%E7%A7%81%E5%8D%8F%E8%AE%AE</string>
     <string name="url_alipay_payment_code" translatable="false">https://qr.alipay.com/fkx102121bvcoglww05av58</string>
     <string name="url_wx_payment_code" translatable="false">wxp://f2f0HUx189brtInq9P5t6f8ei40cJnbCmh6DdC9gVai6cHBPAb40fxNLfCQBMZCGvxQP</string>
     <string name="url_paypal_payment_code" translatable="false">https://paypal.me/dede2233?country.x=C2&amp;locale.x=zh_XC</string>
