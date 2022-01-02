@@ -21,6 +21,7 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_USAGE = "net_speed_usage"
     const val KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION = "net_speed_locked_hide"
     const val KEY_NET_SPEED_HIDE_NOTIFICATION = "net_speed_hide_notification"
+    const val KEY_NET_SPEED_BOLD = "net_speed_bold"
 
     private const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
     private const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
@@ -30,6 +31,9 @@ object NetSpeedPreferences {
     var status: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_STATUS, false)
         set(value) = globalPreferences.set(KEY_NET_SPEED_STATUS, value)
+
+    val isBold: Boolean
+        get() = globalPreferences.get(KEY_NET_SPEED_BOLD, true)
 
     val autoStart: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_AUTO_START, false)

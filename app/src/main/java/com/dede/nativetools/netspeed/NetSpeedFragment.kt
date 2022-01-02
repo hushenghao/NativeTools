@@ -108,6 +108,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 val status = NetSpeedPreferences.status
                 if (status) startService() else stopService()
             }
+            NetSpeedPreferences.KEY_NET_SPEED_BOLD,
             NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,

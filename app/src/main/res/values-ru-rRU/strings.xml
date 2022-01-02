@@ -67,4 +67,5 @@
         <item>Up</item>
     </string-array>
     <string name="label_privacy_agreement">Соглашение о конфиденциальности.</string>
+    <string name="label_net_speed_bold">жирный шрифт</string>
 </resources>

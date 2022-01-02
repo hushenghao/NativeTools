@@ -2,12 +2,9 @@ package com.dede.nativetools.netspeed.utils
 
 import android.content.res.Resources
 import android.graphics.*
-import android.os.Build
 import android.util.DisplayMetrics
 import android.util.Log
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.toXfermode
-import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.util.globalContext
 import com.dede.nativetools.util.saveToAlbum
@@ -31,11 +28,11 @@ object NetTextIconFactory {
     // 88.8M 93113549L
     private const val DEBUG_MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
 
+    private val basic = Typeface.createFromAsset(globalContext.assets, "BebasKai.ttf")
+
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         //isFakeBoldText = true
-        val basic =
-            Typeface.createFromAsset(globalContext.assets, "BebasKai.ttf")
-        typeface = Typeface.create(basic, Typeface.BOLD)
+        typeface = basic
         textAlign = Paint.Align.CENTER
         color = Color.WHITE
     }
@@ -181,6 +178,12 @@ object NetTextIconFactory {
             else -> {
                 IconConfig.Single(size)
             }
+        }
+
+        if (configuration.isBold) {
+            paint.typeface = Typeface.create(basic, Typeface.BOLD)
+        } else {
+            paint.typeface = basic
         }
 
         return createIconInternal(text1, text2, iconConfig, configuration.cachedBitmap).apply {

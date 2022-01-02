@@ -12,6 +12,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class NetSpeedConfiguration constructor(
     var interval: Int,
+    var isBold: Boolean,
     var notifyClickable: Boolean,
     var mode: String,
     var quickCloseable: Boolean,
@@ -24,7 +25,7 @@ data class NetSpeedConfiguration constructor(
     var cachedBitmap: Bitmap? = null
 
     constructor() : this(
-        NetSpeedPreferences.DEFAULT_INTERVAL, true, MODE_DOWN,
+        NetSpeedPreferences.DEFAULT_INTERVAL, true,true, MODE_DOWN,
         false, false, false, true
     )
 
@@ -34,6 +35,7 @@ data class NetSpeedConfiguration constructor(
 
     fun updateFrom(configuration: NetSpeedConfiguration): NetSpeedConfiguration {
         this.interval = configuration.interval
+        this.isBold = configuration.isBold
         this.notifyClickable = configuration.notifyClickable
         this.mode = configuration.mode
         this.quickCloseable = configuration.quickCloseable
@@ -47,6 +49,9 @@ data class NetSpeedConfiguration constructor(
         when (key) {
             NetSpeedPreferences.KEY_NET_SPEED_INTERVAL -> {
                 this.interval = NetSpeedPreferences.interval
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_BOLD -> {
+                this.isBold = NetSpeedPreferences.isBold
             }
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
                 this.notifyClickable = NetSpeedPreferences.notifyClickable
@@ -81,6 +86,7 @@ data class NetSpeedConfiguration constructor(
         fun initialize(): NetSpeedConfiguration {
             return NetSpeedConfiguration(
                 NetSpeedPreferences.interval,
+                NetSpeedPreferences.isBold,
                 NetSpeedPreferences.notifyClickable,
                 NetSpeedPreferences.mode,
                 NetSpeedPreferences.quickCloseable,

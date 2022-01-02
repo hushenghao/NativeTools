@@ -32,6 +32,12 @@
             app:title="@string/label_net_speed_interval"
             app:useSimpleSummaryProvider="true" />
 
+        <SwitchPreferenceCompat
+            android:key="net_speed_bold"
+            android:title="@string/label_net_speed_bold"
+            app:defaultValue="true"
+            app:icon="@drawable/ic_baseline_bold" />
+
         <DropDownPreference
             android:key="net_speed_mode"
             app:defaultValue="0"

@@ -67,4 +67,5 @@
         <item>Up</item>
     </string-array>
     <string name="label_privacy_agreement">Es ist ein datengeschäft.</string>
+    <string name="label_net_speed_bold">Schriftart fett</string>
 </resources>

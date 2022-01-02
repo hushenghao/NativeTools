@@ -67,5 +67,6 @@
         <item>업로드만</item>
     </string-array>
     <string name="label_privacy_agreement">프라이버시 규약</string>
+    <string name="label_net_speed_bold">글꼴 굵기</string>
 
 </resources>

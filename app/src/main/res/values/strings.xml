@@ -108,4 +108,5 @@
     <string name="action_open_link">查看</string>
     <string name="label_android" translatable="false">Android</string>
     <string name="label_privacy_agreement">隐私协议</string>
+    <string name="label_net_speed_bold">字体加粗</string>
 </resources>

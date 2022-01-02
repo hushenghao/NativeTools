@@ -66,4 +66,5 @@
         <item>Up</item>
     </string-array>
     <string name="label_privacy_agreement">Accord de confidentialité</string>
+    <string name="label_net_speed_bold">Police en gras</string>
 </resources>

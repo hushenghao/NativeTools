@@ -67,4 +67,5 @@
     <string name="action_open_link">To view</string>
     <string name="action_copy_link">Copy the link</string>
     <string name="label_privacy_agreement">Privacy agreement</string>
+    <string name="label_net_speed_bold">Bold font</string>
 </resources>
