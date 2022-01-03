@@ -69,4 +69,10 @@
     <string name="action_copy_link">リンクをコピーする</string>
     <string name="label_privacy_agreement">プライバシー協定</string>
     <string name="label_net_speed_bold">フォントの太さ</string>
+    <string name="label_net_speed_text_scale">文字スケーリング</string>
+    <string name="label_net_speed_relative_distance">相対距離</string>
+    <string name="label_net_speed_relative_ratio">相対比率</string>
+    <string name="label_net_speed_y_offset">Y軸オフセット</string>
+    <string name="summary_net_speed_advanced">表示仕様をカスタマイズする</string>
+    <string name="label_net_speed_advanced">高度な設定</string>
 </resources>

@@ -83,4 +83,10 @@
     <string name="action_open_link">查看</string>
     <string name="label_privacy_agreement">隐私协议</string>
     <string name="label_net_speed_bold">字体加粗</string>
+    <string name="label_net_speed_advanced">高级设置</string>
+    <string name="summary_net_speed_advanced">自定义显示样式</string>
+    <string name="label_net_speed_y_offset">Y轴偏移</string>
+    <string name="label_net_speed_relative_ratio">相对比例</string>
+    <string name="label_net_speed_relative_distance">相对距离</string>
+    <string name="label_net_speed_text_scale">文字缩放</string>
 </resources>

@@ -2,6 +2,7 @@ package com.dede.nativetools.netspeed
 
 import android.graphics.Bitmap
 import android.os.Parcelable
+import androidx.annotation.FloatRange
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -10,24 +11,28 @@ import kotlinx.parcelize.Parcelize
  * 网速指示器配置
  */
 @Parcelize
-data class NetSpeedConfiguration constructor(
-    var interval: Int,
-    var isBold: Boolean,
-    var notifyClickable: Boolean,
-    var mode: String,
-    var quickCloseable: Boolean,
-    var usage: Boolean,
-    var hideNotification: Boolean,
-    var hideLockNotification: Boolean
+data class NetSpeedConfiguration @JvmOverloads constructor(
+    var interval: Int = NetSpeedPreferences.DEFAULT_INTERVAL,
+    var isBold: Boolean = true,
+    var notifyClickable: Boolean = true,
+    var mode: String = MODE_DOWN,
+    var quickCloseable: Boolean = false,
+    var usage: Boolean = false,
+    var hideNotification: Boolean = false,
+    var hideLockNotification: Boolean = true,
+
+    @FloatRange(from = -0.5, to = 0.5)
+    var verticalOffset: Float = -0.05f,// Y轴偏移量
+    @FloatRange(from = 0.0, to = 1.0)
+    var relativeRatio: Float = 0.61f,// 相对比例
+    @FloatRange(from = -0.5, to = 0.5)
+    var relativeDistance: Float = 0.03f,// 相对距离
+    @FloatRange(from = 0.5, to = 1.5)
+    var textScale: Float = 1.11f// 字体缩放
 ) : Parcelable {
 
     @IgnoredOnParcel
     var cachedBitmap: Bitmap? = null
-
-    constructor() : this(
-        NetSpeedPreferences.DEFAULT_INTERVAL, true,true, MODE_DOWN,
-        false, false, false, true
-    )
 
     fun reinitialize(): NetSpeedConfiguration {
         return this.updateFrom(initialize())
@@ -42,6 +47,10 @@ data class NetSpeedConfiguration constructor(
         this.usage = configuration.usage
         this.hideNotification = configuration.hideNotification
         this.hideLockNotification = configuration.hideLockNotification
+        this.verticalOffset = configuration.verticalOffset
+        this.relativeRatio = configuration.relativeRatio
+        this.relativeDistance = configuration.relativeDistance
+        this.textScale = configuration.textScale
         return this
     }
 
@@ -71,6 +80,18 @@ data class NetSpeedConfiguration constructor(
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION -> {
                 this.hideLockNotification = NetSpeedPreferences.hideLockNotification
             }
+            NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET -> {
+                this.verticalOffset = NetSpeedPreferences.verticalOffset
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO -> {
+                this.relativeRatio = NetSpeedPreferences.relativeRatio
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE -> {
+                this.relativeDistance = NetSpeedPreferences.relativeDistance
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE -> {
+                this.textScale = NetSpeedPreferences.textScale
+            }
         }
     }
 
@@ -92,7 +113,11 @@ data class NetSpeedConfiguration constructor(
                 NetSpeedPreferences.quickCloseable,
                 NetSpeedPreferences.usage,
                 NetSpeedPreferences.hideNotification,
-                NetSpeedPreferences.hideLockNotification
+                NetSpeedPreferences.hideLockNotification,
+                NetSpeedPreferences.verticalOffset,
+                NetSpeedPreferences.relativeRatio,
+                NetSpeedPreferences.relativeDistance,
+                NetSpeedPreferences.textScale
             )
         }
     }

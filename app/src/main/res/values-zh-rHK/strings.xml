@@ -69,4 +69,10 @@
     <string name="action_copy_link">複製連結</string>
     <string name="label_privacy_agreement">隱私協定</string>
     <string name="label_net_speed_bold">字體加粗</string>
+    <string name="label_net_speed_advanced">高級設定</string>
+    <string name="summary_net_speed_advanced">自定義顯示樣式</string>
+    <string name="label_net_speed_y_offset">Y軸偏移</string>
+    <string name="label_net_speed_relative_ratio">相對比例</string>
+    <string name="label_net_speed_relative_distance">相對距離</string>
+    <string name="label_net_speed_text_scale">文字縮放</string>
 </resources>

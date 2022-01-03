@@ -9,7 +9,11 @@
     <fragment
         android:id="@+id/netSpeed"
         android:name="com.dede.nativetools.netspeed.NetSpeedFragment"
-        android:label="@string/label_net_speed" />
+        android:label="@string/label_net_speed">
+        <action
+            android:id="@+id/action_netSpeed_to_netSpeedAdvanced"
+            app:destination="@id/netSpeedAdvanced" />
+    </fragment>
 
     <fragment
         android:id="@+id/about"
@@ -54,4 +58,9 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/netSpeed" />
     </fragment>
+
+    <fragment
+        android:id="@+id/netSpeedAdvanced"
+        android:name="com.dede.nativetools.netspeed.NetSpeedAdvancedFragment"
+        android:label="@string/label_net_speed_advanced" />
 </navigation>

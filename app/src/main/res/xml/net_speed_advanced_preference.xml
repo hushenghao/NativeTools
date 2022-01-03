@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        android:key="net_speed_bold"
+        android:title="@string/label_net_speed_bold"
+        app:defaultValue="true"
+        app:icon="@drawable/ic_baseline_bold" />
+
+    <DropDownPreference
+        android:key="net_speed_mode"
+        app:defaultValue="0"
+        app:entries="@array/net_speed_mode"
+        app:entryValues="@array/net_speed_mode_value"
+        app:icon="@drawable/ic_outline_menu_open"
+        app:title="@string/label_net_speed_mode"
+        app:useSimpleSummaryProvider="true" />
+
+</PreferenceScreen>

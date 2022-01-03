@@ -4,12 +4,13 @@ import android.content.res.Resources
 import android.graphics.*
 import android.util.DisplayMetrics
 import android.util.Log
-import androidx.core.graphics.toXfermode
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
+import com.dede.nativetools.util.dpf
 import com.dede.nativetools.util.globalContext
 import com.dede.nativetools.util.saveToAlbum
 import com.dede.nativetools.util.splicing
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 
 /**
@@ -23,10 +24,10 @@ object NetTextIconFactory {
     private const val DEBUG_MODE = false
 
     // 888M 931135488L
-    private const val DEBUG_MODE_ALL_BYTES = (2 shl 19) * 888L
+    const val DEBUG_MODE_ALL_BYTES = (2 shl 19) * 888L
 
     // 88.8M 93113549L
-    private const val DEBUG_MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
+    const val DEBUG_MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
 
     private val basic = Typeface.createFromAsset(globalContext.assets, "BebasKai.ttf")
 
@@ -35,6 +36,7 @@ object NetTextIconFactory {
         typeface = basic
         textAlign = Paint.Align.CENTER
         color = Color.WHITE
+        style = Paint.Style.FILL
     }
 
     private val iconSize: Int
@@ -76,39 +78,6 @@ object NetTextIconFactory {
         return cache
     }
 
-    private sealed class IconConfig(val size: Int) {
-
-        val center = size / 2f
-
-        var text1Y: Float = 0f
-        var text1Size: Float = 0f
-
-        var text2Y: Float = 0f
-        var text2Size: Float = 0f
-
-        class Single(size: Int) : IconConfig(size) {
-
-            init {
-                text1Y = size * 0.55f
-                text1Size = size * 0.67f
-
-                text2Y = size * 0.97f
-                text2Size = size * 0.41f
-            }
-        }
-
-        class Pair(size: Int) : IconConfig(size) {
-
-            init {
-                text1Y = size * 0.44f
-                text1Size = size * 0.56f
-
-                text2Y = size * 0.96f
-                text2Size = text1Size
-            }
-        }
-    }
-
     /**
      * 创建网速图标
      *
@@ -121,11 +90,12 @@ object NetTextIconFactory {
         rxSpeed: Long,
         txSpeed: Long,
         configuration: NetSpeedConfiguration,
-        size: Int = iconSize
+        size: Int = iconSize,
+        assistLine: Boolean = DEBUG_MODE
     ): Bitmap {
         var rxByte = rxSpeed
         var txByte = txSpeed
-        if (DEBUG_MODE) {
+        if (assistLine) {
             // Check that the text is displayed completely
             if (configuration.mode == NetSpeedConfiguration.MODE_ALL) {
                 rxByte = DEBUG_MODE_ALL_BYTES
@@ -171,63 +141,106 @@ object NetTextIconFactory {
             }
         }
 
-        val iconConfig = when (configuration.mode) {
-            NetSpeedConfiguration.MODE_ALL -> {
-                IconConfig.Pair(size)
-            }
-            else -> {
-                IconConfig.Single(size)
-            }
+        return createIconInternal(
+            text1,
+            text2,
+            size,
+            configuration,
+            assistLine
+        ).apply {
+            configuration.cachedBitmap = this
         }
+    }
+
+    private val pathEffect = DashPathEffect(floatArrayOf(2.dpf, 2.dpf), 0f)
+
+    private fun createIconInternal(
+        text1: String,
+        text2: String,
+        size: Int,
+        configuration: NetSpeedConfiguration,
+        assistLine: Boolean = false
+    ): Bitmap {
+        val w = size
+        val wf = w.toFloat()
+        val wh = w / 2f
+        val h = size
+        val hf = h.toFloat()
+        val hh = h / 2f
+
+        val verticalOffset: Float = configuration.verticalOffset
+        val relativeRatio: Float = configuration.relativeRatio
+        val relativeDistance: Float = configuration.relativeDistance
+        val textScale: Float = configuration.textScale
+
+        val bitmap = createBitmapInternal(size, configuration.cachedBitmap)
+        val canvas = Canvas(bitmap)
 
         if (configuration.isBold) {
             paint.typeface = Typeface.create(basic, Typeface.BOLD)
         } else {
             paint.typeface = basic
         }
+        resetPaint()
 
-        return createIconInternal(text1, text2, iconConfig, configuration.cachedBitmap).apply {
-            configuration.cachedBitmap = this
+        val yOffset = hf * verticalOffset
+        val rect = Rect()
+
+        paint.textSize = w * relativeRatio * textScale// 缩放
+        var textY = relativeRatio * hf - hf * relativeDistance + yOffset
+        if (assistLine) {
+            drawTextRound(text1, textY, canvas)
         }
-    }
+        canvas.drawText(text1, wh, textY, paint)
 
-    private fun createIconInternal(
-        text1: String,
-        text2: String,
-        icon: IconConfig,
-        cache: Bitmap? = null
-    ): Bitmap {
-        val bitmap = createBitmapInternal(icon.size, cache)
-        val canvas = Canvas(bitmap)
-
-        if (DEBUG_MODE) {
-            canvas.drawRoundRect(
-                0f,
-                0f,
-                icon.size.toFloat(),
-                icon.size.toFloat(),
-                icon.size * 0.15f,
-                icon.size * 0.15f,
-                paint
-            )
-            paint.xfermode = PorterDuff.Mode.DST_OUT.toXfermode()
+        paint.textSize = w * (1 - relativeRatio) * textScale// 缩放
+        paint.getTextBounds(text2, 0, text2.length, rect)
+        textY = hf * relativeRatio + rect.height() + hf * relativeDistance + yOffset
+        if (assistLine) {
+            drawTextRound(text2, textY, canvas)
         }
+        canvas.drawText(text2, wh, textY, paint)
 
-        paint.textSize = icon.text1Size
-        canvas.drawText(text1, icon.center, icon.text1Y, paint)
-
-        paint.textSize = icon.text2Size
-        canvas.drawText(text2, icon.center, icon.text2Y, paint)
-
-        if (DEBUG_MODE) {
-            paint.xfermode = null
+        if (assistLine) {
+            // 居中辅助线
+            paint.style = Paint.Style.STROKE
+            paint.color = Color.YELLOW
+            paint.strokeWidth = 0.5f.dpf
+            paint.pathEffect = pathEffect
+            //canvas.drawLine(wh, 0f, wh, hf, paint)
+            canvas.drawLine(0f, hh, wf, hh, paint)
+            // 边框
+            paint.pathEffect = null
+            paint.strokeWidth = 1f.dpf
+            canvas.drawRect(0f, 0f, wf, hf, paint)
         }
         return bitmap
     }
 
+    private fun resetPaint() {
+        paint.pathEffect = null
+        paint.strokeWidth = 0.5f.dpf
+        paint.color = Color.WHITE
+        paint.style = Paint.Style.FILL
+    }
+
+    private fun drawTextRound(text: String, offsetY: Float, canvas: Canvas) {
+        val rect = Rect()
+        paint.style = Paint.Style.STROKE
+        paint.color = Color.WHITE
+        paint.strokeWidth = 0.5f.dpf
+        paint.pathEffect = pathEffect
+        paint.getTextBounds(text, 0, text.length, rect)
+        val offsetX = ((canvas.width - rect.width() - rect.left) / 2f)
+        rect.offset(offsetX.roundToInt(), offsetY.roundToInt())
+        canvas.drawRect(rect, paint)
+
+        resetPaint()
+    }
+
     private fun createLauncherForeground() {
-        val icon = IconConfig.Single(512)
-        val bitmap = createIconInternal("18.8", "KB/s", icon, null)
+        val bitmap =
+            createIconInternal("18.8", "KB/s", 512, NetSpeedConfiguration.initialize())
         bitmap.saveToAlbum(globalContext, "ic_launcher_foreground.png", "Net Monitor")
     }
 

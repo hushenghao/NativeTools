@@ -7,6 +7,7 @@ import android.os.RemoteException
 import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -64,6 +65,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private fun initGeneralPreferenceGroup() {
         statusSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
+        requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_ADVANCED)
+            .onPreferenceClickListener {
+                findNavController().navigate(R.id.action_netSpeed_to_netSpeedAdvanced)
+            }
     }
 
     private fun initNotificationPreferenceGroup() {
@@ -108,7 +113,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 val status = NetSpeedPreferences.status
                 if (status) startService() else stopService()
             }
-            NetSpeedPreferences.KEY_NET_SPEED_BOLD,
             NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
@@ -118,9 +122,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_USAGE -> {
                 updateConfiguration()
                 checkOpsPermission()
-            }
-            NetSpeedPreferences.KEY_NET_SPEED_MODE -> {
-                updateConfiguration()
             }
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
                 updateNotificationPreferenceEnable()

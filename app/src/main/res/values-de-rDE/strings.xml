@@ -68,4 +68,10 @@
     </string-array>
     <string name="label_privacy_agreement">Es ist ein datengeschäft.</string>
     <string name="label_net_speed_bold">Schriftart fett</string>
+    <string name="label_net_speed_advanced">Nicht ideal.</string>
+    <string name="summary_net_speed_advanced">Benutzerdefinierte darstellung</string>
+    <string name="label_net_speed_y_offset">Liegt unter y-achse</string>
+    <string name="label_net_speed_relative_ratio">Das verhältnis.</string>
+    <string name="label_net_speed_relative_distance">Relative distanz</string>
+    <string name="label_net_speed_text_scale">Wortreise verengt</string>
 </resources>

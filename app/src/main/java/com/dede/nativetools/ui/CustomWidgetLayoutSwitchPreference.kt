@@ -20,6 +20,10 @@ class CustomWidgetLayoutSwitchPreference @JvmOverloads constructor(
 ) : SwitchPreferenceCompat(context, attrs, defStyleAttr, defStyleRes) {
 
     var bindCustomWidget: ((holder: PreferenceViewHolder) -> Unit)? = null
+        set(value) {
+            field = value
+            notifyChanged()
+        }
 
     override fun onBindViewHolder(holder: PreferenceViewHolder?) {
         super.onBindViewHolder(holder)

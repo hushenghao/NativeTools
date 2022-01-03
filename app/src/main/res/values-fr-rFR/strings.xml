@@ -67,4 +67,10 @@
     </string-array>
     <string name="label_privacy_agreement">Accord de confidentialité</string>
     <string name="label_net_speed_bold">Police en gras</string>
+    <string name="label_net_speed_text_scale">Zoom du texte</string>
+    <string name="label_net_speed_relative_distance">La distance relative</string>
+    <string name="label_net_speed_relative_ratio">La proportion relative</string>
+    <string name="label_net_speed_y_offset">Décalage de l’axe Y</string>
+    <string name="summary_net_speed_advanced">Personnaliser le style d’affichage</string>
+    <string name="label_net_speed_advanced">Les paramètres avancés</string>
 </resources>

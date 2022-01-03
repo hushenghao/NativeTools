@@ -8,13 +8,11 @@
         </item>
 
         <item name="colorPrimary">@color/primaryColor</item>
-        <!-- <item name="colorPrimaryDark">@color/primaryDarkColor</item> -->
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
         <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnPrimary">#fff</item>
 
-        <item name="colorOnPrimary">@color/primaryColor</item>
-        <item name="colorOnSecondary">@color/primaryColor</item>
-
-        <item name="colorContainer">@color/primaryLightColor</item>
         <item name="colorPrimaryContainer">@color/primaryLightColor</item>
         <item name="colorSecondaryContainer">@color/secondaryLightColor</item>
 

@@ -68,4 +68,10 @@
     </string-array>
     <string name="label_privacy_agreement">Соглашение о конфиденциальности.</string>
     <string name="label_net_speed_bold">жирный шрифт</string>
+    <string name="label_net_speed_text_scale">Сокращение слова</string>
+    <string name="label_net_speed_relative_distance">Относительное расстояние</string>
+    <string name="label_net_speed_relative_ratio">Относительная пропорция</string>
+    <string name="label_net_speed_y_offset">Смещение оси Y</string>
+    <string name="summary_net_speed_advanced">Самоопределение показывает стиль</string>
+    <string name="label_net_speed_advanced">Установка высшего уровня</string>
 </resources>

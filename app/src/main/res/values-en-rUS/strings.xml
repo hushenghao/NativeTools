@@ -68,4 +68,10 @@
     <string name="action_copy_link">Copy the link</string>
     <string name="label_privacy_agreement">Privacy agreement</string>
     <string name="label_net_speed_bold">Bold font</string>
+    <string name="label_net_speed_advanced">Advanced Settings</string>
+    <string name="summary_net_speed_advanced">Customize the display style</string>
+    <string name="label_net_speed_y_offset">The Y axis offset</string>
+    <string name="label_net_speed_relative_ratio">Relative proportion</string>
+    <string name="label_net_speed_relative_distance">Relative distance</string>
+    <string name="label_net_speed_text_scale">Text zoom</string>
 </resources>
