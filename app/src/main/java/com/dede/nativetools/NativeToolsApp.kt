@@ -2,7 +2,6 @@ package com.dede.nativetools
 
 import android.app.Application
 import android.content.Context
-import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.google.android.material.color.DynamicColors
 
 class NativeToolsApp : Application() {
@@ -23,6 +22,5 @@ class NativeToolsApp : Application() {
     override fun onCreate() {
         super.onCreate()
         DynamicColors.applyToActivitiesIfAvailable(this, R.style.AppTheme)
-        NetSpeedNotificationHelper.checkNotificationChannelAndUpgrade(this)
     }
 }

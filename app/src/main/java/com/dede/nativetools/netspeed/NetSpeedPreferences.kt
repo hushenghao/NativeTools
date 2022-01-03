@@ -16,7 +16,7 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_STATUS = "net_speed_status"
     const val KEY_NET_SPEED_INTERVAL = "net_speed_interval"
     const val KEY_NET_SPEED_NOTIFY_CLICKABLE = "net_speed_notify_clickable"
-    const val KEY_NET_SPEED_MODE = "net_speed_mode"
+    const val KEY_NET_SPEED_MODE = "net_speed_mode_1"
     const val KEY_NET_SPEED_QUICK_CLOSEABLE = "net_speed_notify_quick_closeable"
     const val KEY_NET_SPEED_USAGE = "net_speed_usage"
     const val KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION = "net_speed_locked_hide"
@@ -41,15 +41,24 @@ object NetSpeedPreferences {
         get() = globalPreferences.get(KEY_NET_SPEED_BOLD, true)
 
     var verticalOffset: Float
-        get() = globalPreferences.get(KEY_NET_SPEED_VERTICAL_OFFSET, defaultConfiguration.verticalOffset)
+        get() = globalPreferences.get(
+            KEY_NET_SPEED_VERTICAL_OFFSET,
+            defaultConfiguration.verticalOffset
+        )
         set(value) = globalPreferences.set(KEY_NET_SPEED_VERTICAL_OFFSET, value)
 
     var relativeRatio: Float
-        get() = globalPreferences.get(KEY_NET_SPEED_RELATIVE_RATIO, defaultConfiguration.relativeRatio)
+        get() = globalPreferences.get(
+            KEY_NET_SPEED_RELATIVE_RATIO,
+            defaultConfiguration.relativeRatio
+        )
         set(value) = globalPreferences.set(KEY_NET_SPEED_RELATIVE_RATIO, value)
 
     var relativeDistance: Float
-        get() = globalPreferences.get(KEY_NET_SPEED_RELATIVE_DISTANCE, defaultConfiguration.relativeDistance)
+        get() = globalPreferences.get(
+            KEY_NET_SPEED_RELATIVE_DISTANCE,
+            defaultConfiguration.relativeDistance
+        )
         set(value) = globalPreferences.set(KEY_NET_SPEED_RELATIVE_DISTANCE, value)
 
     var textScale: Float

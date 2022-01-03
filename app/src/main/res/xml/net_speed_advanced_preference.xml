@@ -9,7 +9,7 @@
         app:icon="@drawable/ic_baseline_bold" />
 
     <DropDownPreference
-        android:key="net_speed_mode"
+        android:key="net_speed_mode_1"
         app:defaultValue="0"
         app:entries="@array/net_speed_mode"
         app:entryValues="@array/net_speed_mode_value"
