@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SliderPreference">
+        <attr name="android:valueFrom" format="float" />
+        <attr name="android:value" format="float" />
+        <attr name="android:valueTo" format="float" />
+        <attr name="android:stepSize" format="float" />
+    </declare-styleable>
+</resources>

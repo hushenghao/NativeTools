@@ -1,112 +1,115 @@
 package com.dede.nativetools.netspeed
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.ServiceConnection
-import android.content.SharedPreferences
+import android.content.*
 import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
-import android.util.Log
-import android.view.HapticFeedbackConstants
+import android.view.LayoutInflater
 import android.view.View
-import androidx.fragment.app.Fragment
+import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.preference.PreferenceFragmentCompat
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
-import com.dede.nativetools.databinding.FragmentNetSpeedAdvancedBinding
-import com.dede.nativetools.main.NavigationBarInsets
+import com.dede.nativetools.main.applyRecyclerViewInsets
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
+import com.dede.nativetools.ui.SliderPreference
+import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.globalPreferences
+import com.dede.nativetools.util.requirePreference
 import com.dede.nativetools.util.toast
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
 
-@NavigationBarInsets
-class NetSpeedAdvancedFragment : Fragment(R.layout.fragment_net_speed_advanced),
+/**
+ * 高级设置
+ */
+class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener,
-    ServiceConnection, LabelFormatter, Slider.OnChangeListener, Slider.OnSliderTouchListener {
-
-    private val binding by viewBinding(FragmentNetSpeedAdvancedBinding::bind)
+    ServiceConnection, LabelFormatter, Slider.OnChangeListener {
 
     private val configuration = NetSpeedConfiguration.initialize()
     private var netSpeedBinder: INetSpeedInterface? = null
 
-    class NetSpeedAdvancedPreferences : PreferenceFragmentCompat() {
+    private var ivPreview: ImageView? = null
 
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            addPreferencesFromResource(R.xml.net_speed_advanced_preference)
+    private val closeReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            stopService()
         }
+    }
 
+    private fun SliderPreference.initialize(listener: NetSpeedAdvancedFragment) {
+        this.onChangeListener = listener
+        this.sliderLabelFormatter = listener
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireContext().registerReceiver(closeReceiver, IntentFilter(NetSpeedService.ACTION_CLOSE))
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return super.onCreateView(inflater, container, savedInstanceState)?.apply {
+            val viewGroup = this as ViewGroup
+            val headerView = LayoutInflater.from(this.context)
+                .inflate(R.layout.layout_net_speed_advanced_header, viewGroup, false)
+            ivPreview = headerView.findViewById(R.id.iv_preview)
+            viewGroup.addView(headerView, 0)
+        }
+    }
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        addPreferencesFromResource(R.xml.net_speed_advanced_preference)
+        requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET)
+            .initialize(this)
+        requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO)
+            .initialize(this)
+        requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE)
+            .initialize(this)
+        requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE)
+            .initialize(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        applyRecyclerViewInsets(listView)
         bindService()
-
-        binding.sliderVerticalOffset.value = configuration.verticalOffset
-        binding.sliderRelativeRatio.value = configuration.relativeRatio
-        binding.sliderRelativeDistance.value = configuration.relativeDistance
-        binding.sliderTextScale.value = configuration.textScale
-        updatePreview()
-        initSlider(
-            binding.sliderVerticalOffset,
-            binding.sliderRelativeRatio,
-            binding.sliderRelativeDistance,
-            binding.sliderTextScale
-        )
+        updatePreview(configuration)
     }
 
-    private fun initSlider(vararg sliders: Slider) {
-        for (slider in sliders) {
-            slider.setLabelFormatter(this)
-            slider.addOnChangeListener(this)
-            slider.addOnSliderTouchListener(this)
-        }
-    }
-
-    private fun updatePreview() {
-        val configuration = NetSpeedConfiguration.initialize().copy(
-            verticalOffset = binding.sliderVerticalOffset.value,
-            relativeRatio = binding.sliderRelativeRatio.value,
-            relativeDistance = binding.sliderRelativeDistance.value,
-            textScale = binding.sliderTextScale.value
-        ).apply {
-            cachedBitmap = this@NetSpeedAdvancedFragment.configuration.cachedBitmap
-        }
-        binding.ivPreview.setImageBitmap(
-            NetTextIconFactory.create(
-                0,
-                0,
-                configuration,
-                512,
-                true
-            )
+    private fun updatePreview(configuration: NetSpeedConfiguration) {
+        ivPreview?.setImageBitmap(
+            NetTextIconFactory.create(0, 0, configuration, 512, true)
         )
     }
 
     override fun getFormattedValue(value: Float): String {
-        return "$value %"
-    }
-
-    override fun onStartTrackingTouch(slider: Slider) {
-    }
-
-    override fun onStopTrackingTouch(slider: Slider) {
-        NetSpeedPreferences.verticalOffset = binding.sliderVerticalOffset.value
-        NetSpeedPreferences.relativeRatio = binding.sliderRelativeRatio.value
-        NetSpeedPreferences.relativeDistance = binding.sliderRelativeDistance.value
-        NetSpeedPreferences.textScale = binding.sliderTextScale.value
-        updateConfiguration()
+        return "%.2f%%".format(value)
     }
 
     override fun onValueChange(slider: Slider, value: Float, fromUser: Boolean) {
-        slider.performHapticFeedback(
-            HapticFeedbackConstants.CLOCK_TICK,
-            HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
-        )
-        updatePreview()
+        val key = slider.tag as String? ?: return// SliderPreference内设置了tag
+        val config = when (key) {
+            NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET -> {
+                configuration.copy(verticalOffset = value)
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO -> {
+                configuration.copy(relativeRatio = value)
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE -> {
+                configuration.copy(relativeDistance = value)
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE -> {
+                configuration.copy(textScale = value)
+            }
+            else -> return
+        }
+        updatePreview(config.apply { cachedBitmap = configuration.cachedBitmap })
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
@@ -131,15 +134,13 @@ class NetSpeedAdvancedFragment : Fragment(R.layout.fragment_net_speed_advanced),
         configuration.updateOnPreferenceChanged(key)
         when (key) {
             NetSpeedPreferences.KEY_NET_SPEED_BOLD,
-            NetSpeedPreferences.KEY_NET_SPEED_MODE -> {
-                updatePreview()
-                updateConfiguration()
-            }
+            NetSpeedPreferences.KEY_NET_SPEED_MODE,
             NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET,
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO,
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE,
             NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE -> {
-                // nothing to do
+                updatePreview(configuration)
+                updateConfiguration()
             }
         }
     }
@@ -154,6 +155,7 @@ class NetSpeedAdvancedFragment : Fragment(R.layout.fragment_net_speed_advanced),
 
     override fun onDestroy() {
         unbindService()
+        requireContext().unregisterReceiver(closeReceiver)
         super.onDestroy()
     }
 
@@ -163,6 +165,13 @@ class NetSpeedAdvancedFragment : Fragment(R.layout.fragment_net_speed_advanced),
         val context = requireContext()
         val intent = NetSpeedService.createIntent(context)
         context.bindService(intent, this, Context.BIND_AUTO_CREATE)
+    }
+
+    private fun stopService() {
+        val context = requireContext()
+        val intent = Intent<NetSpeedService>(context)
+        unbindService()
+        context.stopService(intent)
     }
 
     private fun unbindService() {

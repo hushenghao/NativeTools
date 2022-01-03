@@ -205,13 +205,12 @@ object NetTextIconFactory {
             // 居中辅助线
             paint.style = Paint.Style.STROKE
             paint.color = Color.YELLOW
-            paint.strokeWidth = 0.5f.dpf
+            paint.strokeWidth = 1f.dpf
             paint.pathEffect = pathEffect
             //canvas.drawLine(wh, 0f, wh, hf, paint)
             canvas.drawLine(0f, hh, wf, hh, paint)
             // 边框
             paint.pathEffect = null
-            paint.strokeWidth = 1f.dpf
             canvas.drawRect(0f, 0f, wf, hf, paint)
         }
         return bitmap
