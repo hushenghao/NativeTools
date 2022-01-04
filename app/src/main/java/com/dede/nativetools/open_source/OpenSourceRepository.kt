@@ -82,9 +82,9 @@ class OpenSourceRepository {
                 "https://raw.githubusercontent.com/dharmatype/Bebas-Kai/master/OFL.txt"
             ),
             OpenSource(
-                "中国色",
+                "中国传统色",
                 "",
-                "Traditional Chinese colors",
+                "为往圣继绝色，为万世开新颜。",
                 "http://zhongguose.com",
                 R.drawable.ic_logo_zhongguose,
                 null

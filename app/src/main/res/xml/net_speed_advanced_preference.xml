@@ -1,77 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:title="@string/label_net_speed_advanced">
 
-    <DropDownPreference
-        android:key="net_speed_font"
-        app:defaultValue="0"
-        app:entries="@array/net_speed_font"
-        app:entryValues="@array/net_speed_font_value"
-        app:icon="@drawable/ic_outline_font"
-        app:title="@string/label_net_speed_font"
-        app:useSimpleSummaryProvider="true" />
-
-    <DropDownPreference
-        android:title="@string/label_net_speed_style"
-        app:defaultValue="1"
-        app:entries="@array/net_speed_text_style"
-        app:entryValues="@array/net_speed_text_style_value"
-        app:icon="@drawable/ic_baseline_bold"
-        app:key="net_speed_text_style"
-        app:useSimpleSummaryProvider="true" />
-
-    <DropDownPreference
-        android:key="net_speed_mode_1"
-        app:defaultValue="0"
-        app:entries="@array/net_speed_mode"
-        app:entryValues="@array/net_speed_mode_value"
-        app:icon="@drawable/ic_outline_menu_open"
-        app:title="@string/label_net_speed_mode"
-        app:useSimpleSummaryProvider="true" />
-
-    <com.dede.nativetools.ui.SliderPreference
-        android:stepSize="0.01"
-        android:valueFrom="-0.5"
-        android:valueTo="0.5"
-        app:defaultValue="-0.04"
+    <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:key="net_speed_vertical_offset"
-        app:title="@string/label_net_speed_y_offset" />
+        app:title="@string/label_net_speed_advanced">
 
-    <com.dede.nativetools.ui.SliderPreference
-        android:stepSize="0.01"
-        android:valueFrom="0"
-        android:valueTo="1"
-        app:defaultValue="0.61"
-        app:iconSpaceReserved="false"
-        app:key="net_speed_relative_ratio"
-        app:title="@string/label_net_speed_relative_ratio" />
+        <DropDownPreference
+            android:key="net_speed_font"
+            app:defaultValue="0"
+            app:entries="@array/net_speed_font"
+            app:entryValues="@array/net_speed_font_value"
+            app:iconSpaceReserved="false"
+            app:title="@string/label_net_speed_font"
+            app:useSimpleSummaryProvider="true" />
 
-    <com.dede.nativetools.ui.SliderPreference
-        android:stepSize="0.01"
-        android:valueFrom="-0.5"
-        android:valueTo="0.5"
-        app:defaultValue="0.05"
-        app:iconSpaceReserved="false"
-        app:key="net_speed_relative_distance"
-        app:title="@string/label_net_speed_relative_distance" />
+        <DropDownPreference
+            android:title="@string/label_net_speed_style"
+            app:defaultValue="1"
+            app:entries="@array/net_speed_text_style"
+            app:entryValues="@array/net_speed_text_style_value"
+            app:iconSpaceReserved="false"
+            app:key="net_speed_text_style"
+            app:useSimpleSummaryProvider="true" />
 
-    <com.dede.nativetools.ui.SliderPreference
-        android:stepSize="0.01"
-        android:valueFrom="0.5"
-        android:valueTo="1.5"
-        app:defaultValue="1.11"
-        app:iconSpaceReserved="false"
-        app:key="net_speed_text_scale"
-        app:title="@string/label_net_speed_text_scale" />
+        <DropDownPreference
+            android:key="net_speed_mode_1"
+            app:defaultValue="0"
+            app:entries="@array/net_speed_mode"
+            app:entryValues="@array/net_speed_mode_value"
+            app:iconSpaceReserved="false"
+            app:title="@string/label_net_speed_mode"
+            app:useSimpleSummaryProvider="true" />
 
-    <com.dede.nativetools.ui.SliderPreference
-        android:stepSize="0.01"
-        android:valueFrom="-0.5"
-        android:valueTo="0.5"
-        app:defaultValue="0"
-        app:iconSpaceReserved="false"
-        app:key="net_speed_horizontal_offset"
-        app:title="@string/label_net_speed_x_offset" />
+        <com.dede.nativetools.ui.SliderPreference
+            android:stepSize="0.01"
+            android:valueFrom="-0.5"
+            android:valueTo="0.5"
+            app:defaultValue="-0.04"
+            app:iconSpaceReserved="false"
+            app:key="net_speed_vertical_offset"
+            app:title="@string/label_net_speed_y_offset" />
 
+        <com.dede.nativetools.ui.SliderPreference
+            android:stepSize="0.01"
+            android:valueFrom="0"
+            android:valueTo="1"
+            app:defaultValue="0.61"
+            app:iconSpaceReserved="false"
+            app:key="net_speed_relative_ratio"
+            app:title="@string/label_net_speed_relative_ratio" />
+
+        <com.dede.nativetools.ui.SliderPreference
+            android:stepSize="0.01"
+            android:valueFrom="-0.5"
+            android:valueTo="0.5"
+            app:defaultValue="0.1"
+            app:iconSpaceReserved="false"
+            app:key="net_speed_relative_distance"
+            app:title="@string/label_net_speed_relative_distance" />
+
+        <com.dede.nativetools.ui.SliderPreference
+            android:stepSize="0.01"
+            android:valueFrom="0.5"
+            android:valueTo="1.5"
+            app:defaultValue="1.11"
+            app:iconSpaceReserved="false"
+            app:key="net_speed_text_scale"
+            app:title="@string/label_net_speed_text_scale" />
+
+        <com.dede.nativetools.ui.SliderPreference
+            android:stepSize="0.01"
+            android:valueFrom="-0.5"
+            android:valueTo="0.5"
+            app:defaultValue="-0.01"
+            app:iconSpaceReserved="false"
+            app:key="net_speed_horizontal_offset"
+            app:title="@string/label_net_speed_x_offset" />
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -3,6 +3,7 @@ package com.dede.nativetools.netspeed.typeface
 import android.content.Context
 import android.graphics.Typeface
 import android.util.ArrayMap
+import com.dede.nativetools.util.globalContext
 
 interface TypefaceGetter {
 
@@ -27,6 +28,10 @@ interface TypefaceGetter {
             }
             caches[key] = getter
             return getter
+        }
+
+        fun get(key: String? = null, style: Int): Typeface {
+            return create(globalContext, key).get(style)
         }
     }
 

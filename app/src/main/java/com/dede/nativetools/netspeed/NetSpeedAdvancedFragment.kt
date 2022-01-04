@@ -26,7 +26,7 @@ import com.google.android.material.slider.Slider
  */
 class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener,
-    ServiceConnection, LabelFormatter, Slider.OnChangeListener {
+    ServiceConnection, Slider.OnChangeListener {
 
     private val configuration = NetSpeedConfiguration.initialize()
     private var netSpeedBinder: INetSpeedInterface? = null
@@ -39,9 +39,12 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         }
     }
 
-    private fun SliderPreference.initialize(listener: NetSpeedAdvancedFragment) {
+    private fun SliderPreference.initialize(
+        listener: NetSpeedAdvancedFragment,
+        labelFormatter: LabelFormatter
+    ) {
         this.onChangeListener = listener
-        this.sliderLabelFormatter = listener
+        this.sliderLabelFormatter = labelFormatter
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,18 +66,25 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         }
     }
 
+    private val labelFormatterPercent = LabelFormatter { "%d %%".format((it * 100).toInt()) }
+    private val labelFormatterRatio = LabelFormatter {
+        val denominator = (it * 100).toInt()
+        val molecular = 100 - denominator
+        "$denominator : $molecular"
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.net_speed_advanced_preference)
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET)
-            .initialize(this)
+            .initialize(this, labelFormatterPercent)
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET)
-            .initialize(this)
+            .initialize(this, labelFormatterPercent)
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO)
-            .initialize(this)
+            .initialize(this, labelFormatterRatio)
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE)
-            .initialize(this)
+            .initialize(this, labelFormatterPercent)
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE)
-            .initialize(this)
+            .initialize(this, labelFormatterPercent)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,10 +98,6 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         ivPreview?.setImageBitmap(
             NetTextIconFactory.create(0, 0, configuration, 512, true)
         )
-    }
-
-    override fun getFormattedValue(value: Float): String {
-        return "%.2f%%".format(value)
     }
 
     override fun onValueChange(slider: Slider, value: Float, fromUser: Boolean) {

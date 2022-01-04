@@ -1,11 +1,11 @@
 package com.dede.nativetools.netspeed.stats
 
 import android.net.TrafficStats
-import com.dede.nativetools.netspeed.stats.INetStats.Companion.isSupported
+import com.dede.nativetools.netspeed.stats.NetStats.Companion.isSupported
 import com.dede.nativetools.util.method
 import java.lang.reflect.Method
 
-class ExcludeLoNetStats : INetStats {
+class ExcludeLoNetStats : NetStats {
 
     override fun supported(): Boolean {
         return methodGetLoopbackRxBytes != null && methodGetLoopbackTxBytes != null
@@ -13,11 +13,11 @@ class ExcludeLoNetStats : INetStats {
     }
 
     override fun getRxBytes(): Long {
-        return INetStats.addIfSupported(TrafficStats.getTotalRxBytes(), -getLoopbackRxBytes())
+        return NetStats.addIfSupported(TrafficStats.getTotalRxBytes(), -getLoopbackRxBytes())
     }
 
     override fun getTxBytes(): Long {
-        return INetStats.addIfSupported(TrafficStats.getTotalTxBytes(), -getLoopbackTxBytes())
+        return NetStats.addIfSupported(TrafficStats.getTotalTxBytes(), -getLoopbackTxBytes())
     }
 
     private var methodGetLoopbackRxBytes: Method? = null
@@ -43,9 +43,9 @@ class ExcludeLoNetStats : INetStats {
     }
 
     private fun getLoopbackBytes(method: Method?): Long {
-        if (method == null) return INetStats.UNSUPPORTED
+        if (method == null) return NetStats.UNSUPPORTED
         return method.runCatching { invoke(null) as Long }
-            .getOrDefault(INetStats.UNSUPPORTED)
+            .getOrDefault(NetStats.UNSUPPORTED)
     }
 
 }

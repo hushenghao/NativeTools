@@ -151,6 +151,7 @@ object NetTextIconFactory {
     }
 
     private val pathEffect = DashPathEffect(floatArrayOf(2.dpf, 2.dpf), 0f)
+    private val rect = Rect()
 
     private fun createIconInternal(
         text1: String,
@@ -174,16 +175,15 @@ object NetTextIconFactory {
 
         val bitmap = createBitmapInternal(size, configuration.cachedBitmap)
         val canvas = Canvas(bitmap)
-        paint.typeface = TypefaceGetter.create(globalContext, configuration.font)
-            .get(configuration.textStyle)
+        paint.typeface = TypefaceGetter.get(configuration.font, configuration.textStyle)
         resetPaint()
 
         val yOffset = hf * verticalOffset
         val xOffset = wf * horizontalOffset
-        val rect = Rect()
+        val distance = hf * relativeDistance / 2f
 
         paint.textSize = w * relativeRatio * textScale// 缩放
-        var textY = relativeRatio * hf - hf * relativeDistance + yOffset
+        var textY = relativeRatio * hf - distance + yOffset
         val textX = wh + xOffset
         canvas.drawText(text1, textX, textY, paint)
         //if (assistLine) {
@@ -192,7 +192,7 @@ object NetTextIconFactory {
 
         paint.textSize = w * (1 - relativeRatio) * textScale// 缩放
         paint.getTextBounds(text2, 0, text2.length, rect)
-        textY = hf * relativeRatio + rect.height() + hf * relativeDistance + yOffset
+        textY = hf * relativeRatio + rect.height() + distance + yOffset
         canvas.drawText(text2, textX, textY, paint)
         //if (assistLine) {
         //    drawTextRound(text2, textX, textY, canvas)
@@ -202,7 +202,7 @@ object NetTextIconFactory {
             // 居中辅助线
             paint.style = Paint.Style.STROKE
             paint.color = Color.YELLOW
-            paint.strokeWidth = 1f.dpf
+            paint.strokeWidth = 1.5f.dpf
             paint.pathEffect = pathEffect
             canvas.drawLine(wh, 0f, wh, hf, paint)
             canvas.drawLine(0f, hh, wf, hh, paint)

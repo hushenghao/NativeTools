@@ -3,7 +3,7 @@ package com.dede.nativetools.netspeed.stats
 import android.net.TrafficStats
 import android.util.Log
 
-interface INetStats {
+interface NetStats {
 
     companion object {
 
@@ -22,11 +22,11 @@ interface INetStats {
             return allStat
         }
 
-        private var iNetStats: INetStats? = null
+        private var netStats: NetStats? = null
 
-        fun getInstance(): INetStats {
-            if (iNetStats != null) {
-                return iNetStats!!
+        fun getInstance(): NetStats {
+            if (netStats != null) {
+                return netStats!!
             }
             val allNetBytesClass = arrayOf(
                 Android31NetStats::class.java,
@@ -39,14 +39,14 @@ interface INetStats {
                 if (instance == null || !instance.supported())
                     continue
 
-                iNetStats = instance
+                netStats = instance
                 break
             }
-            Log.i("NetSpeedHelper", "INetStats: $iNetStats")
-            return checkNotNull(iNetStats) { "Not found supported INetStats" }
+            Log.i("NetSpeedHelper", "INetStats: $netStats")
+            return checkNotNull(netStats) { "Not found supported INetStats" }
         }
 
-        private fun create(clazz: Class<out INetStats>): INetStats? {
+        private fun create(clazz: Class<out NetStats>): NetStats? {
             return when (clazz) {
                 Android31NetStats::class.java -> Android31NetStats()
                 ReflectNetStats::class.java -> ReflectNetStats()
