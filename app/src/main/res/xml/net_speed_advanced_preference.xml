@@ -19,36 +19,36 @@
 
     <com.dede.nativetools.ui.SliderPreference
         android:stepSize="0.01"
-        android:value="-0.04"
         android:valueFrom="-0.5"
         android:valueTo="0.5"
+        app:defaultValue="-0.04"
         app:iconSpaceReserved="false"
         app:key="net_speed_vertical_offset"
         app:title="@string/label_net_speed_y_offset" />
 
     <com.dede.nativetools.ui.SliderPreference
         android:stepSize="0.01"
-        android:value="0.61"
         android:valueFrom="0"
         android:valueTo="1"
+        app:defaultValue="0.61"
         app:iconSpaceReserved="false"
         app:key="net_speed_relative_ratio"
         app:title="@string/label_net_speed_relative_ratio" />
 
     <com.dede.nativetools.ui.SliderPreference
         android:stepSize="0.01"
-        android:value="0.05"
         android:valueFrom="-0.5"
         android:valueTo="0.5"
+        app:defaultValue="0.05"
         app:iconSpaceReserved="false"
         app:key="net_speed_relative_distance"
         app:title="@string/label_net_speed_relative_distance" />
 
     <com.dede.nativetools.ui.SliderPreference
         android:stepSize="0.01"
-        android:value="1.11"
         android:valueFrom="0.5"
         android:valueTo="1.5"
+        app:defaultValue="1.11"
         app:iconSpaceReserved="false"
         app:key="net_speed_text_scale"
         app:title="@string/label_net_speed_text_scale" />
