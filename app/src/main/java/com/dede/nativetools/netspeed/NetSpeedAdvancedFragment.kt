@@ -67,6 +67,8 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         addPreferencesFromResource(R.xml.net_speed_advanced_preference)
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET)
             .initialize(this)
+        requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET)
+            .initialize(this)
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO)
             .initialize(this)
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE)
@@ -97,6 +99,9 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         val config = when (key) {
             NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET -> {
                 configuration.copy(verticalOffset = value)
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET -> {
+                configuration.copy(horizontalOffset = value)
             }
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO -> {
                 configuration.copy(relativeRatio = value)
@@ -133,9 +138,11 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     override fun onSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
         configuration.updateOnPreferenceChanged(key)
         when (key) {
-            NetSpeedPreferences.KEY_NET_SPEED_BOLD,
+            NetSpeedPreferences.KEY_NET_SPEED_TEXT_STYLE,
+            NetSpeedPreferences.KEY_NET_SPEED_FONT,
             NetSpeedPreferences.KEY_NET_SPEED_MODE,
             NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET,
+            NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET,
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO,
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE,
             NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE -> {

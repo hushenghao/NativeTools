@@ -60,33 +60,24 @@
     <string name="action_rate">给个好评</string>
     <string name="action_donate">捐赠</string>
     <string name="label_coffee">请我喝一杯咖啡？</string>
-
-    <string-array name="net_speed_interval">
-        <item>500 ms</item>
-        <item>800 ms</item>
-        <item>1000 ms</item>
-        <item>1500 ms</item>
-        <item>2000 ms</item>
-        <item>3000 ms</item>
-    </string-array>
-
-    <string-array name="net_speed_mode">
-        <item>仅下载</item>
-        <item>上传 + 下载</item>
-        <item>仅上传</item>
-    </string-array>
-
     <string name="toast_saved">已保存</string>
     <string name="label_home">首页</string>
     <string name="toast_open_battery_optimization">请找到“网速指示器”，并手动开启电池优化</string>
     <string name="action_copy_link">复制链接</string>
     <string name="action_open_link">查看</string>
     <string name="label_privacy_agreement">隐私协议</string>
-    <string name="label_net_speed_bold">字体加粗</string>
+    <string name="label_net_speed_style">字体样式</string>
     <string name="label_net_speed_advanced">高级设置</string>
     <string name="summary_net_speed_advanced">自定义显示样式</string>
     <string name="label_net_speed_y_offset">Y轴偏移</string>
     <string name="label_net_speed_relative_ratio">相对比例</string>
     <string name="label_net_speed_relative_distance">相对距离</string>
     <string name="label_net_speed_text_scale">文字缩放</string>
+    <string name="label_net_speed_font">字体</string>
+    <string name="label_system_default">系统默认</string>
+    <string name="label_text_style_normal">普通</string>
+    <string name="label_text_style_bold">粗体</string>
+    <string name="label_text_style_italic">斜体</string>
+    <string name="label_text_style_bold_italic">粗斜体</string>
+    <string name="label_net_speed_x_offset">X轴偏移</string>
 </resources>

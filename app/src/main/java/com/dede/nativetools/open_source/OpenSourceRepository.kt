@@ -88,6 +88,14 @@ class OpenSourceRepository {
                 "http://zhongguose.com",
                 R.drawable.ic_logo_zhongguose,
                 null
+            ),
+            OpenSource(
+                "Google Fonts",
+                "Google",
+                "Google Fonts is a library of 1,358 free licensed font families and APIs for convenient use via CSS and Android.",
+                "https://fonts.google.com",
+                R.drawable.ic_logo_googlefonts,
+                "https://www.apache.org/licenses/LICENSE-2.0.txt"
             )
         )
     }

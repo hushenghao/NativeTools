@@ -50,13 +50,6 @@
     <string name="action_rate">給個好評</string>
     <string name="action_donate">捐贈</string>
     <string name="label_coffee">請我喝一杯咖啡？</string>
-
-    <string-array name="net_speed_mode">
-        <item>僅下載</item>
-        <item>上傳+下載</item>
-        <item>僅上傳</item>
-    </string-array>
-
     <string name="label_general">通用</string>
     <string name="label_notification">通知</string>
     <string name="label_other">其他</string>
@@ -68,11 +61,18 @@
     <string name="action_open_link">查看</string>
     <string name="action_copy_link">複製連結</string>
     <string name="label_privacy_agreement">隱私協定</string>
-    <string name="label_net_speed_bold">字體加粗</string>
+    <string name="label_net_speed_style">字體樣式</string>
     <string name="label_net_speed_advanced">高級設定</string>
     <string name="summary_net_speed_advanced">自定義顯示樣式</string>
     <string name="label_net_speed_y_offset">Y軸偏移</string>
     <string name="label_net_speed_relative_ratio">相對比例</string>
     <string name="label_net_speed_relative_distance">相對距離</string>
     <string name="label_net_speed_text_scale">文字縮放</string>
+    <string name="label_net_speed_font">字體</string>
+    <string name="label_system_default">系統默認</string>
+    <string name="label_text_style_normal">普通</string>
+    <string name="label_text_style_bold">粗體</string>
+    <string name="label_text_style_italic">斜體</string>
+    <string name="label_text_style_bold_italic">粗斜體</string>
+    <string name="label_net_speed_x_offset">X軸偏移</string>
 </resources>

@@ -60,17 +60,19 @@
     <string name="toast_open_battery_optimization">S\'il vous plaît trouver \"Vitesse Net\" et activer manuellement l\'optimisation de la batterie</string>
     <string name="action_copy_link">Copier le lien</string>
     <string name="action_open_link">Voir</string>
-    <string-array name="net_speed_mode">
-        <item>Down</item>
-        <item>Up + Down</item>
-        <item>Up</item>
-    </string-array>
     <string name="label_privacy_agreement">Accord de confidentialité</string>
-    <string name="label_net_speed_bold">Police en gras</string>
+    <string name="label_net_speed_style">Style de police</string>
     <string name="label_net_speed_text_scale">Zoom du texte</string>
     <string name="label_net_speed_relative_distance">La distance relative</string>
     <string name="label_net_speed_relative_ratio">La proportion relative</string>
     <string name="label_net_speed_y_offset">Décalage de l’axe Y</string>
     <string name="summary_net_speed_advanced">Personnaliser le style d’affichage</string>
     <string name="label_net_speed_advanced">Les paramètres avancés</string>
+    <string name="label_net_speed_font">Caractères</string>
+    <string name="label_system_default">Système par défaut</string>
+    <string name="label_text_style_normal">Normale</string>
+    <string name="label_text_style_bold">En caractères gras</string>
+    <string name="label_text_style_italic">En italique</string>
+    <string name="label_text_style_bold_italic">Grossier et italique</string>
+    <string name="label_net_speed_x_offset">Décalage de l’axe X</string>
 </resources>

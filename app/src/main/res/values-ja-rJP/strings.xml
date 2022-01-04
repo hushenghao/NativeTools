@@ -54,13 +54,6 @@
     <string name="action_rate">好評をあたえる</string>
     <string name="action_donate">寄付</string>
     <string name="label_coffee">コーヒーを一杯おごってくれる?</string>
-
-    <string-array name="net_speed_mode">
-        <item>ダウンロードのみ</item>
-        <item>アップロード+ダウンロード</item>
-        <item>アップロードするだけ</item>
-    </string-array>
-
     <string name="label_notification">通知</string>
     <string name="toast_saved">保存済み</string>
     <string name="label_home">トップページ</string>
@@ -68,11 +61,18 @@
     <string name="action_open_link">チェック</string>
     <string name="action_copy_link">リンクをコピーする</string>
     <string name="label_privacy_agreement">プライバシー協定</string>
-    <string name="label_net_speed_bold">フォントの太さ</string>
+    <string name="label_net_speed_style">書体様式</string>
     <string name="label_net_speed_text_scale">文字スケーリング</string>
     <string name="label_net_speed_relative_distance">相対距離</string>
     <string name="label_net_speed_relative_ratio">相対比率</string>
     <string name="label_net_speed_y_offset">Y軸オフセット</string>
     <string name="summary_net_speed_advanced">表示仕様をカスタマイズする</string>
     <string name="label_net_speed_advanced">高度な設定</string>
+    <string name="label_net_speed_font">フォント</string>
+    <string name="label_system_default">システムデフォルト</string>
+    <string name="label_text_style_normal">一般</string>
+    <string name="label_text_style_bold">粗体</string>
+    <string name="label_text_style_italic">イタリック</string>
+    <string name="label_text_style_bold_italic">太斜体</string>
+    <string name="label_net_speed_x_offset">X軸オフセット</string>
 </resources>

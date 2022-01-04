@@ -2,11 +2,23 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SwitchPreferenceCompat
-        android:key="net_speed_bold"
-        android:title="@string/label_net_speed_bold"
-        app:defaultValue="true"
-        app:icon="@drawable/ic_baseline_bold" />
+    <DropDownPreference
+        android:key="net_speed_font"
+        app:defaultValue="0"
+        app:entries="@array/net_speed_font"
+        app:entryValues="@array/net_speed_font_value"
+        app:icon="@drawable/ic_outline_font"
+        app:title="@string/label_net_speed_font"
+        app:useSimpleSummaryProvider="true" />
+
+    <DropDownPreference
+        android:title="@string/label_net_speed_style"
+        app:defaultValue="1"
+        app:entries="@array/net_speed_text_style"
+        app:entryValues="@array/net_speed_text_style_value"
+        app:icon="@drawable/ic_baseline_bold"
+        app:key="net_speed_text_style"
+        app:useSimpleSummaryProvider="true" />
 
     <DropDownPreference
         android:key="net_speed_mode_1"
@@ -52,5 +64,14 @@
         app:iconSpaceReserved="false"
         app:key="net_speed_text_scale"
         app:title="@string/label_net_speed_text_scale" />
+
+    <com.dede.nativetools.ui.SliderPreference
+        android:stepSize="0.01"
+        android:valueFrom="-0.5"
+        android:valueTo="0.5"
+        app:defaultValue="0"
+        app:iconSpaceReserved="false"
+        app:key="net_speed_horizontal_offset"
+        app:title="@string/label_net_speed_x_offset" />
 
 </PreferenceScreen>

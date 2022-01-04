@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="net_speed_mode">
+        <item>다운로드만</item>
+        <item>업로드 + 다운로드</item>
+        <item>업로드만</item>
+    </string-array>
+</resources>

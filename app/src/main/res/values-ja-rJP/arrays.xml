@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="net_speed_mode">
+        <item>ダウンロードのみ</item>
+        <item>アップロード+ダウンロード</item>
+        <item>アップロードするだけ</item>
+    </string-array>
+</resources>

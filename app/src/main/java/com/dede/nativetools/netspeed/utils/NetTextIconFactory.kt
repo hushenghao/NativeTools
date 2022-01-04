@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.DisplayMetrics
 import android.util.Log
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
+import com.dede.nativetools.netspeed.typeface.TypefaceGetter
 import com.dede.nativetools.util.dpf
 import com.dede.nativetools.util.globalContext
 import com.dede.nativetools.util.saveToAlbum
@@ -24,16 +25,13 @@ object NetTextIconFactory {
     private const val DEBUG_MODE = false
 
     // 888M 931135488L
-    const val DEBUG_MODE_ALL_BYTES = (2 shl 19) * 888L
+    private const val DEBUG_MODE_ALL_BYTES = (2 shl 19) * 888L
 
     // 88.8M 93113549L
-    const val DEBUG_MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
-
-    private val basic = Typeface.createFromAsset(globalContext.assets, "BebasKai.ttf")
+    private const val DEBUG_MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         //isFakeBoldText = true
-        typeface = basic
         textAlign = Paint.Align.CENTER
         color = Color.WHITE
         style = Paint.Style.FILL
@@ -169,37 +167,36 @@ object NetTextIconFactory {
         val hh = h / 2f
 
         val verticalOffset: Float = configuration.verticalOffset
+        val horizontalOffset: Float = configuration.horizontalOffset
         val relativeRatio: Float = configuration.relativeRatio
         val relativeDistance: Float = configuration.relativeDistance
         val textScale: Float = configuration.textScale
 
         val bitmap = createBitmapInternal(size, configuration.cachedBitmap)
         val canvas = Canvas(bitmap)
-
-        if (configuration.isBold) {
-            paint.typeface = Typeface.create(basic, Typeface.BOLD)
-        } else {
-            paint.typeface = basic
-        }
+        paint.typeface = TypefaceGetter.create(globalContext, configuration.font)
+            .get(configuration.textStyle)
         resetPaint()
 
         val yOffset = hf * verticalOffset
+        val xOffset = wf * horizontalOffset
         val rect = Rect()
 
         paint.textSize = w * relativeRatio * textScale// 缩放
         var textY = relativeRatio * hf - hf * relativeDistance + yOffset
-        if (assistLine) {
-            drawTextRound(text1, textY, canvas)
-        }
-        canvas.drawText(text1, wh, textY, paint)
+        val textX = wh + xOffset
+        canvas.drawText(text1, textX, textY, paint)
+        //if (assistLine) {
+        //    drawTextRound(text1, textX, textY, canvas)
+        //}
 
         paint.textSize = w * (1 - relativeRatio) * textScale// 缩放
         paint.getTextBounds(text2, 0, text2.length, rect)
         textY = hf * relativeRatio + rect.height() + hf * relativeDistance + yOffset
-        if (assistLine) {
-            drawTextRound(text2, textY, canvas)
-        }
-        canvas.drawText(text2, wh, textY, paint)
+        canvas.drawText(text2, textX, textY, paint)
+        //if (assistLine) {
+        //    drawTextRound(text2, textX, textY, canvas)
+        //}
 
         if (assistLine) {
             // 居中辅助线
@@ -207,7 +204,7 @@ object NetTextIconFactory {
             paint.color = Color.YELLOW
             paint.strokeWidth = 1f.dpf
             paint.pathEffect = pathEffect
-            //canvas.drawLine(wh, 0f, wh, hf, paint)
+            canvas.drawLine(wh, 0f, wh, hf, paint)
             canvas.drawLine(0f, hh, wf, hh, paint)
             // 边框
             paint.pathEffect = null
@@ -223,15 +220,17 @@ object NetTextIconFactory {
         paint.style = Paint.Style.FILL
     }
 
-    private fun drawTextRound(text: String, offsetY: Float, canvas: Canvas) {
+    private fun drawTextRound(text: String, textX: Float, textY: Float, canvas: Canvas) {
         val rect = Rect()
+        // 斜体字边框测量不准确???
+        paint.getTextBounds(text, 0, text.length, rect)
         paint.style = Paint.Style.STROKE
         paint.color = Color.WHITE
         paint.strokeWidth = 0.5f.dpf
         paint.pathEffect = pathEffect
-        paint.getTextBounds(text, 0, text.length, rect)
-        val offsetX = ((canvas.width - rect.width() - rect.left) / 2f)
-        rect.offset(offsetX.roundToInt(), offsetY.roundToInt())
+        // 画笔字体对齐为方式为center
+        val offsetX = textX - rect.width() / 2f - rect.left / 2f// 字体左边会有边距
+        rect.offset(offsetX.roundToInt(), textY.roundToInt())
         canvas.drawRect(rect, paint)
 
         resetPaint()
@@ -239,7 +238,7 @@ object NetTextIconFactory {
 
     private fun createLauncherForeground() {
         val bitmap =
-            createIconInternal("18.8", "KB/s", 512, NetSpeedConfiguration.initialize())
+            createIconInternal("18.8", "KB/s", 512, NetSpeedConfiguration.defaultConfiguration)
         bitmap.saveToAlbum(globalContext, "ic_launcher_foreground.png", "Net Monitor")
     }
 

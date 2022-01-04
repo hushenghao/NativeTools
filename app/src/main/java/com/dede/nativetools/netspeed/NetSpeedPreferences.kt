@@ -1,5 +1,6 @@
 package com.dede.nativetools.netspeed
 
+import android.graphics.Typeface
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultConfiguration
 import com.dede.nativetools.util.get
 import com.dede.nativetools.util.globalPreferences
@@ -22,8 +23,10 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION = "net_speed_locked_hide"
     const val KEY_NET_SPEED_HIDE_NOTIFICATION = "net_speed_hide_notification"
     const val KEY_NET_SPEED_ADVANCED = "net_speed_advanced"
-    const val KEY_NET_SPEED_BOLD = "net_speed_bold"
+    const val KEY_NET_SPEED_TEXT_STYLE = "net_speed_text_style"
+    const val KEY_NET_SPEED_FONT = "net_speed_font"
     const val KEY_NET_SPEED_VERTICAL_OFFSET = "net_speed_vertical_offset"
+    const val KEY_NET_SPEED_HORIZONTAL_OFFSET = "net_speed_horizontal_offset"
     const val KEY_NET_SPEED_RELATIVE_RATIO = "net_speed_relative_ratio"
     const val KEY_NET_SPEED_RELATIVE_DISTANCE = "net_speed_relative_distance"
     const val KEY_NET_SPEED_TEXT_SCALE = "net_speed_text_scale"
@@ -32,38 +35,45 @@ object NetSpeedPreferences {
     private const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
 
     const val DEFAULT_INTERVAL = 1000
+    const val DEFAULT_TEXT_STYLE = Typeface.BOLD
 
     var status: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_STATUS, false)
         set(value) = globalPreferences.set(KEY_NET_SPEED_STATUS, value)
 
-    val isBold: Boolean
-        get() = globalPreferences.get(KEY_NET_SPEED_BOLD, true)
+    val textStyle: Int
+        get() = globalPreferences.get(KEY_NET_SPEED_TEXT_STYLE, DEFAULT_TEXT_STYLE.toString())
+            .toIntOrNull() ?: defaultConfiguration.textStyle
 
-    var verticalOffset: Float
+    val font: String
+        get() = globalPreferences.get(KEY_NET_SPEED_FONT, defaultConfiguration.font)
+
+    val verticalOffset: Float
         get() = globalPreferences.get(
             KEY_NET_SPEED_VERTICAL_OFFSET,
             defaultConfiguration.verticalOffset
         )
-        set(value) = globalPreferences.set(KEY_NET_SPEED_VERTICAL_OFFSET, value)
 
-    var relativeRatio: Float
+    val horizontalOffset: Float
+        get() = globalPreferences.get(
+            KEY_NET_SPEED_HORIZONTAL_OFFSET,
+            defaultConfiguration.horizontalOffset
+        )
+
+    val relativeRatio: Float
         get() = globalPreferences.get(
             KEY_NET_SPEED_RELATIVE_RATIO,
             defaultConfiguration.relativeRatio
         )
-        set(value) = globalPreferences.set(KEY_NET_SPEED_RELATIVE_RATIO, value)
 
-    var relativeDistance: Float
+    val relativeDistance: Float
         get() = globalPreferences.get(
             KEY_NET_SPEED_RELATIVE_DISTANCE,
             defaultConfiguration.relativeDistance
         )
-        set(value) = globalPreferences.set(KEY_NET_SPEED_RELATIVE_DISTANCE, value)
 
-    var textScale: Float
+    val textScale: Float
         get() = globalPreferences.get(KEY_NET_SPEED_TEXT_SCALE, defaultConfiguration.textScale)
-        set(value) = globalPreferences.set(KEY_NET_SPEED_TEXT_SCALE, value)
 
     val autoStart: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_AUTO_START, false)

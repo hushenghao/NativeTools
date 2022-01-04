@@ -23,12 +23,6 @@
     <string name="summary_net_speed">Display the current network speed in the status bar</string>
     <string name="summary_net_speed_hide_lock_notification">By default, the screen-lock notification is hidden. You need to set the screen-lock notification only when the screen-lock notification is invalid</string>
     <string name="summary_net_speed_notify_clickable">Click notification to open the application settings interface</string>
-
-    <string-array name="net_speed_mode">
-        <item>Down</item>
-        <item>Up + Down</item>
-        <item>Up</item>
-    </string-array>
     <string name="label_net_speed_notify_quick_closeable">Notification quick close</string>
     <string name="summary_net_speed_notify_quick_closeable">Add a close button to the network speed notification</string>
     <string name="alert_title_notification_disable">Notification not enabled</string>
@@ -67,11 +61,18 @@
     <string name="action_open_link">To view</string>
     <string name="action_copy_link">Copy the link</string>
     <string name="label_privacy_agreement">Privacy agreement</string>
-    <string name="label_net_speed_bold">Bold font</string>
+    <string name="label_net_speed_style">Font style</string>
     <string name="label_net_speed_advanced">Advanced Settings</string>
     <string name="summary_net_speed_advanced">Customize the display style</string>
     <string name="label_net_speed_y_offset">The Y axis offset</string>
     <string name="label_net_speed_relative_ratio">Relative proportion</string>
     <string name="label_net_speed_relative_distance">Relative distance</string>
     <string name="label_net_speed_text_scale">Text zoom</string>
+    <string name="label_net_speed_font">The font</string>
+    <string name="label_system_default">The system default</string>
+    <string name="label_text_style_normal">General</string>
+    <string name="label_text_style_bold">Bold</string>
+    <string name="label_text_style_italic">Italics</string>
+    <string name="label_text_style_bold_italic">Bold Italic</string>
+    <string name="label_net_speed_x_offset">The X axis offset</string>
 </resources>

@@ -60,19 +60,20 @@
     <string name="toast_open_battery_optimization">네트워크 속도 표시기를 찾아 수동으로 배터리 최적화를 켜십시오</string>
     <string name="action_copy_link">링크 복사</string>
     <string name="action_open_link">보기</string>
-
-    <string-array name="net_speed_mode">
-        <item>다운로드만</item>
-        <item>업로드 + 다운로드</item>
-        <item>업로드만</item>
-    </string-array>
     <string name="label_privacy_agreement">프라이버시 규약</string>
-    <string name="label_net_speed_bold">글꼴 굵기</string>
+    <string name="label_net_speed_style">글꼴 스타일</string>
     <string name="label_net_speed_advanced">고급 설정</string>
     <string name="summary_net_speed_advanced">디스플레이 스타일 사용자 정의</string>
     <string name="label_net_speed_y_offset">Y 축 오프셋</string>
     <string name="label_net_speed_relative_ratio">상대적 비율</string>
     <string name="label_net_speed_relative_distance">상대적 거리</string>
     <string name="label_net_speed_text_scale">텍스트 크기 조정</string>
+    <string name="label_net_speed_font">글꼴</string>
+    <string name="label_system_default">시스템 기본 설정</string>
+    <string name="label_text_style_normal">일반</string>
+    <string name="label_text_style_bold">진하게</string>
+    <string name="label_text_style_italic">기울 임 꼴</string>
+    <string name="label_text_style_bold_italic">굵은 이탤릭</string>
+    <string name="label_net_speed_x_offset">X 축 오프셋</string>
 
 </resources>
