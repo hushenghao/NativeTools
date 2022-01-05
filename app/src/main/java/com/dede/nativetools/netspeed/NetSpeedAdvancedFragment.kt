@@ -9,11 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.preference.PreferenceFragmentCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
 import com.dede.nativetools.main.applyRecyclerViewInsets
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
+import com.dede.nativetools.ui.HackerSlider
 import com.dede.nativetools.ui.SliderPreference
+import com.dede.nativetools.ui.VerticalScrollSwitchLinearLayoutManager
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.globalPreferences
 import com.dede.nativetools.util.requirePreference
@@ -39,12 +43,15 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         }
     }
 
+    private val layoutManager by lazy { VerticalScrollSwitchLinearLayoutManager(requireContext()) }
+
     private fun SliderPreference.initialize(
         listener: NetSpeedAdvancedFragment,
         labelFormatter: LabelFormatter
     ) {
         this.onChangeListener = listener
         this.sliderLabelFormatter = labelFormatter
+        this.verticalScrollingContainerHacker = layoutManager
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +72,8 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             viewGroup.addView(headerView, 0)
         }
     }
+
+    override fun onCreateLayoutManager() = layoutManager
 
     private val labelFormatterPercent = LabelFormatter { "%d %%".format((it * 100).toInt()) }
     private val labelFormatterRatio = LabelFormatter {
@@ -100,23 +109,30 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         )
     }
 
+    private var tempConfiguration: NetSpeedConfiguration? = null
+
     override fun onValueChange(slider: Slider, value: Float, fromUser: Boolean) {
         val key = slider.tag as String? ?: return// SliderPreference内设置了tag
-        val config = when (key) {
+        var config = tempConfiguration
+        if (config == null) {
+            config = configuration.copy()
+            tempConfiguration = config
+        }
+        when (key) {
             NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET -> {
-                configuration.copy(verticalOffset = value)
+                config.verticalOffset = value
             }
             NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET -> {
-                configuration.copy(horizontalOffset = value)
+                config.horizontalOffset = value
             }
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO -> {
-                configuration.copy(relativeRatio = value)
+                config.relativeRatio = value
             }
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE -> {
-                configuration.copy(relativeDistance = value)
+                config.relativeDistance = value
             }
             NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE -> {
-                configuration.copy(textScale = value)
+                config.textScale = value
             }
             else -> return
         }

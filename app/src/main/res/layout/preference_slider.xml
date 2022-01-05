@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:clipChildren="false"
-    android:clipToPadding="false"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight">
 
     <LinearLayout
@@ -36,7 +36,7 @@
 
     </LinearLayout>
 
-    <com.google.android.material.slider.Slider
+    <com.dede.nativetools.ui.HackerSlider
         android:id="@+id/slider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,9 +44,9 @@
         android:layout_alignParentRight="true"
         android:layout_marginStart="-10dp"
         android:layout_marginLeft="-10dp"
-        android:layout_marginTop="-38dp"
+        android:layout_marginTop="-8dp"
         android:layout_toRightOf="@id/icon_frame"
-        app:labelBehavior="withinBounds"
+        app:labelBehavior="floating"
         app:tickVisible="false"
         tools:stepSize="0.01"
         tools:valueFrom="0"
@@ -61,7 +61,7 @@
         android:ellipsize="marquee"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceListItem"
-        tools:text="我是标题" />
+        tools:text="@tools:sample/full_names" />
 
     <TextView
         android:id="@android:id/summary"
@@ -70,11 +70,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@android:id/title"
         android:layout_gravity="start"
+        android:layout_toLeftOf="@id/slider_value"
         android:layout_toRightOf="@id/icon_frame"
         android:maxLines="4"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorSecondary"
-        tools:text="我是副标题" />
+        tools:text="@tools:sample/lorem/random" />
 
     <TextView
         android:id="@+id/slider_value"
@@ -82,10 +83,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@android:id/summary"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:ellipsize="marquee"
         android:gravity="end"
         android:singleLine="true"
