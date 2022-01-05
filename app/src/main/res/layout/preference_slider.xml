@@ -11,7 +11,8 @@
     android:paddingStart="?android:attr/listPreferredItemPaddingStart"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight">
+    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+    tools:viewBindingIgnore="true">
 
     <LinearLayout
         android:id="@+id/icon_frame"
@@ -36,15 +37,16 @@
 
     </LinearLayout>
 
-    <com.dede.nativetools.ui.HackerSlider
+    <view
         android:id="@+id/slider"
+        class="com.dede.nativetools.ui.SliderPreference$UnCheckScrollVerticalSlider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@android:id/summary"
         android:layout_alignParentRight="true"
         android:layout_marginStart="-10dp"
         android:layout_marginLeft="-10dp"
-        android:layout_marginTop="-8dp"
+        android:layout_marginTop="-4dp"
         android:layout_toRightOf="@id/icon_frame"
         app:labelBehavior="floating"
         app:tickVisible="false"

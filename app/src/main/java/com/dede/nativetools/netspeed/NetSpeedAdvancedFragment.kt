@@ -7,17 +7,13 @@ import android.os.RemoteException
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.preference.PreferenceFragmentCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
+import com.dede.nativetools.databinding.LayoutNetSpeedAdvancedHeaderBinding
 import com.dede.nativetools.main.applyRecyclerViewInsets
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
-import com.dede.nativetools.ui.HackerSlider
 import com.dede.nativetools.ui.SliderPreference
-import com.dede.nativetools.ui.VerticalScrollSwitchLinearLayoutManager
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.globalPreferences
 import com.dede.nativetools.util.requirePreference
@@ -35,7 +31,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     private val configuration = NetSpeedConfiguration.initialize()
     private var netSpeedBinder: INetSpeedInterface? = null
 
-    private var ivPreview: ImageView? = null
+    private lateinit var binding: LayoutNetSpeedAdvancedHeaderBinding
 
     private val closeReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -43,15 +39,12 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         }
     }
 
-    private val layoutManager by lazy { VerticalScrollSwitchLinearLayoutManager(requireContext()) }
-
     private fun SliderPreference.initialize(
         listener: NetSpeedAdvancedFragment,
         labelFormatter: LabelFormatter
     ) {
         this.onChangeListener = listener
         this.sliderLabelFormatter = labelFormatter
-        this.verticalScrollingContainerHacker = layoutManager
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,15 +58,10 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         savedInstanceState: Bundle?
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState)?.apply {
-            val viewGroup = this as ViewGroup
-            val headerView = LayoutInflater.from(this.context)
-                .inflate(R.layout.layout_net_speed_advanced_header, viewGroup, false)
-            ivPreview = headerView.findViewById(R.id.iv_preview)
-            viewGroup.addView(headerView, 0)
+            binding = LayoutNetSpeedAdvancedHeaderBinding.inflate(LayoutInflater.from(this.context))
+            (this as ViewGroup).addView(binding.root, 0)
         }
     }
-
-    override fun onCreateLayoutManager() = layoutManager
 
     private val labelFormatterPercent = LabelFormatter { "%d %%".format((it * 100).toInt()) }
     private val labelFormatterRatio = LabelFormatter {
@@ -104,7 +92,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     }
 
     private fun updatePreview(configuration: NetSpeedConfiguration) {
-        ivPreview?.setImageBitmap(
+        binding.ivPreview.setImageBitmap(
             NetTextIconFactory.create(0, 0, configuration, 512, true)
         )
     }
@@ -117,6 +105,8 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         if (config == null) {
             config = configuration.copy()
             tempConfiguration = config
+        } else {
+            config.updateFrom(configuration)
         }
         when (key) {
             NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET -> {

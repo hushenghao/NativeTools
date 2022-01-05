@@ -1,5 +1,6 @@
 package com.dede.nativetools.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
 import android.os.Parcel
@@ -20,8 +21,8 @@ import com.google.android.material.slider.Slider
 import kotlin.math.max
 import kotlin.math.min
 
-class VerticalScrollSwitchLinearLayoutManager(context: Context) : LinearLayoutManager(context),
-    HackerSlider.VerticalScrollingContainerHacker {
+class ScrollVerticalChangeableLinearLayoutManager(context: Context) : LinearLayoutManager(context),
+    SliderPreference.ScrollVerticalChangeable {
 
     private var enableScrollVertically = true
 
@@ -35,44 +36,6 @@ class VerticalScrollSwitchLinearLayoutManager(context: Context) : LinearLayoutMa
 }
 
 /**
- * 优化了在垂直滚动容器内的事件处理
- */
-class HackerSlider @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = com.google.android.material.R.attr.sliderStyle
-) : Slider(context, attrs, defStyleAttr) {
-
-    interface VerticalScrollingContainerHacker {
-        fun setEnableScrollVertically(enable: Boolean)
-    }
-
-    var verticalScrollingContainerHacker: VerticalScrollingContainerHacker? = null
-
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        var mockEvent = event
-        val enableHacker: Boolean
-        when (event.actionMasked) {
-            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
-                enableHacker = true
-            }
-            MotionEvent.ACTION_CANCEL -> {
-                enableHacker = false
-                mockEvent = MotionEvent.obtain(event).apply {
-                    // Mock ACTION_UP ensure Labels Removed
-                    this.action = MotionEvent.ACTION_UP
-                }
-            }
-            else -> {
-                enableHacker = false
-            }
-        }
-        verticalScrollingContainerHacker?.setEnableScrollVertically(!enableHacker)
-        return super.onTouchEvent(mockEvent)
-    }
-}
-
-/**
  * Slider
  */
 class SliderPreference @JvmOverloads constructor(
@@ -82,6 +45,47 @@ class SliderPreference @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : Preference(context, attrs, defStyleAttr, defStyleRes), Slider.OnChangeListener,
     Slider.OnSliderTouchListener, View.OnKeyListener {
+
+    interface ScrollVerticalChangeable {
+        fun setEnableScrollVertically(enable: Boolean)
+    }
+
+    /**
+     * 优化了在垂直滚动容器内的事件处理
+     */
+    class UnCheckScrollVerticalSlider @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = com.google.android.material.R.attr.sliderStyle
+    ) : Slider(context, attrs, defStyleAttr) {
+
+        var scrollVerticalChangeable: ScrollVerticalChangeable? = null
+
+        @SuppressLint("ClickableViewAccessibility")
+        override fun onTouchEvent(event: MotionEvent): Boolean {
+            var mockEvent = event
+            val enableHacker: Boolean
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    enableHacker = true
+                }
+                MotionEvent.ACTION_CANCEL -> {
+                    enableHacker = false
+                    mockEvent = MotionEvent.obtain(event).apply {
+                        // Mock ACTION_UP ensure Labels Removed
+                        this.action = MotionEvent.ACTION_UP
+                    }
+                }
+                else -> {
+                    enableHacker = false
+                }
+            }
+            scrollVerticalChangeable?.setEnableScrollVertically(!enableHacker)
+            return super.onTouchEvent(mockEvent)
+        }
+    }
+
+    var scrollVerticalChangeable: ScrollVerticalChangeable? = null
 
     private var stepSize: Float
     private var value: Float = 0f
@@ -98,7 +102,6 @@ class SliderPreference @JvmOverloads constructor(
         }
 
     var onChangeListener: Slider.OnChangeListener? = null
-    var verticalScrollingContainerHacker: HackerSlider.VerticalScrollingContainerHacker? = null
 
     init {
         layoutResource = R.layout.preference_slider
@@ -188,14 +191,14 @@ class SliderPreference @JvmOverloads constructor(
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         holder.itemView.setOnKeyListener(this)
-        val slider = holder.findViewById(R.id.slider) as HackerSlider
+        val slider = holder.findViewById(R.id.slider) as UnCheckScrollVerticalSlider
         slider.valueFrom = valueFrom
         slider.valueTo = valueTo
         slider.stepSize = stepSize
         slider.value = value
         slider.setLabelFormatter(sliderLabelFormatter)
         slider.tag = key
-        slider.verticalScrollingContainerHacker = verticalScrollingContainerHacker
+        slider.scrollVerticalChangeable = scrollVerticalChangeable
 
         slider.removeOnChangeListener(this)
         slider.removeOnSliderTouchListener(this)
