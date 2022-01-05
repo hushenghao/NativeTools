@@ -75,4 +75,7 @@
     <string name="label_text_style_italic">イタリック</string>
     <string name="label_text_style_bold_italic">太斜体</string>
     <string name="label_net_speed_x_offset">X軸オフセット</string>
+    <string name="label_mode_download">ダウンロードのみ</string>
+    <string name="label_mode_all">アップロードとダウンロード</string>
+    <string name="label_mode_upload">アップロードするだけ</string>
 </resources>

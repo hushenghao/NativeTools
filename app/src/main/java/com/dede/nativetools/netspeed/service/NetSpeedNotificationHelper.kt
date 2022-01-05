@@ -135,7 +135,6 @@ object NetSpeedNotificationHelper {
         }
         builder.setCategory(null)
             .setSmallIcon(createIcon(configuration, rxSpeed, txSpeed))
-            .setColor(context.getColor(R.color.primaryColor))
             .setOnlyAlertOnce(false)
             .setOngoing(true)
             .setLocalOnly(true)

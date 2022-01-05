@@ -75,4 +75,7 @@
     <string name="label_text_style_italic">斜體</string>
     <string name="label_text_style_bold_italic">粗斜體</string>
     <string name="label_net_speed_x_offset">X軸偏移</string>
+    <string name="label_mode_download">僅下載</string>
+    <string name="label_mode_all">上傳和下載</string>
+    <string name="label_mode_upload">僅上傳</string>
 </resources>

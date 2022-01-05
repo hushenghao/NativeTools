@@ -93,4 +93,7 @@
     <string name="label_text_style_italic">斜体</string>
     <string name="label_text_style_bold_italic">粗斜体</string>
     <string name="label_net_speed_x_offset">X轴偏移</string>
+    <string name="label_mode_download">仅下载</string>
+    <string name="label_mode_all">上传和下载</string>
+    <string name="label_mode_upload">仅上传</string>
 </resources>

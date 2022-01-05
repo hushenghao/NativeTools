@@ -75,5 +75,7 @@
     <string name="label_text_style_italic">기울 임 꼴</string>
     <string name="label_text_style_bold_italic">굵은 이탤릭</string>
     <string name="label_net_speed_x_offset">X 축 오프셋</string>
-
+    <string name="label_mode_download">다운로드만</string>
+    <string name="label_mode_all">업로드 및 다운로드</string>
+    <string name="label_mode_upload">업로드만</string>
 </resources>

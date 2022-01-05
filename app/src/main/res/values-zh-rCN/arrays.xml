@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="net_speed_mode">
-        <item>仅下载</item>
-        <item>上传 + 下载</item>
-        <item>仅上传</item>
-    </string-array>
-</resources>

@@ -75,4 +75,7 @@
     <string name="label_text_style_italic">En italique</string>
     <string name="label_text_style_bold_italic">Grossier et italique</string>
     <string name="label_net_speed_x_offset">Décalage de l’axe X</string>
+    <string name="label_mode_download">Down</string>
+    <string name="label_mode_all">Up and Down</string>
+    <string name="label_mode_upload">Up</string>
 </resources>

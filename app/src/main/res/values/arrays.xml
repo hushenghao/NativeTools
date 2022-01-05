@@ -18,9 +18,9 @@
     </string-array>
 
     <string-array name="net_speed_mode">
-        <item>仅下载</item>
-        <item>上传 + 下载</item>
-        <item>仅上传</item>
+        <item>@string/label_mode_download</item>
+        <item>@string/label_mode_all</item>
+        <item>@string/label_mode_upload</item>
     </string-array>
     <string-array name="net_speed_mode_value">
         <item>0</item>

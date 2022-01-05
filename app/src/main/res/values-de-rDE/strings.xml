@@ -75,4 +75,7 @@
     <string name="label_text_style_italic">Kursiv</string>
     <string name="label_text_style_bold_italic">Hart dagegen</string>
     <string name="label_net_speed_x_offset">Liegt unter x-achse</string>
+    <string name="label_mode_download">Down</string>
+    <string name="label_mode_all">Up and Down</string>
+    <string name="label_mode_upload">Up</string>
 </resources>
