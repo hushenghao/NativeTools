@@ -32,7 +32,8 @@
         android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher_day_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="UnusedAttribute">
         <activity
             android:name=".main.MainActivity"
             android:excludeFromRecents="true"
@@ -46,7 +47,7 @@
 
         <activity-alias
             android:name=".main.Day"
-            android:enabled="false"
+            android:enabled="true"
             android:exported="true"
             android:icon="@mipmap/ic_launcher_day"
             android:roundIcon="@mipmap/ic_launcher_day_round"
@@ -55,14 +56,11 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts_day" />
         </activity-alias>
 
         <activity-alias
             android:name=".main.Night"
-            android:enabled="true"
+            android:enabled="false"
             android:exported="true"
             android:icon="@mipmap/ic_launcher_night"
             android:roundIcon="@mipmap/ic_launcher_night_round"
@@ -71,9 +69,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts_night" />
         </activity-alias>
 
         <!-- https://developer.android.com/about/versions/12/behavior-changes-12#exported -->

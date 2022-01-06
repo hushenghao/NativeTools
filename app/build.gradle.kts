@@ -130,7 +130,6 @@ configurations.all {
     exclude("androidx.swiperefreshlayout", "swiperefreshlayout")
     exclude("androidx.asynclayoutinflater", "asynclayoutinflater")
     exclude("androidx.dynamicanimation", "dynamicanimation")
-    exclude("androidx.versionedparcelable", "versionedparcelable")
     exclude("androidx.localbroadcastmanager", "localbroadcastmanager")
     exclude("androidx.documentfile", "documentfile")
     exclude("androidx.print", "print")

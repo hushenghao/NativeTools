@@ -2,12 +2,19 @@ package com.dede.nativetools.main
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.*
+import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.graphics.drawable.IconCompat
+import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.toBitmap
+import com.dede.nativetools.util.Intent
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
@@ -80,6 +87,50 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         navController.addOnDestinationChangedListener(this)
 
         navController.handleDeepLink(intent)
+
+        installShortcuts()
+    }
+
+    private fun createShortcutIcon(resId: Int): IconCompat {
+        val context = this
+        val bitmap = LayerDrawable(
+            arrayOf(
+                GradientDrawable().apply {
+                    setColor(context.getColor(R.color.primaryColor))
+                    shape = GradientDrawable.OVAL
+                },
+                InsetDrawable(this.requireDrawable<Drawable>(resId).apply {
+                    setTint(Color.WHITE)
+                }, 4.dp)
+            )
+        ).toBitmap(24.dp, 24.dp)
+        return IconCompat.createWithBitmap(bitmap)
+    }
+
+    private fun installShortcuts() {
+        val shortcuts = arrayListOf(
+            ShortcutInfoCompat.Builder(this, "shortcut_about")
+                .setIcon(createShortcutIcon(R.drawable.ic_outline_info))
+                .setIntent(
+                    Intent(Intent.ACTION_VIEW, Uri.parse("https://dede.nativetools/about"))
+                        .setClass(this, MainActivity::class.java)
+                )
+                .setShortLabel(getString(R.string.label_about))
+                .setLongLabel(getString(R.string.label_about))
+                .build(),
+            ShortcutInfoCompat.Builder(this, "shortcut_toggle")
+                .setIcon(createShortcutIcon(R.drawable.ic_outline_toggle_on))
+                .setIntent(
+                    Intent(Intent.ACTION_VIEW, EXTRA_TOGGLE to true)
+                        .setClass(this, MainActivity::class.java)
+                )
+                .setShortLabel(getString(R.string.label_net_speed_toggle))
+                .setLongLabel(getString(R.string.label_net_speed_toggle))
+                .build()
+        )
+        for (shortcut in shortcuts) {
+            ShortcutManagerCompat.pushDynamicShortcut(this, shortcut)
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -112,9 +163,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == navController.currentDestination?.id) {
-            return false
-        }
         return NavigationUI.onNavDestinationSelected(item, navController)
     }
 
