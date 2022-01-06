@@ -18,9 +18,9 @@
     </string-array>
 
     <string-array name="net_speed_mode">
-        <item>@string/label_mode_download</item>
-        <item>@string/label_mode_all</item>
-        <item>@string/label_mode_upload</item>
+        <item>@string/summary_mode_download</item>
+        <item>@string/summary_mode_all</item>
+        <item>@string/summary_mode_upload</item>
     </string-array>
     <string-array name="net_speed_mode_value">
         <item>0</item>
@@ -35,10 +35,10 @@
         <item>3</item>
     </string-array>
     <string-array name="net_speed_text_style">
-        <item>@string/label_text_style_normal</item>
-        <item>@string/label_text_style_bold</item>
-        <item>@string/label_text_style_italic</item>
-        <item>@string/label_text_style_bold_italic</item>
+        <item>@string/summary_text_style_normal</item>
+        <item>@string/summary_text_style_bold</item>
+        <item>@string/summary_text_style_italic</item>
+        <item>@string/summary_text_style_bold_italic</item>
     </string-array>
 
     <string-array name="net_speed_font_value">
@@ -49,6 +49,18 @@
     <string-array name="net_speed_font">
         <item>BebasKai</item>
         <item>Oswald</item>
-        <item>@string/label_system_default</item>
+        <item>@string/summary_system_default</item>
     </string-array>
+
+    <string-array name="night_mode_toggle">
+        <item>@string/summary_night_mode_follow_system</item>
+        <item>@string/switch_off</item>
+        <item>@string/switch_on</item>
+    </string-array>
+    <string-array name="night_mode_toggle_value">
+        <item>-1</item><!-- AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -->
+        <item>1</item><!-- AppCompatDelegate.MODE_NIGHT_NO -->
+        <item>2</item><!-- AppCompatDelegate.MODE_NIGHT_YES -->
+    </string-array>
+
 </resources>

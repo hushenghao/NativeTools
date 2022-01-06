@@ -69,13 +69,13 @@
     <string name="label_net_speed_relative_distance">상대적 거리</string>
     <string name="label_net_speed_text_scale">텍스트 크기 조정</string>
     <string name="label_net_speed_font">글꼴</string>
-    <string name="label_system_default">시스템 기본 설정</string>
-    <string name="label_text_style_normal">일반</string>
-    <string name="label_text_style_bold">진하게</string>
-    <string name="label_text_style_italic">기울 임 꼴</string>
-    <string name="label_text_style_bold_italic">굵은 이탤릭</string>
+    <string name="summary_system_default">시스템 기본 설정</string>
+    <string name="summary_text_style_normal">일반</string>
+    <string name="summary_text_style_bold">진하게</string>
+    <string name="summary_text_style_italic">기울 임 꼴</string>
+    <string name="summary_text_style_bold_italic">굵은 이탤릭</string>
     <string name="label_net_speed_x_offset">X 축 오프셋</string>
-    <string name="label_mode_download">다운로드만</string>
-    <string name="label_mode_all">업로드 및 다운로드</string>
-    <string name="label_mode_upload">업로드만</string>
+    <string name="summary_mode_download">다운로드만</string>
+    <string name="summary_mode_all">업로드 및 다운로드</string>
+    <string name="summary_mode_upload">업로드만</string>
 </resources>

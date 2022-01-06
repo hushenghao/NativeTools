@@ -7,6 +7,7 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -26,7 +27,7 @@ class OtherFragment : PreferenceFragmentCompat(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (requireContext().smallestScreenWidthDp < SW600DP) return
+        if (smallestScreenWidthDp < SW600DP) return
         applyRecyclerViewInsets(listView)
     }
 
@@ -90,7 +91,7 @@ class OtherFragment : PreferenceFragmentCompat(),
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
             OtherPreferences.KEY_NIGHT_MODE_TOGGLE -> {
-                setNightMode(OtherPreferences.isNightMode)
+                AppCompatDelegate.setDefaultNightMode(OtherPreferences.nightMode)
             }
         }
     }

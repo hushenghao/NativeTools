@@ -69,13 +69,13 @@
     <string name="label_net_speed_relative_distance">相對距離</string>
     <string name="label_net_speed_text_scale">文字縮放</string>
     <string name="label_net_speed_font">字體</string>
-    <string name="label_system_default">系統默認</string>
-    <string name="label_text_style_normal">普通</string>
-    <string name="label_text_style_bold">粗體</string>
-    <string name="label_text_style_italic">斜體</string>
-    <string name="label_text_style_bold_italic">粗斜體</string>
+    <string name="summary_system_default">系統默認</string>
+    <string name="summary_text_style_normal">普通</string>
+    <string name="summary_text_style_bold">粗體</string>
+    <string name="summary_text_style_italic">斜體</string>
+    <string name="summary_text_style_bold_italic">粗斜體</string>
     <string name="label_net_speed_x_offset">X軸偏移</string>
-    <string name="label_mode_download">僅下載</string>
-    <string name="label_mode_all">上傳和下載</string>
-    <string name="label_mode_upload">僅上傳</string>
+    <string name="summary_mode_download">僅下載</string>
+    <string name="summary_mode_all">上傳和下載</string>
+    <string name="summary_mode_upload">僅上傳</string>
 </resources>

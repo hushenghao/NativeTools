@@ -68,14 +68,14 @@
     <string name="label_net_speed_y_offset">Смещение оси Y</string>
     <string name="summary_net_speed_advanced">Самоопределение показывает стиль</string>
     <string name="label_net_speed_advanced">Установка высшего уровня</string>
-    <string name="label_text_style_bold_italic">Толстый курсив</string>
-    <string name="label_text_style_italic">курсивн</string>
-    <string name="label_text_style_bold">жирн</string>
-    <string name="label_text_style_normal">обычн</string>
-    <string name="label_system_default">По умолчанию.</string>
+    <string name="summary_text_style_bold_italic">Толстый курсив</string>
+    <string name="summary_text_style_italic">курсивн</string>
+    <string name="summary_text_style_bold">жирн</string>
+    <string name="summary_text_style_normal">обычн</string>
+    <string name="summary_system_default">По умолчанию.</string>
     <string name="label_net_speed_font">шрифт</string>
     <string name="label_net_speed_x_offset">Смещение оси X</string>
-    <string name="label_mode_download">Down</string>
-    <string name="label_mode_all">Up and Down</string>
-    <string name="label_mode_upload">Up</string>
+    <string name="summary_mode_download">Down</string>
+    <string name="summary_mode_all">Up and Down</string>
+    <string name="summary_mode_upload">Up</string>
 </resources>

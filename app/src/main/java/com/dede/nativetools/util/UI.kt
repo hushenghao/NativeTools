@@ -2,6 +2,7 @@ package com.dede.nativetools.util
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.util.DisplayMetrics
 import android.util.TypedValue
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.dede.nativetools.other.OtherPreferences
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlin.math.roundToInt
 
@@ -18,15 +20,23 @@ fun displayMetrics(): DisplayMetrics {
     return Resources.getSystem().displayMetrics
 }
 
-fun setNightMode(enable: Boolean) {
-    val mode = if (enable)
-        AppCompatDelegate.MODE_NIGHT_YES
-    else
-        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-    AppCompatDelegate.setDefaultNightMode(mode)
+fun isNightMode(): Boolean {
+    when (OtherPreferences.nightMode) {
+        AppCompatDelegate.MODE_NIGHT_YES -> {
+            return true
+        }
+        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
+        AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY -> {
+            val configuration = Resources.getSystem().configuration
+            val systemMode = configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+            return systemMode == Configuration.UI_MODE_NIGHT_YES
+        }
+    }
+    return false
 }
 
-fun isNightMode() = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+val smallestScreenWidthDp: Int
+    get() = Resources.getSystem().configuration.smallestScreenWidthDp
 
 val Number.dp: Int
     get() = TypedValue.applyDimension(

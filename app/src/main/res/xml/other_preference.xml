@@ -13,13 +13,14 @@
             app:summary="@string/summary_ignore_battery_optimize"
             app:title="@string/label_ignore_battery_optimize" />
 
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
+        <DropDownPreference
+            app:defaultValue="-1"
+            app:entries="@array/night_mode_toggle"
+            app:entryValues="@array/night_mode_toggle_value"
             app:icon="@drawable/ic_outline_dark_mode"
-            app:key="v28_night_mode_toggle"
-            app:summaryOff="@string/summary_night_mode_follow_system"
-            app:summaryOn="@string/switch_on"
-            app:title="@string/label_night_mode" />
+            app:key="night_mode_toggle"
+            app:title="@string/label_night_mode"
+            app:useSimpleSummaryProvider="true" />
 
         <Preference
             app:icon="@drawable/ic_outline_info"

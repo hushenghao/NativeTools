@@ -68,7 +68,7 @@ fun applyBarsInsets(
     var navigationBarInsets: NavigationBarInsets?
 
     statusBarInsets = host.annotation()
-    val smallestScreenWidthDp = context.smallestScreenWidthDp
+    val smallestScreenWidthDp = smallestScreenWidthDp
     if (statusBarInsets != null) {
         if (smallestScreenWidthDp < statusBarInsets.smallestScreenWidthDp) {
             statusBarInsets = null

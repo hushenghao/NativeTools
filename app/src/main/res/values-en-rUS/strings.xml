@@ -69,13 +69,13 @@
     <string name="label_net_speed_relative_distance">Relative distance</string>
     <string name="label_net_speed_text_scale">Text zoom</string>
     <string name="label_net_speed_font">The font</string>
-    <string name="label_system_default">The system default</string>
-    <string name="label_text_style_normal">General</string>
-    <string name="label_text_style_bold">Bold</string>
-    <string name="label_text_style_italic">Italics</string>
-    <string name="label_text_style_bold_italic">Bold Italic</string>
+    <string name="summary_system_default">The system default</string>
+    <string name="summary_text_style_normal">General</string>
+    <string name="summary_text_style_bold">Bold</string>
+    <string name="summary_text_style_italic">Italics</string>
+    <string name="summary_text_style_bold_italic">Bold Italic</string>
     <string name="label_net_speed_x_offset">The X axis offset</string>
-    <string name="label_mode_download">Down</string>
-    <string name="label_mode_all">Up and Down</string>
-    <string name="label_mode_upload">Up</string>
+    <string name="summary_mode_download">Down</string>
+    <string name="summary_mode_all">Up and Down</string>
+    <string name="summary_mode_upload">Up</string>
 </resources>

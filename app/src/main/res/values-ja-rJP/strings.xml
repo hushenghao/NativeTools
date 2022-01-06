@@ -69,13 +69,13 @@
     <string name="summary_net_speed_advanced">表示仕様をカスタマイズする</string>
     <string name="label_net_speed_advanced">高度な設定</string>
     <string name="label_net_speed_font">フォント</string>
-    <string name="label_system_default">システムデフォルト</string>
-    <string name="label_text_style_normal">一般</string>
-    <string name="label_text_style_bold">粗体</string>
-    <string name="label_text_style_italic">イタリック</string>
-    <string name="label_text_style_bold_italic">太斜体</string>
+    <string name="summary_system_default">システムデフォルト</string>
+    <string name="summary_text_style_normal">一般</string>
+    <string name="summary_text_style_bold">粗体</string>
+    <string name="summary_text_style_italic">イタリック</string>
+    <string name="summary_text_style_bold_italic">太斜体</string>
     <string name="label_net_speed_x_offset">X軸オフセット</string>
-    <string name="label_mode_download">ダウンロードのみ</string>
-    <string name="label_mode_all">アップロードとダウンロード</string>
-    <string name="label_mode_upload">アップロードするだけ</string>
+    <string name="summary_mode_download">ダウンロードのみ</string>
+    <string name="summary_mode_all">アップロードとダウンロード</string>
+    <string name="summary_mode_upload">アップロードするだけ</string>
 </resources>

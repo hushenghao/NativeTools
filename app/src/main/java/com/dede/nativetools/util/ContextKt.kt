@@ -27,9 +27,6 @@ import kotlin.properties.ReadOnlyProperty
 val globalContext: Context
     get() = NativeToolsApp.getInstance()
 
-val Context.smallestScreenWidthDp: Int
-    get() = this.resources.configuration.smallestScreenWidthDp
-
 inline fun <reified T : Any> Context.requireSystemService(): T {
     return checkNotNull(applicationContext.getSystemService())
 }

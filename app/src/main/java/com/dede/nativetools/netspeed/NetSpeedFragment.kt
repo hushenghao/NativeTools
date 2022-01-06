@@ -53,7 +53,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (requireContext().smallestScreenWidthDp < SW600DP) return
+        if (smallestScreenWidthDp < SW600DP) return
         applyRecyclerViewInsets(listView)
     }
 

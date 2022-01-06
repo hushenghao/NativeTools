@@ -2,6 +2,9 @@ package com.dede.nativetools
 
 import android.app.Application
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
+import com.dede.nativetools.other.OtherPreferences
+import com.dede.nativetools.util.isMainProcess
 import com.google.android.material.color.DynamicColors
 
 class NativeToolsApp : Application() {
@@ -22,5 +25,8 @@ class NativeToolsApp : Application() {
     override fun onCreate() {
         super.onCreate()
         DynamicColors.applyToActivitiesIfAvailable(this, R.style.AppTheme)
+        if (isMainProcess()) {
+            AppCompatDelegate.setDefaultNightMode(OtherPreferences.nightMode)
+        }
     }
 }
