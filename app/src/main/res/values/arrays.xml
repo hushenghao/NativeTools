@@ -43,11 +43,13 @@
 
     <string-array name="net_speed_font_value">
         <item>bebaskai</item>
+        <item>bebasneue</item>
         <item>oswald</item>
         <item>normal</item>
     </string-array>
     <string-array name="net_speed_font">
-        <item>BebasKai</item>
+        <item>Bebas Kai</item>
+        <item>Bebas Neue</item>
         <item>Oswald</item>
         <item>@string/summary_system_default</item>
     </string-array>

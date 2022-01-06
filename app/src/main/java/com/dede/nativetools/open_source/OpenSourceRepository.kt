@@ -96,6 +96,14 @@ class OpenSourceRepository {
                 "https://fonts.google.com",
                 R.drawable.ic_logo_googlefonts,
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            ),
+            OpenSource(
+                "Bebas Neue",
+                "Ryoichi Tsunekawa",
+                "Bebas Neue is a display font for headline, caption, and titling designed by Ryoichi Tsunekawa.",
+                "https://github.com/dharmatype/Bebas-Neue",
+                R.drawable.ic_logo_ryoichi_tsunekawa,
+                "https://raw.githubusercontent.com/dharmatype/Bebas-Neue/master/OFL.txt"
             )
         )
     }

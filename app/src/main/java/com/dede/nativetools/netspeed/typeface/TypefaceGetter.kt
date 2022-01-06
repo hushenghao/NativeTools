@@ -11,6 +11,7 @@ interface TypefaceGetter {
 
         const val FONT_NORMAL = "normal"
         const val FONT_BEBAS_KAI = "bebaskai"
+        const val FONT_BEBAS_NEUE = "bebasneue"
         const val FONT_OSWALD = "oswald"
 
         private val caches = ArrayMap<String, TypefaceGetter>()
@@ -23,6 +24,7 @@ interface TypefaceGetter {
             getter = when (key) {
                 FONT_NORMAL -> NormalTypeface()
                 FONT_BEBAS_KAI -> BebasKaiTypeface(context)
+                FONT_BEBAS_NEUE -> BebasNeueTypeface(context)
                 FONT_OSWALD -> OswaldTypeface(context)
                 else -> BebasKaiTypeface(context)
             }
