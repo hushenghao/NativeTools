@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dede.nativetools">
+
     <application>
         <provider
             android:name="androidx.startup.InitializationProvider"
@@ -11,6 +12,10 @@
             <meta-data
                 android:name="com.dede.nativetools.LeakCanaryInitializer"
                 android:value="androidx.startup" />
+            <meta-data
+                android:name="leakcanary.internal.AppWatcherStartupInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
         </provider>
     </application>
 </manifest>

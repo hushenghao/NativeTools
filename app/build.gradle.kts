@@ -101,7 +101,7 @@ dependencies {
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)
 
-    debugImplementation(deps.squareup.leakcanary)
+    debugImplementation(deps.bundles.squareup.leakcanary)
 
     testImplementation(deps.junit)
     androidTestImplementation(deps.bundles.androidx.test)

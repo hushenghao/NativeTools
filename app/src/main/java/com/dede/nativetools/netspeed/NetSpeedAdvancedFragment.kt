@@ -8,11 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.preference.PreferenceFragmentCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.LayoutNetSpeedAdvancedHeaderBinding
 import com.dede.nativetools.main.applyRecyclerViewInsets
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
+import com.dede.nativetools.ui.ScrollVerticalChangeableLinearLayoutManager
 import com.dede.nativetools.ui.SliderPreference
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.globalPreferences
@@ -39,12 +41,15 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         }
     }
 
+    private val layoutManager by lazy { ScrollVerticalChangeableLinearLayoutManager(requireContext()) }
+
     private fun SliderPreference.initialize(
         listener: NetSpeedAdvancedFragment,
         labelFormatter: LabelFormatter
     ) {
         this.onChangeListener = listener
         this.sliderLabelFormatter = labelFormatter
+        //this.scrollVerticalChangeable = layoutManager
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,6 +87,10 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             .initialize(this, labelFormatterPercent)
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE)
             .initialize(this, labelFormatterPercent)
+    }
+
+    override fun onCreateLayoutManager(): RecyclerView.LayoutManager {
+        return layoutManager
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

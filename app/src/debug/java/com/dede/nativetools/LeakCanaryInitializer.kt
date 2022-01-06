@@ -9,11 +9,13 @@ import shark.AndroidReferenceMatchers
 
 /**
  * LeakCanary install for debug
- * [leakcanary.internal.AppWatcherInstaller.onCreate]
+ * [leakcanary.internal.AppWatcherStartupInitializer.create]
  */
-class LeakCanaryInitializer : Initializer<Unit> {
+class LeakCanaryInitializer : Initializer<LeakCanaryInitializer> {
 
-    override fun create(context: Context) {
+    override fun create(context: Context) = apply {
+        val application = context.applicationContext as Application
+        AppWatcher.manualInstall(application)
         LeakCanary.config = LeakCanary.config.copy(
             referenceMatchers = AndroidReferenceMatchers.appDefaults +
                     AndroidReferenceMatchers.instanceFieldLeak(
@@ -22,8 +24,6 @@ class LeakCanaryInitializer : Initializer<Unit> {
                         description = "DayNightSwitcher"
                     )
         )
-        val application = context.applicationContext as Application
-        AppWatcher.manualInstall(application)
     }
 
     override fun dependencies() = emptyList<Class<out Initializer<*>>>()

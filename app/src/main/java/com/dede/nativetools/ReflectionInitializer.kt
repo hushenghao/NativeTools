@@ -8,10 +8,11 @@ import me.weishu.reflection.Reflection
 /**
  * Reflection unseal
  */
-class ReflectionInitializer : Initializer<Int> {
+class ReflectionInitializer : Initializer<ReflectionInitializer> {
 
-    override fun create(context: Context) = Reflection.unseal(context).apply {
-        Log.i("ReflectionInitializer", "unseal: $this")
+    override fun create(context: Context) = apply {
+        val unseal = Reflection.unseal(context)
+        Log.i("ReflectionInitializer", "unseal: $unseal")
     }
 
     override fun dependencies() = emptyList<Class<out Initializer<*>>>()

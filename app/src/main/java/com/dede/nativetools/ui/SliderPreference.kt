@@ -64,20 +64,16 @@ class SliderPreference @JvmOverloads constructor(
         @SuppressLint("ClickableViewAccessibility")
         override fun onTouchEvent(event: MotionEvent): Boolean {
             var mockEvent = event
-            val enableHacker: Boolean
+            var enableHacker = false
             when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
                     enableHacker = true
                 }
                 MotionEvent.ACTION_CANCEL -> {
-                    enableHacker = false
                     mockEvent = MotionEvent.obtain(event).apply {
                         // Mock ACTION_UP ensure Labels Removed
                         this.action = MotionEvent.ACTION_UP
                     }
-                }
-                else -> {
-                    enableHacker = false
                 }
             }
             scrollVerticalChangeable?.setEnableScrollVertically(!enableHacker)
