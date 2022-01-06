@@ -7,7 +7,7 @@
         app:iconSpaceReserved="false"
         app:title="@string/label_net_speed_advanced">
 
-        <DropDownPreference
+        <com.dede.nativetools.ui.FontDropDownPreference
             android:key="net_speed_font"
             app:defaultValue="0"
             app:entries="@array/net_speed_font"
@@ -16,7 +16,7 @@
             app:title="@string/label_net_speed_font"
             app:useSimpleSummaryProvider="true" />
 
-        <DropDownPreference
+        <com.dede.nativetools.ui.TypefaceDropDownPreference
             android:title="@string/label_net_speed_style"
             app:defaultValue="1"
             app:entries="@array/net_speed_text_style"
