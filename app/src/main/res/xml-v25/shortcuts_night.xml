@@ -2,7 +2,7 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <shortcut
-        android:icon="@drawable/layer_shortcut_toggle"
+        android:icon="@drawable/layer_shortcut_toggle_night"
         android:shortcutId="toggle"
         android:shortcutLongLabel="@string/label_net_speed_toggle"
         android:shortcutShortLabel="@string/label_net_speed_toggle"
@@ -10,7 +10,7 @@
         tools:ignore="UnusedAttribute">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.dede.nativetools.ui.MainActivity"
+            android:targetClass="com.dede.nativetools.main.MainActivity"
             android:targetPackage="com.dede.nativetools">
             <extra
                 android:name="extra_toggle"
@@ -19,14 +19,14 @@
     </shortcut>
 
     <shortcut
-        android:icon="@drawable/layer_shortcut_about"
+        android:icon="@drawable/layer_shortcut_about_night"
         android:shortcutId="about"
         android:shortcutLongLabel="@string/label_about"
         android:shortcutShortLabel="@string/label_about">
         <intent
             android:action="android.intent.action.VIEW"
             android:data="https://dede.nativetools/about"
-            android:targetClass="com.dede.nativetools.ui.MainActivity"
+            android:targetClass="com.dede.nativetools.main.MainActivity"
             android:targetPackage="com.dede.nativetools" />
     </shortcut>
 </shortcuts>

@@ -15,4 +15,9 @@
     <color name="secondaryDarkColor">#902b3b</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
+
+    <color name="ic_launcher_day_background">#C02C38</color>
+    <color name="ic_launcher_night_background">#132C33</color>
+    <color name="shortcut_day_background">#C02C38</color>
+    <color name="shortcut_night_background">#132C33</color>
 </resources>

@@ -35,6 +35,10 @@ fun isNightMode(): Boolean {
     return false
 }
 
+fun setNightMode(mode: Int) {
+    AppCompatDelegate.setDefaultNightMode(mode)
+}
+
 val smallestScreenWidthDp: Int
     get() = Resources.getSystem().configuration.smallestScreenWidthDp
 

@@ -78,4 +78,6 @@
     <string name="summary_mode_download">다운로드만</string>
     <string name="summary_mode_all">업로드 및 다운로드</string>
     <string name="summary_mode_upload">업로드만</string>
+    <string name="alert_title_toggle_launcher_icon">데스크톱 아이콘도 적용합니다</string>
+    <string name="alert_msg_toggle_launcher_icon">다시 적용할 수 있습니다</string>
 </resources>

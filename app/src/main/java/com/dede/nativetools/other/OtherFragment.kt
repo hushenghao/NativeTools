@@ -1,6 +1,7 @@
 package com.dede.nativetools.other
 
 import android.annotation.SuppressLint
+import android.content.ComponentName
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.PowerManager
@@ -91,7 +92,51 @@ class OtherFragment : PreferenceFragmentCompat(),
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
             OtherPreferences.KEY_NIGHT_MODE_TOGGLE -> {
-                AppCompatDelegate.setDefaultNightMode(OtherPreferences.nightMode)
+                val mode = OtherPreferences.nightMode
+                showToggleLauncherIconDialog(mode) {
+                    setNightMode(mode)
+                }
+            }
+        }
+    }
+
+    private fun showToggleLauncherIconDialog(mode: Int, finish: () -> Unit) {
+        if (mode != AppCompatDelegate.MODE_NIGHT_NO && mode != AppCompatDelegate.MODE_NIGHT_YES) {
+            finish.invoke()
+            return
+        }
+        requireContext().alert(
+            R.string.alert_title_toggle_launcher_icon,
+            R.string.alert_msg_toggle_launcher_icon
+        ) {
+            positiveButton(android.R.string.ok) {
+                finish.invoke()
+                toggleLauncherIcon(mode)
+            }
+            negativeButton(android.R.string.cancel) {
+                finish.invoke()
+            }
+        }
+    }
+
+    private fun toggleLauncherIcon(mode: Int) {
+        if (mode != AppCompatDelegate.MODE_NIGHT_NO && mode != AppCompatDelegate.MODE_NIGHT_YES) {
+            return
+        }
+
+        val packageName = globalContext.packageName
+        val packageManager = globalContext.packageManager
+        val componentDay = ComponentName(globalContext, "$packageName.main.Day")
+        val componentNight = ComponentName(globalContext, "$packageName.main.Night")
+
+        when (mode) {
+            AppCompatDelegate.MODE_NIGHT_NO -> {
+                componentDay.enable(packageManager)
+                componentNight.disable(packageManager)
+            }
+            AppCompatDelegate.MODE_NIGHT_YES -> {
+                componentNight.enable(packageManager)
+                componentDay.disable(packageManager)
             }
         }
     }

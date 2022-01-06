@@ -83,4 +83,6 @@
     <string name="summary_mode_download">仅下载</string>
     <string name="summary_mode_all">上传和下载</string>
     <string name="summary_mode_upload">仅上传</string>
+    <string name="alert_title_toggle_launcher_icon">同时应用桌面图标</string>
+    <string name="alert_msg_toggle_launcher_icon">应用可能会重启</string>
 </resources>

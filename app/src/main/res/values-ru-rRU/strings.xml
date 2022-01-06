@@ -78,4 +78,6 @@
     <string name="summary_mode_download">Down</string>
     <string name="summary_mode_all">Up and Down</string>
     <string name="summary_mode_upload">Up</string>
+    <string name="alert_title_toggle_launcher_icon">Приложи икону рабочего стола одновременно</string>
+    <string name="alert_msg_toggle_launcher_icon">Приложение может перезагрузиться</string>
 </resources>

@@ -7,7 +7,6 @@ import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -51,7 +50,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         }
 
         setContentView(R.layout.activity_main)
-        AppCompatDelegate.setDefaultNightMode(OtherPreferences.nightMode)
+        setNightMode(OtherPreferences.nightMode)
         setSupportActionBar(binding.toolbar)
 
         applyBarsInsets(binding.root, binding.toolbar, this)

@@ -78,4 +78,6 @@
     <string name="summary_mode_download">僅下載</string>
     <string name="summary_mode_all">上傳和下載</string>
     <string name="summary_mode_upload">僅上傳</string>
+    <string name="alert_title_toggle_launcher_icon">同時應用桌面圖示</string>
+    <string name="alert_msg_toggle_launcher_icon">應用可能會重啓</string>
 </resources>

@@ -109,7 +109,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         }
         val insert = if (count == 0) template else {
             AppCompatImageView(requireContext()).apply {
-                setImageResource(R.mipmap.ic_launcher_round)
+                setImageResource(R.mipmap.ic_launcher_day_round)
                 isInvisible = true
                 layoutParams = LayoutParams(template.layoutParams as LayoutParams)
                 binding.rootAbout.addView(this, binding.rootAbout.indexOfChild(template))
