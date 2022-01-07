@@ -1,8 +1,7 @@
 package com.dede.nativetools.netspeed
 
-import android.content.*
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.IBinder
 import android.os.RemoteException
 import android.provider.Settings
 import android.view.View
@@ -15,7 +14,7 @@ import com.dede.nativetools.R
 import com.dede.nativetools.main.SW600DP
 import com.dede.nativetools.main.applyRecyclerViewInsets
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
-import com.dede.nativetools.netspeed.service.NetSpeedService
+import com.dede.nativetools.netspeed.service.NetSpeedServiceController
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.util.*
 
@@ -23,36 +22,26 @@ import com.dede.nativetools.util.*
  * 网速指示器设置页
  */
 class NetSpeedFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener,
-    ServiceConnection {
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val configuration = NetSpeedConfiguration.initialize()
 
-    private var netSpeedBinder: INetSpeedInterface? = null
+    private val controller by lazy { NetSpeedServiceController(requireContext()) }
 
-    private lateinit var statusSwitchPreference: SwitchPreferenceCompat
     private lateinit var usageSwitchPreference: SwitchPreferenceCompat
 
     private val activityResultLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
 
-    private val closeReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            stopService()
-            statusSwitchPreference.isChecked = false
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        launchService()
         checkNotificationEnable()
-
-        requireContext().registerReceiver(closeReceiver, IntentFilter(NetSpeedService.ACTION_CLOSE))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        controller.startService(true)
+
         if (smallestScreenWidthDp < SW600DP) return
         applyRecyclerViewInsets(listView)
     }
@@ -64,7 +53,11 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun initGeneralPreferenceGroup() {
-        statusSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
+        val statusSwitchPreference =
+            requirePreference<SwitchPreferenceCompat>(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
+        controller.onCloseReceive = {
+            statusSwitchPreference.isChecked = false
+        }
         requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_ADVANCED)
             .onPreferenceClickListener {
                 findNavController().navigate(R.id.action_netSpeed_to_netSpeedAdvanced)
@@ -88,14 +81,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
     }
 
-    override fun onServiceDisconnected(name: ComponentName?) {
-        netSpeedBinder = null
-    }
-
-    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        netSpeedBinder = INetSpeedInterface.Stub.asInterface(service)
-    }
-
     override fun onStart() {
         super.onStart()
         globalPreferences.registerOnSharedPreferenceChangeListener(this)
@@ -111,7 +96,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         when (key) {
             NetSpeedPreferences.KEY_NET_SPEED_STATUS -> {
                 val status = NetSpeedPreferences.status
-                if (status) startService() else stopService()
+                if (status) controller.startService(true) else controller.stopService()
             }
             NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
@@ -149,16 +134,15 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private fun updateConfiguration() {
         try {
-            netSpeedBinder?.updateConfiguration(configuration)
+            controller.binder?.updateConfiguration(configuration)
         } catch (e: RemoteException) {
             toast("error")
         }
     }
 
-    override fun onDestroy() {
-        requireContext().unregisterReceiver(closeReceiver)
-        unbindService()
-        super.onDestroy()
+    override fun onDestroyView() {
+        controller.unbindService()
+        super.onDestroyView()
     }
 
     private fun showHideLockNotificationDialog() {
@@ -221,34 +205,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             }
             negativeButton(android.R.string.cancel, null)
         }
-    }
-
-    private fun launchService() {
-        val status = NetSpeedPreferences.status
-        if (!status) return
-        startService()
-    }
-
-    private fun startService() {
-        val context = requireContext()
-        val intent = NetSpeedService.createIntent(context)
-        context.startService(intent)
-        context.bindService(intent, this, Context.BIND_AUTO_CREATE)
-    }
-
-    private fun stopService() {
-        val context = requireContext()
-        val intent = Intent<NetSpeedService>(context)
-        unbindService()
-        context.stopService(intent)
-    }
-
-    private fun unbindService() {
-        if (netSpeedBinder == null) {
-            return
-        }
-        requireContext().unbindService(this)
-        netSpeedBinder = null
     }
 
 }

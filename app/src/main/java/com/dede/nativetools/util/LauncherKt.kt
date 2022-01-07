@@ -2,23 +2,46 @@
 
 package com.dede.nativetools.util
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.pm.PackageManager
-import com.dede.nativetools.other.OtherPreferences
 
 private val packageName = globalContext.packageName
 private val componentDay = ComponentName(globalContext, "$packageName.main.Day")
 private val componentNight = ComponentName(globalContext, "$packageName.main.Night")
 
 fun tryApplyLauncherIcon() {
-    applyLauncherIcon(isNightMode())
+    val context = globalContext
+    val processInfo = context.currentProcess()
+    if (processInfo.isMainProcess(context)) {
+        // 主进程
+        if (!processInfo.isRunning()) {
+            applyLauncherIcon()
+        }
+        return
+    }
+
+    // 子进程
+    val mainProcess = context.mainProcess()
+    if (mainProcess != null && mainProcess.isRunning()) {
+        // 主进程还在运行中
+        return
+    }
+
+    runCatching {
+        // reload from disk
+        @SuppressLint("PrivateApi")
+        val clazz = Class.forName("android.app.SharedPreferencesImpl")
+        val method = clazz.declaredMethod("startReloadIfChangedUnexpectedly")
+        method.invoke(globalPreferences)
+    }.onSuccess {
+        applyLauncherIcon()
+    }.onFailure(Throwable::printStackTrace)
 }
 
-fun applyLauncherIcon(nightMode: Boolean) {
-    if (!OtherPreferences.autoUpdateLauncherIcon)
-        return
+fun applyLauncherIcon() {
     val pm = globalContext.packageManager
-    if (nightMode) {
+    if (isNightMode()) {
         componentNight.enable(pm)
         componentDay.disable(pm)
     } else {

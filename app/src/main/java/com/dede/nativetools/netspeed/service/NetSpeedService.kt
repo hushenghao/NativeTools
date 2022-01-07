@@ -6,7 +6,6 @@ import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.IBinder
 import android.os.PowerManager
 import com.dede.nativetools.netspeed.INetSpeedInterface
@@ -28,9 +27,6 @@ class NetSpeedService : Service() {
             }
         }
 
-        override fun applyLauncherIcon(nightMode: Boolean) {
-            com.dede.nativetools.util.applyLauncherIcon(nightMode)
-        }
     }
 
     companion object {
@@ -80,11 +76,6 @@ class NetSpeedService : Service() {
     }
 
     private val configuration = NetSpeedConfiguration.defaultConfiguration
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        applyLauncherIcon(newConfig.isNightMode)
-    }
 
     override fun onBind(intent: Intent): IBinder {
         return NetSpeedBinder(this)

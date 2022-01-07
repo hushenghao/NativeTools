@@ -12,15 +12,14 @@ import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.widget.Toast
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
+import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
+import com.google.android.material.color.MaterialColors
 import java.io.InputStream
 import kotlin.properties.ReadOnlyProperty
 
@@ -75,8 +74,14 @@ fun <T : Drawable> Context.requireDrawable(@DrawableRes drawableId: Int): T {
     return checkNotNull(AppCompatResources.getDrawable(this, drawableId) as T)
 }
 
+@ColorInt
 fun Context.color(@ColorRes colorId: Int): Int {
     return ContextCompat.getColor(this, colorId)
+}
+
+@ColorInt
+fun Context.color(@AttrRes attrId: Int, @ColorInt default: Int): Int {
+    return MaterialColors.getColor(this, attrId, default)
 }
 
 fun Context.toast(text: String) {

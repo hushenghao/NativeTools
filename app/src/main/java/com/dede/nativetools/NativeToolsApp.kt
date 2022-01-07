@@ -2,8 +2,10 @@ package com.dede.nativetools
 
 import android.app.Application
 import android.content.Context
-import com.dede.nativetools.other.OtherPreferences
-import com.dede.nativetools.util.*
+import android.content.res.Configuration
+import com.dede.nativetools.util.applyLauncherIcon
+import com.dede.nativetools.util.isMainProcess
+import com.dede.nativetools.util.tryApplyLauncherIcon
 import com.google.android.material.color.DynamicColors
 
 class NativeToolsApp : Application() {
@@ -25,9 +27,17 @@ class NativeToolsApp : Application() {
         super.onCreate()
         DynamicColors.applyToActivitiesIfAvailable(this, R.style.AppTheme)
         if (isMainProcess()) {
-            setNightMode(OtherPreferences.nightMode)
-        } else {
-            tryApplyLauncherIcon()
+            applyLauncherIcon()
         }
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        tryApplyLauncherIcon()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        tryApplyLauncherIcon()
     }
 }

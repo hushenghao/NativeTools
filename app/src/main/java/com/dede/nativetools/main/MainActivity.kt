@@ -28,7 +28,6 @@ import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.util.*
-import com.google.android.material.color.MaterialColors
 
 
 /**
@@ -65,8 +64,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         applyBarsInsets(binding.root, binding.toolbar, this)
 
         if (VERSION.SDK_INT >= VERSION_CODES.N) {
-            val color = MaterialColors.getColor(
-                this,
+            val color = this.color(
                 android.R.attr.colorBackground,
                 if (isNightMode()) Color.BLACK else Color.WHITE
             )
@@ -101,9 +99,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                     setColor(context.color(R.color.primaryColor))
                     shape = GradientDrawable.OVAL
                 },
-                InsetDrawable(this.requireDrawable<Drawable>(resId).apply {
-                    setTint(Color.WHITE)
-                }, 4.dp)
+                InsetDrawable(context.requireDrawable<Drawable>(resId), 4.dp)
             )
         ).toBitmap(24.dp, 24.dp)
         return IconCompat.createWithBitmap(bitmap)
@@ -112,7 +108,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     private fun installShortcuts() {
         val shortcuts = arrayListOf(
             ShortcutInfoCompat.Builder(this, "shortcut_about")
-                .setIcon(createShortcutIcon(R.drawable.ic_outline_info))
+                .setIcon(createShortcutIcon(R.drawable.ic_outline_info_white))
                 .setIntent(
                     Intent(Intent.ACTION_VIEW, Uri.parse("https://dede.nativetools/about"))
                         .setClass(this, MainActivity::class.java)

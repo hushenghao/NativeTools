@@ -1,8 +1,7 @@
 package com.dede.nativetools.netspeed
 
-import android.content.*
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.IBinder
 import android.os.RemoteException
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.LayoutNetSpeedAdvancedHeaderBinding
 import com.dede.nativetools.main.applyRecyclerViewInsets
-import com.dede.nativetools.netspeed.service.NetSpeedService
+import com.dede.nativetools.netspeed.service.NetSpeedServiceController
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.ui.ScrollVerticalChangeableLinearLayoutManager
 import com.dede.nativetools.ui.SliderPreference
-import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.globalPreferences
 import com.dede.nativetools.util.requirePreference
 import com.dede.nativetools.util.toast
@@ -27,19 +25,12 @@ import com.google.android.material.slider.Slider
  * 高级设置
  */
 class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener,
-    ServiceConnection, Slider.OnChangeListener {
+    SharedPreferences.OnSharedPreferenceChangeListener, Slider.OnChangeListener {
 
     private val configuration = NetSpeedConfiguration.initialize()
-    private var netSpeedBinder: INetSpeedInterface? = null
+    private val controller by lazy { NetSpeedServiceController(requireContext()) }
 
     private lateinit var binding: LayoutNetSpeedAdvancedHeaderBinding
-
-    private val closeReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            stopService()
-        }
-    }
 
     private val layoutManager by lazy { ScrollVerticalChangeableLinearLayoutManager(requireContext()) }
 
@@ -50,11 +41,6 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         this.onChangeListener = listener
         this.sliderLabelFormatter = labelFormatter
         //this.scrollVerticalChangeable = layoutManager
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        requireContext().registerReceiver(closeReceiver, IntentFilter(NetSpeedService.ACTION_CLOSE))
     }
 
     override fun onCreateView(
@@ -95,8 +81,9 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        controller.bindService()
+
         applyRecyclerViewInsets(listView)
-        bindService()
         updatePreview(configuration)
     }
 
@@ -138,14 +125,6 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         updatePreview(config.apply { cachedBitmap = configuration.cachedBitmap })
     }
 
-    override fun onServiceDisconnected(name: ComponentName?) {
-        netSpeedBinder = null
-    }
-
-    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        netSpeedBinder = INetSpeedInterface.Stub.asInterface(service)
-    }
-
     override fun onStart() {
         super.onStart()
         globalPreferences.registerOnSharedPreferenceChangeListener(this)
@@ -175,39 +154,15 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
 
     private fun updateConfiguration() {
         try {
-            netSpeedBinder?.updateConfiguration(configuration)
+            controller.binder?.updateConfiguration(configuration)
         } catch (e: RemoteException) {
             toast("error")
         }
     }
 
-    override fun onDestroy() {
-        unbindService()
-        requireContext().unregisterReceiver(closeReceiver)
-        super.onDestroy()
-    }
-
-    private fun bindService() {
-        val status = NetSpeedPreferences.status
-        if (!status) return
-        val context = requireContext()
-        val intent = NetSpeedService.createIntent(context)
-        context.bindService(intent, this, Context.BIND_AUTO_CREATE)
-    }
-
-    private fun stopService() {
-        val context = requireContext()
-        val intent = Intent<NetSpeedService>(context)
-        unbindService()
-        context.stopService(intent)
-    }
-
-    private fun unbindService() {
-        if (netSpeedBinder == null) {
-            return
-        }
-        requireContext().unbindService(this)
-        netSpeedBinder = null
+    override fun onDestroyView() {
+        controller.unbindService()
+        super.onDestroyView()
     }
 
 }

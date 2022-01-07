@@ -29,7 +29,7 @@
     </style>
 
     <style name="MaterialAlertDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
-        <item name="colorPrimary">?attr/colorControlNormal</item>
+        <item name="colorPrimary">@color/primaryLightColor</item>
     </style>
 
     <style name="ActionMenuStyle" parent="Widget.Material3.PopupMenu">

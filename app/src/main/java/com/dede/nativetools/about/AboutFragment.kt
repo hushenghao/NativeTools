@@ -59,6 +59,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         com.google.android.material.R.color.material_blue_grey_950,
         com.google.android.material.R.color.material_grey_900,
     )
+    private val outlineProvider = ViewOvalOutlineProvider(true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,8 +90,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             viewModel.addFollowCount()
             playAnimator(true)
         }
-        binding.ivLogo.clipToOutline = true
-        binding.ivLogo.outlineProvider = ViewOvalOutlineProvider()
+        binding.ivLogo.outlineProvider = outlineProvider
         playAnimator(false)
     }
 
@@ -115,7 +115,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 binding.rootAbout.addView(this, binding.rootAbout.indexOfChild(template))
             }
         }
-        followViews.add(insert)
+        followViews.add(insert.apply { outlineProvider = this@AboutFragment.outlineProvider })
         binding.ivLogo.followViews = followViews.toTypedArray()
 
         val floatEvaluator = FloatEvaluator()

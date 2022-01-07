@@ -26,6 +26,7 @@ fun isNightMode(): Boolean {
         AppCompatDelegate.MODE_NIGHT_YES -> {
             return true
         }
+        AppCompatDelegate.MODE_NIGHT_UNSPECIFIED,
         AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
         AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY -> {
             val configuration = Resources.getSystem().configuration
