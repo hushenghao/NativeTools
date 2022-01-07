@@ -10,6 +10,7 @@ import androidx.navigation.Navigator
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUiSaveStateControl
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import kotlin.properties.ReadOnlyProperty
@@ -58,7 +59,8 @@ private fun View?.setup(
     null -> Unit
     is NavigationBarView -> {
         this.setOnItemSelectedListener(listener)
-        NavigationUI.setupWithNavController(this, navController)
+        @OptIn(NavigationUiSaveStateControl::class)
+        NavigationUI.setupWithNavController(this, navController, false)
     }
     is NavigationView -> {
         this.setNavigationItemSelectedListener(listener)

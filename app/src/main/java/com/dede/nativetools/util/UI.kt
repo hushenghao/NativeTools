@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.os.Build
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import androidx.annotation.StringRes
@@ -28,12 +29,17 @@ fun isNightMode(): Boolean {
         AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
         AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY -> {
             val configuration = Resources.getSystem().configuration
-            val systemMode = configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            return systemMode == Configuration.UI_MODE_NIGHT_YES
+            return configuration.isNightMode
         }
     }
     return false
 }
+
+val Configuration.isNightMode: Boolean
+    get() {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) this.isNightModeActive else
+            this.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+    }
 
 fun setNightMode(mode: Int) {
     AppCompatDelegate.setDefaultNightMode(mode)

@@ -11,4 +11,9 @@ interface INetSpeedInterface {
      * 更新配置
      */
     void updateConfiguration(in NetSpeedConfiguration configuration);
+
+    /**
+     * 更新桌面图标
+     */
+    void applyLauncherIcon(boolean nightMode);
 }

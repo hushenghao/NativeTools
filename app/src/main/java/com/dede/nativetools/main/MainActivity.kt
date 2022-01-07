@@ -2,7 +2,10 @@ package com.dede.nativetools.main
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.*
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.InsetDrawable
+import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
@@ -11,10 +14,9 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.content.pm.ShortcutInfoCompat
-import androidx.core.graphics.drawable.IconCompat
 import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
-import com.dede.nativetools.util.Intent
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
@@ -96,7 +98,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         val bitmap = LayerDrawable(
             arrayOf(
                 GradientDrawable().apply {
-                    setColor(context.getColor(R.color.primaryColor))
+                    setColor(context.color(R.color.primaryColor))
                     shape = GradientDrawable.OVAL
                 },
                 InsetDrawable(this.requireDrawable<Drawable>(resId).apply {

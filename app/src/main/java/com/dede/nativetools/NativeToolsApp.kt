@@ -3,8 +3,7 @@ package com.dede.nativetools
 import android.app.Application
 import android.content.Context
 import com.dede.nativetools.other.OtherPreferences
-import com.dede.nativetools.util.isMainProcess
-import com.dede.nativetools.util.setNightMode
+import com.dede.nativetools.util.*
 import com.google.android.material.color.DynamicColors
 
 class NativeToolsApp : Application() {
@@ -27,6 +26,8 @@ class NativeToolsApp : Application() {
         DynamicColors.applyToActivitiesIfAvailable(this, R.style.AppTheme)
         if (isMainProcess()) {
             setNightMode(OtherPreferences.nightMode)
+        } else {
+            tryApplyLauncherIcon()
         }
     }
 }

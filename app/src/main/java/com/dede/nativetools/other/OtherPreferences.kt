@@ -11,7 +11,7 @@ object OtherPreferences {
     const val KEY_IGNORE_BATTERY_OPTIMIZE = "ignore_battery_optimize"
     const val KEY_ABOUT = "about"
 
-    private const val KEY_TOGGLE_LAUNCHER_ICON_DONT_ASK = "toggle_launcher_icon_dont_ask"
+    private const val KEY_AUTO_UPDATE_LAUNCHER_ICON = "auto_update_launcher_icon"
 
     private const val DEFAULT_NIGHT_MODE = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 
@@ -19,7 +19,7 @@ object OtherPreferences {
         get() = globalPreferences.get(KEY_NIGHT_MODE_TOGGLE, DEFAULT_NIGHT_MODE.toString())
             .toIntOrNull() ?: DEFAULT_NIGHT_MODE
 
-    var dontAskToggleLauncherIcon: Boolean
-        get() = globalPreferences.get(KEY_TOGGLE_LAUNCHER_ICON_DONT_ASK, false)
-        set(value) = globalPreferences.set(KEY_TOGGLE_LAUNCHER_ICON_DONT_ASK, value)
+    var autoUpdateLauncherIcon: Boolean
+        get() = globalPreferences.get(KEY_AUTO_UPDATE_LAUNCHER_ICON, false)
+        set(value) = globalPreferences.set(KEY_AUTO_UPDATE_LAUNCHER_ICON, value)
 }

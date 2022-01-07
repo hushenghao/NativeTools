@@ -5,7 +5,6 @@ package com.dede.nativetools.util
 
 import android.app.Notification
 import android.app.PendingIntent
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -101,16 +100,4 @@ fun Intent.queryImplicitActivity(context: Context): Boolean {
         context.packageManager,
         PackageManager.MATCH_DEFAULT_ONLY
     ) != null
-}
-
-fun ComponentName.enable(pm: PackageManager) {
-    val enable = PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-    if (pm.getComponentEnabledSetting(this) == enable) return
-    pm.setComponentEnabledSetting(this, enable, PackageManager.DONT_KILL_APP)
-}
-
-fun ComponentName.disable(pm: PackageManager) {
-    val disabled = PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-    if (pm.getComponentEnabledSetting(this) == disabled) return
-    pm.setComponentEnabledSetting(this, disabled, PackageManager.DONT_KILL_APP)
 }
