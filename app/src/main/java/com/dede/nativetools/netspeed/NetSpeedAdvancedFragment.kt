@@ -6,18 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.preference.PreferenceFragmentCompat
-import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.LayoutNetSpeedAdvancedHeaderBinding
 import com.dede.nativetools.main.applyRecyclerViewInsets
 import com.dede.nativetools.netspeed.service.NetSpeedServiceController
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
-import com.dede.nativetools.ui.ScrollVerticalChangeableLinearLayoutManager
 import com.dede.nativetools.ui.SliderPreference
 import com.dede.nativetools.util.globalPreferences
 import com.dede.nativetools.util.requirePreference
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
+import kotlin.math.roundToInt
 
 /**
  * 高级设置
@@ -30,15 +29,12 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
 
     private lateinit var binding: LayoutNetSpeedAdvancedHeaderBinding
 
-    private val layoutManager by lazy { ScrollVerticalChangeableLinearLayoutManager(requireContext()) }
-
     private fun SliderPreference.initialize(
         listener: NetSpeedAdvancedFragment,
         labelFormatter: LabelFormatter
     ) {
         this.onChangeListener = listener
         this.sliderLabelFormatter = labelFormatter
-        //this.scrollVerticalChangeable = layoutManager
     }
 
     override fun onCreateView(
@@ -54,7 +50,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
 
     private val labelFormatterPercent = LabelFormatter { "%d %%".format((it * 100).toInt()) }
     private val labelFormatterRatio = LabelFormatter {
-        val denominator = (it * 100).toInt()
+        val denominator = (it * 100).roundToInt()
         val molecular = 100 - denominator
         "$denominator : $molecular"
     }
@@ -75,10 +71,6 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             .initialize(this, labelFormatterPercent)
     }
 
-    override fun onCreateLayoutManager(): RecyclerView.LayoutManager {
-        return layoutManager
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         controller.bindService()
@@ -96,6 +88,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     private var tempConfiguration: NetSpeedConfiguration? = null
 
     override fun onValueChange(slider: Slider, value: Float, fromUser: Boolean) {
+        if (!fromUser) return
         val key = slider.tag as String? ?: return// SliderPreference内设置了tag
         var config = tempConfiguration
         if (config == null) {
@@ -125,7 +118,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             }
             else -> return
         }
-        updatePreview(config.apply { cachedBitmap = configuration.cachedBitmap })
+        updatePreview(config)
     }
 
     override fun onStart() {

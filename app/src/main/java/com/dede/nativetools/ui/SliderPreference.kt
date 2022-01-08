@@ -1,6 +1,5 @@
 package com.dede.nativetools.ui
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
 import android.os.Parcel
@@ -8,32 +7,17 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
-import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.Keep
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.dede.nativetools.R
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
 import kotlin.math.max
 import kotlin.math.min
-
-class ScrollVerticalChangeableLinearLayoutManager(context: Context) : LinearLayoutManager(context),
-    SliderPreference.ScrollVerticalChangeable {
-
-    private var enableScrollVertically = true
-
-    override fun setEnableScrollVertically(enable: Boolean) {
-        enableScrollVertically = enable
-    }
-
-    override fun canScrollVertically(): Boolean {
-        return enableScrollVertically
-    }
-}
+import kotlin.math.roundToInt
 
 /**
  * Slider
@@ -45,43 +29,6 @@ class SliderPreference @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : Preference(context, attrs, defStyleAttr, defStyleRes), Slider.OnChangeListener,
     Slider.OnSliderTouchListener, View.OnKeyListener {
-
-    interface ScrollVerticalChangeable {
-        fun setEnableScrollVertically(enable: Boolean)
-    }
-
-    /**
-     * 优化了在垂直滚动容器内的事件处理
-     */
-    class UnCheckScrollVerticalSlider @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = com.google.android.material.R.attr.sliderStyle
-    ) : Slider(context, attrs, defStyleAttr) {
-
-        var scrollVerticalChangeable: ScrollVerticalChangeable? = null
-
-        @SuppressLint("ClickableViewAccessibility")
-        override fun onTouchEvent(event: MotionEvent): Boolean {
-            var mockEvent = event
-            var enableHacker = false
-            when (event.actionMasked) {
-                MotionEvent.ACTION_DOWN -> {
-                    enableHacker = true
-                }
-                MotionEvent.ACTION_CANCEL -> {
-                    mockEvent = MotionEvent.obtain(event).apply {
-                        // Mock ACTION_UP ensure Labels Removed
-                        this.action = MotionEvent.ACTION_UP
-                    }
-                }
-            }
-            scrollVerticalChangeable?.setEnableScrollVertically(!enableHacker)
-            return super.onTouchEvent(mockEvent)
-        }
-    }
-
-    var scrollVerticalChangeable: ScrollVerticalChangeable? = null
 
     private var stepSize: Float
     private var value: Float = 0f
@@ -176,8 +123,8 @@ class SliderPreference @JvmOverloads constructor(
         val value = max(valueFrom, min(sliderValue, valueTo))
         if (value != this.value) {
             this.value = value
-            persistFloat(this.value)
             updateLabelValue(this.value)
+            persistFloat(this.value)
             if (notify) {
                 notifyChanged()
             }
@@ -187,27 +134,24 @@ class SliderPreference @JvmOverloads constructor(
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         holder.itemView.setOnKeyListener(this)
-        val slider = holder.findViewById(R.id.slider) as UnCheckScrollVerticalSlider
+        val slider = holder.findViewById(R.id.slider) as Slider
+        val sliderValue = holder.findViewById(R.id.slider_value) as? TextView
+        this.slider = slider
+        this.sliderValue = sliderValue
+        slider.clearOnChangeListeners()
+        slider.clearOnSliderTouchListeners()
+        slider.addOnChangeListener(this)
+        slider.addOnSliderTouchListener(this)
+
+        slider.setLabelFormatter(sliderLabelFormatter)
+        slider.tag = key
+
         slider.valueFrom = valueFrom
         slider.valueTo = valueTo
         slider.stepSize = stepSize
         slider.value = value
-        slider.setLabelFormatter(sliderLabelFormatter)
-        slider.tag = key
-        slider.scrollVerticalChangeable = scrollVerticalChangeable
-
-        slider.removeOnChangeListener(this)
-        slider.removeOnSliderTouchListener(this)
-        slider.addOnChangeListener(this)
-        slider.addOnSliderTouchListener(this)
+        updateLabelValue(value)
         slider.isEnabled = isEnabled
-        this.slider = slider
-
-        val sliderValue = holder.findViewById(R.id.slider_value) as? TextView
-        if (sliderValue != null) {
-            this.sliderValue = sliderValue
-            updateLabelValue(value)
-        }
     }
 
     override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
@@ -237,7 +181,7 @@ class SliderPreference @JvmOverloads constructor(
     }
 
     private fun formatValue(value: Float): Float {
-        val int = (value / stepSize).toInt()
+        val int = (value / stepSize).roundToInt()
         return int * stepSize
     }
 
@@ -245,13 +189,21 @@ class SliderPreference @JvmOverloads constructor(
     }
 
     override fun onStopTrackingTouch(slider: Slider) {
-        setValueInternal(formatValue(slider.value), true)
+        val value = formatValue(slider.value)
+        if (this.value != value) {
+            if (callChangeListener(value)) {
+                setValueInternal(value, false)
+            } else {
+                slider.value = value
+                updateLabelValue(value)
+            }
+        }
     }
 
     private fun updateLabelValue(value: Float) {
-        val sliderValue = sliderValue
-        if (sliderValue != null) {
-            sliderValue.text = sliderLabelFormatter?.getFormattedValue(value) ?: value.toString()
+        val textView = sliderValue
+        if (textView != null) {
+            textView.text = sliderLabelFormatter?.getFormattedValue(value) ?: value.toString()
         }
     }
 
@@ -273,10 +225,12 @@ class SliderPreference @JvmOverloads constructor(
             super.onRestoreInstanceState(state)
             return
         }
+        super.onRestoreInstanceState(state.superState)
         stepSize = state.stepSize
         value = state.value
         valueFrom = state.valueFrom
         valueTo = state.valueTo
+        notifyChanged()
     }
 
     private class SavedState : BaseSavedState {
