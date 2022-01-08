@@ -2,16 +2,18 @@ package com.dede.nativetools.netspeed.service
 
 import android.content.*
 import android.os.IBinder
+import android.os.RemoteException
 import androidx.core.content.ContextCompat
 import com.dede.nativetools.netspeed.INetSpeedInterface
+import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.NetSpeedPreferences
+import com.dede.nativetools.util.Intent
+import com.dede.nativetools.util.toast
 
-class NetSpeedServiceController(val context: Context) : ServiceConnection {
+class NetSpeedServiceController(val context: Context) : INetSpeedInterface.Default(),
+    ServiceConnection {
 
-    private val intent = NetSpeedService.createIntent(context)
-
-    var binder: INetSpeedInterface? = null
-        private set
+    private var binder: INetSpeedInterface? = null
 
     var onCloseReceive: Function0<Unit>? = null
 
@@ -24,6 +26,7 @@ class NetSpeedServiceController(val context: Context) : ServiceConnection {
 
     fun startService(bind: Boolean = false) {
         if (!NetSpeedPreferences.status) return
+        val intent = NetSpeedService.createIntent(context)
         ContextCompat.startForegroundService(context, intent)
         if (bind) {
             bindService()
@@ -32,11 +35,13 @@ class NetSpeedServiceController(val context: Context) : ServiceConnection {
 
     fun bindService() {
         if (!NetSpeedPreferences.status) return
+        val intent = NetSpeedService.createIntent(context)
         context.bindService(intent, this, Context.BIND_AUTO_CREATE)
         context.registerReceiver(closeReceiver, IntentFilter(NetSpeedService.ACTION_CLOSE))
     }
 
     fun stopService() {
+        val intent = Intent<NetSpeedService>(context)
         context.unbindService(this)
         context.stopService(intent)
     }
@@ -56,5 +61,13 @@ class NetSpeedServiceController(val context: Context) : ServiceConnection {
 
     override fun onServiceDisconnected(name: ComponentName?) {
         binder = null
+    }
+
+    override fun updateConfiguration(configuration: NetSpeedConfiguration) {
+        try {
+            binder?.updateConfiguration(configuration)
+        } catch (e: RemoteException) {
+            context.toast("error")
+        }
     }
 }

@@ -78,4 +78,7 @@
     <string name="summary_mode_download">ダウンロードのみ</string>
     <string name="summary_mode_all">アップロードとダウンロード</string>
     <string name="summary_mode_upload">アップロードするだけ</string>
+    <string name="toast_download_font">フォントのダウンロードに失敗</string>
+    <string name="toast_download_font_succeeded">フォントダウンロード成功</string>
+    <string name="toast_download_font_failed">フォントのダウンロードに失敗</string>
 </resources>

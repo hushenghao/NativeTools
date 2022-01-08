@@ -78,4 +78,7 @@
     <string name="summary_mode_download">Down</string>
     <string name="summary_mode_all">Up and Down</string>
     <string name="summary_mode_upload">Up</string>
+    <string name="toast_download_font">Font download failed</string>
+    <string name="toast_download_font_succeeded">Font downloaded successfully</string>
+    <string name="toast_download_font_failed">Font download failed</string>
 </resources>

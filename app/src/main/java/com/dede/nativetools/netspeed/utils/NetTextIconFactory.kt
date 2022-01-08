@@ -175,6 +175,7 @@ object NetTextIconFactory {
 
         val bitmap = createBitmapInternal(size, configuration.cachedBitmap)
         val canvas = Canvas(bitmap)
+        Log.i("TAG", "createIconInternal: " + configuration.textStyle)
         paint.typeface = TypefaceGetter.getOrDefault(configuration.font, configuration.textStyle)
         resetPaint()
 

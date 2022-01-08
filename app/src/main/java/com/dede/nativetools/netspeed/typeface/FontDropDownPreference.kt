@@ -46,7 +46,7 @@ class FontDropDownPreference @JvmOverloads constructor(
                 downloadFont(fontKey)
                 notifyChanged()// fix Spinner.OnItemSelectedListener cannot recall
             }
-            return@setOnPreferenceChangeListener canApply// 不应用字体
+            return@setOnPreferenceChangeListener canApply// 下载过的字体才应用
         }
     }
 
@@ -73,13 +73,13 @@ class FontDropDownPreference @JvmOverloads constructor(
     override fun onChanged(workInfo: WorkInfo) {
         when (workInfo.state) {
             WorkInfo.State.SUCCEEDED -> {
-                context.toast(com.dede.nativetools.R.string.toast_downlad_font_succeeded)
+                context.toast(com.dede.nativetools.R.string.toast_download_font_succeeded)
             }
             WorkInfo.State.FAILED -> {
-                context.toast(com.dede.nativetools.R.string.toast_downlad_font_failed)
+                context.toast(com.dede.nativetools.R.string.toast_download_font_failed)
             }
             WorkInfo.State.RUNNING -> {
-                context.toast(com.dede.nativetools.R.string.toast_downlad_font)
+                context.toast(com.dede.nativetools.R.string.toast_download_font)
             }
             else -> {
 

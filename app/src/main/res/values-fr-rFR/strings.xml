@@ -78,4 +78,7 @@
     <string name="summary_mode_download">Down</string>
     <string name="summary_mode_all">Up and Down</string>
     <string name="summary_mode_upload">Up</string>
+    <string name="toast_download_font">Fail télécharger la police</string>
+    <string name="toast_download_font_succeeded">Fontes téléchargées avec succès</string>
+    <string name="toast_download_font_failed">Fail télécharger la police</string>
 </resources>

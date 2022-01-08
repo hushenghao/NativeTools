@@ -83,7 +83,7 @@
     <string name="summary_mode_download">仅下载</string>
     <string name="summary_mode_all">上传和下载</string>
     <string name="summary_mode_upload">仅上传</string>
-    <string name="toast_downlad_font">开始字体下载</string>
-    <string name="toast_downlad_font_succeeded">字体下载成功</string>
-    <string name="toast_downlad_font_failed">字体下载失败</string>
+    <string name="toast_download_font">开始字体下载</string>
+    <string name="toast_download_font_succeeded">字体下载成功</string>
+    <string name="toast_download_font_failed">字体下载失败</string>
 </resources>

@@ -2,7 +2,6 @@ package com.dede.nativetools.netspeed
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.RemoteException
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import com.dede.nativetools.ui.ScrollVerticalChangeableLinearLayoutManager
 import com.dede.nativetools.ui.SliderPreference
 import com.dede.nativetools.util.globalPreferences
 import com.dede.nativetools.util.requirePreference
-import com.dede.nativetools.util.toast
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
 
@@ -147,16 +145,8 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE,
             NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE -> {
                 updatePreview(configuration)
-                updateConfiguration()
+                controller.updateConfiguration(configuration)
             }
-        }
-    }
-
-    private fun updateConfiguration() {
-        try {
-            controller.binder?.updateConfiguration(configuration)
-        } catch (e: RemoteException) {
-            toast("error")
         }
     }
 

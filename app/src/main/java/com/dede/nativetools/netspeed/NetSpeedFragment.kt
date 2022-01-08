@@ -36,11 +36,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkNotificationEnable()
+        controller.startService(false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controller.startService(true)
+        controller.bindService()
 
         if (smallestScreenWidthDp < SW600DP) return
         applyRecyclerViewInsets(listView)
@@ -133,11 +134,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun updateConfiguration() {
-        try {
-            controller.binder?.updateConfiguration(configuration)
-        } catch (e: RemoteException) {
-            toast("error")
-        }
+        controller.updateConfiguration(configuration)
     }
 
     override fun onDestroyView() {
