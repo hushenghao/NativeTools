@@ -81,4 +81,5 @@
     <string name="toast_download_font">Fail télécharger la police</string>
     <string name="toast_download_font_succeeded">Fontes téléchargées avec succès</string>
     <string name="toast_download_font_failed">Fail télécharger la police</string>
+    <string name="label_net_speed_horizontal_scale">Zoom sur l’axe X</string>
 </resources>

@@ -81,4 +81,5 @@
     <string name="toast_download_font">글꼴 다운로드 실패</string>
     <string name="toast_download_font_succeeded">글꼴 다운로드 성공</string>
     <string name="toast_download_font_failed">글꼴 다운로드 실패</string>
+    <string name="label_net_speed_horizontal_scale">X 축 크기 조정</string>
 </resources>
