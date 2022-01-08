@@ -42,16 +42,34 @@
     </string-array>
 
     <string-array name="net_speed_font_value">
-        <item>normal</item>
-        <item>bebaskai</item>
-        <item>bebasneue</item>
-        <item>oswald</item>
+        <item>Normal</item>
+
+        <item>BebasKai</item>
+        <item>BebasNeue</item>
+        <item>FjallaOne</item>
+        <item>Creepster</item>
+        <item>PirataOne</item>
+        <item>PressStart2P</item>
+        <item>ChakraPetch</item>
+        <item>SquadaOne</item>
+        <item>VT323</item>
+
+        <!--        <item>Debug</item>-->
     </string-array>
     <string-array name="net_speed_font">
         <item>@string/summary_system_default</item>
+
         <item>Bebas Kai</item>
         <item>Bebas Neue</item>
-        <item>Oswald</item>
+        <item>Fjalla One</item>
+        <item>Creepster</item>
+        <item>Pirata One</item>
+        <item>Press Start 2P</item>
+        <item>Chakra Petch</item>
+        <item>Squada One</item>
+        <item>VT323</item>
+
+        <!--        <item>Debug</item>-->
     </string-array>
 
     <string-array name="night_mode_toggle">

@@ -133,7 +133,7 @@ class SliderPreference @JvmOverloads constructor(
 
     fun setStepSize(stepSize: Float) {
         var size = stepSize
-        if (size < 0.0f) {
+        if (size <= 0.0f) {
             size = 0.01f
         }
         if (size != this.stepSize) {
@@ -230,17 +230,22 @@ class SliderPreference @JvmOverloads constructor(
                 HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
             )
         }
-        updateLabelValue(value)
-
+        val format = formatValue(value)
+        updateLabelValue(format)
         @Suppress("RestrictedApi")
-        onChangeListener?.onValueChange(slider, value, fromUser)
+        onChangeListener?.onValueChange(slider, format, fromUser)
+    }
+
+    private fun formatValue(value: Float): Float {
+        val int = (value / stepSize).toInt()
+        return int * stepSize
     }
 
     override fun onStartTrackingTouch(slider: Slider) {
     }
 
     override fun onStopTrackingTouch(slider: Slider) {
-        setValueInternal(slider.value, true)
+        setValueInternal(formatValue(slider.value), true)
     }
 
     private fun updateLabelValue(value: Float) {

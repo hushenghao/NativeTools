@@ -71,6 +71,8 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             .initialize(this, labelFormatterPercent)
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE)
             .initialize(this, labelFormatterPercent)
+        requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE)
+            .initialize(this, labelFormatterPercent)
     }
 
     override fun onCreateLayoutManager(): RecyclerView.LayoutManager {
@@ -118,6 +120,9 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE -> {
                 config.textScale = value
             }
+            NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE -> {
+                config.horizontalScale = value
+            }
             else -> return
         }
         updatePreview(config.apply { cachedBitmap = configuration.cachedBitmap })
@@ -143,7 +148,8 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET,
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO,
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE,
-            NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE -> {
+            NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE,
+            NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE -> {
                 updatePreview(configuration)
                 controller.updateConfiguration(configuration)
             }

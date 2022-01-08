@@ -55,8 +55,16 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
         if (!canApply()) {
             return TypefaceGetter.getOrDefault(TypefaceGetter.FONT_NORMAL, style)
         }
-        return appStyle(basic, style)
+        return applyStyle(basic, style)
     }
 
-    abstract fun appStyle(typeface: Typeface, style: Int): Typeface
+    open fun applyStyle(typeface: Typeface, style: Int): Typeface {
+        return TypefaceGetter.applyStyle(typeface, style)
+    }
+}
+
+open class DownloadTypefaceImpl(context: Context, override val fontName: String) :
+    DownloadTypeface(context) {
+    override val downloadUrl: String
+        get() = "https://gitee.com/dede_hu/fonts/raw/master/$fontName"
 }

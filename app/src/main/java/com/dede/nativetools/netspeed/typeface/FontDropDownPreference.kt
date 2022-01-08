@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.work.*
+import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.ui.FreestyleDropDownPreference
 import com.dede.nativetools.util.isEmpty
 import com.dede.nativetools.util.toast
@@ -32,6 +33,10 @@ class FontDropDownPreference @JvmOverloads constructor(
         val getter = TypefaceGetter.create(context, fontKey)
         if (!getter.canApply()) {
             return
+        }
+        if (BuildConfig.DEBUG && fontKey == TypefaceGetter.FONT_DEBUG && getter is DebugTypeface) {
+            // for debug
+            textView.text = getter.fontName
         }
         textView.typeface = getter.get(Typeface.NORMAL)
     }

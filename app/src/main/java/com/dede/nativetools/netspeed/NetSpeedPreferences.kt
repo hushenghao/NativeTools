@@ -32,6 +32,7 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_RELATIVE_RATIO = "net_speed_relative_ratio"
     const val KEY_NET_SPEED_RELATIVE_DISTANCE = "net_speed_relative_distance"
     const val KEY_NET_SPEED_TEXT_SCALE = "net_speed_text_scale"
+    const val KEY_NET_SPEED_HORIZONTAL_SCALE = "net_speed_horizontal_scale"
 
     private const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
     private const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
@@ -61,6 +62,12 @@ object NetSpeedPreferences {
         get() = globalPreferences.get(
             KEY_NET_SPEED_HORIZONTAL_OFFSET,
             defaultConfiguration.horizontalOffset
+        )
+
+    val horizontalScale: Float
+        get() = globalPreferences.get(
+            KEY_NET_SPEED_HORIZONTAL_SCALE,
+            defaultConfiguration.horizontalScale
         )
 
     val relativeRatio: Float

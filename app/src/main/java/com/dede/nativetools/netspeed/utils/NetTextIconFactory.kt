@@ -183,6 +183,9 @@ object NetTextIconFactory {
         val xOffset = wf * horizontalOffset
         val distance = hf * relativeDistance / 2f
 
+        canvas.save()
+        canvas.scale(configuration.horizontalScale, 1f, wh, hh)
+
         paint.textSize = w * relativeRatio * textScale// 缩放
         var textY = relativeRatio * hf - distance + yOffset
         val textX = wh + xOffset
@@ -198,6 +201,7 @@ object NetTextIconFactory {
         //if (assistLine) {
         //    drawTextRound(text2, textX, textY, canvas)
         //}
+        canvas.restore()
 
         if (assistLine) {
             // 居中辅助线

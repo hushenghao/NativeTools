@@ -9,7 +9,7 @@
 
         <com.dede.nativetools.netspeed.typeface.FontDropDownPreference
             android:key="net_speed_font"
-            app:defaultValue="normal"
+            app:defaultValue="Normal"
             app:entries="@array/net_speed_font"
             app:entryValues="@array/net_speed_font_value"
             app:iconSpaceReserved="false"
@@ -78,5 +78,15 @@
             app:iconSpaceReserved="false"
             app:key="net_speed_horizontal_offset"
             app:title="@string/label_net_speed_x_offset" />
+
+        <com.dede.nativetools.ui.SliderPreference
+            android:stepSize="0.01"
+            android:valueFrom="0.2"
+            android:valueTo="1.3"
+            app:defaultValue="1"
+            app:iconSpaceReserved="false"
+            app:key="net_speed_horizontal_scale"
+            app:title="@string/label_net_speed_horizontal_scale" />
+
     </PreferenceCategory>
 </PreferenceScreen>

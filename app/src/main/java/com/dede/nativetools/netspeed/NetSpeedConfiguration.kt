@@ -25,13 +25,15 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
     @FloatRange(from = -0.5, to = 0.5)
     var verticalOffset: Float = -0.06f,// Y轴偏移量
     @FloatRange(from = -0.5, to = 0.5)
-    var horizontalOffset:Float = 0f,// X轴偏移量
+    var horizontalOffset: Float = 0f,// X轴偏移量
     @FloatRange(from = 0.0, to = 1.0)
     var relativeRatio: Float = 0.6f,// 相对比例
     @FloatRange(from = -0.5, to = 0.5)
     var relativeDistance: Float = 0.15f,// 相对距离
-    @FloatRange(from = 0.5, to = 1.5)
-    var textScale: Float = 0.87f// 字体缩放
+    @FloatRange(from = 0.1, to = 1.5)
+    var textScale: Float = 0.87f,// 字体缩放
+    @FloatRange(from = 0.2, to = 1.3)
+    var horizontalScale: Float = 1f// X轴缩放
 ) : Parcelable {
 
     @IgnoredOnParcel
@@ -56,6 +58,7 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
         this.relativeRatio = configuration.relativeRatio
         this.relativeDistance = configuration.relativeDistance
         this.textScale = configuration.textScale
+        this.horizontalScale = configuration.horizontalScale
         return this
     }
 
@@ -103,6 +106,9 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
             NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE -> {
                 this.textScale = NetSpeedPreferences.textScale
             }
+            NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE -> {
+                this.horizontalScale = NetSpeedPreferences.horizontalScale
+            }
         }
     }
 
@@ -130,7 +136,8 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
                 horizontalOffset = NetSpeedPreferences.horizontalOffset,
                 relativeRatio = NetSpeedPreferences.relativeRatio,
                 relativeDistance = NetSpeedPreferences.relativeDistance,
-                textScale = NetSpeedPreferences.textScale
+                textScale = NetSpeedPreferences.textScale,
+                horizontalScale = NetSpeedPreferences.horizontalScale
             )
         }
     }
