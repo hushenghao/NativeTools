@@ -16,7 +16,7 @@ interface TypefaceGetter {
 
         private val caches = ArrayMap<String, TypefaceGetter>()
 
-        fun create(context: Context, key: String? = null): TypefaceGetter {
+        fun create(context: Context, key: String): TypefaceGetter {
             var getter = caches[key]
             if (getter != null) {
                 return getter
@@ -26,16 +26,20 @@ interface TypefaceGetter {
                 FONT_BEBAS_KAI -> BebasKaiTypeface(context)
                 FONT_BEBAS_NEUE -> BebasNeueTypeface(context)
                 FONT_OSWALD -> OswaldTypeface(context)
-                else -> BebasKaiTypeface(context)
+                else -> NormalTypeface()
             }
             caches[key] = getter
             return getter
         }
 
-        fun get(key: String? = null, style: Int): Typeface {
+        fun getOrDefault(key: String, style: Int): Typeface {
             return create(globalContext, key).get(style)
         }
     }
 
     fun get(style: Int): Typeface
+
+    fun canApply(): Boolean {
+        return true
+    }
 }

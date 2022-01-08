@@ -7,9 +7,9 @@
         app:iconSpaceReserved="false"
         app:title="@string/label_net_speed_advanced">
 
-        <com.dede.nativetools.ui.FontDropDownPreference
+        <com.dede.nativetools.netspeed.typeface.FontDropDownPreference
             android:key="net_speed_font"
-            app:defaultValue="0"
+            app:defaultValue="normal"
             app:entries="@array/net_speed_font"
             app:entryValues="@array/net_speed_font_value"
             app:iconSpaceReserved="false"
@@ -38,7 +38,7 @@
             android:stepSize="0.01"
             android:valueFrom="-0.5"
             android:valueTo="0.5"
-            app:defaultValue="-0.04"
+            app:defaultValue="-0.06"
             app:iconSpaceReserved="false"
             app:key="net_speed_vertical_offset"
             app:title="@string/label_net_speed_y_offset" />
@@ -47,7 +47,7 @@
             android:stepSize="0.01"
             android:valueFrom="0"
             android:valueTo="1"
-            app:defaultValue="0.61"
+            app:defaultValue="0.6"
             app:iconSpaceReserved="false"
             app:key="net_speed_relative_ratio"
             app:title="@string/label_net_speed_relative_ratio" />
@@ -56,7 +56,7 @@
             android:stepSize="0.01"
             android:valueFrom="-0.5"
             android:valueTo="0.5"
-            app:defaultValue="0.1"
+            app:defaultValue="0.15"
             app:iconSpaceReserved="false"
             app:key="net_speed_relative_distance"
             app:title="@string/label_net_speed_relative_distance" />
@@ -65,7 +65,7 @@
             android:stepSize="0.01"
             android:valueFrom="0.5"
             android:valueTo="1.5"
-            app:defaultValue="1.11"
+            app:defaultValue="0.87"
             app:iconSpaceReserved="false"
             app:key="net_speed_text_scale"
             app:title="@string/label_net_speed_text_scale" />
@@ -74,7 +74,7 @@
             android:stepSize="0.01"
             android:valueFrom="-0.5"
             android:valueTo="0.5"
-            app:defaultValue="-0.01"
+            app:defaultValue="0"
             app:iconSpaceReserved="false"
             app:key="net_speed_horizontal_offset"
             app:title="@string/label_net_speed_x_offset" />

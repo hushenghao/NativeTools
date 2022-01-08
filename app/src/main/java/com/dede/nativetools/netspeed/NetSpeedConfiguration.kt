@@ -20,18 +20,18 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
     var hideNotification: Boolean = false,
     var hideLockNotification: Boolean = true,
     var textStyle: Int = NetSpeedPreferences.DEFAULT_TEXT_STYLE,
-    var font: String = TypefaceGetter.FONT_BEBAS_KAI,
+    var font: String = NetSpeedPreferences.DEFAULT_FONT,
     var mode: String = MODE_DOWN,
     @FloatRange(from = -0.5, to = 0.5)
-    var verticalOffset: Float = -0.04f,// Y轴偏移量
+    var verticalOffset: Float = -0.06f,// Y轴偏移量
     @FloatRange(from = -0.5, to = 0.5)
-    var horizontalOffset:Float = -0.01f,// X轴偏移量
+    var horizontalOffset:Float = 0f,// X轴偏移量
     @FloatRange(from = 0.0, to = 1.0)
-    var relativeRatio: Float = 0.61f,// 相对比例
+    var relativeRatio: Float = 0.6f,// 相对比例
     @FloatRange(from = -0.5, to = 0.5)
-    var relativeDistance: Float = 0.1f,// 相对距离
+    var relativeDistance: Float = 0.15f,// 相对距离
     @FloatRange(from = 0.5, to = 1.5)
-    var textScale: Float = 1.11f// 字体缩放
+    var textScale: Float = 0.87f// 字体缩放
 ) : Parcelable {
 
     @IgnoredOnParcel

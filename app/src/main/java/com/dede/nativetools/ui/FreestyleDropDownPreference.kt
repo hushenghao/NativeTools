@@ -10,7 +10,6 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.preference.DropDownPreference
 import androidx.preference.PreferenceViewHolder
-import com.dede.nativetools.netspeed.typeface.TypefaceGetter
 
 abstract class FreestyleDropDownPreference @JvmOverloads constructor(
     context: Context?,
@@ -74,22 +73,5 @@ class TypefaceDropDownPreference @JvmOverloads constructor(
     override fun freestyle(position: Int, textView: TextView) {
         val style = entryValues[position].toString().toIntOrNull() ?: Typeface.NORMAL
         textView.typeface = Typeface.create(Typeface.DEFAULT, style)
-    }
-}
-
-/**
- * 自定义字体
- */
-class FontDropDownPreference @JvmOverloads constructor(
-    context: Context?,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = androidx.preference.R.attr.dropdownPreferenceStyle,
-    defStyleRes: Int = 0
-) : FreestyleDropDownPreference(context, attrs, defStyleAttr, defStyleRes) {
-
-    override fun freestyle(position: Int, textView: TextView) {
-        val fontKey = entryValues[position].toString()
-        textView.typeface = TypefaceGetter.create(context, fontKey)
-            .get(Typeface.NORMAL)
     }
 }

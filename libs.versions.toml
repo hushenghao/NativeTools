@@ -20,6 +20,7 @@ androidx-navigation-ui-ktx = "androidx.navigation:navigation-ui-ktx:2.4.0-rc01"
 androidx-navigation-fragment-ktx = "androidx.navigation:navigation-fragment-ktx:2.4.0-rc01"
 androidx-browser = "androidx.browser:browser:1.4.0"
 androidx-startup = "androidx.startup:startup-runtime:1.1.0"
+androidx-work-runtime-ktx = "androidx.work:work-runtime-ktx:2.7.1"
 google-material = "com.google.android.material:material:1.5.0-rc01"
 
 free-reflection = "me.weishu:free_reflection:3.0.1"

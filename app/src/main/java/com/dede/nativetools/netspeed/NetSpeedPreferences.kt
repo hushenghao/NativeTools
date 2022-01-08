@@ -2,6 +2,7 @@ package com.dede.nativetools.netspeed
 
 import android.graphics.Typeface
 import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultConfiguration
+import com.dede.nativetools.netspeed.typeface.TypefaceGetter
 import com.dede.nativetools.util.get
 import com.dede.nativetools.util.globalPreferences
 import com.dede.nativetools.util.set
@@ -23,6 +24,7 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION = "net_speed_locked_hide"
     const val KEY_NET_SPEED_HIDE_NOTIFICATION = "net_speed_hide_notification"
     const val KEY_NET_SPEED_ADVANCED = "net_speed_advanced"
+
     const val KEY_NET_SPEED_TEXT_STYLE = "net_speed_text_style"
     const val KEY_NET_SPEED_FONT = "net_speed_font"
     const val KEY_NET_SPEED_VERTICAL_OFFSET = "net_speed_vertical_offset"
@@ -36,6 +38,7 @@ object NetSpeedPreferences {
 
     const val DEFAULT_INTERVAL = 1000
     const val DEFAULT_TEXT_STYLE = Typeface.BOLD
+    const val DEFAULT_FONT = TypefaceGetter.FONT_NORMAL
 
     var status: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_STATUS, false)

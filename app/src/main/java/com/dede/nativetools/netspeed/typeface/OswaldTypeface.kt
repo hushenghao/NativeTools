@@ -5,44 +5,48 @@ import android.graphics.Typeface
 import android.os.Build
 import androidx.annotation.RequiresApi
 
-class OswaldTypeface(context: Context) : TypefaceGetter {
+class OswaldTypeface(context: Context) : DownloadTypeface(context) {
 
-    private val basic = Typeface.createFromAsset(context.assets, "Oswald_wght.ttf")
+    override val downloadUrl: String
+        get() = "https://gitee.com/dede_hu/fonts/raw/master/Oswald_wght.ttf"
 
-    override fun get(style: Int): Typeface {
+    override val fontName: String
+        get() = "Oswald_wght.ttf"
+
+    override fun appStyle(typeface: Typeface, style: Int): Typeface {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            return apiP(style)
+            return apiP(typeface, style)
         }
         return when (style) {
             Typeface.BOLD -> {
-                Typeface.create(basic, Typeface.BOLD)
+                Typeface.create(typeface, Typeface.BOLD)
             }
             Typeface.ITALIC -> {
-                Typeface.create(basic, Typeface.ITALIC)
+                Typeface.create(typeface, Typeface.ITALIC)
             }
             Typeface.BOLD_ITALIC -> {
-                Typeface.create(basic, Typeface.BOLD_ITALIC)
+                Typeface.create(typeface, Typeface.BOLD_ITALIC)
             }
             else -> {
-                basic
+                typeface
             }
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
-    private fun apiP(style: Int): Typeface {
+    private fun apiP(typeface: Typeface, style: Int): Typeface {
         return when (style) {
             Typeface.BOLD -> {
-                Typeface.create(basic, 700, false)
+                Typeface.create(typeface, 700, false)
             }
             Typeface.ITALIC -> {
-                Typeface.create(basic, 400, true)
+                Typeface.create(typeface, 400, true)
             }
             Typeface.BOLD_ITALIC -> {
-                Typeface.create(basic, 700, true)
+                Typeface.create(typeface, 700, true)
             }
             else -> {
-                Typeface.create(basic, 400, false)
+                Typeface.create(typeface, 400, false)
             }
         }
     }

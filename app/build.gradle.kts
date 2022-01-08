@@ -97,6 +97,7 @@ dependencies {
     implementation(deps.google.material)
     implementation(deps.androidx.browser)
     implementation(deps.androidx.startup)
+    implementation(deps.androidx.work.runtime.ktx)
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)

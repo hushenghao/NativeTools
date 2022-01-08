@@ -175,7 +175,7 @@ object NetTextIconFactory {
 
         val bitmap = createBitmapInternal(size, configuration.cachedBitmap)
         val canvas = Canvas(bitmap)
-        paint.typeface = TypefaceGetter.get(configuration.font, configuration.textStyle)
+        paint.typeface = TypefaceGetter.getOrDefault(configuration.font, configuration.textStyle)
         resetPaint()
 
         val yOffset = hf * verticalOffset
