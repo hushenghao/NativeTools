@@ -1,4 +1,4 @@
-@file:JvmName("PropertyKt")
+@file:JvmName("AnimatorKt")
 
 package com.dede.nativetools.util
 

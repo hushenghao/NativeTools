@@ -2,8 +2,18 @@ package com.dede.nativetools.netspeed.typeface
 
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Build
+import androidx.lifecycle.LiveData
+import androidx.work.*
+import com.dede.nativetools.util.isEmpty
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.*
 
 abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
 
@@ -71,6 +81,104 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
 
 open class DownloadTypefaceImpl(context: Context, override val fontName: String) :
     DownloadTypeface(context) {
+
+    private fun isSimplifiedChinese(): Boolean {
+        val configuration = context.resources.configuration
+        var local = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            configuration.locales[0]
+        } else {
+            configuration.locale
+        }
+        if (local == null) {
+            local = Locale.getDefault()
+        }
+        return local == Locale.SIMPLIFIED_CHINESE
+    }
+
     override val downloadUrl: String
-        get() = "https://gitee.com/dede_hu/fonts/raw/master/$fontName"
+        get() {
+            return if (isSimplifiedChinese()) {
+                // 大陆访问 gitee 仓库
+                "https://gitee.com/dede_hu/fonts/raw/master/$fontName"
+            } else {
+                "https://github.com/hushenghao/fonts/raw/master/$fontName"
+            }
+        }
+}
+
+class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
+    CoroutineWorker(context, workerParams) {
+
+    companion object {
+        const val EXTRA_FONT_KEY = "extra_font_key"
+        const val EXTRA_FONT_URL = "extra_font_url"
+        const val EXTRA_FONT_NAME = "extra_font_name"
+
+        fun downloadFont(context: Context, fontKey: String): LiveData<WorkInfo>? {
+            val getter = DownloadTypeface.create(context, fontKey) ?: return null
+            val data = workDataOf(
+                EXTRA_FONT_KEY to fontKey,
+                EXTRA_FONT_NAME to getter.fontName,
+                EXTRA_FONT_URL to getter.downloadUrl
+            )
+            val work = OneTimeWorkRequestBuilder<DownloadFontWork>()
+                .setInputMerger(OverwritingInputMerger::class)
+                .setInputData(data)
+                .build()
+            val workManager = WorkManager.getInstance(context)
+            workManager.beginWith(work)
+                .enqueue()
+            return workManager.getWorkInfoByIdLiveData(work.id)
+        }
+    }
+
+    override suspend fun doWork(): Result {
+        val context = applicationContext
+        val fontKey = inputData.getString(EXTRA_FONT_KEY)
+        val downloadUrl = inputData.getString(EXTRA_FONT_URL)
+        val fontName = inputData.getString(EXTRA_FONT_NAME)
+        if (downloadUrl.isEmpty() || fontName.isEmpty()) {
+            // 没有下载参数配置
+            return Result.failure()
+        }
+        return withContext(Dispatchers.IO) {
+            var result = DownloadTypeface.checkFont(context, fontName)
+            if (result) {
+                // 已下载
+                return@withContext Result.success(workDataOf(EXTRA_FONT_KEY to fontKey))
+            }
+            // 开始下载
+            val fontFile = DownloadTypeface.getFontFile(context, fontName)
+            download(downloadUrl, fontFile)
+            // 检查下载结果
+            result = DownloadTypeface.checkFont(context, fontName)
+            return@withContext if (result)
+                Result.success(workDataOf(EXTRA_FONT_KEY to fontKey))
+            else
+                Result.failure()
+        }
+    }
+
+    /**
+     * 下载网络字体
+     */
+    private fun download(url: String, output: File) {
+        runBlocking {
+            var connect: HttpURLConnection? = null
+            try {
+                connect = (URL(url).openConnection() as? HttpURLConnection)
+                val http = connect ?: return@runBlocking
+                http.requestMethod = "GET"
+                http.connectTimeout = 15000
+                http.readTimeout = 15000
+                if (http.responseCode == 200) {
+                    http.inputStream.use {
+                        it.copyTo(output.outputStream())
+                    }
+                }
+            } finally {
+                connect?.disconnect()
+            }
+        }
+    }
 }
