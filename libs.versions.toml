@@ -5,6 +5,7 @@ kotlin = "1.6.10"
 android-gradle = "com.android.tools.build:gradle:7.0.4"
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 diffplug-spotless = "com.diffplug.spotless:spotless-plugin-gradle:6.1.0"
+tinify = "com.tinify:tinify:1.6.4"
 
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 androidx-appcompat = "androidx.appcompat:appcompat:1.3.1"
@@ -34,7 +35,6 @@ androidx-junit = "androidx.test.ext:junit:1.1.3"
 androidx-expresso-core = "androidx.test.espresso:espresso-core:3.4.0"
 
 [bundles]
-classpath = ["android-gradle", "kotlin-gradle", "diffplug-spotless"]
 androidx-navigation = ["androidx-navigation-ui-ktx", "androidx-navigation-fragment-ktx", "androidx-navigation-runtime-ktx"]
 androidx-lifecycle = ["androidx-lifecycle-common", "androidx-lifecycle-livedata-ktx",
     "androidx-lifecycle-runtime-ktx", "androidx-lifecycle-viewmodel-ktx"]
