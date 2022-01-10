@@ -46,30 +46,32 @@
 
         <item>BebasKai</item>
         <item>BebasNeue</item>
+        <item>RobotoCondensed</item>
         <item>FjallaOne</item>
-        <item>Creepster</item>
-        <item>PirataOne</item>
-        <item>PressStart2P</item>
+
         <item>ChakraPetch</item>
         <item>SquadaOne</item>
-        <item>VT323</item>
+        <item>PirataOne</item>
+        <item>Creepster</item>
 
-        <!--        <item>Debug</item>-->
+        <item>PressStart2P</item>
+        <item>VT323</item>
     </string-array>
     <string-array name="net_speed_font">
         <item>@string/summary_system_default</item>
 
         <item>Bebas Kai</item>
         <item>Bebas Neue</item>
+        <item>Roboto Condensed</item>
         <item>Fjalla One</item>
-        <item>Creepster</item>
-        <item>Pirata One</item>
-        <item>Press Start 2P</item>
+
         <item>Chakra Petch</item>
         <item>Squada One</item>
-        <item>VT323</item>
+        <item>Pirata One</item>
+        <item>Creepster</item>
 
-        <!--        <item>Debug</item>-->
+        <item>Press Start 2P</item>
+        <item>VT323</item>
     </string-array>
 
     <string-array name="night_mode_toggle">

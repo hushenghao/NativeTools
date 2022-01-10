@@ -34,7 +34,7 @@ class FontDropDownPreference @JvmOverloads constructor(
         if (!getter.canApply()) {
             return
         }
-        if (BuildConfig.DEBUG && fontKey == TypefaceGetter.FONT_DEBUG && getter is DebugTypeface) {
+        if (fontKey == TypefaceGetter.FONT_DEBUG && getter is DebugTypeface) {
             // for debug
             textView.text = getter.fontName
         }
@@ -52,6 +52,18 @@ class FontDropDownPreference @JvmOverloads constructor(
                 notifyChanged()// fix Spinner.OnItemSelectedListener cannot recall
             }
             return@setOnPreferenceChangeListener canApply// 下载过的字体才应用
+        }
+        if (BuildConfig.DEBUG) {
+            // 添加debug字体
+            entryValues.toMutableList().let {
+                it.add(TypefaceGetter.FONT_DEBUG)
+                entryValues = it.toTypedArray()
+            }
+
+            entries.toMutableList().let {
+                it.add(TypefaceGetter.FONT_DEBUG)
+                entries = it.toTypedArray()
+            }
         }
     }
 

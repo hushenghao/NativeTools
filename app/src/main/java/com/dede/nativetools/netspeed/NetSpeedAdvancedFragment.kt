@@ -48,7 +48,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         }
     }
 
-    private val labelFormatterPercent = LabelFormatter { "%d %%".format((it * 100).toInt()) }
+    private val labelFormatterPercent = LabelFormatter { "%d %%".format((it * 100).roundToInt()) }
     private val labelFormatterRatio = LabelFormatter {
         val denominator = (it * 100).roundToInt()
         val molecular = 100 - denominator

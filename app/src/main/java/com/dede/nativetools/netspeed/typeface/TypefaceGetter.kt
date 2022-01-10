@@ -19,6 +19,7 @@ interface TypefaceGetter {
         const val FONT_CHAKRA_PETCH = "ChakraPetch"
         const val FONT_SQUADA_ONE = "SquadaOne"
         const val FONT_VT323 = "VT323"
+        const val FONT_ROBOTO_CONDENSED = "RobotoCondensed"
 
         const val FONT_DEBUG = "Debug"
 
@@ -40,7 +41,8 @@ interface TypefaceGetter {
                 FONT_CHAKRA_PETCH -> DownloadTypefaceImpl(context, "ChakraPetch.ttf")
                 FONT_SQUADA_ONE -> DownloadTypefaceImpl(context, "SquadaOne.ttf")
                 FONT_VT323 -> DownloadTypefaceImpl(context, "VT323.ttf")
-                //FONT_DEBUG -> DebugTypeface(context)
+                FONT_ROBOTO_CONDENSED-> DownloadTypefaceImpl(context, "RobotoCondensed.ttf")
+                FONT_DEBUG -> DebugTypeface(context)
                 else -> NormalTypeface()
             }
             caches[key] = getter

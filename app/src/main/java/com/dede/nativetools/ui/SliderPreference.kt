@@ -36,7 +36,7 @@ class SliderPreference @JvmOverloads constructor(
     private var valueTo: Float
 
     private var slider: Slider? = null
-    private var sliderValue: TextView? = null
+    private var sliderValueText: TextView? = null
 
     var sliderLabelFormatter: LabelFormatter? = null
         set(value) {
@@ -67,6 +67,7 @@ class SliderPreference @JvmOverloads constructor(
     override fun onSetInitialValue(defaultValue: Any?) {
         var value = defaultValue as? Float
         if (value == null) value = 0f
+        value = formatValue(value)
         setValue(getPersistedFloat(value))
     }
 
@@ -75,7 +76,7 @@ class SliderPreference @JvmOverloads constructor(
     }
 
     fun setValue(value: Float) {
-        setValueInternal(value, true)
+        setValueInternal(formatValue(value), true)
     }
 
     fun setStepSize(stepSize: Float) {
@@ -135,9 +136,9 @@ class SliderPreference @JvmOverloads constructor(
         super.onBindViewHolder(holder)
         holder.itemView.setOnKeyListener(this)
         val slider = holder.findViewById(R.id.slider) as Slider
-        val sliderValue = holder.findViewById(R.id.slider_value) as? TextView
+        val sliderValueText = holder.findViewById(R.id.slider_value) as? TextView
         this.slider = slider
-        this.sliderValue = sliderValue
+        this.sliderValueText = sliderValueText
         slider.clearOnChangeListeners()
         slider.clearOnSliderTouchListeners()
         slider.addOnChangeListener(this)
@@ -201,7 +202,7 @@ class SliderPreference @JvmOverloads constructor(
     }
 
     private fun updateLabelValue(value: Float) {
-        val textView = sliderValue
+        val textView = sliderValueText
         if (textView != null) {
             textView.text = sliderLabelFormatter?.getFormattedValue(value) ?: value.toString()
         }
