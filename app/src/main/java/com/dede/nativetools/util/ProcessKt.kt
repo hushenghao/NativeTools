@@ -58,9 +58,9 @@ fun ActivityManager.RunningAppProcessInfo?.isMainProcess(context: Context): Bool
 }
 
 @OptIn(ExperimentalContracts::class)
-fun ActivityManager.RunningAppProcessInfo?.isRunning(): Boolean {
+fun ActivityManager.RunningAppProcessInfo?.isForeground(): Boolean {
     contract {
-        returns(true) implies (this@isRunning != null)
+        returns(true) implies (this@isForeground != null)
     }
     if (this == null) return false
     val uiHidden = this.lastTrimLevel >= ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN

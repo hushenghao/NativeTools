@@ -21,31 +21,6 @@ fun displayMetrics(): DisplayMetrics {
     return Resources.getSystem().displayMetrics
 }
 
-fun isNightMode(): Boolean {
-    when (OtherPreferences.nightMode) {
-        AppCompatDelegate.MODE_NIGHT_YES -> {
-            return true
-        }
-        AppCompatDelegate.MODE_NIGHT_UNSPECIFIED,
-        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
-        AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY -> {
-            val configuration = Resources.getSystem().configuration
-            return configuration.isNightMode
-        }
-    }
-    return false
-}
-
-val Configuration.isNightMode: Boolean
-    get() {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) this.isNightModeActive else
-            this.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-    }
-
-fun setNightMode(mode: Int) {
-    AppCompatDelegate.setDefaultNightMode(mode)
-}
-
 val smallestScreenWidthDp: Int
     get() = Resources.getSystem().configuration.smallestScreenWidthDp
 

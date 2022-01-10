@@ -33,7 +33,7 @@ task<Task>("tinify") {
         Tinify.setAppIdentifier("Gradle task")
         var file: File
         for (image in images) {
-            file = File(project.projectDir, image)
+            file = file(image)
             if (!file.exists()) {
                 throw FileNotFoundException(file.path)
             }

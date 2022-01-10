@@ -3,9 +3,11 @@ package com.dede.nativetools.netspeed.typeface
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Build
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.work.*
 import com.dede.nativetools.util.isEmpty
+import com.dede.nativetools.util.isSimplifiedChinese
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -82,22 +84,9 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
 open class DownloadTypefaceImpl(context: Context, override val fontName: String) :
     DownloadTypeface(context) {
 
-    private fun isSimplifiedChinese(): Boolean {
-        val configuration = context.resources.configuration
-        var local = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            configuration.locales[0]
-        } else {
-            configuration.locale
-        }
-        if (local == null) {
-            local = Locale.getDefault()
-        }
-        return local == Locale.SIMPLIFIED_CHINESE
-    }
-
     override val downloadUrl: String
         get() {
-            return if (isSimplifiedChinese()) {
+            return if (isSimplifiedChinese(context)) {
                 // 大陆访问 gitee 仓库
                 "https://gitee.com/dede_hu/fonts/raw/master/$fontName"
             } else {
@@ -142,6 +131,7 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
             return Result.failure()
         }
         return withContext(Dispatchers.IO) {
+            Log.i("DownloadFontWork", "download: $downloadUrl")
             var result = DownloadTypeface.checkFont(context, fontName)
             if (result) {
                 // 已下载

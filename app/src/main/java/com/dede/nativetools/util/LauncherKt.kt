@@ -29,7 +29,7 @@ private fun createShortcutIcon(context: Context, resId: Int): IconCompat {
                 setColor(context.color(R.color.primaryColor))
                 shape = GradientDrawable.OVAL
             },
-            InsetDrawable(context.requireDrawable<Drawable>(resId), 4.dp)
+            InsetDrawable(context.requireDrawable(resId), 4.dp)
         )
     ).toBitmap(24.dp, 24.dp)
     return IconCompat.createWithBitmap(bitmap)
@@ -60,9 +60,7 @@ fun installShortcuts() {
             .setLongLabel(context.getString(R.string.label_net_speed_toggle))
             .build()
     )
-    for (shortcut in shortcuts) {
-        ShortcutManagerCompat.pushDynamicShortcut(context, shortcut)
-    }
+    ShortcutManagerCompat.setDynamicShortcuts(context, shortcuts)
 }
 
 fun tryApplyLauncherIcon() {
@@ -70,7 +68,7 @@ fun tryApplyLauncherIcon() {
     val processInfo = context.currentProcess()
     if (processInfo.isMainProcess(context)) {
         // 主进程
-        if (!processInfo.isRunning()) {
+        if (!processInfo.isForeground()) {
             applyLauncherIcon()
         }
         return
@@ -78,7 +76,7 @@ fun tryApplyLauncherIcon() {
 
     // 子进程
     val mainProcess = context.mainProcess()
-    if (mainProcess != null && mainProcess.isRunning()) {
+    if (mainProcess != null && mainProcess.isForeground()) {
         // 主进程还在运行中
         return
     }
@@ -116,10 +114,4 @@ fun ComponentName.disable(pm: PackageManager) {
     val disabled = PackageManager.COMPONENT_ENABLED_STATE_DISABLED
     if (pm.getComponentEnabledSetting(this) == disabled) return
     pm.setComponentEnabledSetting(this, disabled, PackageManager.DONT_KILL_APP)
-}
-
-fun ComponentName.isEnable(pm: PackageManager): Boolean {
-    val setting = pm.getComponentEnabledSetting(this)
-    return setting == PackageManager.COMPONENT_ENABLED_STATE_ENABLED ||
-            setting == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
 }
