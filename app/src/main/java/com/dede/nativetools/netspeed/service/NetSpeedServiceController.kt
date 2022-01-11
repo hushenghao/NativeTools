@@ -42,7 +42,7 @@ class NetSpeedServiceController(val context: Context) : INetSpeedInterface.Defau
 
     fun stopService() {
         val intent = Intent<NetSpeedService>(context)
-        context.unbindService(this)
+        unbindService()
         context.stopService(intent)
     }
 
