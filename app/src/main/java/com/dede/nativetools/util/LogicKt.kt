@@ -15,6 +15,7 @@ fun isSimplifiedChinese(context: Context): Boolean {
     var local = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         configuration.locales[0]
     } else {
+        @Suppress("DEPRECATION")
         configuration.locale
     }
     if (local == null) {

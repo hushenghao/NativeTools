@@ -56,6 +56,7 @@ fun Context.checkAppOps(): Boolean {
             this.packageName
         )
     } else {
+        @Suppress("DEPRECATION")
         appOpsManager.checkOpNoThrow(
             AppOpsManager.OPSTR_GET_USAGE_STATS,
             Process.myUid(),

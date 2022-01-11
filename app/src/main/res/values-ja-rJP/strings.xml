@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
     <string name="app_name">网速指示器</string>
-    <string name="notify_net_speed_msg">上載: <xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • 下載: <xliff:g example="10.1KB/s" id="speed">%s</xliff:g></string>
-    <string name="notify_net_speed_sub">今日: <xliff:g example="10.5GB" id="usage">%s</xliff:g> • 今月: <xliff:g example="10.5GB" id="usage">%s</xliff:g></string>
+    <string name="notify_net_speed_msg" formatted="false">上載: %s • 下載: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">今日: %s • 今月: %s</string>
     <string name="switch_on">开き</string>
     <string name="switch_off">閉鎖</string>
     <string name="action_close">閉鎖</string>

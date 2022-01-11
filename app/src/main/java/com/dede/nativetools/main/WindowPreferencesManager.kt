@@ -63,13 +63,15 @@ class WindowPreferencesManager(private val context: Context) {
 //        val currentStatusBar =
 //            if (showDarkStatusBarIcons && VERSION.SDK_INT >= VERSION_CODES.M) View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR else 0
         val currentNavBar =
-            if (showDarkNavbarIcons && VERSION.SDK_INT >= VERSION_CODES.O) View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR else 0
+            if (showDarkNavbarIcons && VERSION.SDK_INT >= VERSION_CODES.O)
+                @Suppress("DEPRECATION") View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR else 0
         window.navigationBarColor = navbarColor
         window.statusBarColor = statusBarColor
         val systemUiVisibility =
-            ((if (edgeToEdgeEnabled) EDGE_TO_EDGE_FLAGS else View.SYSTEM_UI_FLAG_VISIBLE)
+            ((if (edgeToEdgeEnabled) EDGE_TO_EDGE_FLAGS else @Suppress("DEPRECATION") View.SYSTEM_UI_FLAG_VISIBLE)
 //                    or currentStatusBar
                     or currentNavBar)
+        @Suppress("DEPRECATION")
         decorView.systemUiVisibility = systemUiVisibility
     }
 
@@ -107,6 +109,7 @@ class WindowPreferencesManager(private val context: Context) {
         private const val KEY_EDGE_TO_EDGE_ENABLED = "edge_to_edge_enabled"
         private const val EDGE_TO_EDGE_BAR_ALPHA = 128
 
+        @Suppress("DEPRECATION")
         private const val EDGE_TO_EDGE_FLAGS =
             View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
     }

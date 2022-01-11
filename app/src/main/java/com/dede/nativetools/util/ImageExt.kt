@@ -121,7 +121,7 @@ private fun Uri.finishPending(
         }
         resolver.update(this, imageValues, null, null)
         // 通知媒体库更新
-        val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, this)
+        val intent = Intent(@Suppress("DEPRECATION") Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, this)
         context.sendBroadcast(intent)
     } else {
         // Android Q添加了IS_PENDING状态，为0时其他应用才可见
@@ -159,7 +159,8 @@ private fun ContentResolver.insertMediaImage(
         // 高版本不用查重直接插入，会自动重命名
     } else {
         // 老版本
-        val pictures = Environment.getExternalStoragePublicDirectory(ALBUM_DIR)
+        val pictures =
+            @Suppress("DEPRECATION") Environment.getExternalStoragePublicDirectory(ALBUM_DIR)
         val saveDir = if (relativePath != null) File(pictures, relativePath) else pictures
 
         if (!saveDir.exists() && !saveDir.mkdirs()) {
@@ -185,7 +186,7 @@ private fun ContentResolver.insertMediaImage(
             // 保存路径
             val imagePath = imageFile.absolutePath
             Log.v(TAG, "save file: $imagePath")
-            put(MediaStore.Images.Media.DATA, imagePath)
+            put(@Suppress("DEPRECATION") MediaStore.Images.Media.DATA, imagePath)
         }
         outputFileTaker?.file = imageFile// 回传文件路径，用于设置文件大小
         collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
@@ -213,8 +214,8 @@ private fun ContentResolver.queryMediaImage28(imagePath: String): Uri? {
     // 查询是否已经存在相同图片
     val query = this.query(
         collection,
-        arrayOf(MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA),
-        "${MediaStore.Images.Media.DATA} == ?",
+        arrayOf(MediaStore.Images.Media._ID, @Suppress("DEPRECATION") MediaStore.Images.Media.DATA),
+        "${@Suppress("DEPRECATION") MediaStore.Images.Media.DATA} == ?",
         arrayOf(imagePath), null
     )
     query?.use {

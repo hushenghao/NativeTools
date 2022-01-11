@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Vitesse Net</string>
-    <string name="notify_net_speed_msg">Up: %s • Down: %s</string>
-    <string name="notify_net_speed_sub">Aujourd\'hui: %s • Mois: %s</string>
+    <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">Aujourd\'hui: %s • Mois: %s</string>
     <string name="switch_on">In</string>
     <string name="switch_off">Coupez</string>
     <string name="action_close">Approche</string>

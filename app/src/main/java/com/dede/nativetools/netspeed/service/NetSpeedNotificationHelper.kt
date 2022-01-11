@@ -128,6 +128,7 @@ object NetSpeedNotificationHelper {
             createChannel(context)
             Notification.Builder(context, CHANNEL_ID)
         } else {
+            @Suppress("DEPRECATION")
             Notification.Builder(context)
                 .setPriority(Notification.PRIORITY_DEFAULT)
                 .setSound(null)
@@ -167,6 +168,7 @@ object NetSpeedNotificationHelper {
                 // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
                 builder.setCustomContentView(remoteViews)
             } else {
+                @Suppress("DEPRECATION")
                 builder.setContent(remoteViews)
             }
         } else {

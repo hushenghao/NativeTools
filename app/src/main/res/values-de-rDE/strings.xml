@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
     <string name="app_name">Anzeige der Net</string>
-    <string name="notify_net_speed_msg">Up: <xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • Down: <xliff:g id="speed">%s</xliff:g></string>
-    <string name="notify_net_speed_sub">Kröte: <xliff:g example="10.5GB" id="usage">%s</xliff:g> • Monat: <xliff:g id="usage">%s</xliff:g></string>
+    <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">Kröte: %s • Monat: %s</string>
     <string name="switch_on">geöffnet</string>
     <string name="switch_off">schließen</string>
     <string name="action_close">schließen</string>

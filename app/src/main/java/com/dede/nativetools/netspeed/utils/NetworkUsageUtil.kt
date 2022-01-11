@@ -44,12 +44,12 @@ object NetworkUsageUtil {
         val startTime = start.timeInMillis
         val endTime = System.currentTimeMillis()
         val wifiUsageBytes = networkStatsManager.queryNetworkUsageBytes(
-            ConnectivityManager.TYPE_WIFI,
+            @Suppress("DEPRECATION") ConnectivityManager.TYPE_WIFI,
             startTime,
             endTime
         )
         val mobileUsageBytes = networkStatsManager.queryNetworkUsageBytes(
-            ConnectivityManager.TYPE_MOBILE,
+            @Suppress("DEPRECATION") ConnectivityManager.TYPE_MOBILE,
             startTime,
             endTime
         )

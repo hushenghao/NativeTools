@@ -67,6 +67,7 @@ fun ActivityManager.RunningAppProcessInfo?.isForeground(): Boolean {
     val cached = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         this.importance >= ActivityManager.RunningAppProcessInfo.IMPORTANCE_CACHED
     } else {
+        @Suppress("DEPRECATION")
         this.importance >= ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND
     }
     return !uiHidden && !cached

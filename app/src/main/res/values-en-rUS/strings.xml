@@ -5,8 +5,8 @@
     <string name="settings">Settings</string>
     <string name="access">Access</string>
     <string name="dont_ask">Don\'t ask</string>
-    <string name="notify_net_speed_msg">Up: <xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • Down: <xliff:g id="speed">%s</xliff:g></string>
-    <string name="notify_net_speed_sub">Today: <xliff:g example="10.5GB" id="usage">%s</xliff:g> • Month: <xliff:g id="usage">%s</xliff:g></string>
+    <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">Today: %s • Month: %s</string>
     <string name="switch_on">ON</string>
     <string name="switch_off">OFF</string>
     <string name="action_close">CLOSE</string>
