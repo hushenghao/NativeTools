@@ -2,11 +2,9 @@
 
 package com.dede.nativetools.util
 
-import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.LayerDrawable
@@ -17,6 +15,7 @@ import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.dede.nativetools.R
 import com.dede.nativetools.main.MainActivity
+import kotlinx.coroutines.launch
 
 private val packageName = globalContext.packageName
 private val componentDay = ComponentName(globalContext, "$packageName.main.Day")
@@ -80,16 +79,12 @@ fun tryApplyLauncherIcon() {
         // 主进程还在运行中
         return
     }
-
-    runCatching {
-        // reload from disk
-        @SuppressLint("PrivateApi")
-        val clazz = Class.forName("android.app.SharedPreferencesImpl")
-        val method = clazz.declaredMethod("startReloadIfChangedUnexpectedly")
-        method.invoke(globalPreferences)
-    }.onSuccess {
-        applyLauncherIcon()
-    }.onFailure(Throwable::printStackTrace)
+    mainScope.launch {
+        val result = globalPreferences.tryReload()
+        if (result) {
+            applyLauncherIcon()
+        }
+    }
 }
 
 fun applyLauncherIcon() {
