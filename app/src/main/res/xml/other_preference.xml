@@ -23,6 +23,7 @@
             app:useSimpleSummaryProvider="true" />
 
         <Preference
+            app:enableCopying="true"
             app:icon="@drawable/ic_outline_info"
             app:key="about"
             app:summary="@string/summary_about_version"
