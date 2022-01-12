@@ -112,9 +112,6 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
-            <meta-data
-                android:name="com.dede.nativetools.ReflectionInitializer"
-                android:value="androidx.startup" />
         </provider>
 
     </application>
