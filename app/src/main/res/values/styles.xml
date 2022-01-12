@@ -1,7 +1,7 @@
 <resources>
 
     <style name="Style.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
-        <item name="colorPrimary">@color/primaryLightColor</item>
+        <item name="colorPrimary">@color/secondaryColor</item>
     </style>
 
     <style name="Style.ActionMenu" parent="Widget.Material3.PopupMenu">

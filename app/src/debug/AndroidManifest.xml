@@ -9,13 +9,6 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
-            <meta-data
-                android:name="com.dede.nativetools.LeakCanaryInitializer"
-                android:value="androidx.startup" />
-            <meta-data
-                android:name="leakcanary.internal.AppWatcherStartupInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
         </provider>
     </application>
 </manifest>
