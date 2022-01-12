@@ -30,19 +30,20 @@ interface TypefaceGetter {
             if (getter != null) {
                 return getter
             }
+            val appContext = context.applicationContext
             getter = when (key) {
                 FONT_NORMAL -> NormalTypeface()
-                FONT_BEBAS_KAI -> DownloadTypefaceImpl(context, "BebasKai.ttf")
-                FONT_BEBAS_NEUE -> DownloadTypefaceImpl(context, "BebasNeue.ttf")
-                FONT_CREEPSTER -> DownloadTypefaceImpl(context, "Creepster.ttf")
-                FONT_FJALLA_ONE -> DownloadTypefaceImpl(context, "FjallaOne.ttf")
-                FONT_PIRATA_ONE -> DownloadTypefaceImpl(context, "PirataOne.ttf")
-                FONT_PRESS_START_2P -> DownloadTypefaceImpl(context, "PressStart2P.ttf")
-                FONT_CHAKRA_PETCH -> DownloadTypefaceImpl(context, "ChakraPetch.ttf")
-                FONT_SQUADA_ONE -> DownloadTypefaceImpl(context, "SquadaOne.ttf")
-                FONT_VT323 -> DownloadTypefaceImpl(context, "VT323.ttf")
-                FONT_ROBOTO_CONDENSED-> DownloadTypefaceImpl(context, "RobotoCondensed.ttf")
-                FONT_DEBUG -> DebugTypeface(context)
+                FONT_BEBAS_KAI -> DownloadTypefaceImpl(appContext, "BebasKai.ttf")
+                FONT_BEBAS_NEUE -> DownloadTypefaceImpl(appContext, "BebasNeue.ttf")
+                FONT_CREEPSTER -> DownloadTypefaceImpl(appContext, "Creepster.ttf")
+                FONT_FJALLA_ONE -> DownloadTypefaceImpl(appContext, "FjallaOne.ttf")
+                FONT_PIRATA_ONE -> DownloadTypefaceImpl(appContext, "PirataOne.ttf")
+                FONT_PRESS_START_2P -> DownloadTypefaceImpl(appContext, "PressStart2P.ttf")
+                FONT_CHAKRA_PETCH -> DownloadTypefaceImpl(appContext, "ChakraPetch.ttf")
+                FONT_SQUADA_ONE -> DownloadTypefaceImpl(appContext, "SquadaOne.ttf")
+                FONT_VT323 -> DownloadTypefaceImpl(appContext, "VT323.ttf")
+                FONT_ROBOTO_CONDENSED-> DownloadTypefaceImpl(appContext, "RobotoCondensed.ttf")
+                FONT_DEBUG -> DebugTypeface(appContext)
                 else -> NormalTypeface()
             }
             caches[key] = getter

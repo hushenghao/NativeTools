@@ -21,7 +21,8 @@ fun isSimplifiedChinese(context: Context): Boolean {
     if (local == null) {
         local = Locale.getDefault()
     }
-    return local == Locale.SIMPLIFIED_CHINESE
+    return local.language == Locale.SIMPLIFIED_CHINESE.language &&
+            local.country == Locale.SIMPLIFIED_CHINESE.country
 }
 
 fun isNightMode(): Boolean {

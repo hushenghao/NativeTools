@@ -46,8 +46,8 @@
 
         <item>BebasKai</item>
         <item>BebasNeue</item>
-        <item>RobotoCondensed</item>
         <item>FjallaOne</item>
+        <item>RobotoCondensed</item>
 
         <item>ChakraPetch</item>
         <item>SquadaOne</item>
@@ -62,8 +62,8 @@
 
         <item>Bebas Kai</item>
         <item>Bebas Neue</item>
-        <item>Roboto Condensed</item>
         <item>Fjalla One</item>
+        <item>Roboto Condensed</item>
 
         <item>Chakra Petch</item>
         <item>Squada One</item>
@@ -76,13 +76,13 @@
 
     <string-array name="night_mode_toggle">
         <item>@string/summary_night_mode_follow_system</item>
-        <item>@string/switch_off</item>
         <item>@string/switch_on</item>
+        <item>@string/switch_off</item>
     </string-array>
     <string-array name="night_mode_toggle_value">
         <item>-1</item><!-- AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -->
-        <item>1</item><!-- AppCompatDelegate.MODE_NIGHT_NO -->
         <item>2</item><!-- AppCompatDelegate.MODE_NIGHT_YES -->
+        <item>1</item><!-- AppCompatDelegate.MODE_NIGHT_NO -->
     </string-array>
 
 </resources>

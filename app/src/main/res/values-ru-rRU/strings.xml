@@ -58,7 +58,6 @@
     <string name="toast_saved">Сохранена.</string>
     <string name="label_home">Главн страниц</string>
     <string name="toast_open_battery_optimization">Пожалуйста, найдите \"сетевой указатель скорости\" и вручную включите оптимизацию батареи</string>
-    <string name="action_copy_link">Копирование связи</string>
     <string name="action_open_link">провер</string>
     <string name="label_privacy_agreement">Соглашение о конфиденциальности.</string>
     <string name="label_net_speed_style">Стиль шрифта</string>

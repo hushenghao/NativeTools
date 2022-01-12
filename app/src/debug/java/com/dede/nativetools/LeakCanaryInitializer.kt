@@ -18,10 +18,15 @@ class LeakCanaryInitializer : Initializer<LeakCanaryInitializer> {
         AppWatcher.manualInstall(application)
         LeakCanary.config = LeakCanary.config.copy(
             referenceMatchers = AndroidReferenceMatchers.appDefaults +
+//                    AndroidReferenceMatchers.instanceFieldLeak(
+//                        className = "android.graphics.animation.RenderNodeAnimator",
+//                        fieldName = "mTarget",
+//                        description = "DayNightSwitcher"
+//                    ) +
                     AndroidReferenceMatchers.instanceFieldLeak(
-                        className = "android.graphics.animation.RenderNodeAnimator",
-                        fieldName = "mTarget",
-                        description = "DayNightSwitcher"
+                        className = "leakcanary.ToastEventListener",
+                        fieldName = "toastCurrentlyShown",
+                        description = "Leakcanary toast"
                     )
         )
     }

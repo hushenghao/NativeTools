@@ -52,7 +52,7 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
         }
     }
 
-    private val basic by lazy { loadFont(context, fontName) }
+    private var basic :Typeface? = null
 
     private var canApplyCache = false
 
@@ -65,14 +65,18 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
     abstract val fontName: String
 
     override fun get(style: Int): Typeface {
+        var typeface = this.basic
+        if (typeface == null) {
+            typeface = loadFont(context, fontName).apply { basic = this }
+        }
         if (canApplyCache) {
             // 内存缓存，减少io操作
-            return applyStyle(basic, style)
+            return applyStyle(typeface, style)
         }
         if (!canApply()) {
             return TypefaceGetter.getOrDefault(TypefaceGetter.FONT_NORMAL, style)
         }
-        return applyStyle(basic, style)
+        return applyStyle(typeface, style)
     }
 
     open fun applyStyle(typeface: Typeface, style: Int): Typeface {
@@ -160,6 +164,7 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
                 http.requestMethod = "GET"
                 http.connectTimeout = 15000
                 http.readTimeout = 15000
+                http.connect()
                 if (http.responseCode == 200) {
                     http.inputStream.use {
                         it.copyTo(output.outputStream())

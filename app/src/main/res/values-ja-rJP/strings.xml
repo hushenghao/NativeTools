@@ -59,7 +59,6 @@
     <string name="label_home">トップページ</string>
     <string name="toast_open_battery_optimization">「网速指示器」を見つけて、手動でバッテリーを開けて最適化してください</string>
     <string name="action_open_link">チェック</string>
-    <string name="action_copy_link">リンクをコピーする</string>
     <string name="label_privacy_agreement">プライバシー協定</string>
     <string name="label_net_speed_style">書体様式</string>
     <string name="label_net_speed_text_scale">文字スケーリング</string>

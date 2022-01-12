@@ -59,7 +59,6 @@
     <string name="label_home">Home</string>
     <string name="toast_open_battery_optimization">Please find the \"Net Monitor\" and turn on battery optimization manually</string>
     <string name="action_open_link">To view</string>
-    <string name="action_copy_link">Copy the link</string>
     <string name="label_privacy_agreement">Privacy agreement</string>
     <string name="label_net_speed_style">Font style</string>
     <string name="label_net_speed_advanced">Advanced Settings</string>

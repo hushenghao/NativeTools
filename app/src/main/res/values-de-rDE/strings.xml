@@ -58,7 +58,6 @@
     <string name="toast_saved">Gespeichert</string>
     <string name="label_home">Home</string>
     <string name="toast_open_battery_optimization">Bitte finden Sie die \"Anzeige der Net\" und schalten Sie die Batterieoptimierung manuell ein</string>
-    <string name="action_copy_link">Link kopieren</string>
     <string name="action_open_link">Siehe</string>
     <string name="label_privacy_agreement">Es ist ein datengeschäft.</string>
     <string name="label_net_speed_style">Kann nicht einstecken</string>
