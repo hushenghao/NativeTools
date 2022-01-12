@@ -22,11 +22,10 @@ class NetSpeedService : Service() {
 
         override fun updateConfiguration(configuration: NetSpeedConfiguration?) {
             if (configuration == null) return
-            service.lifecycleScope.launch(Dispatchers.Main) {
+            service.lifecycleScope.launch {
                 service.updateConfiguration(configuration)
             }
         }
-
     }
 
     companion object {
@@ -63,7 +62,7 @@ class NetSpeedService : Service() {
     private val notificationManager: NotificationManager by systemService()
     private val powerManager: PowerManager by systemService()
 
-    val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    val lifecycleScope = MainScope()
 
     private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
         if (!powerManager.isInteractive) {
