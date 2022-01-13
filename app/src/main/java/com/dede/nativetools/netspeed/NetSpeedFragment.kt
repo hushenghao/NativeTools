@@ -42,7 +42,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         controller.bindService()
-
+        controller.onCloseCallback = {
+            statusSwitchPreference.isChecked = false
+        }
         statusSwitchPreference.isChecked = NetSpeedPreferences.status
         if (!requireContext().checkAppOps()) {
             usageSwitchPreference.isChecked = false
