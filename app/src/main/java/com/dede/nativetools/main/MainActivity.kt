@@ -5,7 +5,10 @@ import android.graphics.Color
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.view.MenuItem
+import android.view.ViewAnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.navigation.NavController
@@ -19,7 +22,15 @@ import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.util.*
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
+data class CircularReveal(
+    val centerX: Int,
+    val centerY: Int,
+    val startRadius: Float,
+    val endRadius: Float
+) : Parcelable
 
 /**
  * Main
@@ -30,11 +41,14 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     companion object {
         const val EXTRA_TOGGLE = "extra_toggle"
+        private const val STATE_CIRCULAR_REVEAL = "state_circular_reveal"
     }
 
     private val binding by viewBinding(ActivityMainBinding::bind)
     private val navController by navController(R.id.nav_host_fragment)
     private val topLevelDestinationIds = intArrayOf(R.id.netSpeed, R.id.other, R.id.about)
+
+    var circularReveal: CircularReveal? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +60,21 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             NetSpeedService.toggle(this)
             finish()
             return
+        }
+
+        val circularReveal =
+            savedInstanceState?.getParcelable<CircularReveal>(STATE_CIRCULAR_REVEAL)
+        if (circularReveal != null) {
+            ViewAnimationUtils.createCircularReveal(
+                window.decorView,
+                circularReveal.centerX,
+                circularReveal.centerY,
+                circularReveal.startRadius,
+                circularReveal.endRadius
+            ).apply {
+                duration = 800
+                start()
+            }
         }
 
         setContentView(R.layout.activity_main)
@@ -80,6 +109,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         navController.handleDeepLink(intent)
     }
 
+    override fun onNightModeChanged(mode: Int) {
+        super.onNightModeChanged(mode)
+        Log.i("TAG", "onNightModeChanged: " + mode)
+    }
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         navController.handleDeepLink(intent)
@@ -111,6 +145,12 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return NavigationUI.onNavDestinationSelected(item, navController)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(STATE_CIRCULAR_REVEAL, circularReveal)
+        circularReveal = null
     }
 
 }

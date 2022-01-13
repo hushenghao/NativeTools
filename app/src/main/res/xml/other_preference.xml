@@ -13,7 +13,7 @@
             app:summary="@string/summary_ignore_battery_optimize"
             app:title="@string/label_ignore_battery_optimize" />
 
-        <DropDownPreference
+        <com.dede.nativetools.ui.NightModeDropDownPreference
             app:defaultValue="-1"
             app:entries="@array/night_mode_toggle"
             app:entryValues="@array/night_mode_toggle_value"

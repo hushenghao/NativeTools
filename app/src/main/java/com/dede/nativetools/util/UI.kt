@@ -2,17 +2,15 @@ package com.dede.nativetools.util
 
 import android.content.Context
 import android.content.DialogInterface
-import android.content.res.Configuration
 import android.content.res.Resources
-import android.os.Build
+import android.graphics.Rect
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.dede.nativetools.other.OtherPreferences
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlin.math.roundToInt
 
@@ -23,6 +21,18 @@ fun displayMetrics(): DisplayMetrics {
 
 val smallestScreenWidthDp: Int
     get() = Resources.getSystem().configuration.smallestScreenWidthDp
+
+fun View.getScreenRect(rect: Rect): Rect {
+    val intArray = IntArray(2)
+    this.getLocationOnScreen(intArray)
+    rect.set(
+        intArray[0],
+        intArray[1],
+        intArray[0] + width,
+        intArray[1] + height
+    )
+    return rect
+}
 
 val Number.dp: Int
     get() = TypedValue.applyDimension(

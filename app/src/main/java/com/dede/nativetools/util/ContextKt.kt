@@ -10,6 +10,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.os.PowerManager
 import android.os.Process
 import android.widget.Toast
 import androidx.annotation.*
@@ -26,6 +27,12 @@ import kotlin.properties.ReadOnlyProperty
 
 val globalContext: Context
     get() = NativeToolsApp.getInstance()
+
+val Context.isIgnoringBatteryOptimizations
+    get():Boolean {
+        val powerManager = this.requireSystemService<PowerManager>()
+        return powerManager.isIgnoringBatteryOptimizations(this.packageName)
+    }
 
 inline fun <reified T : Any> Context.requireSystemService(): T {
     return checkNotNull(applicationContext.getSystemService())
