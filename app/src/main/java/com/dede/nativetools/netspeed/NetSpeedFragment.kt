@@ -2,7 +2,6 @@ package com.dede.nativetools.netspeed
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.RemoteException
 import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -29,6 +28,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private val controller by lazy { NetSpeedServiceController(requireContext()) }
 
     private lateinit var usageSwitchPreference: SwitchPreferenceCompat
+    private lateinit var statusSwitchPreference: SwitchPreferenceCompat
 
     private val activityResultLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
@@ -43,6 +43,11 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         super.onViewCreated(view, savedInstanceState)
         controller.bindService()
 
+        statusSwitchPreference.isChecked = NetSpeedPreferences.status
+        if (!requireContext().checkAppOps()) {
+            usageSwitchPreference.isChecked = false
+        }
+
         if (smallestScreenWidthDp < SW600DP) return
         applyRecyclerViewInsets(listView)
     }
@@ -54,11 +59,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun initGeneralPreferenceGroup() {
-        val statusSwitchPreference =
-            requirePreference<SwitchPreferenceCompat>(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
-        controller.onCloseReceive = {
-            statusSwitchPreference.isChecked = false
-        }
+        statusSwitchPreference =
+            requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
         requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_ADVANCED)
             .onPreferenceClickListener {
                 findNavController().navigate(R.id.action_netSpeed_to_netSpeedAdvanced)
@@ -68,11 +70,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private fun initNotificationPreferenceGroup() {
         usageSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_USAGE)
 
-        if (!requireContext().checkAppOps()) {
-            usageSwitchPreference.isChecked = false
-        }
-
-        updateNotificationPreferenceEnable()
+        updateNotificationPreferenceVisible()
 
         requirePreference<CustomWidgetLayoutSwitchPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION)
             .bindCustomWidget = {
@@ -102,34 +100,29 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
-            NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION -> {
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION,
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
                 updateConfiguration()
             }
             NetSpeedPreferences.KEY_NET_SPEED_USAGE -> {
                 updateConfiguration()
                 checkOpsPermission()
             }
-            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
-                updateNotificationPreferenceEnable()
-                updateConfiguration()
-            }
         }
     }
 
-    private fun updateNotificationPreferenceEnable() {
-        if (NetSpeedNotificationHelper.isSS(requireContext())) {
-            requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION)
-                .isVisible = false
+    private fun updateNotificationPreferenceVisible() {
+        if (!NetSpeedNotificationHelper.itSSAbove(requireContext())) {
             return
         }
         val keys = arrayOf(
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION,
             NetSpeedPreferences.KEY_NET_SPEED_USAGE,
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE
         )
-        val isEnabled = configuration.hideNotification.not()
         for (key in keys) {
-            requirePreference<Preference>(key).isEnabled = isEnabled
+            requirePreference<Preference>(key).isVisible = false
         }
     }
 
@@ -139,6 +132,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onDestroyView() {
         controller.unbindService()
+        controller.onCloseCallback = null
         super.onDestroyView()
     }
 

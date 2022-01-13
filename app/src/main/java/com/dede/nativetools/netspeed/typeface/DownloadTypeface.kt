@@ -7,9 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.work.*
 import com.dede.nativetools.util.isEmpty
 import com.dede.nativetools.util.isSimplifiedChinese
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.File
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -52,7 +50,7 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
         }
     }
 
-    private var basic :Typeface? = null
+    private var basic: Typeface? = null
 
     private var canApplyCache = false
 
@@ -156,23 +154,22 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
      * 下载网络字体
      */
     private fun download(url: String, output: File) {
-        runBlocking {
-            var connect: HttpURLConnection? = null
-            try {
-                connect = (URL(url).openConnection() as? HttpURLConnection)
-                val http = connect ?: return@runBlocking
-                http.requestMethod = "GET"
-                http.connectTimeout = 15000
-                http.readTimeout = 15000
-                http.connect()
-                if (http.responseCode == 200) {
-                    http.inputStream.use {
-                        it.copyTo(output.outputStream())
-                    }
+        var connect: HttpURLConnection? = null
+        try {
+            connect = (URL(url).openConnection() as? HttpURLConnection) ?: return
+            connect.requestMethod = "GET"
+            connect.connectTimeout = 15000
+            connect.readTimeout = 15000
+            connect.connect()
+            if (connect.responseCode == 200) {
+                connect.inputStream.use {
+                    it.copyTo(output.outputStream())
                 }
-            } finally {
-                connect?.disconnect()
             }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            connect?.disconnect()
         }
     }
 }

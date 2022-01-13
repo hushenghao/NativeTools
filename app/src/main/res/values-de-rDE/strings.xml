@@ -77,7 +77,7 @@
     <string name="summary_mode_download">Down</string>
     <string name="summary_mode_all">Up and Down</string>
     <string name="summary_mode_upload">Up</string>
-    <string name="toast_download_font">Der schriftdruck kann nicht heruntergeladen werden</string>
+    <string name="toast_download_font">Zeichendownload beginnen</string>
     <string name="toast_download_font_succeeded">Download erfolgreich abgeschlossen</string>
     <string name="toast_download_font_failed">Der schriftdruck kann nicht heruntergeladen werden</string>
     <string name="label_net_speed_horizontal_scale">Die x-achse schrumpft</string>

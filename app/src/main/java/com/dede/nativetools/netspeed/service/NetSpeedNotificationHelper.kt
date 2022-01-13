@@ -105,7 +105,7 @@ object NetSpeedNotificationHelper {
     /**
      * 系统版本>=S 且 targetVersion>=S 时，返回true
      */
-    fun isSS(context: Context): Boolean {
+    fun itSSAbove(context: Context): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
                 // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
                 context.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.S
@@ -161,7 +161,7 @@ object NetSpeedNotificationHelper {
             pendingFlag = PendingIntent.FLAG_MUTABLE
         }
 
-        if (configuration.hideNotification && !isSS(context)) {
+        if (configuration.hideNotification && !itSSAbove(context)) {
             val remoteViews = RemoteViews(context.packageName, R.layout.notification_empty_view)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 // context.applicationInfo.targetSdkVersion < Build.VERSION_CODES.S
