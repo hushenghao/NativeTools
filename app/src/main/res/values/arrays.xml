@@ -58,7 +58,7 @@
         <item>VT323</item>
     </string-array>
     <string-array name="net_speed_font">
-        <item>@string/summary_system_default</item>
+        <item>@string/summary_default</item>
 
         <item>Bebas Kai</item>
         <item>Bebas Neue</item>

@@ -71,7 +71,7 @@
     <string name="summary_text_style_italic">курсивн</string>
     <string name="summary_text_style_bold">жирн</string>
     <string name="summary_text_style_normal">обычн</string>
-    <string name="summary_system_default">По умолчанию.</string>
+    <string name="summary_default">По умолчан</string>
     <string name="label_net_speed_font">шрифт</string>
     <string name="label_net_speed_x_offset">Смещение оси X</string>
     <string name="summary_mode_download">Down</string>

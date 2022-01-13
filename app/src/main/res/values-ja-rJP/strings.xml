@@ -68,7 +68,7 @@
     <string name="summary_net_speed_advanced">表示仕様をカスタマイズする</string>
     <string name="label_net_speed_advanced">高度な設定</string>
     <string name="label_net_speed_font">フォント</string>
-    <string name="summary_system_default">システムデフォルト</string>
+    <string name="summary_default">黙認</string>
     <string name="summary_text_style_normal">一般</string>
     <string name="summary_text_style_bold">粗体</string>
     <string name="summary_text_style_italic">イタリック</string>

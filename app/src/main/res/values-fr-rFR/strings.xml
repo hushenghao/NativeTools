@@ -68,7 +68,7 @@
     <string name="summary_net_speed_advanced">Personnaliser le style d’affichage</string>
     <string name="label_net_speed_advanced">Les paramètres avancés</string>
     <string name="label_net_speed_font">Caractères</string>
-    <string name="summary_system_default">Système par défaut</string>
+    <string name="summary_default">Par défaut</string>
     <string name="summary_text_style_normal">Normale</string>
     <string name="summary_text_style_bold">En caractères gras</string>
     <string name="summary_text_style_italic">En italique</string>

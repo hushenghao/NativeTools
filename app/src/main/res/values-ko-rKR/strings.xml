@@ -68,7 +68,7 @@
     <string name="label_net_speed_relative_distance">상대적 거리</string>
     <string name="label_net_speed_text_scale">텍스트 크기 조정</string>
     <string name="label_net_speed_font">글꼴</string>
-    <string name="summary_system_default">시스템 기본 설정</string>
+    <string name="summary_default">묵인</string>
     <string name="summary_text_style_normal">일반</string>
     <string name="summary_text_style_bold">진하게</string>
     <string name="summary_text_style_italic">기울 임 꼴</string>

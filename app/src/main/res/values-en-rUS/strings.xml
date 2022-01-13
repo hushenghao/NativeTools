@@ -68,7 +68,7 @@
     <string name="label_net_speed_relative_distance">Relative distance</string>
     <string name="label_net_speed_text_scale">Text zoom</string>
     <string name="label_net_speed_font">The font</string>
-    <string name="summary_system_default">The system default</string>
+    <string name="summary_default">Default</string>
     <string name="summary_text_style_normal">General</string>
     <string name="summary_text_style_bold">Bold</string>
     <string name="summary_text_style_italic">Italics</string>

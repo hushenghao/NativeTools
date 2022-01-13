@@ -86,7 +86,7 @@
     <string name="label_net_speed_relative_distance">相对距离</string>
     <string name="label_net_speed_text_scale">文字缩放</string>
     <string name="label_net_speed_font">字体</string>
-    <string name="summary_system_default">系统默认</string>
+    <string name="summary_default">默认</string>
     <string name="summary_text_style_normal">普通</string>
     <string name="summary_text_style_bold">粗体</string>
     <string name="summary_text_style_italic">斜体</string>

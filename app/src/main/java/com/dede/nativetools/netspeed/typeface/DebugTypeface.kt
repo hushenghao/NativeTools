@@ -12,7 +12,7 @@ class DebugTypeface(context: Context) : TypefaceGetter {
     private val typeface = kotlin.runCatching {
         Typeface.createFromAsset(context.assets, fontName)
     }.onFailure {
-        val sysDef = context.getString(R.string.summary_system_default)
+        val sysDef = context.getString(R.string.summary_default)
         fontName = "Debug Error(%s)".format(sysDef)
     }.getOrDefault(Typeface.DEFAULT)
 
