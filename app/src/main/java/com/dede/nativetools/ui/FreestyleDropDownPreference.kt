@@ -15,7 +15,7 @@ import androidx.appcompat.widget.ListPopupWindow
 import androidx.preference.DropDownPreference
 import androidx.preference.PreferenceViewHolder
 import com.dede.nativetools.util.declaredField
-import com.dede.nativetools.util.getScreenRect
+import com.dede.nativetools.util.getRectOnFullWindow
 
 abstract class FreestyleDropDownPreference @JvmOverloads constructor(
     context: Context?,
@@ -105,7 +105,7 @@ class NightModeDropDownPreference @JvmOverloads constructor(
             val oldOnItemClickListener =
                 fieldItemClickListener.get(listPopupWindow) as AdapterView.OnItemClickListener
             listPopupWindow.setOnItemClickListener { parent, view, position, id ->
-                view.getScreenRect(selectedViewRect)
+                view.getRectOnFullWindow(selectedViewRect)
                 if (!selectedViewRect.isEmpty) {
                     onNightModeSelected?.invoke(Rect(selectedViewRect))
                 }

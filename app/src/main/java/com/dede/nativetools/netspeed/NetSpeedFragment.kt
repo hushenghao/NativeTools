@@ -35,7 +35,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        checkNotificationEnable()
+        if (NetSpeedPreferences.status) {
+            checkNotificationEnable()
+        }
         controller.startService(false)
     }
 
@@ -77,7 +79,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         requirePreference<CustomWidgetLayoutSwitchPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION)
             .bindCustomWidget = {
             it.findViewById(R.id.iv_preference_help)?.setOnClickListener {
-                showHideLockNotificationDialog()
+                requireContext().showHideLockNotificationDialog()
             }
         }
     }
@@ -138,21 +140,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         super.onDestroyView()
     }
 
-    private fun showHideLockNotificationDialog() {
-        requireContext().alert(
-            R.string.label_net_speed_hide_lock_notification,
-            R.string.alert_msg_hide_lock_notification
-        ) {
-            positiveButton(R.string.settings) {
-                NetSpeedNotificationHelper.goLockHideNotificationSetting(requireContext())
-            }
-            negativeButton(R.string.i_know)
-            neutralButton(R.string.help) {
-                requireContext().browse(R.string.url_hide_lock_notification)
-            }
-        }
-    }
-
     private fun checkOpsPermission() {
         if (!configuration.usage) {
             return
@@ -186,18 +173,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         if (dontAskNotify || areNotificationsEnabled) {
             return
         }
-        context.alert(
-            R.string.alert_title_notification_disable,
-            R.string.alert_msg_notification_disable
-        ) {
-            positiveButton(R.string.settings) {
-                NetSpeedNotificationHelper.goNotificationSetting(context)
-            }
-            neutralButton(R.string.dont_ask) {
-                NetSpeedPreferences.dontAskNotify = true
-            }
-            negativeButton(android.R.string.cancel, null)
-        }
+        context.showNotificationDisableDialog()
     }
 
 }
