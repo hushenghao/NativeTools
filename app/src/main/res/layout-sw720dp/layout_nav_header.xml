@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="160dp"
     android:background="?attr/colorPrimary"
+    tools:viewBindingIgnore="true"
     tools:ignore="MissingDefaultResource">
 
     <ImageView
@@ -17,6 +18,7 @@
         android:contentDescription="@string/label_android"
         android:focusable="true"
         android:src="@drawable/ic_logo_android"
+        app:layout_constraintBottom_toTopOf="@id/tv_app_name"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

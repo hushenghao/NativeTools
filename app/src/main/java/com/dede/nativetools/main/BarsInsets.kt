@@ -1,8 +1,10 @@
 package com.dede.nativetools.main
 
 import android.view.View
+import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
 import com.dede.nativetools.ui.SpaceItemDecoration
@@ -13,18 +15,17 @@ const val SW600DP = 600
 const val SW720DP = 720
 
 @Target(AnnotationTarget.CLASS)
-annotation class StatusBarInsets(val smallestScreenWidthDp: Int = 0)
-
-@Target(AnnotationTarget.CLASS)
-annotation class NavigationBarInsets(val smallestScreenWidthDp: Int = 0)
+annotation class BarInsets(
+    val left: Boolean = false, val leftSmallestScreenWidthDp: Int = 0,
+    val top: Boolean = false, val topSmallestScreenWidthDp: Int = 0,
+    val right: Boolean = false, val rightSmallestScreenWidthDp: Int = 0,
+    val bottom: Boolean = false, val bottomSmallestScreenWidthDp: Int = 0
+)
 
 typealias OnWindowInsetsListener = (insets: WindowInsetsCompat) -> Unit
 
-fun WindowInsetsCompat.statusBar(): Int =
-    this.getInsets(WindowInsetsCompat.Type.statusBars()).top
-
-fun WindowInsetsCompat.navigationBar(): Int =
-    this.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+fun WindowInsetsCompat.systemBar(): Insets =
+    this.getInsets(WindowInsetsCompat.Type.systemBars())
 
 fun View.onWindowInsetsApply(listener: OnWindowInsetsListener) {
     ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
@@ -38,8 +39,9 @@ fun applyRecyclerViewInsets(recyclerView: RecyclerView) {
     if (isAdded()) return
     val itemDecoration = SpaceItemDecoration(0)
     recyclerView.onWindowInsetsApply {
+        val systemBar = it.systemBar()
         itemDecoration.overrideLastItemOffsets = { outRect ->
-            outRect.bottom = it.navigationBar()
+            outRect.bottom = systemBar.bottom
         }
         if (!isAdded()) {
             recyclerView.addItemDecoration(itemDecoration)
@@ -50,48 +52,56 @@ fun applyRecyclerViewInsets(recyclerView: RecyclerView) {
     }
 }
 
-fun applyBarsInsets(root: View, host: Any) {
-    applyBarsInsets(root, root, host, null)
+fun applyBottomBarInset(root: View, host: Any) {
+    applyBarsInsets(root, null, null, null, root, host, null)
 }
 
 fun applyBarsInsets(
     root: View,
-    target: View,
+    left: View? = null,
+    top: View? = null,
+    right: View? = null,
+    bottom: View? = null,
     host: Any,
     listener: OnWindowInsetsListener? = null
 ) {
-    val context = root.context
-    if (!WindowPreferencesManager(context).isEdgeToEdgeEnabled) {
+    if (left == null && top == null && right == null && bottom == null) {
         return
     }
-    var statusBarInsets: StatusBarInsets?
-    var navigationBarInsets: NavigationBarInsets?
 
-    statusBarInsets = host.annotation()
+    if (!WindowPreferencesManager(root.context).isEdgeToEdgeEnabled) {
+        return
+    }
+
+    val barInsets = host.annotation<BarInsets>()
     val smallestScreenWidthDp = smallestScreenWidthDp
-    if (statusBarInsets != null) {
-        if (smallestScreenWidthDp < statusBarInsets.smallestScreenWidthDp) {
-            statusBarInsets = null
+    if (barInsets == null) return
+
+    fun apply(inset: Int, enable: Boolean, targetSmallestScreenWidthDp: Int): Int {
+        if (enable && smallestScreenWidthDp >= targetSmallestScreenWidthDp) {
+            return inset
         }
+        return 0
     }
-    navigationBarInsets = host.annotation()
-    if (navigationBarInsets != null) {
-        if (smallestScreenWidthDp < navigationBarInsets.smallestScreenWidthDp) {
-            navigationBarInsets = null
-        }
-    }
-    if (navigationBarInsets == null && statusBarInsets == null) return
 
     root.onWindowInsetsApply { insets ->
-        var top = 0
-        var bottom = 0
-        if (statusBarInsets != null) {
-            top = insets.statusBar()
-        }
-        if (navigationBarInsets != null) {
-            bottom = insets.navigationBar()
-        }
-        target.setPadding(0, top, 0, bottom)
+        val systemBar = insets.systemBar()
+        left?.updatePadding(
+            left = apply(systemBar.left, barInsets.left, barInsets.leftSmallestScreenWidthDp)
+        )
+        top?.updatePadding(
+            top = apply(systemBar.top, barInsets.top, barInsets.topSmallestScreenWidthDp)
+        )
+        right?.updatePadding(
+            right = apply(systemBar.right, barInsets.right, barInsets.rightSmallestScreenWidthDp)
+        )
+        bottom?.updatePadding(
+            bottom = apply(
+                systemBar.bottom,
+                barInsets.bottom,
+                barInsets.bottomSmallestScreenWidthDp
+            )
+        )
         root.requestLayout()
         listener?.invoke(insets)
     }

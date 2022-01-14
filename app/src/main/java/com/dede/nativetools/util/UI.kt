@@ -2,6 +2,7 @@ package com.dede.nativetools.util
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Rect
 import android.util.DisplayMetrics
@@ -21,6 +22,9 @@ fun displayMetrics(): DisplayMetrics {
 
 val smallestScreenWidthDp: Int
     get() = Resources.getSystem().configuration.smallestScreenWidthDp
+
+val isLandscape: Boolean
+    get() = globalContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
 fun View.getScreenRect(rect: Rect): Rect {
     val intArray = IntArray(2)

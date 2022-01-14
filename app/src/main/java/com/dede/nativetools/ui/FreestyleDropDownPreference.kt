@@ -12,10 +12,6 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.ListPopupWindow
-import androidx.core.view.ViewCompat
-import androidx.core.view.ViewConfigurationCompat
-import androidx.core.view.ViewGroupCompat
-import androidx.core.view.ViewParentCompat
 import androidx.preference.DropDownPreference
 import androidx.preference.PreferenceViewHolder
 import com.dede.nativetools.util.declaredField

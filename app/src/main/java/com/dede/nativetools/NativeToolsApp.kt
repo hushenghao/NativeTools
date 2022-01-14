@@ -4,8 +4,10 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.util.Log
+import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.util.applyLauncherIcon
 import com.dede.nativetools.util.isMainProcess
+import com.dede.nativetools.util.setNightMode
 import com.dede.nativetools.util.tryApplyLauncherIcon
 import com.google.android.material.color.DynamicColors
 import me.weishu.reflection.Reflection
@@ -32,6 +34,7 @@ class NativeToolsApp : Application() {
         DynamicColors.applyToActivitiesIfAvailable(this, R.style.AppTheme)
         if (isMainProcess()) {
             applyLauncherIcon()
+            setNightMode(OtherPreferences.nightMode)
         }
     }
 

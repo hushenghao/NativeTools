@@ -6,11 +6,12 @@ import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.MenuItem
 import android.view.ViewAnimationUtils
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.view.doOnAttach
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
@@ -35,20 +36,22 @@ data class CircularReveal(
 /**
  * Main
  */
-@StatusBarInsets
+@BarInsets(
+    top = true,// status bar
+    right = true// When the navigation bar of the mobile device is on the right.
+)
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
     NavigationBars.NavigationItemSelectedListener {
 
     companion object {
         const val EXTRA_TOGGLE = "extra_toggle"
-        private const val STATE_CIRCULAR_REVEAL = "state_circular_reveal"
     }
 
     private val binding by viewBinding(ActivityMainBinding::bind)
     private val navController by navController(R.id.nav_host_fragment)
     private val topLevelDestinationIds = intArrayOf(R.id.netSpeed, R.id.other, R.id.about)
 
-    var circularReveal: CircularReveal? = null
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,33 +65,42 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             return
         }
 
-        val circularReveal =
-            savedInstanceState?.getParcelable<CircularReveal>(STATE_CIRCULAR_REVEAL)
+        val circularReveal = viewModel.getCircularRevealAndClean()
         if (circularReveal != null) {
-            ViewAnimationUtils.createCircularReveal(
-                window.decorView,
-                circularReveal.centerX,
-                circularReveal.centerY,
-                circularReveal.startRadius,
-                circularReveal.endRadius
-            ).apply {
-                duration = 800
-                start()
+            val decorView = window.decorView
+            decorView.doOnAttach {
+                ViewAnimationUtils.createCircularReveal(
+                    decorView,
+                    circularReveal.centerX,
+                    circularReveal.centerY,
+                    circularReveal.startRadius,
+                    circularReveal.endRadius
+                ).apply {
+                    duration = 1200
+                    start()
+                }
             }
         }
 
         setContentView(R.layout.activity_main)
         setNightMode(OtherPreferences.nightMode)
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding.toolbar.toolbar)
 
-        applyBarsInsets(binding.root, binding.toolbar, this)
+        applyBarsInsets(
+            root = binding.root,
+            left = binding.root,
+            top = binding.toolbar.toolbar,
+            right = binding.root,
+            bottom = null,
+            host = this
+        )
 
         if (VERSION.SDK_INT >= VERSION_CODES.N) {
             val color = this.color(
                 android.R.attr.colorBackground,
                 if (isNightMode()) Color.BLACK else Color.WHITE
             )
-            binding.navHostFragment.setBackgroundColor(color)
+            binding.navHostFragment.navHostFragment.setBackgroundColor(color)
             window.setBackgroundDrawable(null)
             // Remove the default background, make the 'android:windowBackgroundFallback' effect, to split screen mode.
         }
@@ -107,11 +119,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         navController.addOnDestinationChangedListener(this)
 
         navController.handleDeepLink(intent)
-    }
-
-    override fun onNightModeChanged(mode: Int) {
-        super.onNightModeChanged(mode)
-        Log.i("TAG", "onNightModeChanged: " + mode)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -145,12 +152,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return NavigationUI.onNavDestinationSelected(item, navController)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelable(STATE_CIRCULAR_REVEAL, circularReveal)
-        circularReveal = null
     }
 
 }

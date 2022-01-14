@@ -5,24 +5,22 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
-import com.dede.nativetools.main.CircularReveal
-import com.dede.nativetools.main.MainActivity
-import com.dede.nativetools.main.SW600DP
-import com.dede.nativetools.main.applyRecyclerViewInsets
+import com.dede.nativetools.main.*
 import com.dede.nativetools.ui.NightModeDropDownPreference
 import com.dede.nativetools.util.*
-import kotlin.math.hypot
-import kotlin.math.min
 
 class OtherFragment : PreferenceFragmentCompat() {
 
     private val activityResultLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
+
+    private val mainViewModel by activityViewModels<MainViewModel>()
 
     private lateinit var preferenceIgnoreBatteryOptimize: SwitchPreferenceCompat
 
@@ -52,18 +50,12 @@ class OtherFragment : PreferenceFragmentCompat() {
 
         requirePreference<NightModeDropDownPreference>(OtherPreferences.KEY_NIGHT_MODE_TOGGLE).also {
             it.onNightModeSelected = { rect ->
-                val activity = requireActivity()
-                val decorView = activity.window.decorView
-                (activity as MainActivity).circularReveal = CircularReveal(
-                    rect.left + rect.width() / 2,
-                    rect.top + rect.height() / 2,
-                    min(rect.width() / 2f, rect.height() / 2f),
-                    hypot(decorView.width.toFloat(), decorView.height.toFloat())
-                )
+                val decorView = requireActivity().window.decorView
+                mainViewModel.setCircularReveal(decorView, rect)
             }
             it.setOnPreferenceChangeListener { _, _ ->
                 // Wait for Popup to dismiss
-                uiHandler.postDelayed(delayChangeNightMode, 200)
+                uiHandler.postDelayed(delayChangeNightMode, 300)
                 return@setOnPreferenceChangeListener true
             }
         }

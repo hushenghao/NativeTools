@@ -8,15 +8,13 @@
     app:layoutDescription="@xml/activity_main_scene"
     tools:context=".main.MainActivity">
 
-    <androidx.fragment.app.FragmentContainerView
+    <include
         android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+        layout="@layout/layout_main_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:navGraph="@navigation/nav_graph" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_view"
@@ -27,16 +25,9 @@
         app:layout_constraintTop_toBottomOf="@id/nav_host_fragment"
         app:menu="@menu/menu_main_navigation" />
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <include
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
-        app:titleCentered="true"
-        app:titleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+        layout="@layout/layout_main_toolbar"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
