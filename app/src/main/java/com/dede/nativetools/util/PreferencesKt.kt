@@ -5,11 +5,15 @@ package com.dede.nativetools.util
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
+fun <T : Preference> PreferenceFragmentCompat.requirePreference(key: CharSequence): T {
+    return findPreference(key) as? T
+        ?: throw NullPointerException("Preference not found, key: $key")
+}
 
 val globalPreferences: SharedPreferences
     get() = PreferenceManager.getDefaultSharedPreferences(globalContext)

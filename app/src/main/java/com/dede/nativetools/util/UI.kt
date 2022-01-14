@@ -10,21 +10,22 @@ import android.util.TypedValue
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlin.math.roundToInt
 
 
-fun displayMetrics(): DisplayMetrics {
-    return Resources.getSystem().displayMetrics
-}
+val resources: Resources
+    get() = globalContext.resources
 
 val smallestScreenWidthDp: Int
-    get() = Resources.getSystem().configuration.smallestScreenWidthDp
+    get() = resources.configuration.smallestScreenWidthDp
 
 val isLandscape: Boolean
-    get() = globalContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    get() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+fun displayMetrics(): DisplayMetrics {
+    return resources.displayMetrics
+}
 
 fun View.getScreenRect(rect: Rect): Rect {
     val intArray = IntArray(2)
@@ -52,12 +53,7 @@ val Number.dpf: Float
         displayMetrics()
     )
 
-fun <T : Preference> PreferenceFragmentCompat.requirePreference(key: CharSequence): T {
-    return findPreference(key) as? T
-        ?: throw NullPointerException("Preference not found, key: $key")
-}
-
-private typealias DialogOnClick = (dialog: DialogInterface) -> Unit
+typealias DialogOnClick = (dialog: DialogInterface) -> Unit
 
 class AlertBuilder(private val builder: AlertDialog.Builder) {
 

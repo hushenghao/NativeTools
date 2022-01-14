@@ -25,9 +25,8 @@ fun Handler.singlePost(r: Runnable, delayMillis: Long = 0) {
 
 val uiExecutor by lazy { ExecutorCompat.create(uiHandler) }
 
-val mainScope by lazy {
-    val exceptionHandler = CoroutineExceptionHandler { _, e ->
-        e.printStackTrace()
-    }
-    MainScope() + exceptionHandler
+val exceptionHandler = CoroutineExceptionHandler { _, e ->
+    e.printStackTrace()
 }
+
+val mainScope by lazy { MainScope() + exceptionHandler }

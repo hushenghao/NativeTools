@@ -20,9 +20,12 @@ class NetSpeedService : Service() {
 
     class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
+        private val coroutineScope =
+            CoroutineScope(service.lifecycleJob + Dispatchers.Main.immediate + exceptionHandler)
+
         override fun updateConfiguration(configuration: NetSpeedConfiguration?) {
             if (configuration == null) return
-            service.lifecycleScope.launch {
+            coroutineScope.launch {
                 service.updateConfiguration(configuration)
             }
         }
@@ -62,7 +65,7 @@ class NetSpeedService : Service() {
     private val notificationManager: NotificationManager by systemService()
     private val powerManager: PowerManager by systemService()
 
-    val lifecycleScope = MainScope()
+    val lifecycleJob = SupervisorJob()
 
     private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
         if (!powerManager.isInteractive) {
@@ -136,7 +139,7 @@ class NetSpeedService : Service() {
     }
 
     override fun onDestroy() {
-        lifecycleScope.cancel()
+        lifecycleJob.cancel()
         netSpeedCompute.destroy()
         stopForeground(true)
         notificationManager.cancel(NOTIFY_ID)
