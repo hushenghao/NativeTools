@@ -8,6 +8,7 @@ import android.graphics.Rect
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
+import androidx.annotation.IntDef
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import com.dede.nativetools.R
@@ -24,15 +25,17 @@ val resources: Resources
 val smallestScreenWidthDp: Int
     get() = resources.configuration.smallestScreenWidthDp
 
-enum class SW(val dp: Int) {
-    SW320DP(320),
-    SW480DP(480),
-    SW600DP(600),
-    SW720DP(720)
-}
+const val SW320DP = 320
+const val SW480DP = 480
+const val SW600DP = 600
+const val SW720DP = 720
 
-fun isAtLast(swDp: SW): Boolean {
-    return smallestScreenWidthDp >= swDp.dp
+@IntDef(flag = true, value = [SW320DP, SW480DP, SW600DP, SW720DP])
+@Retention(AnnotationRetention.SOURCE)
+annotation class SW
+
+fun isAtLast(@SW swDp: Int): Boolean {
+    return smallestScreenWidthDp >= swDp
 }
 
 val isLandscape: Boolean
