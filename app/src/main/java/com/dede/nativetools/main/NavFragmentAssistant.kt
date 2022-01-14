@@ -41,7 +41,6 @@ class NavFragmentAssistant(private val fragmentManager: FragmentManager) :
         if (fragment is DialogFragment) {
             return
         }
-        applyBottomBarInset(view, fragment)
         materialFadeThrough.addTarget(view)
     }
 

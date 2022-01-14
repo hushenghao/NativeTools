@@ -30,8 +30,9 @@ class OtherFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (smallestScreenWidthDp < SW600DP) return
-        applyRecyclerViewInsets(listView)
+        if (isAtLast(SW.SW600DP) || isLandscape) {
+            applyBottomBarsInsets(listView)
+        }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

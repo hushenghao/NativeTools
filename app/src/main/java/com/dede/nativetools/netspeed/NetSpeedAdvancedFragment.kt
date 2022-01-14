@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.preference.PreferenceFragmentCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.LayoutNetSpeedAdvancedHeaderBinding
-import com.dede.nativetools.main.applyRecyclerViewInsets
+import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.netspeed.service.NetSpeedServiceController
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.ui.SliderPreference
@@ -75,7 +75,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         super.onViewCreated(view, savedInstanceState)
         controller.bindService()
 
-        applyRecyclerViewInsets(listView)
+        applyBottomBarsInsets(listView)
         updatePreview(configuration)
     }
 

@@ -22,18 +22,13 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
-import com.dede.nativetools.main.BarInsets
-import com.dede.nativetools.main.SW600DP
+import com.dede.nativetools.main.applyBarsInsets
 import com.dede.nativetools.util.*
 import kotlin.random.Random
 
 /**
  * 关于项目
  */
-@BarInsets(
-    bottom = true,// navigation bar
-    bottomSmallestScreenWidthDp = SW600DP// 600dp tablet
-)
 class AboutFragment : Fragment(R.layout.fragment_about) {
 
     companion object {
@@ -72,6 +67,10 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (isAtLast(SW.SW600DP) || isLandscape) {
+            applyBarsInsets(view, bottom = view)// navigation bar
+        }
+
         binding.tvVersion.text = requireContext().getVersionSummary()
         binding.ivGithub.setOnClickListener {
             requireContext().browse(R.string.url_github)

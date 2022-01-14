@@ -36,10 +36,6 @@ data class CircularReveal(
 /**
  * Main
  */
-@BarInsets(
-    top = true,// status bar
-    right = true// When the navigation bar of the mobile device is on the right.
-)
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
     NavigationBars.NavigationItemSelectedListener {
 
@@ -88,11 +84,10 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         applyBarsInsets(
             root = binding.root,
-            left = binding.root,
-            top = binding.toolbar.toolbar,
-            right = binding.root,
-            bottom = null,
-            host = this
+            top = binding.toolbar.toolbar,  // status bar
+            left = binding.toolbar.toolbar, // navigation bar, Insert padding only in the toolbar
+            right = binding.root,           // navigation bar
+            // Some devices have navigation bars on the side, when landscape.
         )
 
         if (VERSION.SDK_INT >= VERSION_CODES.N) {

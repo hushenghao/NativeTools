@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Rect
 import android.util.DisplayMetrics
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.annotation.StringRes
@@ -24,6 +23,17 @@ val resources: Resources
 
 val smallestScreenWidthDp: Int
     get() = resources.configuration.smallestScreenWidthDp
+
+enum class SW(val dp: Int) {
+    SW320DP(320),
+    SW480DP(480),
+    SW600DP(600),
+    SW720DP(720)
+}
+
+fun isAtLast(swDp: SW): Boolean {
+    return smallestScreenWidthDp >= swDp.dp
+}
 
 val isLandscape: Boolean
     get() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE

@@ -10,8 +10,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
-import com.dede.nativetools.main.SW600DP
-import com.dede.nativetools.main.applyRecyclerViewInsets
+import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.dede.nativetools.netspeed.service.NetSpeedServiceController
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
@@ -52,8 +51,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             usageSwitchPreference.isChecked = false
         }
 
-        if (smallestScreenWidthDp < SW600DP) return
-        applyRecyclerViewInsets(listView)
+        if (isAtLast(SW.SW600DP) || isLandscape) {
+            applyBottomBarsInsets(listView)
+        }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

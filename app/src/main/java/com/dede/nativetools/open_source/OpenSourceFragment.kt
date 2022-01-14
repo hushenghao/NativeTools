@@ -15,7 +15,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentOpenSourceBinding
 import com.dede.nativetools.databinding.ItemOpenSourceBinding
-import com.dede.nativetools.main.applyRecyclerViewInsets
+import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.ui.SpaceItemDecoration
 import com.dede.nativetools.util.*
 
@@ -32,7 +32,7 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         val adapter = Adapter()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
-        applyRecyclerViewInsets(binding.recyclerView)
+        applyBottomBarsInsets(binding.recyclerView)
         val itemTouchSwapCallback = ItemTouchSwapCallback(adapter::onSwap)
         val itemTouchHelper = ItemTouchHelper(itemTouchSwapCallback)
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
