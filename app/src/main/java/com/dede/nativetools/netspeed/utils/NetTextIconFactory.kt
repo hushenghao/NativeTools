@@ -2,6 +2,7 @@ package com.dede.nativetools.netspeed.utils
 
 import android.content.res.Resources
 import android.graphics.*
+import android.text.TextPaint
 import android.util.DisplayMetrics
 import android.util.Log
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
@@ -30,7 +31,7 @@ object NetTextIconFactory {
     // 88.8M 93113549L
     private const val DEBUG_MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
 
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         //isFakeBoldText = true
         textAlign = Paint.Align.CENTER
         color = Color.WHITE
