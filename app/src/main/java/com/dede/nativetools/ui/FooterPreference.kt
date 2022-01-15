@@ -1,11 +1,8 @@
 package com.dede.nativetools.ui
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet
-import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import androidx.appcompat.widget.AppCompatImageView
@@ -40,20 +37,9 @@ class AndroidView @JvmOverloads constructor(
         setImageResource(R.drawable.ic_logo_android)
     }
 
-    private val listener = object : AnimatorListenerAdapter() {
-        override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
-            val androidView = this@AndroidView
-            androidView.performHapticFeedback(
-                HapticFeedbackConstants.CONTEXT_CLICK,
-                HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
-            )
-        }
-    }
-
     private val animator: ObjectAnimator =
         ObjectAnimator.ofFloat(this, "translationY", height.toFloat(), 0f)
             .apply {
-                addListener(listener)
                 interpolator = OvershootInterpolator(1.6f)
                 duration = ANIMATOR_DURATION
             }
