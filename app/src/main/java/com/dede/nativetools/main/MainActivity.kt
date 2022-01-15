@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     private val binding by viewBinding(ActivityMainBinding::bind)
     private val navController by navController(R.id.nav_host_fragment)
-    private val topLevelDestinationIds = intArrayOf(R.id.netSpeed, R.id.other, R.id.about)
+    private val topLevelDestinationIds = intArrayOf(R.id.netSpeed, R.id.other)
 
     private val viewModel by viewModels<MainViewModel>()
 

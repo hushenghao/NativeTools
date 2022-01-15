@@ -67,9 +67,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (isAtLast(SW600DP) || isLandscape) {
-            applyBarsInsets(view, bottom = view)// navigation bar
-        }
+        applyBarsInsets(view, bottom = view)// navigation bar
 
         binding.tvVersion.text = requireContext().getVersionSummary()
         binding.ivGithub.setOnClickListener {

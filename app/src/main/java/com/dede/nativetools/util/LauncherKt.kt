@@ -5,6 +5,7 @@ package com.dede.nativetools.util
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.LayerDrawable
@@ -28,7 +29,9 @@ private fun createShortcutIcon(context: Context, resId: Int): IconCompat {
                 setColor(context.color(R.color.primaryColor))
                 shape = GradientDrawable.OVAL
             },
-            InsetDrawable(context.requireDrawable(resId), 4.dp)
+            InsetDrawable(context.requireDrawable(resId), 4.dp).apply {
+                setTint(Color.WHITE)
+            }
         )
     ).toBitmap(24.dp, 24.dp)
     return IconCompat.createWithBitmap(bitmap)
@@ -38,7 +41,7 @@ fun installShortcuts() {
     val context = globalContext
     val shortcuts = arrayListOf(
         ShortcutInfoCompat.Builder(context, "shortcut_about")
-            .setIcon(createShortcutIcon(context, R.drawable.ic_outline_info_white))
+            .setIcon(createShortcutIcon(context, R.drawable.ic_outline_info))
             .setIntent(
                 android.content.Intent(
                     android.content.Intent.ACTION_VIEW,
