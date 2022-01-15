@@ -1,46 +1,22 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="android:windowBackgroundFallback" tools:targetApi="n">
-            @drawable/layer_window_bg
-        </item>
-
-        <item name="colorPrimary">@color/primaryColor</item>
-        <!-- <item name="colorPrimaryDark">@color/primaryDarkColor</item> -->
-        <item name="colorSecondary">@color/secondaryColor</item>
-
-        <item name="colorOnPrimary">@color/primaryColor</item>
-        <item name="colorOnSecondary">@color/primaryColor</item>
-
-        <item name="colorContainer">@color/primaryLightColor</item>
-        <item name="colorPrimaryContainer">@color/primaryLightColor</item>
-        <item name="colorSecondaryContainer">@color/secondaryLightColor</item>
-
-        <!-- Panel attributes -->
-        <item name="windowActionModeOverlay">true</item>
-        <item name="actionOverflowMenuStyle">@style/ActionMenuStyle</item>
-
-        <item name="materialAlertDialogTheme">@style/MaterialAlertDialogTheme</item>
-
-        <item name="materialCardViewStyle">?attr/materialCardViewElevatedStyle</item>
-        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
-        <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
+    <style name="Style.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
+        <item name="colorPrimary">@color/secondaryColor</item>
     </style>
 
-    <style name="MaterialAlertDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
-        <item name="colorPrimary">?attr/colorControlNormal</item>
-    </style>
-
-    <style name="ActionMenuStyle" parent="Widget.Material3.PopupMenu">
+    <style name="Style.ActionMenu" parent="Widget.Material3.PopupMenu">
         <item name="android:dropDownVerticalOffset">6dp</item>
         <item name="android:dropDownHorizontalOffset">-6dp</item>
     </style>
 
-    <style name="RoundedCornerImageStyle">
+    <style name="Style.RoundedCornerImage" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">4dp</item>
+        <item name="cornerSize">6dp</item>
+    </style>
+
+    <style name="Style.Spinner" parent="Widget.AppCompat.Spinner">
+        <item name="android:dropDownVerticalOffset">42dp</item>
+        <item name="android:spinnerMode">dropdown</item>
     </style>
 
 </resources>

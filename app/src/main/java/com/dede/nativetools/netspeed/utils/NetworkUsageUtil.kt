@@ -3,7 +3,11 @@ package com.dede.nativetools.netspeed.utils
 import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.net.ConnectivityManager
+import androidx.annotation.WorkerThread
+import com.dede.nativetools.util.mainScope
 import com.dede.nativetools.util.requireSystemService
+import kotlinx.coroutines.*
+import java.lang.ref.WeakReference
 import java.util.*
 
 /**
@@ -22,40 +26,81 @@ object NetworkUsageUtil {
         return this
     }
 
+    private class NetworkUsageJob<T>(data: T) {
+        var data: T = data
+            private set
+        private var job: Job? = null
+
+        fun execute(block: suspend CoroutineScope.() -> T) {
+            val job = this.job
+            if (job != null && !job.isCompleted) {
+                return
+            }
+            this.job = mainScope.launch {
+                this@NetworkUsageJob.data = withTimeout(2000) {
+                    block.invoke(this)
+                }
+            }.apply {
+                invokeOnCompletion {
+                    it?.printStackTrace()
+                    this@NetworkUsageJob.job = null
+                }
+            }
+        }
+    }
+
+    private val monthNetworkUsageJob = NetworkUsageJob<Long>(0)
+    private val todayNetworkUsageJob = NetworkUsageJob<Long>(0)
+
     /**
      * 获取每月网络使用字节数
      */
     fun monthNetworkUsageBytes(context: Context): Long {
-        val start = Calendar.getInstance().toZeroH()
-        start.set(Calendar.DAY_OF_MONTH, 1)
-        return getNetworkUsageBytesInternal(context, start)
+        val weakRefContext = WeakReference(context)
+        monthNetworkUsageJob.execute {
+            val ctx = weakRefContext.get()?:return@execute 0
+            val start = Calendar.getInstance().toZeroH()
+            start.set(Calendar.DAY_OF_MONTH, 1)
+            getNetworkUsageBytesInternal(ctx, start)
+        }
+        return monthNetworkUsageJob.data
     }
 
     /**
      * 获取每天网络使用字节数
      */
     fun todayNetworkUsageBytes(context: Context): Long {
-        val start = Calendar.getInstance().toZeroH()
-        return getNetworkUsageBytesInternal(context, start)
+        val weakRefContext = WeakReference(context)
+        todayNetworkUsageJob.execute {
+            val ctx = weakRefContext.get()?:return@execute 0
+            val start = Calendar.getInstance().toZeroH()
+            getNetworkUsageBytesInternal(ctx, start)
+        }
+        return todayNetworkUsageJob.data
     }
 
-    private fun getNetworkUsageBytesInternal(context: Context, start: Calendar): Long {
+    private suspend fun getNetworkUsageBytesInternal(context: Context, start: Calendar): Long {
         val networkStatsManager = context.requireSystemService<NetworkStatsManager>()
         val startTime = start.timeInMillis
         val endTime = System.currentTimeMillis()
-        val wifiUsageBytes = networkStatsManager.queryNetworkUsageBytes(
-            ConnectivityManager.TYPE_WIFI,
-            startTime,
-            endTime
-        )
-        val mobileUsageBytes = networkStatsManager.queryNetworkUsageBytes(
-            ConnectivityManager.TYPE_MOBILE,
-            startTime,
-            endTime
-        )
+        val wifiUsageBytes = withContext(Dispatchers.IO) {
+            networkStatsManager.queryNetworkUsageBytes(
+                @Suppress("DEPRECATION") ConnectivityManager.TYPE_WIFI,
+                startTime,
+                endTime
+            )
+        }
+        val mobileUsageBytes = withContext(Dispatchers.IO) {
+            networkStatsManager.queryNetworkUsageBytes(
+                @Suppress("DEPRECATION") ConnectivityManager.TYPE_MOBILE,
+                startTime,
+                endTime
+            )
+        }
         return wifiUsageBytes + mobileUsageBytes
     }
 
+    @WorkerThread
     private fun NetworkStatsManager.queryNetworkUsageBytes(
         networkType: Int,
         startTime: Long,

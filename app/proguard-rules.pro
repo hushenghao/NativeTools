@@ -25,3 +25,10 @@
 #-keepclassmembers class * extends com.dede.nativetools.netspeed.stats.INetStats {
 #   public <init>();
 #}
+
+-keepclassmembernames class androidx.appcompat.widget.AppCompatSpinner {
+    private androidx.appcompat.widget.AppCompatSpinner$SpinnerPopup mPopup;
+}
+-keepclassmembernames class androidx.appcompat.widget.ListPopupWindow {
+    private android.widget.AdapterView$OnItemClickListener mItemClickListener;
+}

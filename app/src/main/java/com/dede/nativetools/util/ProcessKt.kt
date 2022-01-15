@@ -3,55 +3,72 @@
 package com.dede.nativetools.util
 
 import android.app.ActivityManager
+import android.content.ComponentCallbacks2
 import android.content.Context
+import android.os.Build
 import android.os.Process
-import java.io.File
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
-
-private var currentProcessName: String = ""
-
-fun Context.getProcessName(): String {
-    if (currentProcessName.isNotEmpty()) {
-        return currentProcessName
-    }
-
-    val pid = Process.myPid()
-    val processName = getProcessName(pid)
-    if (processName.isNotEmpty()) {
-        currentProcessName = processName
-    } else {
-        val activityManager = this.requireSystemService<ActivityManager>()
-        val list = activityManager.runningAppProcesses
-        if (list == null || list.isEmpty()) {
-            return currentProcessName
-        }
-        for (info in list) {
-            if (info.pid == pid) {
-                currentProcessName = info.processName
-                break
-            }
-        }
-    }
-    return currentProcessName
+private fun Context.runningProcesses(): List<ActivityManager.RunningAppProcessInfo> {
+    val activityManager = requireSystemService<ActivityManager>()
+    return activityManager.runningAppProcesses ?: emptyList()
 }
 
-private fun getProcessName(pid: Int): String? {
-    val file = File("/proc/$pid/cmdline")
-    if (!file.exists()) return null
-
-    file.bufferedReader().use { reader ->
-        var str = reader.readLine()
-        if (str.isNotEmpty()) {
-            str = str.trim { it <= ' ' }
-        }
-        return str
+fun Context.currentProcess(): ActivityManager.RunningAppProcessInfo? {
+    val list = this.runningProcesses()
+    if (list.isEmpty()) {
+        return null
     }
+    val pid = Process.myPid()
+    for (info in list) {
+        if (info.pid == pid) {
+            return info
+        }
+    }
+    return null
+}
+
+fun Context.mainProcess(): ActivityManager.RunningAppProcessInfo? {
+    val list = this.runningProcesses()
+    if (list.isEmpty()) {
+        return null
+    }
+    val packageName = this.packageName
+    for (info in list) {
+        if (info.processName == packageName) {
+            return info
+        }
+    }
+    return null
 }
 
 fun Context.isMainProcess(): Boolean {
-    val mainProcessName = this.packageName
-    val currentProcessName = getProcessName()
-    return mainProcessName.isNotEmpty() &&
-            currentProcessName.isNotEmpty() &&
-            mainProcessName == currentProcessName
+    return currentProcess().isMainProcess(this)
+}
+
+@OptIn(ExperimentalContracts::class)
+fun ActivityManager.RunningAppProcessInfo?.isMainProcess(context: Context): Boolean {
+    contract {
+        returns(true) implies (this@isMainProcess != null)
+    }
+    val packageName = context.packageName
+    if (this == null) return false
+    return packageName.isNotEmpty() && this.processName == packageName
+}
+
+@OptIn(ExperimentalContracts::class)
+fun ActivityManager.RunningAppProcessInfo?.isForeground(): Boolean {
+    contract {
+        returns(true) implies (this@isForeground != null)
+    }
+    if (this == null) return false
+    val uiHidden = this.lastTrimLevel >= ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN
+    val cached = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        this.importance >= ActivityManager.RunningAppProcessInfo.IMPORTANCE_CACHED
+    } else {
+        @Suppress("DEPRECATION")
+        this.importance >= ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND
+    }
+    return !uiHidden && !cached
 }

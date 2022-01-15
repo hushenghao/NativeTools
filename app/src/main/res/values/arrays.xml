@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="net_speed_interval">
+        <item>500 ms</item>
+        <item>800 ms</item>
+        <item>1000 ms</item>
+        <item>1500 ms</item>
+        <item>2000 ms</item>
+        <item>3000 ms</item>
+    </string-array>
+    <string-array name="net_speed_interval_value">
+        <item>500</item>
+        <item>800</item>
+        <item>1000</item>
+        <item>1500</item>
+        <item>2000</item>
+        <item>3000</item>
+    </string-array>
+
+    <string-array name="net_speed_mode">
+        <item>@string/summary_mode_download</item>
+        <item>@string/summary_mode_all</item>
+        <item>@string/summary_mode_upload</item>
+    </string-array>
+    <string-array name="net_speed_mode_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="net_speed_text_style_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="net_speed_text_style">
+        <item>@string/summary_text_style_normal</item>
+        <item>@string/summary_text_style_bold</item>
+        <item>@string/summary_text_style_italic</item>
+        <item>@string/summary_text_style_bold_italic</item>
+    </string-array>
+
+    <string-array name="net_speed_font_value">
+        <item>Normal</item>
+
+        <item>BebasKai</item>
+        <item>BebasNeue</item>
+        <item>FjallaOne</item>
+        <item>RobotoCondensed</item>
+
+        <item>ChakraPetch</item>
+        <item>SquadaOne</item>
+        <item>PirataOne</item>
+        <item>Creepster</item>
+
+        <item>PressStart2P</item>
+        <item>VT323</item>
+    </string-array>
+    <string-array name="net_speed_font">
+        <item>@string/summary_default</item>
+
+        <item>Bebas Kai</item>
+        <item>Bebas Neue</item>
+        <item>Fjalla One</item>
+        <item>Roboto Condensed</item>
+
+        <item>Chakra Petch</item>
+        <item>Squada One</item>
+        <item>Pirata One</item>
+        <item>Creepster</item>
+
+        <item>Press Start 2P</item>
+        <item>VT323</item>
+    </string-array>
+
+    <string-array name="night_mode_toggle">
+        <item>@string/summary_night_mode_follow_system</item>
+        <item>@string/switch_on</item>
+        <item>@string/switch_off</item>
+    </string-array>
+    <string-array name="night_mode_toggle_value">
+        <item>-1</item><!-- AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -->
+        <item>2</item><!-- AppCompatDelegate.MODE_NIGHT_YES -->
+        <item>1</item><!-- AppCompatDelegate.MODE_NIGHT_NO -->
+    </string-array>
+
+</resources>

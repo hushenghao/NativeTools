@@ -14,7 +14,7 @@
             android:summaryOn="@string/switch_on"
             android:title="@string/label_net_speed"
             app:defaultValue="false"
-            app:icon="@drawable/ic_baseline_speed" />
+            app:icon="@drawable/ic_launcher_icon" />
 
         <SwitchPreferenceCompat
             android:key="net_speed_auto_start"
@@ -32,14 +32,11 @@
             app:title="@string/label_net_speed_interval"
             app:useSimpleSummaryProvider="true" />
 
-        <DropDownPreference
-            android:key="net_speed_mode"
-            app:defaultValue="0"
-            app:entries="@array/net_speed_mode"
-            app:entryValues="@array/net_speed_mode_value"
-            app:icon="@drawable/ic_outline_menu_open"
-            app:title="@string/label_net_speed_mode"
-            app:useSimpleSummaryProvider="true" />
+        <PreferenceScreen
+            app:icon="@drawable/ic_outline_settings"
+            app:key="net_speed_advanced"
+            app:summary="@string/summary_net_speed_advanced"
+            app:title="@string/label_net_speed_advanced" />
 
     </PreferenceCategory>
 
@@ -58,13 +55,7 @@
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
-            app:icon="@drawable/ic_outline_notifications_off"
-            app:key="net_speed_hide_notification"
-            app:summary="@string/summary_net_speed_hide_notification"
-            app:title="@string/label_net_speed_hide_notification" />
-
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
+            app:dependency="net_speed_hide_notification"
             app:icon="@drawable/ic_outline_data_usage"
             app:key="net_speed_usage"
             app:summary="@string/summary_net_speed_usage"
@@ -74,15 +65,25 @@
             android:key="net_speed_notify_clickable"
             android:title="@string/label_net_speed_notify_clickable"
             app:defaultValue="true"
+            app:dependency="net_speed_hide_notification"
             app:icon="@drawable/ic_outline_touch"
             app:summary="@string/summary_net_speed_notify_clickable" />
 
         <SwitchPreferenceCompat
-            android:key="net_speed_notify_quick_closeable"
             android:title="@string/label_net_speed_notify_quick_closeable"
             app:defaultValue="false"
+            app:dependency="net_speed_hide_notification"
             app:icon="@drawable/ic_outline_cancel"
+            app:key="net_speed_notify_quick_closeable"
             app:summary="@string/summary_net_speed_notify_quick_closeable" />
+
+        <com.dede.nativetools.ui.HideNotificationSwitchPreference
+            app:defaultValue="false"
+            app:disableDependentsState="true"
+            app:icon="@drawable/ic_outline_notifications_off"
+            app:key="net_speed_hide_notification"
+            app:summary="@string/summary_net_speed_hide_notification"
+            app:title="@string/label_net_speed_hide_notification" />
 
     </PreferenceCategory>
 

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+    tools:viewBindingIgnore="true">
+
+    <LinearLayout
+        android:id="@+id/icon_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="start|center_vertical"
+        android:minWidth="56dp"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp">
+
+        <view
+            android:id="@android:id/icon"
+            class="androidx.preference.internal.PreferenceImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:maxHeight="48dp"
+            app:maxWidth="48dp" />
+
+    </LinearLayout>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@android:id/summary"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="-10dp"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginTop="-4dp"
+        android:layout_toRightOf="@id/icon_frame"
+        app:labelBehavior="floating"
+        app:tickVisible="false"
+        tools:stepSize="0.01"
+        tools:valueFrom="0"
+        tools:valueTo="1" />
+
+    <TextView
+        android:id="@android:id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/icon_frame"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceListItem"
+        tools:text="@tools:sample/full_names" />
+
+    <TextView
+        android:id="@android:id/summary"
+        style="@style/PreferenceSummaryTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@android:id/title"
+        android:layout_alignStart="@android:id/title"
+        android:layout_alignLeft="@android:id/title"
+        android:layout_gravity="start"
+        android:layout_toStartOf="@id/slider_value"
+        android:layout_toLeftOf="@id/slider_value"
+        android:maxLines="4"
+        android:textAlignment="viewStart"
+        android:textColor="?android:attr/textColorSecondary"
+        tools:text="@tools:sample/lorem/random" />
+
+    <TextView
+        android:id="@+id/slider_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@android:id/summary"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:ellipsize="marquee"
+        android:gravity="end"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceListItemSecondary"
+        tools:text="0" />
+
+</RelativeLayout>

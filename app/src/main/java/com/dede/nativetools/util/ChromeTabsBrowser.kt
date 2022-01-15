@@ -4,7 +4,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.graphics.Color
 import android.net.Uri
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.browser.customtabs.*
 import com.google.android.material.color.MaterialColors
 
@@ -61,8 +60,7 @@ object ChromeTabsBrowser {
     }
 
     fun launchUrl(context: Context, uri: Uri) {
-        val isNightMode =
-            AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+        val isNightMode = isNightMode()
         val colorScheme =
             if (isNightMode) CustomTabsIntent.COLOR_SCHEME_DARK else CustomTabsIntent.COLOR_SCHEME_LIGHT
 

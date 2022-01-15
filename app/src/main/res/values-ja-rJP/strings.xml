@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
     <string name="app_name">网速指示器</string>
-    <string name="notify_net_speed_msg">上載: <xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • 下載: <xliff:g example="10.1KB/s" id="speed">%s</xliff:g></string>
-    <string name="notify_net_speed_sub">今日: <xliff:g example="10.5GB" id="usage">%s</xliff:g> • 今月: <xliff:g example="10.5GB" id="usage">%s</xliff:g></string>
+    <string name="notify_net_speed_msg" formatted="false">上載: %s • 下載: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">今日: %s • 今月: %s</string>
     <string name="switch_on">开き</string>
     <string name="switch_off">閉鎖</string>
     <string name="action_close">閉鎖</string>
@@ -54,18 +54,31 @@
     <string name="action_rate">好評をあたえる</string>
     <string name="action_donate">寄付</string>
     <string name="label_coffee">コーヒーを一杯おごってくれる?</string>
-
-    <string-array name="net_speed_mode">
-        <item>ダウンロードのみ</item>
-        <item>アップロード+ダウンロード</item>
-        <item>アップロードするだけ</item>
-    </string-array>
-
     <string name="label_notification">通知</string>
     <string name="toast_saved">保存済み</string>
     <string name="label_home">トップページ</string>
     <string name="toast_open_battery_optimization">「网速指示器」を見つけて、手動でバッテリーを開けて最適化してください</string>
     <string name="action_open_link">チェック</string>
-    <string name="action_copy_link">リンクをコピーする</string>
     <string name="label_privacy_agreement">プライバシー協定</string>
+    <string name="label_net_speed_style">書体様式</string>
+    <string name="label_net_speed_text_scale">文字スケーリング</string>
+    <string name="label_net_speed_relative_distance">相対距離</string>
+    <string name="label_net_speed_relative_ratio">相対比率</string>
+    <string name="label_net_speed_y_offset">Y軸オフセット</string>
+    <string name="summary_net_speed_advanced">表示仕様をカスタマイズする</string>
+    <string name="label_net_speed_advanced">高度な設定</string>
+    <string name="label_net_speed_font">フォント</string>
+    <string name="summary_default">黙認</string>
+    <string name="summary_text_style_normal">一般</string>
+    <string name="summary_text_style_bold">粗体</string>
+    <string name="summary_text_style_italic">イタリック</string>
+    <string name="summary_text_style_bold_italic">太斜体</string>
+    <string name="label_net_speed_x_offset">X軸オフセット</string>
+    <string name="summary_mode_download">ダウンロードのみ</string>
+    <string name="summary_mode_all">アップロードとダウンロード</string>
+    <string name="summary_mode_upload">アップロードするだけ</string>
+    <string name="toast_download_font">フォントダウンロード開始</string>
+    <string name="toast_download_font_succeeded">フォントダウンロード成功</string>
+    <string name="toast_download_font_failed">フォントのダウンロードに失敗</string>
+    <string name="label_net_speed_horizontal_scale">X軸スケーリング</string>
 </resources>

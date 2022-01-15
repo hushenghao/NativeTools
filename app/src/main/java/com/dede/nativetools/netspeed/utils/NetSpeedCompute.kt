@@ -1,7 +1,7 @@
 package com.dede.nativetools.netspeed.utils
 
 import com.dede.nativetools.netspeed.NetSpeedPreferences
-import com.dede.nativetools.netspeed.stats.INetStats
+import com.dede.nativetools.netspeed.stats.NetStats
 import com.dede.nativetools.util.HandlerTicker
 import kotlin.math.max
 import kotlin.math.roundToLong
@@ -24,7 +24,7 @@ class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
             txSpeed = env(value, field, interval)
             field = value
         }
-    private val netStats: INetStats = INetStats.getInstance()
+    private val netStats: NetStats = NetStats.getInstance()
 
     var interval: Int by Delegates.observable(NetSpeedPreferences.DEFAULT_INTERVAL) { _, old, new ->
         if (old != new) {

@@ -11,4 +11,5 @@ interface INetSpeedInterface {
      * 更新配置
      */
     void updateConfiguration(in NetSpeedConfiguration configuration);
+
 }

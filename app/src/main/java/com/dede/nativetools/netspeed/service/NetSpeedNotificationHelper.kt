@@ -6,17 +6,16 @@ import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.provider.Settings
-import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.dede.nativetools.R
+import com.dede.nativetools.main.MainActivity
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
-import com.dede.nativetools.main.MainActivity
 import com.dede.nativetools.util.*
 
 /**
@@ -24,57 +23,7 @@ import com.dede.nativetools.util.*
  */
 object NetSpeedNotificationHelper {
 
-    private const val KEY_NOTIFICATION_CHANNEL_VERSION = "notification_channel_version"
-    private const val NOTIFICATION_CHANNEL_VERSION = 2
-
-    private const val CHANNEL_ID = "net_speed_$NOTIFICATION_CHANNEL_VERSION"
-
-    /**
-     * 通知渠道版本号
-     */
-    private var notificationChannelVersion: Int
-        get() = globalPreferences.get(KEY_NOTIFICATION_CHANNEL_VERSION, 0)
-        set(value) = globalPreferences.set(KEY_NOTIFICATION_CHANNEL_VERSION, value)
-
-    /**
-     * 更新通知渠道版本
-     */
-    fun checkNotificationChannelAndUpgrade(context: Context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
-        val target = NOTIFICATION_CHANNEL_VERSION
-        val old = notificationChannelVersion
-        if (old == 0) {// 第一次安装
-            notificationChannelVersion = target
-            return
-        }
-        if (old > target) {
-            Log.w(
-                "NotificationChannelVersion",
-                "version downgrade, old: $old, target: $target"
-            )
-        }
-        val notificationManager = context.requireSystemService<NotificationManager>()
-        for (v in (old..target)) {
-            when (v) {
-                1 -> {
-                    // 通知优先级由IMPORTANCE_LOW提升为IMPORTANCE_DEFAULT
-                    // fix version 1 bug
-                    notificationManager.deleteNotificationChannels("net_speed", "net_speed_1")
-                }
-                target -> {
-                    // 更新版本号
-                    notificationChannelVersion = target
-                }
-            }
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun NotificationManager.deleteNotificationChannels(vararg channelIds: String) {
-        for (channelId in channelIds) {
-            this.deleteNotificationChannel(channelId)
-        }
-    }
+    private const val CHANNEL_ID = "net_speed_2"
 
     private fun isSecure(context: Context): Boolean {
         val keyguardManager = context.requireSystemService<KeyguardManager>()
@@ -156,7 +105,7 @@ object NetSpeedNotificationHelper {
     /**
      * 系统版本>=S 且 targetVersion>=S 时，返回true
      */
-    fun isSS(context: Context): Boolean {
+    fun itSSAbove(context: Context): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
                 // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
                 context.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.S
@@ -179,6 +128,7 @@ object NetSpeedNotificationHelper {
             createChannel(context)
             Notification.Builder(context, CHANNEL_ID)
         } else {
+            @Suppress("DEPRECATION")
             Notification.Builder(context)
                 .setPriority(Notification.PRIORITY_DEFAULT)
                 .setSound(null)
@@ -186,7 +136,6 @@ object NetSpeedNotificationHelper {
         }
         builder.setCategory(null)
             .setSmallIcon(createIcon(configuration, rxSpeed, txSpeed))
-            .setColor(context.getColor(R.color.primaryColor))
             .setOnlyAlertOnce(false)
             .setOngoing(true)
             .setLocalOnly(true)
@@ -212,13 +161,14 @@ object NetSpeedNotificationHelper {
             pendingFlag = PendingIntent.FLAG_MUTABLE
         }
 
-        if (configuration.hideNotification && !isSS(context)) {
+        if (configuration.hideNotification && !itSSAbove(context)) {
             val remoteViews = RemoteViews(context.packageName, R.layout.notification_empty_view)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 // context.applicationInfo.targetSdkVersion < Build.VERSION_CODES.S
                 // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
                 builder.setCustomContentView(remoteViews)
             } else {
+                @Suppress("DEPRECATION")
                 builder.setContent(remoteViews)
             }
         } else {

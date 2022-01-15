@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.os.PowerManager
-import android.util.Log
 import com.dede.nativetools.netspeed.INetSpeedInterface
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.NetSpeedPreferences
@@ -21,9 +20,11 @@ class NetSpeedService : Service() {
 
     class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
+        private val coroutineScope = mainScope + service.lifecycleJob
+
         override fun updateConfiguration(configuration: NetSpeedConfiguration?) {
             if (configuration == null) return
-            service.lifecycleScope.launch(Dispatchers.Main) {
+            coroutineScope.launch {
                 service.updateConfiguration(configuration)
             }
         }
@@ -63,7 +64,7 @@ class NetSpeedService : Service() {
     private val notificationManager: NotificationManager by systemService()
     private val powerManager: PowerManager by systemService()
 
-    val lifecycleScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    val lifecycleJob = Job()
 
     private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
         if (!powerManager.isInteractive) {
@@ -137,7 +138,7 @@ class NetSpeedService : Service() {
     }
 
     override fun onDestroy() {
-        lifecycleScope.cancel()
+        lifecycleJob.cancel()
         netSpeedCompute.destroy()
         stopForeground(true)
         notificationManager.cancel(NOTIFY_ID)

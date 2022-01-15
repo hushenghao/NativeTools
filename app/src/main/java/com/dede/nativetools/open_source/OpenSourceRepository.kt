@@ -82,12 +82,20 @@ class OpenSourceRepository {
                 "https://raw.githubusercontent.com/dharmatype/Bebas-Kai/master/OFL.txt"
             ),
             OpenSource(
-                "中国色",
+                "中国传统色",
                 "",
-                "Traditional Chinese colors",
+                "为往圣继绝色，为万世开新颜。",
                 "http://zhongguose.com",
                 R.drawable.ic_logo_zhongguose,
                 null
+            ),
+            OpenSource(
+                "Google Fonts",
+                "Google",
+                "Google Fonts is a library of 1,358 free licensed font families and APIs for convenient use via CSS and Android.",
+                "https://fonts.google.com",
+                R.drawable.ic_logo_googlefonts,
+                "https://www.apache.org/licenses/LICENSE-2.0.txt"
             )
         )
     }

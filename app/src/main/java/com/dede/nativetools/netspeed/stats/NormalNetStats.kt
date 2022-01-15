@@ -2,7 +2,7 @@ package com.dede.nativetools.netspeed.stats
 
 import android.net.TrafficStats
 
-class NormalNetStats : INetStats {
+class NormalNetStats : NetStats {
 
     override fun supported(): Boolean {
         return true

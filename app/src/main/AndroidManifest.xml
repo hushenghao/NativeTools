@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dede.nativetools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission
@@ -27,42 +28,61 @@
     <application
         android:name=".NativeToolsApp"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_day"
         android:label="@string/app_name"
         android:resizeableActivity="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_day_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="UnusedAttribute">
         <activity
             android:name=".main.MainActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
                 <!-- 重载tile长按事件 -->
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+            </intent-filter>
+        </activity>
+
+        <activity-alias
+            android:name=".main.Day"
+            android:enabled="true"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_day"
+            android:roundIcon="@mipmap/ic_launcher_day_round"
+            android:targetActivity=".main.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity-alias>
 
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
-        </activity>
+        <activity-alias
+            android:name=".main.Night"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_night"
+            android:roundIcon="@mipmap/ic_launcher_night_round"
+            android:targetActivity=".main.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
 
         <!-- https://developer.android.com/about/versions/12/behavior-changes-12#exported -->
         <service
             android:name=".netspeed.service.NetSpeedService"
             android:exported="false"
-            android:icon="@drawable/ic_baseline_speed"
             android:label="@string/label_net_speed"
             android:process=":netspeed" />
 
         <service
             android:name=".netspeed.service.NetTileService"
             android:exported="true"
-            android:icon="@drawable/ic_baseline_speed"
+            android:icon="@drawable/ic_launcher_icon"
             android:label="@string/label_net_speed"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
@@ -91,9 +111,6 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
-            <meta-data
-                android:name="com.dede.nativetools.ReflectionInitializer"
-                android:value="androidx.startup" />
         </provider>
 
     </application>

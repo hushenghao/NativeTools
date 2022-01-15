@@ -5,8 +5,8 @@
     <string name="settings">Settings</string>
     <string name="access">Access</string>
     <string name="dont_ask">Don\'t ask</string>
-    <string name="notify_net_speed_msg">Up: <xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • Down: <xliff:g id="speed">%s</xliff:g></string>
-    <string name="notify_net_speed_sub">Today: <xliff:g example="10.5GB" id="usage">%s</xliff:g> • Month: <xliff:g id="usage">%s</xliff:g></string>
+    <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">Today: %s • Month: %s</string>
     <string name="switch_on">ON</string>
     <string name="switch_off">OFF</string>
     <string name="action_close">CLOSE</string>
@@ -23,12 +23,6 @@
     <string name="summary_net_speed">Display the current network speed in the status bar</string>
     <string name="summary_net_speed_hide_lock_notification">By default, the screen-lock notification is hidden. You need to set the screen-lock notification only when the screen-lock notification is invalid</string>
     <string name="summary_net_speed_notify_clickable">Click notification to open the application settings interface</string>
-
-    <string-array name="net_speed_mode">
-        <item>Down</item>
-        <item>Up + Down</item>
-        <item>Up</item>
-    </string-array>
     <string name="label_net_speed_notify_quick_closeable">Notification quick close</string>
     <string name="summary_net_speed_notify_quick_closeable">Add a close button to the network speed notification</string>
     <string name="alert_title_notification_disable">Notification not enabled</string>
@@ -65,6 +59,26 @@
     <string name="label_home">Home</string>
     <string name="toast_open_battery_optimization">Please find the \"Net Monitor\" and turn on battery optimization manually</string>
     <string name="action_open_link">To view</string>
-    <string name="action_copy_link">Copy the link</string>
     <string name="label_privacy_agreement">Privacy agreement</string>
+    <string name="label_net_speed_style">Font style</string>
+    <string name="label_net_speed_advanced">Advanced Settings</string>
+    <string name="summary_net_speed_advanced">Customize the display style</string>
+    <string name="label_net_speed_y_offset">The Y axis offset</string>
+    <string name="label_net_speed_relative_ratio">Relative proportion</string>
+    <string name="label_net_speed_relative_distance">Relative distance</string>
+    <string name="label_net_speed_text_scale">Text zoom</string>
+    <string name="label_net_speed_font">The font</string>
+    <string name="summary_default">Default</string>
+    <string name="summary_text_style_normal">General</string>
+    <string name="summary_text_style_bold">Bold</string>
+    <string name="summary_text_style_italic">Italics</string>
+    <string name="summary_text_style_bold_italic">Bold Italic</string>
+    <string name="label_net_speed_x_offset">The X axis offset</string>
+    <string name="summary_mode_download">Down</string>
+    <string name="summary_mode_all">Up and Down</string>
+    <string name="summary_mode_upload">Up</string>
+    <string name="toast_download_font">Start font download</string>
+    <string name="toast_download_font_succeeded">Font downloaded successfully</string>
+    <string name="toast_download_font_failed">Font download failed</string>
+    <string name="label_net_speed_horizontal_scale">X zoom</string>
 </resources>

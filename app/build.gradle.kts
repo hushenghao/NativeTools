@@ -21,8 +21,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 47
-        versionName = "3.3.3"
+        versionCode = 49
+        versionName = "3.4.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(
@@ -97,11 +97,12 @@ dependencies {
     implementation(deps.google.material)
     implementation(deps.androidx.browser)
     implementation(deps.androidx.startup)
+    implementation(deps.androidx.work.runtime.ktx)
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)
 
-    debugImplementation(deps.squareup.leakcanary)
+    debugImplementation(deps.bundles.squareup.leakcanary)
 
     testImplementation(deps.junit)
     androidTestImplementation(deps.bundles.androidx.test)
@@ -128,13 +129,13 @@ configurations.all {
     exclude("androidx.viewpager", "viewpager")
     exclude("androidx.slidingpanelayout", "slidingpanelayout")
     exclude("androidx.swiperefreshlayout", "swiperefreshlayout")
-    exclude("androidx.asynclayoutinflater", "asynclayoutinflater")
     exclude("androidx.dynamicanimation", "dynamicanimation")
-    exclude("androidx.versionedparcelable", "versionedparcelable")
     exclude("androidx.localbroadcastmanager", "localbroadcastmanager")
     exclude("androidx.documentfile", "documentfile")
     exclude("androidx.print", "print")
     exclude("androidx.cursoradapter", "cursoradapter")
+    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
+    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk7")
 }
 
 tasks.register<Exec>("pgyer") {

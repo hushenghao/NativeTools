@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
     <string name="app_name">Anzeige der Net</string>
-    <string name="notify_net_speed_msg">Up: <xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • Down: <xliff:g id="speed">%s</xliff:g></string>
-    <string name="notify_net_speed_sub">Kröte: <xliff:g example="10.5GB" id="usage">%s</xliff:g> • Monat: <xliff:g id="usage">%s</xliff:g></string>
+    <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">Kröte: %s • Monat: %s</string>
     <string name="switch_on">geöffnet</string>
     <string name="switch_off">schließen</string>
     <string name="action_close">schließen</string>
@@ -58,13 +58,27 @@
     <string name="toast_saved">Gespeichert</string>
     <string name="label_home">Home</string>
     <string name="toast_open_battery_optimization">Bitte finden Sie die \"Anzeige der Net\" und schalten Sie die Batterieoptimierung manuell ein</string>
-    <string name="action_copy_link">Link kopieren</string>
     <string name="action_open_link">Siehe</string>
-
-    <string-array name="net_speed_mode">
-        <item>Down</item>
-        <item>Up + Down</item>
-        <item>Up</item>
-    </string-array>
     <string name="label_privacy_agreement">Es ist ein datengeschäft.</string>
+    <string name="label_net_speed_style">Kann nicht einstecken</string>
+    <string name="label_net_speed_advanced">Nicht ideal</string>
+    <string name="summary_net_speed_advanced">Benutzerdefinierte darstellung</string>
+    <string name="label_net_speed_y_offset">Liegt unter y-achse</string>
+    <string name="label_net_speed_relative_ratio">Das verhältnis</string>
+    <string name="label_net_speed_relative_distance">Relative distanz</string>
+    <string name="label_net_speed_text_scale">Wortreise verengt</string>
+    <string name="label_net_speed_font">Schriftart</string>
+    <string name="summary_default">Standard</string>
+    <string name="summary_text_style_normal">War ganz gut</string>
+    <string name="summary_text_style_bold">Kahl</string>
+    <string name="summary_text_style_italic">Kursiv</string>
+    <string name="summary_text_style_bold_italic">Hart dagegen</string>
+    <string name="label_net_speed_x_offset">Liegt unter x-achse</string>
+    <string name="summary_mode_download">Down</string>
+    <string name="summary_mode_all">Up and Down</string>
+    <string name="summary_mode_upload">Up</string>
+    <string name="toast_download_font">Zeichendownload beginnen</string>
+    <string name="toast_download_font_succeeded">Download erfolgreich abgeschlossen</string>
+    <string name="toast_download_font_failed">Der schriftdruck kann nicht heruntergeladen werden</string>
+    <string name="label_net_speed_horizontal_scale">Die x-achse schrumpft</string>
 </resources>

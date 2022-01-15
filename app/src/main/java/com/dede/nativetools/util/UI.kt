@@ -2,31 +2,73 @@ package com.dede.nativetools.util
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Rect
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.View
+import androidx.annotation.IntDef
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
+import com.dede.nativetools.R
+import com.dede.nativetools.netspeed.NetSpeedPreferences
+import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.util.*
 import kotlin.math.roundToInt
 
 
+val resources: Resources
+    get() = globalContext.resources
+
+val smallestScreenWidthDp: Int
+    get() = resources.configuration.smallestScreenWidthDp
+
+const val SW320DP = 320
+const val SW480DP = 480
+const val SW600DP = 600
+const val SW720DP = 720
+
+@IntDef(flag = true, value = [SW320DP, SW480DP, SW600DP, SW720DP])
+@Retention(AnnotationRetention.SOURCE)
+annotation class SW
+
+fun isAtLast(@SW swDp: Int): Boolean {
+    return smallestScreenWidthDp >= swDp
+}
+
+val isLandscape: Boolean
+    get() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
 fun displayMetrics(): DisplayMetrics {
-    return Resources.getSystem().displayMetrics
+    return resources.displayMetrics
 }
 
-fun setNightMode(enable: Boolean) {
-    val mode = if (enable)
-        AppCompatDelegate.MODE_NIGHT_YES
-    else
-        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-    AppCompatDelegate.setDefaultNightMode(mode)
+/**
+ * 获取View在全屏Window上的位置
+ *
+ * 例如: PopupWindow的View相对于父Window的位置
+ */
+fun View.getRectOnFullWindow(rect: Rect): Rect {
+    // Window可以显示的区域
+    // 相对于屏幕的位置，默认是屏幕去除系统栏后的大小
+    // 分屏模式下也会根据分屏区域大小进行变更
+    getWindowVisibleDisplayFrame(rect)
+    val intArray = IntArray(2)
+    // View在屏幕上的位置
+    getLocationOnScreen(intArray)
+    var x = intArray[0]
+    var y = intArray[1]
+    // 全屏模式下显示区域可能不正常，这里过滤一下
+    if (rect.left >= 0 && rect.top >= 0 && !rect.isEmpty) {
+        // 减去分屏模式下左边和上边的偏移量
+        x -= rect.left
+        y -= rect.top
+    }
+    rect.set(x, y, x + width, y + height)
+    return rect
 }
-
-fun isNightMode() = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
 
 val Number.dp: Int
     get() = TypedValue.applyDimension(
@@ -42,12 +84,7 @@ val Number.dpf: Float
         displayMetrics()
     )
 
-fun <T : Preference> PreferenceFragmentCompat.requirePreference(key: CharSequence): T {
-    return findPreference(key) as? T
-        ?: throw NullPointerException("Preference not found, key: $key")
-}
-
-private typealias DialogOnClick = (dialog: DialogInterface) -> Unit
+typealias DialogOnClick = (dialog: DialogInterface) -> Unit
 
 class AlertBuilder(private val builder: AlertDialog.Builder) {
 
@@ -86,4 +123,36 @@ fun Context.alert(
         .setMessage(messageId)
     init?.invoke(AlertBuilder(builder))
     builder.show()
+}
+
+fun Context.showHideLockNotificationDialog() {
+    val context = this@showHideLockNotificationDialog
+    context.alert(
+        R.string.label_net_speed_hide_lock_notification,
+        R.string.alert_msg_hide_lock_notification
+    ) {
+        positiveButton(R.string.settings) {
+            NetSpeedNotificationHelper.goLockHideNotificationSetting(context)
+        }
+        negativeButton(R.string.i_know)
+        neutralButton(R.string.help) {
+            context.browse(R.string.url_hide_lock_notification)
+        }
+    }
+}
+
+fun Context.showNotificationDisableDialog() {
+    val context = this
+    context.alert(
+        R.string.alert_title_notification_disable,
+        R.string.alert_msg_notification_disable
+    ) {
+        positiveButton(R.string.settings) {
+            NetSpeedNotificationHelper.goNotificationSetting(context)
+        }
+        neutralButton(R.string.dont_ask) {
+            NetSpeedPreferences.dontAskNotify = true
+        }
+        negativeButton(android.R.string.cancel, null)
+    }
 }

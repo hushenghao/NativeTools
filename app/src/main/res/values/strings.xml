@@ -1,7 +1,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">网速指示器</string>
-    <string name="notify_net_speed_msg">上传：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • 下载：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g></string>
-    <string name="notify_net_speed_sub">今日：<xliff:g example="10.5GB" id="usage">%s</xliff:g> • 本月：<xliff:g example="10.5GB" id="usage">%s</xliff:g></string>
+    <string name="notify_net_speed_msg" formatted="false">上传：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • 下载：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g></string>
+    <string name="notify_net_speed_sub" formatted="false">今日：<xliff:g example="10.5GB" id="usage">%s</xliff:g> • 本月：<xliff:g example="10.5GB" id="usage">%s</xliff:g></string>
     <string name="tile_net_speed_label" translatable="false">↿%s ⇃%s</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
@@ -72,40 +72,31 @@
     <string name="action_rate">给个好评</string>
     <string name="action_donate">捐赠</string>
     <string name="label_coffee">请我喝一杯咖啡？</string>
-
-    <string-array name="net_speed_interval">
-        <item>500 ms</item>
-        <item>800 ms</item>
-        <item>1000 ms</item>
-        <item>1500 ms</item>
-        <item>2000 ms</item>
-        <item>3000 ms</item>
-    </string-array>
-    <string-array name="net_speed_interval_value">
-        <item>500</item>
-        <item>800</item>
-        <item>1000</item>
-        <item>1500</item>
-        <item>2000</item>
-        <item>3000</item>
-    </string-array>
-
-    <string-array name="net_speed_mode">
-        <item>仅下载</item>
-        <item>上传 + 下载</item>
-        <item>仅上传</item>
-    </string-array>
-    <string-array name="net_speed_mode_value">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-
     <string name="toast_saved">已保存</string>
     <string name="label_home">首页</string>
     <string name="toast_open_battery_optimization">请找到“网速指示器”，并手动开启电池优化</string>
-    <string name="action_copy_link">复制链接</string>
     <string name="action_open_link">查看</string>
     <string name="label_android" translatable="false">Android</string>
     <string name="label_privacy_agreement">隐私协议</string>
+    <string name="label_net_speed_style">字体样式</string>
+    <string name="label_net_speed_advanced">高级设置</string>
+    <string name="summary_net_speed_advanced">自定义显示样式</string>
+    <string name="label_net_speed_y_offset">Y轴偏移</string>
+    <string name="label_net_speed_relative_ratio">相对比例</string>
+    <string name="label_net_speed_relative_distance">相对距离</string>
+    <string name="label_net_speed_text_scale">文字缩放</string>
+    <string name="label_net_speed_font">字体</string>
+    <string name="summary_default">默认</string>
+    <string name="summary_text_style_normal">普通</string>
+    <string name="summary_text_style_bold">粗体</string>
+    <string name="summary_text_style_italic">斜体</string>
+    <string name="summary_text_style_bold_italic">粗斜体</string>
+    <string name="label_net_speed_x_offset">X轴偏移</string>
+    <string name="summary_mode_download">仅下载</string>
+    <string name="summary_mode_all">上传和下载</string>
+    <string name="summary_mode_upload">仅上传</string>
+    <string name="toast_download_font">开始字体下载</string>
+    <string name="toast_download_font_succeeded">字体下载成功</string>
+    <string name="toast_download_font_failed">字体下载失败</string>
+    <string name="label_net_speed_horizontal_scale">X轴缩放</string>
 </resources>

@@ -23,13 +23,13 @@
         android:enabled="true"
         android:icon="@drawable/ic_outline_thumb_up"
         android:title="@string/action_rate"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_feedback"
         android:enabled="true"
         android:icon="@drawable/ic_outline_feedback"
         android:title="@string/action_feedback"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_about_to_openSource"
         android:enabled="true"

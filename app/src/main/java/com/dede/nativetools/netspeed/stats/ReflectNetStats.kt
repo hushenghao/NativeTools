@@ -1,11 +1,11 @@
 package com.dede.nativetools.netspeed.stats
 
 import android.net.TrafficStats
-import com.dede.nativetools.netspeed.stats.INetStats.Companion.isSupported
+import com.dede.nativetools.netspeed.stats.NetStats.Companion.isSupported
 import com.dede.nativetools.util.method
 import java.lang.reflect.Method
 
-class ReflectNetStats : INetStats {
+class ReflectNetStats : NetStats {
 
     private var methodGetRxBytes: Method? = null
     private var methodGetTxBytes: Method? = null
@@ -23,20 +23,20 @@ class ReflectNetStats : INetStats {
 
     override fun supported(): Boolean {
         return methodGetRxBytes != null && methodGetTxBytes != null
-                && getRxBytes(INetStats.WLAN_IFACE).isSupported
+                && getRxBytes(NetStats.WLAN_IFACE).isSupported
     }
 
     override fun getRxBytes(): Long {
-        return INetStats.addIfSupported(
+        return NetStats.addIfSupported(
             TrafficStats.getMobileRxBytes(),
-            getRxBytes(INetStats.WLAN_IFACE)
+            getRxBytes(NetStats.WLAN_IFACE)
         )
     }
 
     override fun getTxBytes(): Long {
-        return INetStats.addIfSupported(
+        return NetStats.addIfSupported(
             TrafficStats.getMobileTxBytes(),
-            getTxBytes(INetStats.WLAN_IFACE)
+            getTxBytes(NetStats.WLAN_IFACE)
         )
     }
 
@@ -49,8 +49,8 @@ class ReflectNetStats : INetStats {
     }
 
     private fun getIFaceBytes(method: Method?, iface: String): Long {
-        if (method == null) return INetStats.UNSUPPORTED
+        if (method == null) return NetStats.UNSUPPORTED
         return method.runCatching { invoke(null, iface) as Long }
-            .getOrDefault(INetStats.UNSUPPORTED)
+            .getOrDefault(NetStats.UNSUPPORTED)
     }
 }

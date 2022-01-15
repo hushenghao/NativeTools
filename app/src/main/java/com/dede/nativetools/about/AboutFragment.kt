@@ -22,15 +22,13 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
-import com.dede.nativetools.main.NavigationBarInsets
-import com.dede.nativetools.main.SW600DP
+import com.dede.nativetools.main.applyBarsInsets
 import com.dede.nativetools.util.*
 import kotlin.random.Random
 
 /**
  * 关于项目
  */
-@NavigationBarInsets(smallestScreenWidthDp = SW600DP)
 class AboutFragment : Fragment(R.layout.fragment_about) {
 
     companion object {
@@ -59,6 +57,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         com.google.android.material.R.color.material_blue_grey_950,
         com.google.android.material.R.color.material_grey_900,
     )
+    private val outlineProvider = ViewOvalOutlineProvider(true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +67,8 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        applyBarsInsets(view, bottom = view)// navigation bar
+
         binding.tvVersion.text = requireContext().getVersionSummary()
         binding.ivGithub.setOnClickListener {
             requireContext().browse(R.string.url_github)
@@ -89,8 +90,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             viewModel.addFollowCount()
             playAnimator(true)
         }
-        binding.ivLogo.clipToOutline = true
-        binding.ivLogo.outlineProvider = ViewOvalOutlineProvider()
+        binding.ivLogo.outlineProvider = outlineProvider
         playAnimator(false)
     }
 
@@ -109,13 +109,13 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         }
         val insert = if (count == 0) template else {
             AppCompatImageView(requireContext()).apply {
-                setImageResource(R.mipmap.ic_launcher_round)
+                setImageResource(R.mipmap.ic_launcher_day_round)
                 isInvisible = true
                 layoutParams = LayoutParams(template.layoutParams as LayoutParams)
                 binding.rootAbout.addView(this, binding.rootAbout.indexOfChild(template))
             }
         }
-        followViews.add(insert)
+        followViews.add(insert.apply { outlineProvider = this@AboutFragment.outlineProvider })
         binding.ivLogo.followViews = followViews.toTypedArray()
 
         val floatEvaluator = FloatEvaluator()

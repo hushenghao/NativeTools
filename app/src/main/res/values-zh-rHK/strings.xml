@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
     <string name="app_name">網速指示器</string>
-    <string name="notify_net_speed_msg">上傳：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • 下載：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g></string>
-    <string name="notify_net_speed_sub">今日：<xliff:g example="10.5GB" id="usage">%s</xliff:g> • 本月：<xliff:g example="10.5GB" id="usage">%s</xliff:g></string>
+    <string name="notify_net_speed_msg" formatted="false">上傳：%s • 下載：%s</string>
+    <string name="notify_net_speed_sub" formatted="false">今日：%s • 本月：%s</string>
     <string name="switch_on">打開</string>
     <string name="switch_off">關閉</string>
     <string name="action_close">關閉</string>
@@ -50,13 +50,6 @@
     <string name="action_rate">給個好評</string>
     <string name="action_donate">捐贈</string>
     <string name="label_coffee">請我喝一杯咖啡？</string>
-
-    <string-array name="net_speed_mode">
-        <item>僅下載</item>
-        <item>上傳+下載</item>
-        <item>僅上傳</item>
-    </string-array>
-
     <string name="label_general">通用</string>
     <string name="label_notification">通知</string>
     <string name="label_other">其他</string>
@@ -66,6 +59,26 @@
     <string name="label_home">首頁</string>
     <string name="toast_open_battery_optimization">請找到“網速指示器”，並手動關閉</string>
     <string name="action_open_link">查看</string>
-    <string name="action_copy_link">複製連結</string>
     <string name="label_privacy_agreement">隱私協定</string>
+    <string name="label_net_speed_style">字體樣式</string>
+    <string name="label_net_speed_advanced">高級設定</string>
+    <string name="summary_net_speed_advanced">自定義顯示樣式</string>
+    <string name="label_net_speed_y_offset">Y軸偏移</string>
+    <string name="label_net_speed_relative_ratio">相對比例</string>
+    <string name="label_net_speed_relative_distance">相對距離</string>
+    <string name="label_net_speed_text_scale">文字縮放</string>
+    <string name="label_net_speed_font">字體</string>
+    <string name="summary_default">默認</string>
+    <string name="summary_text_style_normal">普通</string>
+    <string name="summary_text_style_bold">粗體</string>
+    <string name="summary_text_style_italic">斜體</string>
+    <string name="summary_text_style_bold_italic">粗斜體</string>
+    <string name="label_net_speed_x_offset">X軸偏移</string>
+    <string name="summary_mode_download">僅下載</string>
+    <string name="summary_mode_all">上傳和下載</string>
+    <string name="summary_mode_upload">僅上傳</string>
+    <string name="toast_download_font">開始字體下載</string>
+    <string name="toast_download_font_succeeded">字體下載成功</string>
+    <string name="toast_download_font_failed">字體下載失敗</string>
+    <string name="label_net_speed_horizontal_scale">X軸縮放</string>
 </resources>
