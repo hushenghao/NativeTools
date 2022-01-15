@@ -1,10 +1,13 @@
 package com.dede.nativetools.ui
 
 import android.content.Context
+import android.graphics.Paint
 import android.util.AttributeSet
+import android.widget.TextView
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.R
 import androidx.preference.SwitchPreferenceCompat
+import com.dede.nativetools.util.browse
 
 /**
  * 自定义widgetLayout的SwitchPreference
@@ -12,7 +15,7 @@ import androidx.preference.SwitchPreferenceCompat
  * @author hsh
  * @since 2021/10/9 1:40 下午
  */
-class CustomWidgetLayoutSwitchPreference @JvmOverloads constructor(
+open class CustomWidgetLayoutSwitchPreference @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.switchPreferenceCompatStyle,
@@ -25,8 +28,33 @@ class CustomWidgetLayoutSwitchPreference @JvmOverloads constructor(
             notifyChanged()
         }
 
-    override fun onBindViewHolder(holder: PreferenceViewHolder?) {
+    override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        bindCustomWidget?.invoke(holder ?: return)
+        bindCustomWidget?.invoke(holder)
+    }
+}
+
+class HideNotificationSwitchPreference @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = R.attr.switchPreferenceCompatStyle,
+    defStyleRes: Int = 0
+) : CustomWidgetLayoutSwitchPreference(context, attrs, defStyleAttr, defStyleRes) {
+
+    init {
+        widgetLayoutResource = com.dede.nativetools.R.layout.override_preference_widget_switch_compat
+        bindCustomWidget = {
+            it.findViewById(com.dede.nativetools.R.id.iv_preference_help)?.setOnClickListener {
+                context.browse("https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications")
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: PreferenceViewHolder) {
+        super.onBindViewHolder(holder)
+        val titleView = holder.findViewById(android.R.id.title) as? TextView
+        if (titleView != null) {
+            titleView.paintFlags = titleView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        }
     }
 }

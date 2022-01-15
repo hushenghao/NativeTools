@@ -107,8 +107,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         NavigationBars.setupWithNavController(
             navController, this,
             binding.bottomNavigationView,   // default
-            binding.navigationRailView,     // sw600dp
-            binding.navigationView          // sw720dp
+            binding.navigationRailView     // sw600dp
         )
 
         navController.addOnDestinationChangedListener(this)
