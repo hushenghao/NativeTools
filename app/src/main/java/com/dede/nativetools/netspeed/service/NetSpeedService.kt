@@ -20,8 +20,7 @@ class NetSpeedService : Service() {
 
     class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
-        private val coroutineScope =
-            CoroutineScope(service.lifecycleJob + Dispatchers.Main.immediate + exceptionHandler)
+        private val coroutineScope = mainScope + service.lifecycleJob
 
         override fun updateConfiguration(configuration: NetSpeedConfiguration?) {
             if (configuration == null) return
@@ -65,7 +64,7 @@ class NetSpeedService : Service() {
     private val notificationManager: NotificationManager by systemService()
     private val powerManager: PowerManager by systemService()
 
-    val lifecycleJob = SupervisorJob()
+    val lifecycleJob = Job()
 
     private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
         if (!powerManager.isInteractive) {

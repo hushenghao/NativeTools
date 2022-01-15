@@ -7,6 +7,7 @@ import androidx.annotation.WorkerThread
 import com.dede.nativetools.util.mainScope
 import com.dede.nativetools.util.requireSystemService
 import kotlinx.coroutines.*
+import java.lang.ref.WeakReference
 import java.util.*
 
 /**
@@ -55,10 +56,12 @@ object NetworkUsageUtil {
      * 获取每月网络使用字节数
      */
     fun monthNetworkUsageBytes(context: Context): Long {
+        val weakRefContext = WeakReference(context)
         monthNetworkUsageJob.execute {
+            val ctx = weakRefContext.get()?:return@execute 0
             val start = Calendar.getInstance().toZeroH()
             start.set(Calendar.DAY_OF_MONTH, 1)
-            getNetworkUsageBytesInternal(context, start)
+            getNetworkUsageBytesInternal(ctx, start)
         }
         return monthNetworkUsageJob.data
     }
@@ -67,9 +70,11 @@ object NetworkUsageUtil {
      * 获取每天网络使用字节数
      */
     fun todayNetworkUsageBytes(context: Context): Long {
+        val weakRefContext = WeakReference(context)
         todayNetworkUsageJob.execute {
+            val ctx = weakRefContext.get()?:return@execute 0
             val start = Calendar.getInstance().toZeroH()
-            getNetworkUsageBytesInternal(context, start)
+            getNetworkUsageBytesInternal(ctx, start)
         }
         return todayNetworkUsageJob.data
     }
