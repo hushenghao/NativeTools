@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--disable default AppWatcherInstaller-->
-    <bool name="leak_canary_watcher_auto_install">false</bool>
     <!--disable shortcut-->
     <bool name="leak_canary_add_dynamic_shortcut">false</bool>
 </resources>

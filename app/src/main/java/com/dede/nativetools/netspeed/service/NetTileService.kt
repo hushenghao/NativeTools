@@ -6,11 +6,11 @@ import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
 import com.dede.nativetools.R
+import com.dede.nativetools.main.MainActivity
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetSpeedCompute
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
-import com.dede.nativetools.main.MainActivity
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.newTask
 import com.dede.nativetools.util.splicing
