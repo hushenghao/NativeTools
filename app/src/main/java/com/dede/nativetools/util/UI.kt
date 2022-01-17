@@ -18,13 +18,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 import kotlin.math.roundToInt
 
-
-val resources: Resources
-    get() = globalContext.resources
-
-val smallestScreenWidthDp: Int
-    get() = resources.configuration.smallestScreenWidthDp
-
 const val SW320DP = 320
 const val SW480DP = 480
 const val SW600DP = 600
@@ -34,15 +27,24 @@ const val SW720DP = 720
 @Retention(AnnotationRetention.SOURCE)
 annotation class SW
 
-fun isAtLast(@SW swDp: Int): Boolean {
-    return smallestScreenWidthDp >= swDp
-}
+object UI {
 
-val isLandscape: Boolean
-    get() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    val resources: Resources
+        get() = globalContext.resources
 
-fun displayMetrics(): DisplayMetrics {
-    return resources.displayMetrics
+    val smallestScreenWidthDp: Int
+        get() = resources.configuration.smallestScreenWidthDp
+
+    fun isAtLast(@SW swDp: Int): Boolean {
+        return smallestScreenWidthDp >= swDp
+    }
+
+    val isLandscape: Boolean
+        get() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+    fun displayMetrics(): DisplayMetrics {
+        return resources.displayMetrics
+    }
 }
 
 /**
@@ -74,14 +76,14 @@ val Number.dp: Int
     get() = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
         this.toFloat(),
-        displayMetrics()
+        UI.displayMetrics()
     ).roundToInt()
 
 val Number.dpf: Float
     get() = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
         this.toFloat(),
-        displayMetrics()
+        UI.displayMetrics()
     )
 
 typealias DialogOnClick = (dialog: DialogInterface) -> Unit
