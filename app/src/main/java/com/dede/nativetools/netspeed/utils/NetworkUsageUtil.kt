@@ -39,13 +39,7 @@ object NetworkUsageUtil {
                 return
             }
             job = mainScope.launch {
-                val data = withTimeout(2000) {
-                    block.invoke(this)
-                }
-                // nonatomic
-                if (dataRef.get() < data) {
-                    dataRef.set(data)
-                }
+                dataRef.set(block())
             }
             job.invokeOnCompletion(this)
             this.job = job
@@ -104,7 +98,7 @@ object NetworkUsageUtil {
                 endTime
             )
         }
-        return wifiUsageBytes + mobileUsageBytes
+        return (wifiUsageBytes + mobileUsageBytes) shr 12 shl 12
     }
 
     @WorkerThread
