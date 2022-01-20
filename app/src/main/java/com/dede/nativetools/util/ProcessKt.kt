@@ -3,6 +3,7 @@
 package com.dede.nativetools.util
 
 import android.app.ActivityManager
+import android.app.Application
 import android.content.ComponentCallbacks2
 import android.content.Context
 import android.os.Build
@@ -44,6 +45,12 @@ fun Context.mainProcess(): ActivityManager.RunningAppProcessInfo? {
 }
 
 fun Context.isMainProcess(): Boolean {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        val processName = Application.getProcessName()
+        if (processName.isNotEmpty()) {
+            return processName == this.packageName
+        }
+    }
     return currentProcess().isMainProcess(this)
 }
 

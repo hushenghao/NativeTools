@@ -76,7 +76,7 @@ fun tryApplyLauncherIcon() {
         return
     }
 
-    // 子进程
+    // 子进程中获取主进程信息
     val mainProcess = context.mainProcess()
     if (mainProcess != null && mainProcess.isForeground()) {
         // 主进程还在运行中

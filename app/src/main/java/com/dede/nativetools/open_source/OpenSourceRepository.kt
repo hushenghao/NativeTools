@@ -22,7 +22,7 @@ class OpenSourceRepository {
                 "JetBrains",
                 "Write better Android apps faster with Kotlin.",
                 "https://developer.android.google.cn/kotlin",
-                R.drawable.insert_logo_kotlin_for_android,
+                R.drawable.ic_logo_kotlin_for_android,
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
             ),
             OpenSource(
