@@ -22,7 +22,7 @@ class NetSpeedServiceController(context: Context) : INetSpeedInterface.Default()
     private val closeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val onCloseCallback = onCloseCallback
-            stopService()
+            unbindService()
             NetSpeedPreferences.status = false
             onCloseCallback?.invoke()
         }
@@ -37,8 +37,9 @@ class NetSpeedServiceController(context: Context) : INetSpeedInterface.Default()
         }
     }
 
-    fun bindService() {
+    fun bindService(onCloseCallback: Function0<Unit>? = null) {
         if (!NetSpeedPreferences.status) return
+        this.onCloseCallback = onCloseCallback
         val intent = NetSpeedService.createIntent(appContext)
         appContext.bindService(intent, this, Context.BIND_AUTO_CREATE)
         appContext.registerReceiver(closeReceiver, IntentFilter(NetSpeedService.ACTION_CLOSE))
@@ -51,6 +52,7 @@ class NetSpeedServiceController(context: Context) : INetSpeedInterface.Default()
     }
 
     fun unbindService() {
+        onCloseCallback = null
         if (binder == null) {
             return
         }

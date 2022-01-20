@@ -18,7 +18,6 @@ import androidx.core.view.isInvisible
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
@@ -61,7 +60,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
         ChromeTabsBrowser.warmup(requireContext(), Uri.parse(getString(R.string.url_github)))
     }
 
@@ -162,34 +160,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             }
             start()
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_share -> {
-                requireContext().share(R.string.share_text)
-            }
-            R.id.action_get_beta -> {
-                requireContext().browse(R.string.url_pgyer)
-            }
-            R.id.action_rate -> {
-                requireContext().market(requireContext().packageName)
-            }
-            R.id.action_feedback -> {
-                requireContext().emailTo(R.string.email)
-            }
-            R.id.action_about_to_openSource,
-            R.id.action_about_to_dialogDonate -> {
-                // item.onNavDestinationSelected(findNavController())
-                findNavController().navigate(item.itemId)
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-        return true
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_about, menu)
     }
 
 }
