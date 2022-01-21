@@ -50,11 +50,6 @@ fun applyBarsInsets(
     if (left == null && top == null && right == null && bottom == null) {
         return
     }
-
-    if (!WindowPreferencesManager(root.context).isEdgeToEdgeEnabled) {
-        return
-    }
-
     root.onWindowInsetsApply { insets ->
         val systemBar = insets.systemBar()
         left?.updatePadding(left = systemBar.left)

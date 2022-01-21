@@ -51,8 +51,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val preferencesManager = WindowPreferencesManager(this)
-        preferencesManager.applyEdgeToEdgePreference(window)
+        val preferencesManager = WindowEdgeManager(this)
+        preferencesManager.applyEdgeToEdge(window)
 
         val isToggle = intent.extra(EXTRA_TOGGLE, false)
         if (isToggle) {

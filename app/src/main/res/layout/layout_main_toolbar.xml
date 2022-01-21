@@ -11,4 +11,5 @@
     app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
     app:titleCentered="true"
     app:titleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-    tools:showIn="@layout/activity_main" />
+    tools:showIn="@layout/activity_main"
+    tools:title="@string/app_name" />

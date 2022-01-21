@@ -5,6 +5,7 @@
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:key="key_other"
+        app:initialExpandedChildrenCount="5"
         app:title="@string/label_other">
 
         <SwitchPreferenceCompat
@@ -65,6 +66,5 @@
             app:key="feedback"
             app:title="@string/action_feedback" />
 
-        <com.dede.nativetools.ui.FooterPreference />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -171,7 +171,7 @@ tasks.register<Exec>("pgyer") {
         if (obj.getInt("code") == 0) {
             val path = obj.getJSONObject("data")
                 .getString("buildShortcutUrl")
-            println("Uploaded successfully: https://www.pgyer.com/$path")
+            println("Upload succeeded: https://www.pgyer.com/$path")
         } else {
             val message = obj.getString("message")
             println("Upload failed: $message")
