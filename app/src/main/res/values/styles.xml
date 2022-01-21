@@ -9,11 +9,6 @@
         <item name="android:dropDownHorizontalOffset">-6dp</item>
     </style>
 
-    <style name="Style.RoundedCornerImage" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">6dp</item>
-    </style>
-
     <style name="Style.Spinner" parent="Widget.AppCompat.Spinner">
         <item name="android:dropDownVerticalOffset">42dp</item>
         <item name="android:spinnerMode">dropdown</item>

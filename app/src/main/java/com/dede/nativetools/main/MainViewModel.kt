@@ -1,11 +1,21 @@
 package com.dede.nativetools.main
 
 import android.graphics.Rect
+import android.os.Parcelable
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.parcelize.Parcelize
 import kotlin.math.hypot
 import kotlin.math.min
+
+@Parcelize
+data class CircularReveal(
+    val centerX: Int,
+    val centerY: Int,
+    val startRadius: Float,
+    val endRadius: Float
+) : Parcelable
 
 class MainViewModel : ViewModel() {
 

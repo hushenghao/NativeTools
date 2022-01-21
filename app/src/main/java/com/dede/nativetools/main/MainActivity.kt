@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.MenuItem
 import android.view.ViewAnimationUtils
 import androidx.activity.viewModels
@@ -23,15 +22,6 @@ import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.util.*
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-data class CircularReveal(
-    val centerX: Int,
-    val centerY: Int,
-    val startRadius: Float,
-    val endRadius: Float
-) : Parcelable
 
 /**
  * Main
@@ -109,9 +99,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             binding.bottomNavigationView,   // default
             binding.navigationRailView     // sw600dp
         )
-
         navController.addOnDestinationChangedListener(this)
-
         navController.handleDeepLink(intent)
     }
 

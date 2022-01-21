@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <!-- Customize your theme here. -->
         <item name="android:windowBackgroundFallback" tools:targetApi="n">
             @drawable/layer_window_bg
@@ -22,7 +24,7 @@
         <item name="actionOverflowMenuStyle">@style/Style.ActionMenu</item>
 
         <item name="materialAlertDialogTheme">@style/Style.MaterialAlertDialog</item>
-
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Material3.BottomSheetDialog</item>
         <item name="materialCardViewStyle">?attr/materialCardViewElevatedStyle</item>
         <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
         <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
