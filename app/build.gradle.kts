@@ -69,6 +69,10 @@ android {
             )
             signingConfig = config
         }
+        create("beta") {
+            initWith(getByName("release"))
+            versionNameSuffix = "-beta"
+        }
     }
 
     viewBinding {
@@ -143,13 +147,13 @@ tasks.register<Exec>("pgyer") {
         "pgyer.api_key not found"
     }
 
-    val assemble = tasks.named("assembleRelease").get()
+    val assemble = tasks.named("assembleBeta").get()
     dependsOn("clean", assemble)
     assemble.mustRunAfter("clean")
 
-    val tree = fileTree("build/outputs/apk/release") {
+    val tree = fileTree("build/outputs/apk/beta") {
         include("*.apk")
-        builtBy("assembleRelease")
+        builtBy("assembleBeta")
     }
     doFirst {
         val apkPath = tree.single().absolutePath
