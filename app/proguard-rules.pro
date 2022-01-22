@@ -20,11 +20,7 @@
 # hide the original source file name.
 -renamesourcefileattribute SourceFile
 
-#-keepnames class androidx.preference.ExpandButton
-#-keepnames class * extends com.dede.nativetools.netspeed.stats.INetStats
-#-keepclassmembers class * extends com.dede.nativetools.netspeed.stats.INetStats {
-#   public <init>();
-#}
+-printconfiguration ./build/full-r8-config.txt
 
 -keepclassmembernames class androidx.appcompat.widget.AppCompatSpinner {
     private androidx.appcompat.widget.AppCompatSpinner$SpinnerPopup mPopup;
