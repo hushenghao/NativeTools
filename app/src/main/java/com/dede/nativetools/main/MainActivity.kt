@@ -2,15 +2,18 @@ package com.dede.nativetools.main
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewAnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.doOnAttach
+import androidx.core.view.isGone
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
@@ -22,7 +25,6 @@ import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.util.*
-import com.google.android.material.color.MaterialColors
 
 /**
  * Main
@@ -42,8 +44,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val preferencesManager = WindowEdgeManager(this)
-        preferencesManager.applyEdgeToEdge(window)
+        val windowEdgeManager = WindowEdgeManager(this)
+        windowEdgeManager.applyEdgeToEdge(window)
 
         val isToggle = intent.extra(EXTRA_TOGGLE, false)
         if (isToggle) {
@@ -71,13 +73,13 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         setContentView(R.layout.activity_main)
         setNightMode(OtherPreferences.nightMode)
-        setSupportActionBar(binding.toolbar.toolbar)
+        setSupportActionBar(binding.toolbar)
 
         applyBarsInsets(
             root = binding.root,
-            top = binding.toolbar.toolbar,  // status bar
-            left = binding.toolbar.toolbar, // navigation bar, Insert padding only in the toolbar
-            right = binding.root,           // navigation bar
+            top = binding.toolbar,  // status bar
+            left = binding.toolbar, // navigation bar, Insert padding only in the toolbar
+            right = binding.root,   // navigation bar
             // Some devices have navigation bars on the side, when landscape.
         )
 
@@ -86,8 +88,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 android.R.attr.colorBackground,
                 if (isNightMode()) Color.BLACK else Color.WHITE
             )
-            binding.navHostFragment.navHostFragment.setBackgroundColor(color)
-            window.setBackgroundDrawable(null)
+            binding.navHostFragment.setBackgroundColor(color)
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             // Remove the default background, make the 'android:windowBackgroundFallback' effect, to split screen mode.
         }
 
@@ -97,10 +99,23 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
         NavigationBars.setupWithNavController(
             navController, this,
-            binding.bottomNavigationView,   // default
-            binding.navigationRailView     // sw600dp
+            binding.bottomNavigationView,
+            binding.navigationRailView
         )
-        navController.addOnDestinationChangedListener(this)
+
+        val start = binding.root.getConstraintSet(R.id.start)
+        val end = binding.root.getConstraintSet(R.id.end)
+        if (UI.isSmallestScreenWidthDpAtLast(UI.SW600DP) || UI.isLandscape) {
+            binding.bottomNavigationView.isGone = true
+            start.setVisibility(R.id.bottom_navigation_view, View.GONE)
+            end.setVisibility(R.id.bottom_navigation_view, View.GONE)
+        } else {
+            binding.navigationRailView.isGone = true
+            start.setVisibility(R.id.navigation_rail_view, View.GONE)
+            end.setVisibility(R.id.navigation_rail_view, View.GONE)
+            navController.addOnDestinationChangedListener(this)
+        }
+
         navController.handleDeepLink(intent)
     }
 
@@ -123,13 +138,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         }
         val motionLayout = binding.root as? MotionLayout ?: return
         if (topLevelDestinationIds.contains(destination.id)) {
-            if (motionLayout.progress != 0f) {
-                motionLayout.transitionToStart()
-            }
+            motionLayout.transitionToStart()
         } else {
-            if (motionLayout.progress != 100f) {
-                motionLayout.transitionToEnd()
-            }
+            motionLayout.transitionToEnd()
         }
     }
 

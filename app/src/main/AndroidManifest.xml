@@ -28,10 +28,10 @@
     <application
         android:name=".NativeToolsApp"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher_day"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:resizeableActivity="true"
-        android:roundIcon="@mipmap/ic_launcher_day_round"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
@@ -50,8 +50,8 @@
             android:name=".main.Day"
             android:enabled="true"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_day"
-            android:roundIcon="@mipmap/ic_launcher_day_round"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
             android:targetActivity=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,7 +60,7 @@
         </activity-alias>
 
         <activity-alias
-            android:name=".main.Night"
+            android:name=".main.Night_1"
             android:enabled="false"
             android:exported="true"
             android:icon="@mipmap/ic_launcher_night"

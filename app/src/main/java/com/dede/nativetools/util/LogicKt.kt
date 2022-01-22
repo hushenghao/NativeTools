@@ -49,3 +49,10 @@ val Configuration.isNightMode: Boolean
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) this.isNightModeActive else
             this.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
+
+fun Configuration.isSmallestScreenWidthDpAtLast(swDp: Int): Boolean {
+    return this.smallestScreenWidthDp >= swDp
+}
+
+val Configuration.isLandscape: Boolean
+    get() = this.orientation == Configuration.ORIENTATION_LANDSCAPE

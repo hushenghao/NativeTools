@@ -50,7 +50,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             usageSwitchPreference.isChecked = false
         }
 
-        if (UI.isAtLast(SW600DP) || UI.isLandscape) {
+        if (UI.isSmallestScreenWidthDpAtLast(UI.SW600DP) || UI.isLandscape) {
             applyBottomBarsInsets(listView)
         }
     }
