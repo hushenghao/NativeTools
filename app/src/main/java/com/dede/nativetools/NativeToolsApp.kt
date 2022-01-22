@@ -31,7 +31,10 @@ class NativeToolsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        DynamicColors.applyToActivitiesIfAvailable(this, R.style.AppTheme)
+        DynamicColors.applyToActivitiesIfAvailable(
+            this,
+            R.style.ThemeOverlay_AppTheme_DynamicColors
+        )
         if (isMainProcess()) {
             applyLauncherIcon()
             setNightMode(OtherPreferences.nightMode)

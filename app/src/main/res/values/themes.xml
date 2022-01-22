@@ -10,16 +10,13 @@
         </item>
 
         <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
-        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
-        <item name="colorSecondary">@color/secondaryColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
-        <item name="colorOnPrimary">#fff</item>
-
+        <item name="colorOnPrimary">@android:color/white</item>
         <item name="colorPrimaryContainer">@color/primaryLightColor</item>
+
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorOnSecondary">@android:color/white</item>
         <item name="colorSecondaryContainer">@color/secondaryLightColor</item>
 
-        <!-- Panel attributes -->
         <item name="windowActionModeOverlay">true</item>
         <item name="actionOverflowMenuStyle">@style/Style.ActionMenu</item>
 
@@ -29,5 +26,9 @@
         <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
         <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
         <item name="spinnerStyle">@style/Style.Spinner</item>
+    </style>
+
+    <style name="ThemeOverlay.AppTheme.DynamicColors" parent="ThemeOverlay.Material3.DynamicColors.DayNight">
+        <item name="colorPrimary">@color/primaryColor</item>
     </style>
 </resources>

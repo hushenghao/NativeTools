@@ -5,7 +5,7 @@
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:key="key_other"
-        app:initialExpandedChildrenCount="5"
+        app:initialExpandedChildrenCount="7"
         app:title="@string/label_other">
 
         <SwitchPreferenceCompat

@@ -22,6 +22,7 @@ import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.util.*
+import com.google.android.material.color.MaterialColors
 
 /**
  * Main
