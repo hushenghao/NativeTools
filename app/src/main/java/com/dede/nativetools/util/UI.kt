@@ -2,7 +2,6 @@ package com.dede.nativetools.util
 
 import android.content.Context
 import android.content.DialogInterface
-import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Rect
 import android.util.DisplayMetrics
@@ -18,31 +17,33 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 import kotlin.math.roundToInt
 
+object UI {
 
-val resources: Resources
-    get() = globalContext.resources
+    @IntDef(flag = true, value = [UI.SW320DP, UI.SW480DP, UI.SW600DP, UI.SW720DP])
+    @Retention(AnnotationRetention.SOURCE)
+    annotation class SW
 
-val smallestScreenWidthDp: Int
-    get() = resources.configuration.smallestScreenWidthDp
+    const val SW320DP = 320
+    const val SW480DP = 480
+    const val SW600DP = 600
+    const val SW720DP = 720
 
-const val SW320DP = 320
-const val SW480DP = 480
-const val SW600DP = 600
-const val SW720DP = 720
+    val resources: Resources
+        get() = globalContext.resources
 
-@IntDef(flag = true, value = [SW320DP, SW480DP, SW600DP, SW720DP])
-@Retention(AnnotationRetention.SOURCE)
-annotation class SW
+    val smallestScreenWidthDp: Int
+        get() = resources.configuration.smallestScreenWidthDp
 
-fun isAtLast(@SW swDp: Int): Boolean {
-    return smallestScreenWidthDp >= swDp
-}
+    fun isSmallestScreenWidthDpAtLast(@SW swDp: Int): Boolean {
+        return resources.configuration.isSmallestScreenWidthDpAtLast(swDp)
+    }
 
-val isLandscape: Boolean
-    get() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    val isLandscape: Boolean
+        get() = resources.configuration.isLandscape
 
-fun displayMetrics(): DisplayMetrics {
-    return resources.displayMetrics
+    fun displayMetrics(): DisplayMetrics {
+        return resources.displayMetrics
+    }
 }
 
 /**
@@ -74,14 +75,14 @@ val Number.dp: Int
     get() = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
         this.toFloat(),
-        displayMetrics()
+        UI.displayMetrics()
     ).roundToInt()
 
 val Number.dpf: Float
     get() = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
         this.toFloat(),
-        displayMetrics()
+        UI.displayMetrics()
     )
 
 typealias DialogOnClick = (dialog: DialogInterface) -> Unit

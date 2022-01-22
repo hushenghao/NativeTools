@@ -8,7 +8,6 @@ import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
 import com.dede.nativetools.ui.SpaceItemDecoration
-import com.dede.nativetools.util.smallestScreenWidthDp
 
 typealias OnWindowInsetsListener = (insets: WindowInsetsCompat) -> Unit
 
@@ -16,7 +15,7 @@ fun WindowInsetsCompat.systemBar(): Insets =
     this.getInsets(WindowInsetsCompat.Type.systemBars())
 
 fun View.onWindowInsetsApply(listener: OnWindowInsetsListener) {
-    ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
+    ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets: WindowInsetsCompat ->
         listener.invoke(insets)
         return@setOnApplyWindowInsetsListener insets
     }
@@ -51,11 +50,6 @@ fun applyBarsInsets(
     if (left == null && top == null && right == null && bottom == null) {
         return
     }
-
-    if (!WindowPreferencesManager(root.context).isEdgeToEdgeEnabled) {
-        return
-    }
-
     root.onWindowInsetsApply { insets ->
         val systemBar = insets.systemBar()
         left?.updatePadding(left = systemBar.left)

@@ -8,13 +8,28 @@
     app:layoutDescription="@xml/activity_main_scene"
     tools:context=".main.MainActivity">
 
-    <include
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
-        layout="@layout/layout_main_content"
-        android:layout_width="match_parent"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        app:layout_constraintLeft_toRightOf="@id/navigation_rail_view"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:navGraph="@navigation/nav_graph" />
+
+    <com.google.android.material.navigationrail.NavigationRailView
+        android:id="@+id/navigation_rail_view"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:headerLayout="@layout/layout_nav_header"
+        app:labelVisibilityMode="auto"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:menu="@menu/menu_main_navigation" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_view"
@@ -22,12 +37,19 @@
         android:layout_height="wrap_content"
         app:labelVisibilityMode="auto"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nav_host_fragment"
         app:menu="@menu/menu_main_navigation" />
 
-    <include
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        layout="@layout/layout_main_toolbar"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/TextAppearance.Title"
+        tools:title="@string/app_name" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

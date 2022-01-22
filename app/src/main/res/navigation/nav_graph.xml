@@ -20,17 +20,7 @@
         android:name="com.dede.nativetools.about.AboutFragment"
         android:label="@string/label_about"
         tools:layout="@layout/fragment_about">
-        <action
-            android:id="@+id/action_about_to_openSource"
-            app:destination="@id/openSource"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <deepLink app:uri="https://dede.nativetools/about" />
-        <action
-            android:id="@+id/action_about_to_dialogDonate"
-            app:destination="@id/dialogDonate" />
     </fragment>
 
     <fragment
@@ -56,6 +46,12 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_other_to_dialogDonate"
+            app:destination="@id/dialogDonate" />
+        <action
+            android:id="@+id/action_other_to_openSource"
+            app:destination="@id/openSource" />
     </fragment>
 
     <fragment

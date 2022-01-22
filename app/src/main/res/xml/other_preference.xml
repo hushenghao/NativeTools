@@ -5,6 +5,7 @@
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:key="key_other"
+        app:initialExpandedChildrenCount="7"
         app:title="@string/label_other">
 
         <SwitchPreferenceCompat
@@ -23,10 +24,47 @@
             app:useSimpleSummaryProvider="true" />
 
         <Preference
+            app:allowDividerAbove="true"
             app:enableCopying="true"
             app:icon="@drawable/ic_outline_info"
             app:key="about"
             app:summary="@string/summary_about_version"
             app:title="@string/label_about" />
+
+        <Preference
+            app:icon="@drawable/ic_outline_coffee"
+            app:key="donate"
+            app:title="@string/action_donate" />
+
+        <Preference
+            app:icon="@drawable/ic_baseline_sentiment_very_satisfied"
+            app:key="rate"
+            app:title="@string/action_rate" />
+
+        <Preference
+            app:icon="@drawable/ic_outline_pest_control"
+            app:key="beta"
+            app:title="@string/action_beta" />
+
+        <Preference
+            app:icon="@drawable/ic_github_cat"
+            app:key="github"
+            app:title="@string/github" />
+
+        <Preference
+            app:icon="@drawable/ic_open_source_line"
+            app:key="open_source"
+            app:title="@string/label_open_source" />
+
+        <Preference
+            app:icon="@drawable/ic_action_share"
+            app:key="share"
+            app:title="@string/action_share" />
+
+        <Preference
+            app:icon="@drawable/ic_outline_feedback"
+            app:key="feedback"
+            app:title="@string/action_feedback" />
+
     </PreferenceCategory>
 </PreferenceScreen>

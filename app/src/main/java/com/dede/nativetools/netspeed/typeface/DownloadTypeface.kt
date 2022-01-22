@@ -111,9 +111,13 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
                 EXTRA_FONT_NAME to getter.fontName,
                 EXTRA_FONT_URL to getter.downloadUrl
             )
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
             val work = OneTimeWorkRequestBuilder<DownloadFontWork>()
                 .setInputMerger(OverwritingInputMerger::class)
                 .setInputData(data)
+                .setConstraints(constraints)
                 .build()
             val workManager = WorkManager.getInstance(context)
             workManager.beginWith(work)

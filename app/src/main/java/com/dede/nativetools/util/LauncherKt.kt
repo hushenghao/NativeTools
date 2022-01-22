@@ -10,6 +10,7 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.LayerDrawable
 import android.net.Uri
+import android.os.Build
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 
 private val packageName = globalContext.packageName
 private val componentDay = ComponentName(globalContext, "$packageName.main.Day")
-private val componentNight = ComponentName(globalContext, "$packageName.main.Night")
+private val componentNight = ComponentName(globalContext, "$packageName.main.Night_1")
 
 private fun createShortcutIcon(context: Context, resId: Int): IconCompat {
     val bitmap = LayerDrawable(
@@ -65,7 +66,11 @@ fun installShortcuts() {
     ShortcutManagerCompat.setDynamicShortcuts(context, shortcuts)
 }
 
+
 fun tryApplyLauncherIcon() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+        return
+    }
     val context = globalContext
     val processInfo = context.currentProcess()
     if (processInfo.isMainProcess(context)) {
@@ -76,7 +81,7 @@ fun tryApplyLauncherIcon() {
         return
     }
 
-    // 子进程
+    // 子进程中获取主进程信息
     val mainProcess = context.mainProcess()
     if (mainProcess != null && mainProcess.isForeground()) {
         // 主进程还在运行中
@@ -92,12 +97,18 @@ fun tryApplyLauncherIcon() {
 
 fun applyLauncherIcon() {
     val pm = globalContext.packageManager
-    if (isNightMode()) {
-        componentNight.enable(pm)
-        componentDay.disable(pm)
-    } else {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+        // O以下不使用动态入口
         componentDay.enable(pm)
         componentNight.disable(pm)
+    } else {
+        if (isNightMode()) {
+            componentNight.enable(pm)
+            componentDay.disable(pm)
+        } else {
+            componentDay.enable(pm)
+            componentNight.disable(pm)
+        }
     }
     installShortcuts()
 }

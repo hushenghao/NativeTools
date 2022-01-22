@@ -30,7 +30,7 @@ class OtherFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (isAtLast(SW600DP) || isLandscape) {
+        if (UI.isSmallestScreenWidthDpAtLast(UI.SW600DP) || UI.isLandscape) {
             applyBottomBarsInsets(listView)
         }
     }
@@ -82,6 +82,35 @@ class OtherFragment : PreferenceFragmentCompat() {
                     }
                     return@setOnPreferenceChangeListener true
                 }
+            }
+
+        requirePreference<Preference>(OtherPreferences.KEY_DONATE)
+            .onPreferenceClickListener {
+                findNavController().navigate(R.id.action_other_to_dialogDonate)
+            }
+        requirePreference<Preference>(OtherPreferences.KEY_RATE)
+            .onPreferenceClickListener {
+                requireContext().market(requireContext().packageName)
+            }
+        requirePreference<Preference>(OtherPreferences.KEY_BETA)
+            .onPreferenceClickListener {
+                requireContext().browse(R.string.url_pgyer)
+            }
+        requirePreference<Preference>(OtherPreferences.KEY_SHARE)
+            .onPreferenceClickListener {
+                requireContext().share(R.string.share_text)
+            }
+        requirePreference<Preference>(OtherPreferences.KEY_FEEDBACK)
+            .onPreferenceClickListener {
+                requireContext().emailTo(R.string.email)
+            }
+        requirePreference<Preference>(OtherPreferences.KEY_OPEN_SOURCE)
+            .onPreferenceClickListener {
+                findNavController().navigate(R.id.action_other_to_openSource)
+            }
+        requirePreference<Preference>(OtherPreferences.KEY_GITHUB)
+            .onPreferenceClickListener {
+                requireContext().browse(R.string.url_github)
             }
     }
 

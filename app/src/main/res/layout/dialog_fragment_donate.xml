@@ -41,6 +41,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_message"
         tools:itemCount="3"
-        tools:listitem="@layout/item_payment_layout" />
+        tools:listitem="@layout/item_payment_layout"
+        tools:paddingHorizontal="15dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

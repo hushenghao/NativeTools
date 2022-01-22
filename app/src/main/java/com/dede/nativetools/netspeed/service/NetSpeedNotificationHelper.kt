@@ -11,7 +11,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.dede.nativetools.R
-import com.dede.nativetools.main.MainActivity
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
@@ -189,10 +188,10 @@ object NetSpeedNotificationHelper {
         }
 
         if (configuration.notifyClickable) {
+            // 默认启动应用首页
             val pendingIntent = NavDeepLinkBuilder(context)
                 .setGraph(R.navigation.nav_graph)
                 .setDestination(R.id.netSpeed)
-                .setComponentName(MainActivity::class.java)
                 .createPendingIntent()
             builder.setContentIntent(pendingIntent)
         }

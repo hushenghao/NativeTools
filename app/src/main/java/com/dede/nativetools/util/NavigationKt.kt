@@ -10,9 +10,10 @@ import androidx.navigation.Navigator
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.NavigationUiSaveStateControl
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.navigationrail.NavigationRailView
 import kotlin.properties.ReadOnlyProperty
 
 /** NavController */
@@ -44,11 +45,11 @@ object NavigationBars {
     fun setupWithNavController(
         navController: NavController,
         listener: NavigationItemSelectedListener,
-        vararg navigationViews: View?
+        bottomNavigationView: BottomNavigationView,
+        navigationRailView: NavigationRailView
     ) {
-        for (navigationView in navigationViews) {
-            navigationView.setup(navController, listener)
-        }
+        bottomNavigationView.setup(navController, listener)
+        navigationRailView.setup(navController, listener)
     }
 }
 
@@ -59,8 +60,7 @@ private fun View?.setup(
     null -> Unit
     is NavigationBarView -> {
         this.setOnItemSelectedListener(listener)
-        @OptIn(NavigationUiSaveStateControl::class)
-        NavigationUI.setupWithNavController(this, navController, false)
+        NavigationUI.setupWithNavController(this, navController)
     }
     is NavigationView -> {
         this.setNavigationItemSelectedListener(listener)

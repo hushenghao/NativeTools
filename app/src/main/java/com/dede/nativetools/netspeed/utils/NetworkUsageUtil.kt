@@ -9,6 +9,7 @@ import com.dede.nativetools.util.requireSystemService
 import kotlinx.coroutines.*
 import java.lang.ref.WeakReference
 import java.util.*
+import java.util.concurrent.atomic.AtomicReference
 
 /**
  * 网络使用状态工具
@@ -26,26 +27,26 @@ object NetworkUsageUtil {
         return this
     }
 
-    private class NetworkUsageJob<T>(data: T) {
-        var data: T = data
-            private set
+    private class NetworkUsageJob<T : Comparable<T>>(data: T) : CompletionHandler {
+        private val dataRef = AtomicReference<T>(data)
+        val data: T get() = dataRef.get()
+
         private var job: Job? = null
 
         fun execute(block: suspend CoroutineScope.() -> T) {
-            val job = this.job
-            if (job != null && !job.isCompleted) {
+            var job = this.job
+            if (job != null && !job.isCompleted && !job.isCancelled) {
                 return
             }
-            this.job = mainScope.launch {
-                this@NetworkUsageJob.data = withTimeout(2000) {
-                    block.invoke(this)
-                }
-            }.apply {
-                invokeOnCompletion {
-                    it?.printStackTrace()
-                    this@NetworkUsageJob.job = null
-                }
+            job = mainScope.launch {
+                dataRef.set(block())
             }
+            job.invokeOnCompletion(this)
+            this.job = job
+        }
+
+        override fun invoke(cause: Throwable?) {
+            cause?.printStackTrace()
         }
     }
 
@@ -58,7 +59,7 @@ object NetworkUsageUtil {
     fun monthNetworkUsageBytes(context: Context): Long {
         val weakRefContext = WeakReference(context)
         monthNetworkUsageJob.execute {
-            val ctx = weakRefContext.get()?:return@execute 0
+            val ctx = weakRefContext.get() ?: return@execute 0
             val start = Calendar.getInstance().toZeroH()
             start.set(Calendar.DAY_OF_MONTH, 1)
             getNetworkUsageBytesInternal(ctx, start)
@@ -72,7 +73,7 @@ object NetworkUsageUtil {
     fun todayNetworkUsageBytes(context: Context): Long {
         val weakRefContext = WeakReference(context)
         todayNetworkUsageJob.execute {
-            val ctx = weakRefContext.get()?:return@execute 0
+            val ctx = weakRefContext.get() ?: return@execute 0
             val start = Calendar.getInstance().toZeroH()
             getNetworkUsageBytesInternal(ctx, start)
         }
@@ -97,7 +98,7 @@ object NetworkUsageUtil {
                 endTime
             )
         }
-        return wifiUsageBytes + mobileUsageBytes
+        return (wifiUsageBytes + mobileUsageBytes) shr 12 shl 12
     }
 
     @WorkerThread
@@ -106,11 +107,7 @@ object NetworkUsageUtil {
         startTime: Long,
         endTime: Long
     ): Long {
-        return this.runCatching {
-            val bucket = querySummaryForDevice(
-                networkType, null, startTime, endTime
-            )
-            bucket.rxBytes + bucket.txBytes
-        }.getOrDefault(0)
+        val bucket = querySummaryForDevice(networkType, null, startTime, endTime)
+        return bucket.rxBytes + bucket.txBytes
     }
 }

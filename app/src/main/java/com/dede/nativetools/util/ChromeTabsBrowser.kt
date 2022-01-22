@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.graphics.Color
 import android.net.Uri
+import android.os.Bundle
 import androidx.browser.customtabs.*
 import com.google.android.material.color.MaterialColors
 
@@ -22,7 +23,7 @@ object ChromeTabsBrowser {
     private const val CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome"
     private const val CUSTOM_SESSION_ID = 10
 
-    private var mayLaunchUrl: Uri? = null
+    private var mayLaunchUrls: Array<out Uri>? = null
     private val customTabsCallback = CustomTabsCallback()
     private var customTabsSession: CustomTabsSession? = null
 
@@ -33,24 +34,34 @@ object ChromeTabsBrowser {
 
         override fun onCustomTabsServiceConnected(name: ComponentName, client: CustomTabsClient) {
             val result = client.warmup(0)
-            if (result) {
-                val session = client.newSession(customTabsCallback, CUSTOM_SESSION_ID)
-                if (session != null) {
-                    customTabsSession = session
-                    if (mayLaunchUrl != null) {
-                        session.mayLaunchUrl(mayLaunchUrl, null, null)
-                    }
-                }
-            }
+            if (!result) return
+            val session = client.newSession(customTabsCallback, CUSTOM_SESSION_ID) ?: return
+
+            customTabsSession = session
+            val mayLaunchUrls = mayLaunchUrls ?: return
+            mayLaunchUrls(session, mayLaunchUrls)
         }
+    }
+
+    private fun mayLaunchUrls(session: CustomTabsSession, mayLaunchUrls: Array<out Uri>) {
+        val size = mayLaunchUrls.size
+        if (size == 0) {
+            return
+        }
+        val otherLikelyBundles = (1 until size).map {
+            val bundle = Bundle()
+            bundle.putParcelable(CustomTabsService.KEY_URL, mayLaunchUrls[it])
+            bundle
+        }.toList()
+        session.mayLaunchUrl(mayLaunchUrls[0], null, otherLikelyBundles)
     }
 
     /**
      * 预热并预加载
      */
-    fun warmup(context: Context, mayLaunchUrl: Uri? = null) {
+    fun warmup(context: Context, vararg mayLaunchUrls: Uri) {
         if (customTabsSession != null) return
-        this.mayLaunchUrl = mayLaunchUrl
+        this.mayLaunchUrls = mayLaunchUrls
         val appContext = context.applicationContext
         CustomTabsClient.bindCustomTabsService(
             appContext,

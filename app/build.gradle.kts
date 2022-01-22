@@ -21,8 +21,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 49
-        versionName = "3.4.0"
+        versionCode = 50
+        versionName = "3.5.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(
@@ -68,6 +68,10 @@ android {
                 "proguard-rules.pro"
             )
             signingConfig = config
+        }
+        create("beta") {
+            initWith(getByName("release"))
+            versionNameSuffix = "-beta"
         }
     }
 
@@ -143,13 +147,13 @@ tasks.register<Exec>("pgyer") {
         "pgyer.api_key not found"
     }
 
-    val assemble = tasks.named("assembleRelease").get()
+    val assemble = tasks.named("assembleBeta").get()
     dependsOn("clean", assemble)
     assemble.mustRunAfter("clean")
 
-    val tree = fileTree("build/outputs/apk/release") {
+    val tree = fileTree("build/outputs/apk/beta") {
         include("*.apk")
-        builtBy("assembleRelease")
+        builtBy("assembleBeta")
     }
     doFirst {
         val apkPath = tree.single().absolutePath
@@ -171,7 +175,7 @@ tasks.register<Exec>("pgyer") {
         if (obj.getInt("code") == 0) {
             val path = obj.getJSONObject("data")
                 .getString("buildShortcutUrl")
-            println("Uploaded successfully: https://www.pgyer.com/$path")
+            println("Upload succeeded: https://www.pgyer.com/$path")
         } else {
             val message = obj.getString("message")
             println("Upload failed: $message")

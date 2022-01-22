@@ -8,8 +8,9 @@
     android:background="?attr/selectableItemBackground"
     app:contentPaddingBottom="10dp"
     app:contentPaddingTop="10dp"
-    app:shapeAppearance="@style/Style.RoundedCornerImage"
+    app:shapeAppearance="@style/ShapeAppearance.Material3.MediumComponent"
     app:strokeColor="?colorControlHighlight"
     app:strokeWidth="1dp"
+    tools:background="@android:color/white"
     tools:src="@drawable/img_logo_paypal" />
 

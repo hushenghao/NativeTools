@@ -30,7 +30,6 @@ class AndroidView @JvmOverloads constructor(
 
     companion object {
         private const val ANIMATOR_DURATION = 600L
-        private const val ANIMATOR_DELAY = 1500L
     }
 
     init {
