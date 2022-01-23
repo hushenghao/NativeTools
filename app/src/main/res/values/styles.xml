@@ -14,7 +14,4 @@
         <item name="android:spinnerMode">dropdown</item>
     </style>
 
-    <style name="TextAppearance.Title" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:textSize">20sp</item>
-    </style>
 </resources>

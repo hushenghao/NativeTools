@@ -7,6 +7,7 @@ import android.graphics.Rect
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.IntDef
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
@@ -16,6 +17,9 @@ import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 import kotlin.math.roundToInt
+
+const val matchParent = ViewGroup.LayoutParams.MATCH_PARENT
+const val wrapContent = ViewGroup.LayoutParams.WRAP_CONTENT
 
 object UI {
 

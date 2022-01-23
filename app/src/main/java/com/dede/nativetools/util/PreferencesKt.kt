@@ -70,3 +70,11 @@ fun Preference.onPreferenceClickListener(listener: (preference: Preference) -> U
         true
     }
 }
+
+fun <T> Preference.onPreferenceChangeListener(listener: (preference: Preference, newValue: T) -> Unit) {
+    this.onPreferenceChangeListener =
+        Preference.OnPreferenceChangeListener { preference, newValue ->
+            listener.invoke(preference, newValue as T)
+            true
+        }
+}

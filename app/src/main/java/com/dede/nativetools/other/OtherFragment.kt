@@ -3,6 +3,7 @@ package com.dede.nativetools.other
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
@@ -24,8 +25,13 @@ class OtherFragment : PreferenceFragmentCompat() {
 
     private lateinit var preferenceIgnoreBatteryOptimize: SwitchPreferenceCompat
 
-    private val delayChangeNightMode = Runnable {
-        setNightMode(OtherPreferences.nightMode)
+    private var changeNightModeRunnableRunnable: ChangeNightModeRunnable? = null
+
+    private class ChangeNightModeRunnable(val mode: Int) : Runnable {
+        override fun run() {
+            Log.i("ChangeNightModeRunnable", "run: " + mode)
+            setNightMode(mode)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,17 +60,20 @@ class OtherFragment : PreferenceFragmentCompat() {
                 val decorView = requireActivity().window.decorView
                 mainViewModel.setCircularReveal(decorView, rect)
             }
-            it.setOnPreferenceChangeListener { _, _ ->
+            it.onPreferenceChangeListener<String> { _, newValue ->
+//                setNightMode(newValue.toInt())
+                removeDelay()
+                val runnable = ChangeNightModeRunnable(newValue.toInt()).apply {
+                    this@OtherFragment.changeNightModeRunnableRunnable = this
+                }
                 // Wait for Popup to dismiss
-                uiHandler.postDelayed(delayChangeNightMode, 300)
-                return@setOnPreferenceChangeListener true
+                uiHandler.postDelayed(runnable, 300)
             }
         }
 
         preferenceIgnoreBatteryOptimize =
             requirePreference<SwitchPreferenceCompat>(OtherPreferences.KEY_IGNORE_BATTERY_OPTIMIZE).apply {
-                setOnPreferenceChangeListener { _, newValue ->
-                    val ignoreBatteryOptimization = newValue as Boolean
+                onPreferenceChangeListener<Boolean> { _, ignoreBatteryOptimization ->
                     if (ignoreBatteryOptimization) {
                         @SuppressLint("BatteryLife")
                         val intent = Intent(
@@ -80,7 +89,6 @@ class OtherFragment : PreferenceFragmentCompat() {
                         startActivity(intent)
                         toast(getString(R.string.toast_open_battery_optimization))
                     }
-                    return@setOnPreferenceChangeListener true
                 }
             }
 
@@ -123,8 +131,15 @@ class OtherFragment : PreferenceFragmentCompat() {
         checkIgnoreBatteryOptimize()
     }
 
+    private fun removeDelay() {
+        val delayChangeNightMode = changeNightModeRunnableRunnable
+        if (delayChangeNightMode != null) {
+            uiHandler.removeCallbacks(delayChangeNightMode)
+        }
+    }
+
     override fun onDestroyView() {
-        uiHandler.removeCallbacks(delayChangeNightMode)
+        removeDelay()
         super.onDestroyView()
     }
 

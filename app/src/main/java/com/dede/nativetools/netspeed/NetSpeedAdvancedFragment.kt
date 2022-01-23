@@ -5,14 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.preference.PreferenceFragmentCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.LayoutNetSpeedAdvancedHeaderBinding
+import com.dede.nativetools.main.applyBarsInsets
 import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.netspeed.service.NetSpeedServiceController
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.ui.SliderPreference
+import com.dede.nativetools.util.UI
 import com.dede.nativetools.util.globalPreferences
+import com.dede.nativetools.util.matchParent
 import com.dede.nativetools.util.requirePreference
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
@@ -44,7 +49,25 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState)?.apply {
             binding = LayoutNetSpeedAdvancedHeaderBinding.inflate(LayoutInflater.from(this.context))
-            (this as ViewGroup).addView(binding.root, 0)
+            val listContainer = this.findViewById<FrameLayout>(android.R.id.list_container)
+            val viewGroup = this as ViewGroup
+            val index = viewGroup.indexOfChild(listContainer)
+            val linearLayout = LinearLayout(viewGroup.context)
+            viewGroup.removeView(listContainer)
+            viewGroup.addView(linearLayout, index, listContainer.layoutParams)
+            val headerParams: LinearLayout.LayoutParams
+            val listParams: LinearLayout.LayoutParams
+            if (UI.isLandscape || UI.isSmallestScreenWidthDpAtLast(UI.SW480DP)) {
+                linearLayout.orientation = LinearLayout.HORIZONTAL
+                headerParams = LinearLayout.LayoutParams(0, matchParent, 2f)
+                listParams = LinearLayout.LayoutParams(0, matchParent, 3f)
+            } else {
+                linearLayout.orientation = LinearLayout.VERTICAL
+                headerParams = LinearLayout.LayoutParams(matchParent, 0, 1f)
+                listParams = LinearLayout.LayoutParams(matchParent, 0, 3f)
+            }
+            linearLayout.addView(binding.root, headerParams)
+            linearLayout.addView(listContainer, listParams)
         }
     }
 
@@ -76,6 +99,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         controller.bindService()
 
         applyBottomBarsInsets(listView)
+        applyBarsInsets(view, bottom = binding.root)
         updatePreview(configuration)
     }
 
