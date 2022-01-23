@@ -44,33 +44,11 @@
                 <!-- 重载tile长按事件 -->
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-
-        <activity-alias
-            android:name=".main.Day"
-            android:enabled="true"
-            android:exported="true"
-            android:icon="@mipmap/ic_launcher"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:targetActivity=".main.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-
-        <activity-alias
-            android:name=".main.Night_1"
-            android:enabled="false"
-            android:exported="true"
-            android:icon="@mipmap/ic_launcher_night"
-            android:roundIcon="@mipmap/ic_launcher_night_round"
-            android:targetActivity=".main.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
 
         <!-- https://developer.android.com/about/versions/12/behavior-changes-12#exported -->
         <service

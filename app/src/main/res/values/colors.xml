@@ -3,11 +3,10 @@
     <color name="tint_github_logo">#000</color>
     <color name="ting_material_logo">#1F1F1F</color>
 
-    <!-- https://material-foundation.github.io/material-theme-builder -->
     <!-- http://zhongguose.com -->
     <!-- 深灰蓝 -->
-    <color name="ic_launcher_background">#C02C38</color>
-    <color name="ic_launcher_night_background">#132C33</color>
+    <!-- https://material-foundation.github.io/material-theme-builder -->
+    <color name="ic_launcher_background">#132C33</color>
 
     <color name="md_theme_primary">#00677C</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
