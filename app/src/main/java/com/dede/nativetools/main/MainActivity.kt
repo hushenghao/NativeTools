@@ -7,11 +7,16 @@ import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewAnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.doOnAttach
 import androidx.core.view.isGone
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -24,7 +29,8 @@ import com.dede.nativetools.util.*
 /**
  * Main
  */
-class MainActivity : AppCompatActivity(), NavigationBars.NavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
+    NavigationBars.NavigationItemSelectedListener {
 
     companion object {
         const val EXTRA_TOGGLE = "extra_toggle"
@@ -97,12 +103,30 @@ class MainActivity : AppCompatActivity(), NavigationBars.NavigationItemSelectedL
         )
 
         if (UI.isWideSize()) {
-            binding.bottomNavigationView.isGone = true
+            // hide bottomNavigationView
+            binding.root.getConstraintSet(R.id.start)
+                .setVisibility(R.id.bottom_navigation_view, View.GONE)
         } else {
             binding.navigationRailView.isGone = true
+            navController.addOnDestinationChangedListener(this)
         }
 
         navController.handleDeepLink(intent)
+    }
+
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
+        if (destination is DialogFragmentNavigator.Destination) {
+            return
+        }
+        if (topLevelDestinationIds.contains(destination.id)) {
+            binding.root.transitionToStart()
+        } else {
+            binding.root.transitionToEnd()
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
