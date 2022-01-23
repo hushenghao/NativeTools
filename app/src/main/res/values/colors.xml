@@ -3,19 +3,18 @@
     <color name="tint_github_logo">#000</color>
     <color name="ting_material_logo">#1F1F1F</color>
 
-    <!-- https://material.io/tools/color -->
+    <!-- https://material-foundation.github.io/material-theme-builder -->
     <!-- http://zhongguose.com -->
-    <!-- 高粱红 -->
-    <!-- 莓红 -->
-    <color name="primaryColor">#c02c38</color>
-    <color name="primaryLightColor">#f86162</color>
-    <color name="primaryDarkColor">#890012</color>
-    <color name="secondaryColor">#c45a65</color>
-    <color name="secondaryLightColor">#fa8a93</color>
-    <color name="secondaryDarkColor">#902b3b</color>
-    <color name="primaryTextColor">#ffffff</color>
-    <color name="secondaryTextColor">#000000</color>
-
+    <!-- 深灰蓝 -->
     <color name="ic_launcher_background">#C02C38</color>
     <color name="ic_launcher_night_background">#132C33</color>
+
+    <color name="md_theme_primary">#00677C</color>
+    <color name="md_theme_onPrimary">#FFFFFF</color>
+    <color name="md_theme_primaryContainer">#ACECFF</color>
+    <color name="md_theme_onPrimaryContainer">#001F27</color>
+    <color name="md_theme_secondary">#4B6269</color>
+    <color name="md_theme_onSecondary">#FFFFFF</color>
+    <color name="md_theme_secondaryContainer">#CEE7F0</color>
+    <color name="md_theme_onSecondaryContainer">#061E25</color>
 </resources>

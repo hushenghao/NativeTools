@@ -39,12 +39,10 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private val viewModel by viewModels<AboutViewModel>()
     private var toasted = false
     private val colorIds: IntArray = intArrayOf(
-        R.color.secondaryColor,
-        R.color.secondaryDarkColor,
-        R.color.secondaryLightColor,
-        R.color.primaryColor,
-        R.color.primaryDarkColor,
-        R.color.primaryLightColor,
+        R.color.md_theme_secondary,
+        R.color.md_theme_secondaryContainer,
+        R.color.md_theme_primary,
+        R.color.md_theme_primaryContainer,
         android.R.color.black,
         android.R.color.holo_red_light,
         android.R.color.holo_blue_light,
@@ -83,7 +81,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             }
         }
         binding.ivLogo.dragEnable = false
-        binding.ivLogo.setTintColor(R.color.primaryColor)
+        binding.ivLogo.setTintColor(R.color.md_theme_primary)
         binding.ivLogo.setOnClickListener {
             viewModel.addFollowCount()
             playAnimator(true)

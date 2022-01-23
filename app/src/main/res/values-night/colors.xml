@@ -2,14 +2,12 @@
     <color name="tint_github_logo">#F0F6FC</color>
     <color name="ting_material_logo">#8F8F8F</color>
 
-    <!-- 深灰蓝 -->
-    <!-- 黄昏灰 -->
-    <color name="primaryColor">#132c33</color>
-    <color name="primaryLightColor">#3c555c</color>
-    <color name="primaryDarkColor">#00000c</color>
-    <color name="secondaryColor">#474b4c</color>
-    <color name="secondaryLightColor">#727778</color>
-    <color name="secondaryDarkColor">#202324</color>
-    <color name="primaryTextColor">#ffffff</color>
-    <color name="secondaryTextColor">#ffffff</color>
+    <color name="md_theme_primary">#58D6F7</color>
+    <color name="md_theme_onPrimary">#003642</color>
+    <color name="md_theme_primaryContainer">#004E5E</color>
+    <color name="md_theme_onPrimaryContainer">#ACECFF</color>
+    <color name="md_theme_secondary">#B2CAD3</color>
+    <color name="md_theme_onSecondary">#1D343B</color>
+    <color name="md_theme_secondaryContainer">#344A51</color>
+    <color name="md_theme_onSecondaryContainer">#CEE7F0</color>
 </resources>

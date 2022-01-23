@@ -7,13 +7,14 @@ import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewAnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.view.doOnAttach
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
@@ -103,16 +104,12 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             binding.navigationRailView
         )
 
-        val start = binding.root.getConstraintSet(R.id.start)
-        val end = binding.root.getConstraintSet(R.id.end)
         if (UI.isSmallestScreenWidthDpAtLast(UI.SW600DP) || UI.isLandscape) {
+            binding.navigationRailView.isVisible = true
             binding.bottomNavigationView.isGone = true
-            start.setVisibility(R.id.bottom_navigation_view, View.GONE)
-            end.setVisibility(R.id.bottom_navigation_view, View.GONE)
         } else {
+            binding.bottomNavigationView.isVisible = true
             binding.navigationRailView.isGone = true
-            start.setVisibility(R.id.navigation_rail_view, View.GONE)
-            end.setVisibility(R.id.navigation_rail_view, View.GONE)
             navController.addOnDestinationChangedListener(this)
         }
 
@@ -136,7 +133,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         if (destination is DialogFragmentNavigator.Destination) {
             return
         }
-        val motionLayout = binding.root as? MotionLayout ?: return
+        val motionLayout = binding.motionLayout as? MotionLayout ?: return
         if (topLevelDestinationIds.contains(destination.id)) {
             motionLayout.transitionToStart()
         } else {
