@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity(), NavigationBars.NavigationItemSelectedL
             binding.navigationRailView
         )
 
-        if (UI.isSmallestScreenWidthDpAtLast(UI.SW600DP) || UI.isLandscape) {
+        if (UI.isWideSize()) {
             binding.bottomNavigationView.isGone = true
         } else {
             binding.navigationRailView.isGone = true

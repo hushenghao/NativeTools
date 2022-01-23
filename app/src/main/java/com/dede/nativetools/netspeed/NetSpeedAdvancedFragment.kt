@@ -50,14 +50,14 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         return super.onCreateView(inflater, container, savedInstanceState)?.apply {
             binding = LayoutNetSpeedAdvancedHeaderBinding.inflate(LayoutInflater.from(this.context))
             val listContainer = this.findViewById<FrameLayout>(android.R.id.list_container)
-            val viewGroup = this as ViewGroup
+            val viewGroup = listContainer.parent as ViewGroup
             val index = viewGroup.indexOfChild(listContainer)
             val linearLayout = LinearLayout(viewGroup.context)
             viewGroup.removeView(listContainer)
-            viewGroup.addView(linearLayout, index, listContainer.layoutParams)
+            viewGroup.addView(linearLayout, index)
             val headerParams: LinearLayout.LayoutParams
             val listParams: LinearLayout.LayoutParams
-            if (UI.isLandscape || UI.isSmallestScreenWidthDpAtLast(UI.SW480DP)) {
+            if (UI.isWideSize()) {
                 linearLayout.orientation = LinearLayout.HORIZONTAL
                 headerParams = LinearLayout.LayoutParams(0, matchParent, 2f)
                 listParams = LinearLayout.LayoutParams(0, matchParent, 3f)
@@ -99,7 +99,9 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         controller.bindService()
 
         applyBottomBarsInsets(listView)
-        applyBarsInsets(view, bottom = binding.root)
+        if (UI.isWideSize()) {
+            applyBarsInsets(view, bottom = binding.root)
+        }
         updatePreview(configuration)
     }
 

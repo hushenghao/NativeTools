@@ -36,7 +36,7 @@ class OtherFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (UI.isSmallestScreenWidthDpAtLast(UI.SW600DP) || UI.isLandscape) {
+        if (UI.isWideSize()) {
             applyBottomBarsInsets(listView)
         }
     }

@@ -45,6 +45,10 @@ object UI {
     val isLandscape: Boolean
         get() = resources.configuration.isLandscape
 
+    fun isWideSize():Boolean {
+        return isLandscape || isSmallestScreenWidthDpAtLast(SW600DP)
+    }
+
     fun displayMetrics(): DisplayMetrics {
         return resources.displayMetrics
     }
