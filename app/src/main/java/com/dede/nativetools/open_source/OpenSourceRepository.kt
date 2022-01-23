@@ -96,6 +96,14 @@ class OpenSourceRepository {
                 "https://fonts.google.com",
                 R.drawable.ic_logo_googlefonts,
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            ),
+            OpenSource(
+                "Material Theme Builder",
+                "Google",
+                "Visualize dynamic color, build a custom theme, and export to code.",
+                "https://github.com/material-foundation/material-theme-builder",
+                R.drawable.ic_logo_material3,
+                "https://www.apache.org/licenses/LICENSE-2.0.txt"
             )
         )
     }
