@@ -3,10 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/ripple_primary_color"
-    android:clickable="true"
-    android:focusable="true">
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_height="match_parent" />
 
     <ImageView
         android:id="@+id/iv_preview"
@@ -18,7 +21,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_launcher_icon"
-        tools:tint="@android:color/white" />
+        app:tint="?attr/colorControlNormal"
+        tools:src="@drawable/ic_launcher_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

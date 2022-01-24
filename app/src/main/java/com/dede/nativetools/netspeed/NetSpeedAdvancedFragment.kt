@@ -1,5 +1,6 @@
 package com.dede.nativetools.netspeed
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -49,6 +50,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState)?.apply {
             binding = LayoutNetSpeedAdvancedHeaderBinding.inflate(LayoutInflater.from(this.context))
+            @SuppressLint("InlinedApi")
             val listContainer = this.findViewById<FrameLayout>(android.R.id.list_container)
             val viewGroup = listContainer.parent as ViewGroup
             val index = viewGroup.indexOfChild(listContainer)

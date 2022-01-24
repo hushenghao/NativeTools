@@ -6,12 +6,10 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewAnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.doOnAttach
 import androidx.core.view.isGone
 import androidx.navigation.NavController
@@ -29,8 +27,7 @@ import com.dede.nativetools.util.*
 /**
  * Main
  */
-class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
-    NavigationBars.NavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
     companion object {
         const val EXTRA_TOGGLE = "extra_toggle"
@@ -97,14 +94,14 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds).build()
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
         NavigationBars.setupWithNavController(
-            navController, this,
+            navController,
             binding.bottomNavigationView,
             binding.navigationRailView
         )
 
         if (UI.isWideSize()) {
             // hide bottomNavigationView
-            binding.root.getConstraintSet(R.id.start)
+            binding.motionLayout.getConstraintSet(R.id.start)
                 .setVisibility(R.id.bottom_navigation_view, View.GONE)
         } else {
             binding.navigationRailView.isGone = true
@@ -123,9 +120,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             return
         }
         if (topLevelDestinationIds.contains(destination.id)) {
-            binding.root.transitionToStart()
+            binding.motionLayout.transitionToStart()
         } else {
-            binding.root.transitionToEnd()
+            binding.motionLayout.transitionToEnd()
         }
     }
 
@@ -136,10 +133,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp()
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(item, navController)
     }
 
 }

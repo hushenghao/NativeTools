@@ -39,31 +39,26 @@ internal inline fun <reified T : Navigator<*>> NavController.getNavigator(): T {
 
 object NavigationBars {
 
-    interface NavigationItemSelectedListener : NavigationBarView.OnItemSelectedListener,
-        NavigationView.OnNavigationItemSelectedListener
-
     fun setupWithNavController(
         navController: NavController,
-        listener: NavigationItemSelectedListener,
         bottomNavigationView: BottomNavigationView,
-        navigationRailView: NavigationRailView
+        navigationRailView: NavigationRailView,
+        navigationView: NavigationView? = null
     ) {
-        bottomNavigationView.setup(navController, listener)
-        navigationRailView.setup(navController, listener)
+        bottomNavigationView.setup(navController)
+        navigationRailView.setup(navController)
+        navigationView?.setup(navController)
     }
 }
 
 private fun View?.setup(
     navController: NavController,
-    listener: NavigationBars.NavigationItemSelectedListener
 ) = when (this) {
     null -> Unit
     is NavigationBarView -> {
-        this.setOnItemSelectedListener(listener)
         NavigationUI.setupWithNavController(this, navController)
     }
     is NavigationView -> {
-        this.setNavigationItemSelectedListener(listener)
         NavigationUI.setupWithNavController(this, navController)
     }
     else -> throw IllegalArgumentException("${this.javaClass} don`t impl")

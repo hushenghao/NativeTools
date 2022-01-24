@@ -71,6 +71,7 @@ fun Preference.onPreferenceClickListener(listener: (preference: Preference) -> U
     }
 }
 
+@Suppress("UNCHECKED_CAST")
 fun <T> Preference.onPreferenceChangeListener(listener: (preference: Preference, newValue: T) -> Unit) {
     this.onPreferenceChangeListener =
         Preference.OnPreferenceChangeListener { preference, newValue ->
