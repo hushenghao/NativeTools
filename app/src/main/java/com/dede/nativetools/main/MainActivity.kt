@@ -1,22 +1,24 @@
 package com.dede.nativetools.main
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewAnimationUtils
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.LayoutInflaterCompat
 import androidx.core.view.doOnAttach
 import androidx.core.view.isGone
-import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -24,7 +26,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.service.NetSpeedService
@@ -40,7 +41,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         const val EXTRA_TOGGLE = "extra_toggle"
     }
 
-    private val binding by viewBinding(ActivityMainBinding::bind)
+    // private val binding by viewBinding(ActivityMainBinding::bind)
+    private lateinit var binding: ActivityMainBinding
     private val navController by navController(R.id.nav_host_fragment)
     private val topLevelDestinationIds = intArrayOf(R.id.netSpeed, R.id.other)
 
@@ -48,15 +50,16 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val windowEdgeManager = WindowEdgeManager(this)
-        windowEdgeManager.applyEdgeToEdge(window)
-
         val isToggle = intent.extra(EXTRA_TOGGLE, false)
         if (isToggle) {
             NetSpeedService.toggle(this)
             finish()
             return
         }
+
+        val windowEdgeManager = WindowEdgeManager(this)
+        windowEdgeManager.applyEdgeToEdge(window)
+        setNightMode(OtherPreferences.nightMode)
 
         val circularReveal = viewModel.getCircularRevealAndClean()
         if (circularReveal != null) {
@@ -75,8 +78,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             }
         }
 
-        setContentView(R.layout.activity_main)
-        setNightMode(OtherPreferences.nightMode)
+        val isWideSizeMode = UI.isWideSize()
+        binding = ActivityMainBinding.inflate(getLayoutInflater(!isWideSizeMode))
+        setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
         applyBarsInsets(
@@ -99,7 +103,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             // Remove the default background, make the 'android:windowBackgroundFallback' effect, to split screen mode.
         }
 
-        val isWideSizeMode = UI.isWideSize()
         NavFragmentAssistant(supportFragmentManager)
             .setupWithNavFragment(R.id.nav_host_fragment)
         val appBarBuilder = AppBarConfiguration.Builder(*topLevelDestinationIds)
@@ -110,7 +113,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 binding.navigationView.inflateHeaderView(R.layout.layout_navigation_header)
             headerView.findViewById<TextView>(R.id.tv_version).text = this.getVersionSummary()
             // hide bottomNavigationView
-            binding.motionLayout.transitionToEnd()
+            binding.bottomNavigationView.isGone = true
         } else {
             // lock drawer
             binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -166,4 +169,35 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         return navController.navigateUp()
     }
 
+    private fun getLayoutInflater(enableScene: Boolean): LayoutInflater {
+        val layoutInflater = this.layoutInflater
+        if (enableScene) {
+            return layoutInflater
+        }
+        val cloneInflater = layoutInflater.cloneInContext(this)
+        LayoutInflaterCompat.setFactory2(cloneInflater, MotionLayoutFactory())
+        return cloneInflater
+    }
+
+    private class MotionLayoutFactory : LayoutInflater.Factory2 {
+        override fun onCreateView(
+            parent: View?,
+            name: String,
+            context: Context,
+            attrs: AttributeSet
+        ): View? {
+            if (name == MotionLayout::class.qualifiedName) {
+                // remove app:layoutDescription="@xml/activity_main_scene", disable scene
+                val template = MotionLayout(context, attrs)
+                return MotionLayout(context).apply {
+                    id = template.id
+                }
+            }
+            return null
+        }
+
+        override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+            return null
+        }
+    }
 }
