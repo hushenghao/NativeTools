@@ -6,12 +6,19 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
-import android.view.View
+import android.view.MenuItem
 import android.view.ViewAnimationUtils
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.doOnAttach
 import androidx.core.view.isGone
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
@@ -74,10 +81,13 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         applyBarsInsets(
             root = binding.root,
-            left = binding.toolbar, // navigation bar, Insert padding only in the toolbar
-            right = binding.root,   // navigation bar
+            left = binding.toolbar,         // navigation bar, Insert padding only in the toolbar
+            right = binding.motionLayout,   // navigation bar
             // Some devices have navigation bars on the side, when landscape.
-        )
+        ) {
+            val systemBar = it.systemBar()
+            binding.navigationView.updatePadding(left = systemBar.left)
+        }
 
         if (VERSION.SDK_INT >= VERSION_CODES.N) {
             val color = this.color(
@@ -89,24 +99,32 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             // Remove the default background, make the 'android:windowBackgroundFallback' effect, to split screen mode.
         }
 
+        val isWideSizeMode = UI.isWideSize()
         NavFragmentAssistant(supportFragmentManager)
             .setupWithNavFragment(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds).build()
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
-        NavigationBars.setupWithNavController(
-            navController,
-            binding.bottomNavigationView,
-            binding.navigationRailView
-        )
-
-        if (UI.isWideSize()) {
+        val appBarBuilder = AppBarConfiguration.Builder(*topLevelDestinationIds)
+        if (isWideSizeMode) {
+            // bind drawer
+            appBarBuilder.setOpenableLayout(binding.drawerLayout)
+            val headerView =
+                binding.navigationView.inflateHeaderView(R.layout.layout_navigation_header)
+            headerView.findViewById<TextView>(R.id.tv_version).text = this.getVersionSummary()
             // hide bottomNavigationView
-            binding.motionLayout.getConstraintSet(R.id.start)
-                .setVisibility(R.id.bottom_navigation_view, View.GONE)
+            binding.motionLayout.transitionToEnd()
         } else {
+            // lock drawer
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            // hide navigationRailView
             binding.navigationRailView.isGone = true
             navController.addOnDestinationChangedListener(this)
         }
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarBuilder.build())
+        NavigationBars.setupWithNavController(
+            navController = navController,
+            bottomNavigationView = binding.bottomNavigationView,
+            navigationRailView = binding.navigationRailView,
+            navigationView = binding.navigationView
+        )
 
         navController.handleDeepLink(intent)
     }
@@ -124,6 +142,19 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         } else {
             binding.motionLayout.transitionToEnd()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val currentDestination = navController.currentDestination
+        if (currentDestination != null) {
+            if (topLevelDestinationIds.contains(currentDestination.id)) {
+                if (item.itemId == android.R.id.home) {
+                    binding.drawerLayout.open()
+                    return true
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onNewIntent(intent: Intent?) {

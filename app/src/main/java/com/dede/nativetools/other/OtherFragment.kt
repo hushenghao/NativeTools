@@ -3,7 +3,6 @@ package com.dede.nativetools.other
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
@@ -29,7 +28,6 @@ class OtherFragment : PreferenceFragmentCompat() {
 
     private class ChangeNightModeRunnable(val mode: Int) : Runnable {
         override fun run() {
-            Log.i("ChangeNightModeRunnable", "run: " + mode)
             setNightMode(mode)
         }
     }

@@ -9,15 +9,15 @@
             @drawable/layer_window_bg
         </item>
 
-        <item name="windowActionModeOverlay">true</item>
-        <item name="actionOverflowMenuStyle">@style/Style.ActionMenu</item>
+<!--        <item name="windowActionModeOverlay">true</item>-->
+<!--        <item name="actionOverflowMenuStyle">@style/Style.ActionMenu</item>-->
 
         <item name="materialAlertDialogTheme">@style/Style.MaterialAlertDialog</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Material3.BottomSheetDialog</item>
         <item name="materialCardViewStyle">?attr/materialCardViewElevatedStyle</item>
-        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
-        <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
-        <item name="spinnerStyle">@style/Style.Spinner</item>
+<!--        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>-->
+<!--        <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>-->
+<!--        <item name="spinnerStyle">@style/Style.Spinner</item>-->
     </style>
 
     <style name="AppTheme" parent="BasicAppTheme">

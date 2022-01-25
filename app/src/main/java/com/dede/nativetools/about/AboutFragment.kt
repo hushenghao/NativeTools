@@ -81,7 +81,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             }
         }
         binding.ivLogo.dragEnable = false
-        binding.ivLogo.setTintColor(R.color.md_theme_primary)
         binding.ivLogo.setOnClickListener {
             viewModel.addFollowCount()
             playAnimator(true)

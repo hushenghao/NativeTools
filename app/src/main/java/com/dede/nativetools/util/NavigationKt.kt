@@ -41,13 +41,13 @@ object NavigationBars {
 
     fun setupWithNavController(
         navController: NavController,
-        bottomNavigationView: BottomNavigationView,
-        navigationRailView: NavigationRailView,
+        bottomNavigationView: BottomNavigationView? = null,
+        navigationRailView: NavigationRailView? = null,
         navigationView: NavigationView? = null
     ) {
         bottomNavigationView.setup(navController)
         navigationRailView.setup(navController)
-        navigationView?.setup(navController)
+        navigationView.setup(navController)
     }
 }
 

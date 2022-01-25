@@ -47,7 +47,7 @@ fun applyBarsInsets(
     bottom: View? = null,
     listener: OnWindowInsetsListener? = null
 ) {
-    if (left == null && top == null && right == null && bottom == null) {
+    if (left == null && top == null && right == null && bottom == null && listener == null) {
         return
     }
     root.onWindowInsetsApply { insets ->
