@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     }
 
     private fun getLayoutInflater(enableScene: Boolean): LayoutInflater {
-        val layoutInflater = this.layoutInflater
+        val layoutInflater = LayoutInflater.from(this)
         if (enableScene) {
             return layoutInflater
         }
