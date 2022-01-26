@@ -58,6 +58,7 @@ android {
     buildTypes {
         val config = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
         getByName("debug") {
+            versionNameSuffix = "-debug"
             signingConfig = config
         }
         getByName("release") {

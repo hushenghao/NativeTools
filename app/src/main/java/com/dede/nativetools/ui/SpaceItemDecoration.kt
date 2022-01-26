@@ -11,8 +11,7 @@ class SpaceItemDecoration(
     private val offset: Int,
     private val orientation: Int = LinearLayoutManager.VERTICAL,
     var overrideFirstItemOffsets: OverrideItemOffsets? = null,
-    var overrideLastItemOffsets: OverrideItemOffsets? = null,
-    var overrideItemOffsets: OverrideItemOffsets? = null
+    var overrideLastItemOffsets: OverrideItemOffsets? = null
 ) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
@@ -29,7 +28,6 @@ class SpaceItemDecoration(
             outRect.set(if (position == 0) offset else 0, offset, offset, offset)
         }
 
-        overrideItemOffsets?.invoke(outRect)
         if (position == 0) {
             overrideFirstItemOffsets?.invoke(outRect)
         } else if (position == itemCount - 1) {

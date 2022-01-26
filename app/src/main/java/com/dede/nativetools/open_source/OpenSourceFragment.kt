@@ -9,8 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentOpenSourceBinding
@@ -29,10 +28,11 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = Adapter()
-        binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
         applyBottomBarsInsets(binding.recyclerView)
+
+        val adapter = Adapter()
+        binding.recyclerView.adapter = adapter
         val itemTouchSwapCallback = ItemTouchSwapCallback(adapter::onSwap)
         val itemTouchHelper = ItemTouchHelper(itemTouchSwapCallback)
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
@@ -41,7 +41,12 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
     }
 
     private class ItemTouchSwapCallback(private val onSwap: (from: Int, to: Int) -> Boolean) :
-        ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
+        ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.LEFT or
+                    ItemTouchHelper.UP or
+                    ItemTouchHelper.RIGHT or
+                    ItemTouchHelper.DOWN, 0
+        ) {
 
         override fun onMove(
             recyclerView: RecyclerView,
