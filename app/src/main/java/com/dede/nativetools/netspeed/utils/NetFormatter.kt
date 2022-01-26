@@ -43,13 +43,6 @@ object NetFormatter {
     const val ACCURACY_EQUAL_WIDTH = 3
 
     /**
-     * 整数模式
-     *
-     * 888
-     */
-    const val ACCURACY_INTEGER = 5
-
-    /**
      * 单位B字符的标志位
      *
      * Pair(8.8, B), Pair(8.8, KB)
@@ -87,21 +80,15 @@ object NetFormatter {
     private const val UNIT_SIZE = 1024
 
     private const val THRESHOLD = 900
-    private const val THRESHOLD_INTEGER = 999
 
     fun format(bytes: Long, flags: Int, accuracy: Int): Pair<String, String> {
 
         fun hasFlag(flag: Int): Boolean = (flags and flag) > 0
 
-        var threshold = THRESHOLD
-        if (accuracy == ACCURACY_INTEGER) {
-            // 整数模式
-            threshold = THRESHOLD_INTEGER
-        }
         var speed = bytes.toDouble()
         var unit: Char = CHAR_BYTE
         for (char in UNIT_CHARS) {
-            if (speed > threshold) {
+            if (speed > THRESHOLD) {
                 speed /= UNIT_SIZE
                 unit = char
             } else {
@@ -126,7 +113,6 @@ object NetFormatter {
 
     private fun formatNumberInternal(num: Double, accuracy: Int): String {
         val pattern = when (accuracy) {
-            ACCURACY_INTEGER -> "0" // 整数
             ACCURACY_EQUAL_WIDTH_EXACT -> when {
                 num >= 100 -> "0" // 100.2 -> 100
                 num >= 10 -> "0.#" // 10.22 -> 10.2

@@ -81,5 +81,4 @@
     <string name="toast_download_font_succeeded">Загрузка шрифта завершена</string>
     <string name="toast_download_font_failed">Загрузка шрифта провалилась</string>
     <string name="label_net_speed_horizontal_scale">Икс-осевой зум</string>
-    <string name="label_net_speed_just_integer">Покажи только целое число</string>
 </resources>

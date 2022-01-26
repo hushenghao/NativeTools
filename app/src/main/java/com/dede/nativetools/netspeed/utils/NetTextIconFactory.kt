@@ -1,16 +1,12 @@
 package com.dede.nativetools.netspeed.utils
 
-import android.content.res.Resources
 import android.graphics.*
 import android.text.TextPaint
 import android.util.DisplayMetrics
 import android.util.Log
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.typeface.TypefaceGetter
-import com.dede.nativetools.util.dpf
-import com.dede.nativetools.util.globalContext
-import com.dede.nativetools.util.saveToAlbum
-import com.dede.nativetools.util.splicing
+import com.dede.nativetools.util.*
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -26,10 +22,7 @@ object NetTextIconFactory {
     private const val DEBUG_MODE = false
 
     // 888M 931135488L
-    private const val DEBUG_MODE_ALL_BYTES = (2 shl 19) * 888L
-
-    // 88.8M 93113549L
-    private const val DEBUG_MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
+    private const val DEBUG_MODE_BYTES = (2 shl 19) * 888L
 
     private val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         //isFakeBoldText = true
@@ -41,7 +34,7 @@ object NetTextIconFactory {
     private val iconSize: Int
 
     init {
-        val resources = Resources.getSystem()
+        val resources = UI.resources
         val dpi = resources.displayMetrics.densityDpi
         val default = when {
             dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
@@ -96,28 +89,12 @@ object NetTextIconFactory {
         var txByte = txSpeed
         if (assistLine) {
             // Check that the text is displayed completely
-            if (configuration.mode == NetSpeedConfiguration.MODE_ALL ||
-                configuration.justInteger
-            ) {
-                rxByte = DEBUG_MODE_ALL_BYTES
-                txByte = DEBUG_MODE_ALL_BYTES
-            } else {
-                rxByte = DEBUG_MODE_SINGLE_BYTES
-                txByte = DEBUG_MODE_SINGLE_BYTES
-            }
+            rxByte = DEBUG_MODE_BYTES
+            txByte = DEBUG_MODE_BYTES
         }
 
-        val accuracy: Int = when {
-            configuration.justInteger -> {
-                NetFormatter.ACCURACY_INTEGER
-            }
-            configuration.mode == NetSpeedConfiguration.MODE_ALL -> {
-                NetFormatter.ACCURACY_EQUAL_WIDTH
-            }
-            else -> {
-                NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
-            }
-        }
+        // 降低精度以保证更大字体显示
+        val accuracy: Int = NetFormatter.ACCURACY_EQUAL_WIDTH
         val text1: String
         val text2: String
         when (configuration.mode) {

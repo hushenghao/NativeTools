@@ -137,14 +137,5 @@ fun Context.copy(text: String) {
     clipboardManager.setPrimaryClip(ClipData.newPlainText("text", text))
 }
 
-fun Context.readClipboard(): String? {
-    val clipboardManager = this.requireSystemService<ClipboardManager>()
-    val primaryClip = clipboardManager.primaryClip ?: return null
-    if (primaryClip.itemCount > 0) {
-        return primaryClip.getItemAt(0)?.text?.toString()
-    }
-    return null
-}
-
 fun Context.getVersionSummary() =
     getString(R.string.summary_about_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)

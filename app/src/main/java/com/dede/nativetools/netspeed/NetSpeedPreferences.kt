@@ -33,7 +33,6 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_RELATIVE_DISTANCE = "net_speed_relative_distance"
     const val KEY_NET_SPEED_TEXT_SCALE = "net_speed_text_scale"
     const val KEY_NET_SPEED_HORIZONTAL_SCALE = "net_speed_horizontal_scale"
-    const val KEY_NET_SPEED_JUST_INTEGER = "net_speed_just_integer"
 
     private const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
     private const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
@@ -52,9 +51,6 @@ object NetSpeedPreferences {
 
     val font: String
         get() = globalPreferences.get(KEY_NET_SPEED_FONT, defaultConfiguration.font)
-
-    val justInteger: Boolean
-        get() = globalPreferences.get(KEY_NET_SPEED_JUST_INTEGER, defaultConfiguration.justInteger)
 
     val verticalOffset: Float
         get() = globalPreferences.get(

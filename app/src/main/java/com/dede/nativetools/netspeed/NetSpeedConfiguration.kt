@@ -21,9 +21,8 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
     var textStyle: Int = NetSpeedPreferences.DEFAULT_TEXT_STYLE,
     var font: String = NetSpeedPreferences.DEFAULT_FONT,
     var mode: String = MODE_DOWN,
-    var justInteger: Boolean = false,
     @FloatRange(from = -0.5, to = 0.5)
-    var verticalOffset: Float = -0.06f,// Y轴偏移量
+    var verticalOffset: Float = -0.05f,// Y轴偏移量
     @FloatRange(from = -0.5, to = 0.5)
     var horizontalOffset: Float = 0f,// X轴偏移量
     @FloatRange(from = 0.0, to = 1.0)
@@ -31,7 +30,7 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
     @FloatRange(from = -0.5, to = 0.5)
     var relativeDistance: Float = 0.15f,// 相对距离
     @FloatRange(from = 0.1, to = 1.5)
-    var textScale: Float = 0.87f,// 字体缩放
+    var textScale: Float = 1f,// 字体缩放
     @FloatRange(from = 0.2, to = 1.3)
     var horizontalScale: Float = 1f// X轴缩放
 ) : Parcelable {
@@ -53,7 +52,6 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
         this.textStyle = configuration.textStyle
         this.font = configuration.font
         this.mode = configuration.mode
-        this.justInteger = configuration.justInteger
         this.verticalOffset = configuration.verticalOffset
         this.horizontalOffset = configuration.horizontalOffset
         this.relativeRatio = configuration.relativeRatio
@@ -110,9 +108,6 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
             NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE -> {
                 this.horizontalScale = NetSpeedPreferences.horizontalScale
             }
-            NetSpeedPreferences.KEY_NET_SPEED_JUST_INTEGER -> {
-                this.justInteger = NetSpeedPreferences.justInteger
-            }
         }
     }
 
@@ -136,7 +131,6 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
                 textStyle = NetSpeedPreferences.textStyle,
                 font = NetSpeedPreferences.font,
                 mode = NetSpeedPreferences.mode,
-                justInteger = NetSpeedPreferences.justInteger,
                 verticalOffset = NetSpeedPreferences.verticalOffset,
                 horizontalOffset = NetSpeedPreferences.horizontalOffset,
                 relativeRatio = NetSpeedPreferences.relativeRatio,

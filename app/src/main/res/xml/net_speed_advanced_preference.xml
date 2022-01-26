@@ -34,16 +34,11 @@
             app:title="@string/label_net_speed_mode"
             app:useSimpleSummaryProvider="true" />
 
-        <SwitchPreferenceCompat
-            app:iconSpaceReserved="false"
-            app:key="net_speed_just_integer"
-            app:title="@string/label_net_speed_just_integer" />
-
         <com.dede.nativetools.ui.SliderPreference
             android:stepSize="0.01"
             android:valueFrom="-0.5"
             android:valueTo="0.5"
-            app:defaultValue="-0.06"
+            app:defaultValue="-0.05"
             app:iconSpaceReserved="false"
             app:key="net_speed_vertical_offset"
             app:title="@string/label_net_speed_y_offset" />
@@ -70,7 +65,7 @@
             android:stepSize="0.01"
             android:valueFrom="0.5"
             android:valueTo="1.5"
-            app:defaultValue="0.87"
+            app:defaultValue="1"
             app:iconSpaceReserved="false"
             app:key="net_speed_text_scale"
             app:title="@string/label_net_speed_text_scale" />

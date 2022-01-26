@@ -98,7 +98,7 @@ object NetworkUsageUtil {
                 endTime
             )
         }
-        return (wifiUsageBytes + mobileUsageBytes) shr 12 shl 12
+        return (wifiUsageBytes + mobileUsageBytes) shr 12 shl 12// tolerance 4096
     }
 
     @WorkerThread
