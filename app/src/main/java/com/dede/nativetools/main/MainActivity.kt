@@ -2,10 +2,6 @@ package com.dede.nativetools.main
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -26,6 +22,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.navigateUp
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.service.NetSpeedService
@@ -41,11 +38,10 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         const val EXTRA_TOGGLE = "extra_toggle"
     }
 
-    // private val binding by viewBinding(ActivityMainBinding::bind)
     private lateinit var binding: ActivityMainBinding
     private val navController by navController(R.id.nav_host_fragment)
     private val topLevelDestinationIds = intArrayOf(R.id.netSpeed, R.id.other)
-
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,22 +81,13 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         applyBarsInsets(
             root = binding.root,
+            // top status bar, android:fitsSystemWindows="true"
             left = binding.toolbar,         // navigation bar, Insert padding only in the toolbar
             right = binding.motionLayout,   // navigation bar
             // Some devices have navigation bars on the side, when landscape.
         ) {
             val systemBar = it.systemBar()
             binding.navigationView.updatePadding(left = systemBar.left)
-        }
-
-        if (VERSION.SDK_INT >= VERSION_CODES.N) {
-            val color = this.color(
-                android.R.attr.colorBackground,
-                if (isNightMode()) Color.BLACK else Color.WHITE
-            )
-            binding.navHostFragment.setBackgroundColor(color)
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            // Remove the default background, make the 'android:windowBackgroundFallback' effect, to split screen mode.
         }
 
         NavFragmentAssistant(supportFragmentManager)
@@ -121,7 +108,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             binding.navigationRailView.isGone = true
             navController.addOnDestinationChangedListener(this)
         }
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarBuilder.build())
+        appBarConfiguration = appBarBuilder.build()
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
         NavigationBars.setupWithNavController(
             navController = navController,
             bottomNavigationView = binding.bottomNavigationView,
@@ -140,7 +128,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         if (destination is DialogFragmentNavigator.Destination) {
             return
         }
-        if (topLevelDestinationIds.contains(destination.id)) {
+        if (destination.matchDestinations(topLevelDestinationIds)) {
             binding.motionLayout.transitionToStart()
         } else {
             binding.motionLayout.transitionToEnd()
@@ -148,14 +136,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val currentDestination = navController.currentDestination
-        if (currentDestination != null) {
-            if (topLevelDestinationIds.contains(currentDestination.id)) {
-                if (item.itemId == android.R.id.home) {
-                    binding.drawerLayout.open()
-                    return true
-                }
-            }
+        if (item.itemId == android.R.id.home && navController.navigateUp(appBarConfiguration)) {
+            return true
         }
         return super.onOptionsItemSelected(item)
     }
@@ -166,7 +148,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp()
+        return navController.navigateUp(appBarConfiguration)
     }
 
     private fun getLayoutInflater(enableScene: Boolean): LayoutInflater {

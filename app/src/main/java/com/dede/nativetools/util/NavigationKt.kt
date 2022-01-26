@@ -6,6 +6,8 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.Navigator
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -30,6 +32,9 @@ private fun FragmentActivity.findNavControllerCompat(@IdRes viewId: Int): NavCon
     }
     return this.findNavController(viewId)
 }
+
+fun NavDestination.matchDestinations(destinationIds: IntArray): Boolean =
+    hierarchy.any { destinationIds.contains(it.id) }
 
 internal inline fun <reified T : Navigator<*>> NavController.getNavigator(): T {
     return navigatorProvider.getNavigator(T::class.java)

@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="BasicAppTheme" parent="Theme.Material3.DynamicColors.DayNight">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!-- Customize your theme here. -->
-        <item name="android:windowBackgroundFallback" tools:targetApi="n">
-            @drawable/layer_window_bg
-        </item>
 
-<!--        <item name="windowActionModeOverlay">true</item>-->
-<!--        <item name="actionOverflowMenuStyle">@style/Style.ActionMenu</item>-->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionOverflowMenuStyle">@style/Style.ActionMenu</item>
 
         <item name="materialAlertDialogTheme">@style/Style.MaterialAlertDialog</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Material3.BottomSheetDialog</item>
         <item name="materialCardViewStyle">?attr/materialCardViewElevatedStyle</item>
-<!--        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>-->
-<!--        <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>-->
-<!--        <item name="spinnerStyle">@style/Style.Spinner</item>-->
+        <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
+        <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
+        <item name="spinnerStyle">@style/Style.Spinner</item>
     </style>
 
     <style name="AppTheme" parent="BasicAppTheme">
@@ -32,5 +29,4 @@
         <item name="colorOnSecondaryContainer">@color/md_theme_onSecondaryContainer</item>
     </style>
 
-    <style name="ThemeOverlay.AppTheme.DynamicColors" parent="ThemeOverlay.Material3.DynamicColors.DayNight" />
 </resources>
