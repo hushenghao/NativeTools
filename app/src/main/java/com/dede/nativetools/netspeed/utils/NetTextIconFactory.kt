@@ -96,7 +96,9 @@ object NetTextIconFactory {
         var txByte = txSpeed
         if (assistLine) {
             // Check that the text is displayed completely
-            if (configuration.mode == NetSpeedConfiguration.MODE_ALL) {
+            if (configuration.mode == NetSpeedConfiguration.MODE_ALL ||
+                configuration.justInteger
+            ) {
                 rxByte = DEBUG_MODE_ALL_BYTES
                 txByte = DEBUG_MODE_ALL_BYTES
             } else {
@@ -105,36 +107,31 @@ object NetTextIconFactory {
             }
         }
 
+        val accuracy: Int = when {
+            configuration.justInteger -> {
+                NetFormatter.ACCURACY_INTEGER
+            }
+            configuration.mode == NetSpeedConfiguration.MODE_ALL -> {
+                NetFormatter.ACCURACY_EQUAL_WIDTH
+            }
+            else -> {
+                NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
+            }
+        }
         val text1: String
         val text2: String
         when (configuration.mode) {
             NetSpeedConfiguration.MODE_ALL -> {
-                text1 = NetFormatter.format(
-                    txByte,
-                    NetFormatter.FLAG_NULL,
-                    NetFormatter.ACCURACY_EQUAL_WIDTH
-                ).splicing()
-                text2 = NetFormatter.format(
-                    rxByte,
-                    NetFormatter.FLAG_NULL,
-                    NetFormatter.ACCURACY_EQUAL_WIDTH
-                ).splicing()
+                text1 = NetFormatter.format(txByte, NetFormatter.FLAG_NULL, accuracy).splicing()
+                text2 = NetFormatter.format(rxByte, NetFormatter.FLAG_NULL, accuracy).splicing()
             }
             NetSpeedConfiguration.MODE_UP -> {
-                val upSplit = NetFormatter.format(
-                    txByte,
-                    NetFormatter.FLAG_FULL,
-                    NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
-                )
+                val upSplit = NetFormatter.format(txByte, NetFormatter.FLAG_FULL, accuracy)
                 text1 = upSplit.first
                 text2 = upSplit.second
             }
             else -> {
-                val downSplit = NetFormatter.format(
-                    rxByte,
-                    NetFormatter.FLAG_FULL,
-                    NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
-                )
+                val downSplit = NetFormatter.format(rxByte, NetFormatter.FLAG_FULL, accuracy)
                 text1 = downSplit.first
                 text2 = downSplit.second
             }

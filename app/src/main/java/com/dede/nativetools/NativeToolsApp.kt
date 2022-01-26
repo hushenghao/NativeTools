@@ -31,7 +31,7 @@ class NativeToolsApp : Application() {
         super.onCreate()
         DynamicColors.applyToActivitiesIfAvailable(
             this,
-            R.style.ThemeOverlay_Material3_DynamicColors_DayNight
+            com.google.android.material.R.style.ThemeOverlay_Material3_DynamicColors_DayNight
         )
         if (isMainProcess()) {
             installShortcuts()

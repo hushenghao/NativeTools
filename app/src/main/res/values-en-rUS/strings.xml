@@ -81,4 +81,5 @@
     <string name="toast_download_font_succeeded">Font downloaded successfully</string>
     <string name="toast_download_font_failed">Font download failed</string>
     <string name="label_net_speed_horizontal_scale">X zoom</string>
+    <string name="label_net_speed_just_integer">Display only integers</string>
 </resources>

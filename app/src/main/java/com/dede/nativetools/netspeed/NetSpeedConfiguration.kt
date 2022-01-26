@@ -3,7 +3,6 @@ package com.dede.nativetools.netspeed
 import android.graphics.Bitmap
 import android.os.Parcelable
 import androidx.annotation.FloatRange
-import com.dede.nativetools.netspeed.typeface.TypefaceGetter
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -22,6 +21,7 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
     var textStyle: Int = NetSpeedPreferences.DEFAULT_TEXT_STYLE,
     var font: String = NetSpeedPreferences.DEFAULT_FONT,
     var mode: String = MODE_DOWN,
+    var justInteger: Boolean = false,
     @FloatRange(from = -0.5, to = 0.5)
     var verticalOffset: Float = -0.06f,// Y轴偏移量
     @FloatRange(from = -0.5, to = 0.5)
@@ -53,6 +53,7 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
         this.textStyle = configuration.textStyle
         this.font = configuration.font
         this.mode = configuration.mode
+        this.justInteger = configuration.justInteger
         this.verticalOffset = configuration.verticalOffset
         this.horizontalOffset = configuration.horizontalOffset
         this.relativeRatio = configuration.relativeRatio
@@ -109,6 +110,9 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
             NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE -> {
                 this.horizontalScale = NetSpeedPreferences.horizontalScale
             }
+            NetSpeedPreferences.KEY_NET_SPEED_JUST_INTEGER -> {
+                this.justInteger = NetSpeedPreferences.justInteger
+            }
         }
     }
 
@@ -132,6 +136,7 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
                 textStyle = NetSpeedPreferences.textStyle,
                 font = NetSpeedPreferences.font,
                 mode = NetSpeedPreferences.mode,
+                justInteger = NetSpeedPreferences.justInteger,
                 verticalOffset = NetSpeedPreferences.verticalOffset,
                 horizontalOffset = NetSpeedPreferences.horizontalOffset,
                 relativeRatio = NetSpeedPreferences.relativeRatio,

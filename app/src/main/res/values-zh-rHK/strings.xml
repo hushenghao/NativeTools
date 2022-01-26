@@ -81,4 +81,5 @@
     <string name="toast_download_font_succeeded">字體下載成功</string>
     <string name="toast_download_font_failed">字體下載失敗</string>
     <string name="label_net_speed_horizontal_scale">X軸縮放</string>
+    <string name="label_net_speed_just_integer">只顯示整數</string>
 </resources>

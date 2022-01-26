@@ -81,4 +81,5 @@
     <string name="toast_download_font_succeeded">Download erfolgreich abgeschlossen</string>
     <string name="toast_download_font_failed">Der schriftdruck kann nicht heruntergeladen werden</string>
     <string name="label_net_speed_horizontal_scale">Die x-achse schrumpft</string>
+    <string name="label_net_speed_just_integer">Nur ganzzahlige zahlen</string>
 </resources>

@@ -108,8 +108,12 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     }
 
     private fun updatePreview(configuration: NetSpeedConfiguration) {
+        var size = binding.ivPreview.width
+        if (size <= 0) {
+            size = 512
+        }
         binding.ivPreview.setImageBitmap(
-            NetTextIconFactory.create(0, 0, configuration, 512, true)
+            NetTextIconFactory.create(0, 0, configuration, size, true)
         )
     }
 
@@ -165,6 +169,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_TEXT_STYLE,
             NetSpeedPreferences.KEY_NET_SPEED_FONT,
             NetSpeedPreferences.KEY_NET_SPEED_MODE,
+            NetSpeedPreferences.KEY_NET_SPEED_JUST_INTEGER,
             NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET,
             NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET,
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO,

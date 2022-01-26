@@ -81,4 +81,5 @@
     <string name="toast_download_font_succeeded">フォントダウンロード成功</string>
     <string name="toast_download_font_failed">フォントのダウンロードに失敗</string>
     <string name="label_net_speed_horizontal_scale">X軸スケーリング</string>
+    <string name="label_net_speed_just_integer">整数だけを表示する</string>
 </resources>
