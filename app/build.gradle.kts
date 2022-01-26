@@ -1,6 +1,6 @@
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.util.Properties
+import java.util.*
 
 val keystoreProperties = Properties().apply {
     rootProject.file("key.properties")
@@ -152,7 +152,7 @@ tasks.register<Exec>("pgyer") {
     dependsOn("clean", assemble)
     assemble.mustRunAfter("clean")
 
-    val tree = fileTree("build/outputs/apk/beta") {
+    val tree = fileTree("build/intermediates/apk/beta") {
         include("*.apk")
         builtBy("assembleBeta")
     }
