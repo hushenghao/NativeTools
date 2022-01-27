@@ -59,6 +59,12 @@ object NetTextIconFactory {
         if (cache == null) {
             return Bitmap.createBitmap(size, size, DEFAULT_CONFIG)
         }
+
+        if (size > cache.width || size > cache.height) {
+            cache.recycle()
+            return Bitmap.createBitmap(size, size, DEFAULT_CONFIG)
+        }
+
         if (cache.config != DEFAULT_CONFIG || cache.width != size || cache.height != size) {
             cache.reconfigure(size, size, DEFAULT_CONFIG)
         }

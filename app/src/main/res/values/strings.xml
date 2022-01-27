@@ -41,7 +41,6 @@
     <string name="desc_net_speed_notify">网速指示器需要通过通知来显示</string>
     <string name="chooser_label_browse">选择浏览器打开</string>
 
-    <string name="percent_seek_bar_company" translatable="false">%</string>
     <string name="url_github" translatable="false">https://github.com/hushenghao/NativeTools</string>
     <string name="url_hide_lock_notification" translatable="false">https://github.com/hushenghao/NativeTools/wiki/Hide-lock-screen-notification</string>
     <string name="url_privacy_agreement" translatable="false">https://github.com/hushenghao/NativeTools/wiki/%E9%9A%90%E7%A7%81%E5%8D%8F%E8%AE%AE</string>

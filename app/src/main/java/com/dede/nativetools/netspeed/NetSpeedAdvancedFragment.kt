@@ -10,7 +10,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.preference.PreferenceFragmentCompat
 import com.dede.nativetools.R
-import com.dede.nativetools.databinding.LayoutNetSpeedAdvancedHeaderBinding
+import com.dede.nativetools.databinding.LayoutNetSpeedAdvancedPreviewBinding
 import com.dede.nativetools.main.applyBarsInsets
 import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.netspeed.service.NetSpeedServiceController
@@ -33,7 +33,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     private val configuration = NetSpeedConfiguration.initialize()
     private val controller by lazy { NetSpeedServiceController(requireContext()) }
 
-    private lateinit var binding: LayoutNetSpeedAdvancedHeaderBinding
+    private lateinit var binding: LayoutNetSpeedAdvancedPreviewBinding
 
     private fun SliderPreference.initialize(
         listener: NetSpeedAdvancedFragment,
@@ -49,28 +49,33 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         savedInstanceState: Bundle?
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState)?.apply {
-            binding = LayoutNetSpeedAdvancedHeaderBinding.inflate(LayoutInflater.from(this.context))
+            binding =
+                LayoutNetSpeedAdvancedPreviewBinding.inflate(LayoutInflater.from(this.context))
             @SuppressLint("InlinedApi")
             val listContainer = this.findViewById<FrameLayout>(android.R.id.list_container)
             val viewGroup = listContainer.parent as ViewGroup
             val index = viewGroup.indexOfChild(listContainer)
-            val linearLayout = LinearLayout(viewGroup.context)
-            viewGroup.removeView(listContainer)
-            viewGroup.addView(linearLayout, index)
-            val headerParams: LinearLayout.LayoutParams
-            val listParams: LinearLayout.LayoutParams
-            if (UI.isWideSize()) {
-                linearLayout.orientation = LinearLayout.HORIZONTAL
-                headerParams = LinearLayout.LayoutParams(0, matchParent, 2f)
-                listParams = LinearLayout.LayoutParams(0, matchParent, 3f)
-            } else {
-                linearLayout.orientation = LinearLayout.VERTICAL
-                headerParams = LinearLayout.LayoutParams(matchParent, 0, 1f)
-                listParams = LinearLayout.LayoutParams(matchParent, 0, 3f)
-            }
-            linearLayout.addView(binding.root, headerParams)
-            linearLayout.addView(listContainer, listParams)
+            viewGroup.removeViewInLayout(listContainer)
+            viewGroup.addView(createPairView(listContainer, binding.root), index)
         }
+    }
+
+    private fun createPairView(list: View, preview: View): View {
+        val linearLayout = LinearLayout(list.context)
+        val previewParams: LinearLayout.LayoutParams
+        val listParams: LinearLayout.LayoutParams
+        if (UI.isWideSize()) {
+            linearLayout.orientation = LinearLayout.HORIZONTAL
+            previewParams = LinearLayout.LayoutParams(0, matchParent, 2f)
+            listParams = LinearLayout.LayoutParams(0, matchParent, 3f)
+        } else {
+            linearLayout.orientation = LinearLayout.VERTICAL
+            previewParams = LinearLayout.LayoutParams(matchParent, 0, 1f)
+            listParams = LinearLayout.LayoutParams(matchParent, 0, 3f)
+        }
+        linearLayout.addView(preview, previewParams)
+        linearLayout.addView(list, listParams)
+        return linearLayout
     }
 
     private val labelFormatterPercent = LabelFormatter { "%d %%".format((it * 100).roundToInt()) }
@@ -104,7 +109,9 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         if (UI.isWideSize()) {
             applyBarsInsets(view, bottom = binding.root)
         }
-        updatePreview(configuration)
+        binding.ivPreview.post {
+            updatePreview(configuration)
+        }
     }
 
     private fun updatePreview(configuration: NetSpeedConfiguration) {
@@ -119,6 +126,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
 
     private var tempConfiguration: NetSpeedConfiguration? = null
 
+    @SuppressLint("RestrictedApi")
     override fun onValueChange(slider: Slider, value: Float, fromUser: Boolean) {
         if (!fromUser) return
         val key = slider.tag as String? ?: return// SliderPreference内设置了tag
