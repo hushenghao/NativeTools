@@ -4,9 +4,14 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:key="key_other"
         app:initialExpandedChildrenCount="7"
+        app:key="key_other"
         app:title="@string/label_other">
+
+        <Preference
+            app:icon="@drawable/ic_outline_data_usage"
+            app:key="full_net_usage"
+            app:title="@string/label_full_net_usage" />
 
         <SwitchPreferenceCompat
             app:icon="@drawable/ic_baseline_remove_circle"

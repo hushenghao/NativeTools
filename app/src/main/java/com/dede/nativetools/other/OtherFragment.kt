@@ -11,7 +11,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
-import com.dede.nativetools.main.*
+import com.dede.nativetools.main.MainViewModel
+import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.ui.NightModeDropDownPreference
 import com.dede.nativetools.util.*
 
@@ -24,7 +25,7 @@ class OtherFragment : PreferenceFragmentCompat() {
 
     private lateinit var preferenceIgnoreBatteryOptimize: SwitchPreferenceCompat
 
-    private var changeNightModeRunnableRunnable: ChangeNightModeRunnable? = null
+    private var changeNightModeRunnable: ChangeNightModeRunnable? = null
 
     private class ChangeNightModeRunnable(val mode: Int) : Runnable {
         override fun run() {
@@ -59,10 +60,9 @@ class OtherFragment : PreferenceFragmentCompat() {
                 mainViewModel.setCircularReveal(decorView, rect)
             }
             it.onPreferenceChangeListener<String> { _, newValue ->
-//                setNightMode(newValue.toInt())
                 removeDelay()
                 val runnable = ChangeNightModeRunnable(newValue.toInt()).apply {
-                    this@OtherFragment.changeNightModeRunnableRunnable = this
+                    this@OtherFragment.changeNightModeRunnable = this
                 }
                 // Wait for Popup to dismiss
                 uiHandler.postDelayed(runnable, 300)
@@ -88,6 +88,11 @@ class OtherFragment : PreferenceFragmentCompat() {
                         toast(getString(R.string.toast_open_battery_optimization))
                     }
                 }
+            }
+
+        requirePreference<Preference>(OtherPreferences.KEY_FULL_NET_USAGE)
+            .onPreferenceClickListener {
+                findNavController().navigate(R.id.action_other_to_netUsageFragment)
             }
 
         requirePreference<Preference>(OtherPreferences.KEY_DONATE)
@@ -130,7 +135,7 @@ class OtherFragment : PreferenceFragmentCompat() {
     }
 
     private fun removeDelay() {
-        val delayChangeNightMode = changeNightModeRunnableRunnable
+        val delayChangeNightMode = changeNightModeRunnable
         if (delayChangeNightMode != null) {
             uiHandler.removeCallbacks(delayChangeNightMode)
         }

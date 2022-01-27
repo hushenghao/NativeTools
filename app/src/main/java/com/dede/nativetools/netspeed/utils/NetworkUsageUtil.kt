@@ -1,11 +1,13 @@
 package com.dede.nativetools.netspeed.utils
 
+import android.app.usage.NetworkStats
 import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.net.ConnectivityManager
 import androidx.annotation.WorkerThread
 import com.dede.nativetools.util.mainScope
 import com.dede.nativetools.util.requireSystemService
+import com.dede.nativetools.util.toZeroH
 import kotlinx.coroutines.*
 import java.lang.ref.WeakReference
 import java.util.*
@@ -18,14 +20,6 @@ import java.util.concurrent.atomic.AtomicReference
  * @since 2021/8/6 10:35 上午
  */
 object NetworkUsageUtil {
-
-    private fun Calendar.toZeroH(): Calendar {
-        set(Calendar.HOUR_OF_DAY, 0)
-        set(Calendar.MINUTE, 0)
-        set(Calendar.SECOND, 0)
-        set(Calendar.MILLISECOND, 0)
-        return this
-    }
 
     private class NetworkUsageJob<T : Comparable<T>>(data: T) : CompletionHandler {
         private val dataRef = AtomicReference<T>(data)
@@ -107,7 +101,16 @@ object NetworkUsageUtil {
         startTime: Long,
         endTime: Long
     ): Long {
-        val bucket = querySummaryForDevice(networkType, null, startTime, endTime)
+        val bucket = this.queryNetworkUsageBucket(networkType, startTime, endTime) ?: return 0L
         return bucket.rxBytes + bucket.txBytes
+    }
+
+    @WorkerThread
+    fun NetworkStatsManager.queryNetworkUsageBucket(
+        networkType: Int,
+        startTime: Long,
+        endTime: Long
+    ): NetworkStats.Bucket? {
+        return this.querySummaryForDevice(networkType, null, startTime, endTime)
     }
 }

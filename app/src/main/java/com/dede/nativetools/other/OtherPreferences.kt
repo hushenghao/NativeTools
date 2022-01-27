@@ -8,6 +8,7 @@ object OtherPreferences {
 
     const val KEY_NIGHT_MODE_TOGGLE = "night_mode_toggle"
     const val KEY_IGNORE_BATTERY_OPTIMIZE = "ignore_battery_optimize"
+    const val KEY_FULL_NET_USAGE = "full_net_usage"
 
     const val KEY_ABOUT = "about"
     const val KEY_DONATE = "donate"

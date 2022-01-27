@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_today_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_today"
+        android:textAppearance="?attr/textAppearanceTitleLarge"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_today_usage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        app:layout_constraintTop_toBottomOf="@id/tv_today_title"
+        tools:text="@tools:sample/full_names" />
+
+    <TextView
+        android:id="@+id/tv_month_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/label_month"
+        android:textAppearance="?attr/textAppearanceTitleLarge"
+        app:layout_constraintTop_toBottomOf="@id/tv_today_usage" />
+
+    <TextView
+        android:id="@+id/tv_month_usage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        app:layout_constraintTop_toBottomOf="@id/tv_month_title"
+        tools:text="@tools:sample/full_names" />
+
+    <TextView
+        android:id="@+id/tv_all_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/label_sofar"
+        android:textAppearance="?attr/textAppearanceTitleLarge"
+        app:layout_constraintTop_toBottomOf="@id/tv_month_usage" />
+
+    <TextView
+        android:id="@+id/tv_all_usage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        app:layout_constraintTop_toBottomOf="@id/tv_all_title"
+        tools:text="@tools:sample/full_names" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
