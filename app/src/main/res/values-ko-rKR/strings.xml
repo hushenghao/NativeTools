@@ -27,7 +27,7 @@
     <string name="summary_net_speed_usage">알림은 모바일 데이터와 WLAN 사용량의 합계를 표시합니다</string>
     <string name="summary_ignore_battery_optimize">배터리 최적화 화이트리스트를 추가하여 프런트 서비스가 보증되지 않는 것을 방지합니다</string>
     <string name="usage_states_title">상태 접근 인증</string>
-    <string name="usage_stats_msg">일일 데이터 사용량을 집계하기 위해 데이터 액세스가 필요합니다.</string>
+    <string name="usage_stats_msg">데이터 사용량을 집계하기 위해 데이터 사용 권한이 필요합니다.</string>
     <string name="alert_title_notification_disable">알림 권한이 열려 있지 않습니다</string>
     <string name="alert_msg_notification_disable">알림 권한이 켜져 있지 않습니다. 네트워크 속도 표시기를 표시할 수 없습니다</string>
     <string name="settings">설정하기</string>
@@ -39,7 +39,7 @@
     <string name="chooser_label_market">앱스토어 선택</string>
     <string name="label_open_source">오픈소스 관련</string>
     <string name="action_share">나누기</string>
-    <string name="share_text">사용하기 좋은 작은 도구\"인터넷 속도 지시기\"를 발견했으니, 가서 다운로드하세요!\nCoolapk: https://www.coolapk.com/apk/com.dede.nativetools\nPlayStore: https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text">사용하기 좋은 작은 도구\"인터넷 속도 지시기\"를 발견했으니, 가서 다운로드하세요! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
     <string name="action_feedback">문제 피드백</string>
     <string name="toast_copyed">복사됨</string>
     <string name="toast_wx_payment_tip">위챗 결제코드 길게 눌러서 그림 저장하신 후 스캔해주세요</string>
@@ -81,4 +81,7 @@
     <string name="toast_download_font_succeeded">글꼴 다운로드 성공</string>
     <string name="toast_download_font_failed">글꼴 다운로드 실패</string>
     <string name="label_net_speed_horizontal_scale">X 축 크기 조정</string>
+    <string name="label_full_net_usage">인터넷 사용 통계</string>
+    <string name="label_today">오늘</string>
+    <string name="label_month">지난</string>
 </resources>

@@ -2,8 +2,10 @@ package com.dede.nativetools.util
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Rect
+import android.os.Build
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
@@ -15,11 +17,23 @@ import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.*
 import kotlin.math.roundToInt
 
 const val matchParent = ViewGroup.LayoutParams.MATCH_PARENT
 const val wrapContent = ViewGroup.LayoutParams.WRAP_CONTENT
+
+val Configuration.isNightMode: Boolean
+    get() {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) this.isNightModeActive else
+            this.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+    }
+
+fun Configuration.isSmallestScreenWidthDpAtLast(swDp: Int): Boolean {
+    return this.smallestScreenWidthDp >= swDp
+}
+
+val Configuration.isLandscape: Boolean
+    get() = this.orientation == Configuration.ORIENTATION_LANDSCAPE
 
 object UI {
 
@@ -35,9 +49,6 @@ object UI {
     val resources: Resources
         get() = globalContext.resources
 
-    val smallestScreenWidthDp: Int
-        get() = resources.configuration.smallestScreenWidthDp
-
     fun isSmallestScreenWidthDpAtLast(@SW swDp: Int): Boolean {
         return resources.configuration.isSmallestScreenWidthDpAtLast(swDp)
     }
@@ -45,7 +56,7 @@ object UI {
     val isLandscape: Boolean
         get() = resources.configuration.isLandscape
 
-    fun isWideSize():Boolean {
+    fun isWideSize(): Boolean {
         return isLandscape || isSmallestScreenWidthDpAtLast(SW600DP)
     }
 

@@ -81,7 +81,7 @@ object NetSpeedNotificationHelper {
      * 获取所有数据使用量
      */
     private fun getUsageText(context: Context): String? {
-        if (!context.checkAppOps()) {
+        if (!Logic.checkAppOps(context)) {
             return null
         }
         val todayBytes = NetworkUsageUtil.todayNetworkUsageBytes(context)

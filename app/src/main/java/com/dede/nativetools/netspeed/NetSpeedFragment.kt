@@ -2,7 +2,6 @@ package com.dede.nativetools.netspeed
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
@@ -46,7 +45,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             statusSwitchPreference.isChecked = false
         })
         statusSwitchPreference.isChecked = NetSpeedPreferences.status
-        if (!requireContext().checkAppOps()) {
+        if (!Logic.checkAppOps(requireContext())) {
             usageSwitchPreference.isChecked = false
         }
 
@@ -142,25 +141,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         if (!configuration.usage) {
             return
         }
-        val context = requireContext()
-        if (context.checkAppOps()) {
-            return
-        }
-        context.alert(R.string.usage_states_title, R.string.usage_stats_msg) {
-            positiveButton(R.string.access) {
-                val intent = Intent(
-                    Settings.ACTION_USAGE_ACCESS_SETTINGS, "package:${context.packageName}"
-                )
-                if (!intent.queryImplicitActivity(context)) {
-                    intent.data = null
-                }
-                activityResultLauncherCompat.launch(intent) {
-                    usageSwitchPreference.isChecked = requireContext().checkAppOps()
-                }
-            }
-            negativeButton(android.R.string.cancel) {
-                usageSwitchPreference.isChecked = false
-            }
+        Logic.requestOpsPermission(requireContext(), activityResultLauncherCompat, {
+            usageSwitchPreference.isChecked = true
+        }) {
+            usageSwitchPreference.isChecked = false
         }
     }
 

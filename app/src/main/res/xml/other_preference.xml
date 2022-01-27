@@ -8,11 +8,6 @@
         app:key="key_other"
         app:title="@string/label_other">
 
-        <Preference
-            app:icon="@drawable/ic_outline_data_usage"
-            app:key="full_net_usage"
-            app:title="@string/label_full_net_usage" />
-
         <SwitchPreferenceCompat
             app:icon="@drawable/ic_baseline_remove_circle"
             app:key="ignore_battery_optimize"
@@ -27,6 +22,11 @@
             app:key="night_mode_toggle"
             app:title="@string/label_night_mode"
             app:useSimpleSummaryProvider="true" />
+
+        <Preference
+            app:icon="@drawable/ic_outline_data_usage"
+            app:key="full_net_usage"
+            app:title="@string/label_full_net_usage" />
 
         <Preference
             app:allowDividerAbove="true"

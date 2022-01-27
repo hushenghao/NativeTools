@@ -2,16 +2,12 @@
 
 package com.dede.nativetools.util
 
-import android.app.AppOpsManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Build
-import android.os.PowerManager
-import android.os.Process
 import android.widget.Toast
 import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
@@ -27,12 +23,6 @@ import kotlin.properties.ReadOnlyProperty
 
 val globalContext: Context
     get() = NativeToolsApp.getInstance()
-
-val Context.isIgnoringBatteryOptimizations
-    get():Boolean {
-        val powerManager = this.requireSystemService<PowerManager>()
-        return powerManager.isIgnoringBatteryOptimizations(this.packageName)
-    }
 
 inline fun <reified T : Any> Context.requireSystemService(): T {
     return checkNotNull(applicationContext.getSystemService())
@@ -52,25 +42,6 @@ fun Context.startService(intent: Intent, foreground: Boolean) {
     } else {
         this.startService(intent)
     }
-}
-
-fun Context.checkAppOps(): Boolean {
-    val appOpsManager = requireSystemService<AppOpsManager>()
-    val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        appOpsManager.unsafeCheckOpNoThrow(
-            AppOpsManager.OPSTR_GET_USAGE_STATS,
-            Process.myUid(),
-            this.packageName
-        )
-    } else {
-        @Suppress("DEPRECATION")
-        appOpsManager.checkOpNoThrow(
-            AppOpsManager.OPSTR_GET_USAGE_STATS,
-            Process.myUid(),
-            this.packageName
-        )
-    }
-    return result == AppOpsManager.MODE_ALLOWED
 }
 
 fun Context.assets(fileName: String): InputStream {

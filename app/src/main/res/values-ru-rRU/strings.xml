@@ -27,7 +27,7 @@
     <string name="summary_net_speed_usage">Уведомления показывают мобильные данные и суммарное использование потока WLAN</string>
     <string name="summary_ignore_battery_optimize">Добавьте оптимизированный белый список батареек, чтобы предотвратить нежизнеспособные услуги на ресепшене.</string>
     <string name="usage_states_title">Доступ к ситуации разрешен</string>
-    <string name="usage_stats_msg">Для статистической информации об использовании ежедневного трафика требуется разрешение на доступ к информации о его использовании.</string>
+    <string name="usage_stats_msg">При использовании статистического трафика требуется разрешение доступа к ситуации использования.</string>
     <string name="alert_title_notification_disable">Доступ к информации не открыт</string>
     <string name="alert_msg_notification_disable">Система оповещения не включена, и индикатор скорости сети не сможет нормально отображаться</string>
     <string name="settings">Устанавливай.</string>
@@ -39,7 +39,7 @@
     <string name="chooser_label_market">Выбирать магазин приложений</string>
     <string name="label_open_source">Открытая корреляция</string>
     <string name="action_share">подел</string>
-    <string name="share_text">Нашел маленький рабочий инструмент \"Указатель скорости сети\". \nCoolApk: https://www.coolapk.com/apk/com.dede.nativetools\nPlayStore: https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text">Нашел маленький рабочий инструмент \"Указатель скорости сети\". https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
     <string name="action_feedback">Обратная связь с вопросом</string>
     <string name="toast_copyed">Скопировано.</string>
     <string name="toast_wx_payment_tip">Код оплаты микротаксина должен быть отсканирован после того, как вы сохраните фотографию</string>
@@ -81,4 +81,7 @@
     <string name="toast_download_font_succeeded">Загрузка шрифта завершена</string>
     <string name="toast_download_font_failed">Загрузка шрифта провалилась</string>
     <string name="label_net_speed_horizontal_scale">Икс-осевой зум</string>
+    <string name="label_full_net_usage">Статистика использования сети</string>
+    <string name="label_today">Today</string>
+    <string name="label_month">Month</string>
 </resources>

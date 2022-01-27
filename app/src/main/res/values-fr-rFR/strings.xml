@@ -27,7 +27,7 @@
     <string name="summary_net_speed_usage">La notification affiche la somme des données mobiles et de l\'utilisation du trafic WLAN</string>
     <string name="summary_ignore_battery_optimize">Ajouter une liste blanche d\'optimisation de la batterie pour empêcher le Service de réception de ne pas fonctionner (pour certains appareils)</string>
     <string name="usage_states_title">Autorisation d\'accès à l\'utilisation</string>
-    <string name="usage_stats_msg">L\'accès à l\'utilisation est nécessaire pour les statistiques quotidiennes sur l\'utilisation du trafic.</string>
+    <string name="usage_stats_msg">Les statistiques d’utilisation du trafic doivent permettre l’accès à l’utilisation.</string>
     <string name="alert_title_notification_disable">La permission de notification n\'est pas activée</string>
     <string name="alert_msg_notification_disable">La permission de notification n\'est pas activée et l\'indicateur de vitesse du réseau ne s\'affichera pas correctement</string>
     <string name="settings">Pour définir</string>
@@ -39,7 +39,7 @@
     <string name="chooser_label_market">Sélectionner le magasin</string>
     <string name="label_open_source">Open Source related</string>
     <string name="action_share">Partager</string>
-    <string name="share_text">J\'a i trouvé un bon gadget \"Vitesse Net\" à télécharger! Coolapk: https://www.coolapk.com/apk/com.dede.nativetools Playstore: https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text">J\'a i trouvé un bon gadget \"Vitesse Net\" à télécharger! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
     <string name="action_feedback">Rétroaction sur les questions</string>
     <string name="toast_copyed">Copié</string>
     <string name="toast_wx_payment_tip">S\'il vous plaît appuyez longtemps pour enregistrer l\'image et numériser le Code de paiement Wechat</string>
@@ -81,4 +81,7 @@
     <string name="toast_download_font_succeeded">Fontes téléchargées avec succès</string>
     <string name="toast_download_font_failed">Fail télécharger la police</string>
     <string name="label_net_speed_horizontal_scale">Zoom sur l’axe X</string>
+    <string name="label_full_net_usage">Statistiques d’utilisation du web</string>
+    <string name="label_today">Aujourd\'hui</string>
+    <string name="label_month">Mois</string>
 </resources>

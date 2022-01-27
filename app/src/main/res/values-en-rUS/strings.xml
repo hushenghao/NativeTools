@@ -17,7 +17,7 @@
     <string name="label_net_speed">Net Monitor</string>
     <string name="label_net_speed_hide_lock_notification">Hide lock screen notification</string>
     <string name="label_net_speed_notify_clickable">Notification can be clicked</string>
-    <string name="usage_stats_msg">Usage access needs to be allowed when counting daily traffic usage.</string>
+    <string name="usage_stats_msg">When counting traffic usage, you need to allow usage access.</string>
     <string name="usage_states_title">Usage access</string>
     <string name="summary_net_speed_auto_start">Follow the system to start the foreground service</string>
     <string name="summary_net_speed">Display the current network speed in the status bar</string>
@@ -33,7 +33,7 @@
     <string name="chooser_label_market">Select store</string>
     <string name="label_open_source">Open Source</string>
     <string name="action_share">Share</string>
-    <string name="share_text">I found a useful gadget \"Net Monitor\". Go and download it! \nCoolApk: https://www.coolapk.com/apk/com.dede.nativetools\nPlayStore: https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text">I found a useful gadget \"Net Monitor\". Go and download it! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
     <string name="toast_copyed">Copied</string>
     <string name="summary_night_mode_follow_system">Follow System</string>
     <string name="label_night_mode">Night Mode</string>
@@ -81,4 +81,7 @@
     <string name="toast_download_font_succeeded">Font downloaded successfully</string>
     <string name="toast_download_font_failed">Font download failed</string>
     <string name="label_net_speed_horizontal_scale">X zoom</string>
+    <string name="label_month">Month</string>
+    <string name="label_today">Today</string>
+    <string name="label_full_net_usage">Network Usage statistics</string>
 </resources>
