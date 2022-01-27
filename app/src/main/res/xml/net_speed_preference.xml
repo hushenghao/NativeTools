@@ -32,9 +32,9 @@
             app:title="@string/label_net_speed_interval"
             app:useSimpleSummaryProvider="true" />
 
-        <PreferenceScreen
+        <com.dede.nativetools.ui.NavigatePreference
             app:icon="@drawable/ic_outline_settings"
-            app:key="net_speed_advanced"
+            app:navigateId="@id/action_netSpeed_to_netSpeedAdvanced"
             app:summary="@string/summary_net_speed_advanced"
             app:title="@string/label_net_speed_advanced" />
 

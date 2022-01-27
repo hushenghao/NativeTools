@@ -1,12 +1,13 @@
 package com.dede.nativetools.other
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.postDelayed
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -16,7 +17,8 @@ import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.ui.NightModeDropDownPreference
 import com.dede.nativetools.util.*
 
-class OtherFragment : PreferenceFragmentCompat() {
+class OtherFragment : PreferenceFragmentCompat(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val activityResultLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
@@ -24,14 +26,6 @@ class OtherFragment : PreferenceFragmentCompat() {
     private val mainViewModel by activityViewModels<MainViewModel>()
 
     private lateinit var preferenceIgnoreBatteryOptimize: SwitchPreferenceCompat
-
-    private var changeNightModeRunnable: ChangeNightModeRunnable? = null
-
-    private class ChangeNightModeRunnable(val mode: Int) : Runnable {
-        override fun run() {
-            setNightMode(mode)
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,27 +40,13 @@ class OtherFragment : PreferenceFragmentCompat() {
     }
 
     private fun initOtherPreferenceGroup() {
-        requirePreference<Preference>(OtherPreferences.KEY_ABOUT).also {
-            it.summary = requireContext().getVersionSummary()
+        requirePreference<Preference>(OtherPreferences.KEY_ABOUT)
+            .summary = requireContext().getVersionSummary()
 
-            it.onPreferenceClickListener {
-                findNavController().navigate(R.id.action_other_to_about)
-            }
-        }
-
-        requirePreference<NightModeDropDownPreference>(OtherPreferences.KEY_NIGHT_MODE_TOGGLE).also {
-            it.onNightModeSelected = { rect ->
-                val decorView = requireActivity().window.decorView
-                mainViewModel.setCircularReveal(decorView, rect)
-            }
-            it.onPreferenceChangeListener<String> { _, newValue ->
-                removeDelay()
-                val runnable = ChangeNightModeRunnable(newValue.toInt()).apply {
-                    this@OtherFragment.changeNightModeRunnable = this
-                }
-                // Wait for Popup to dismiss
-                uiHandler.postDelayed(runnable, 300)
-            }
+        requirePreference<NightModeDropDownPreference>(OtherPreferences.KEY_NIGHT_MODE_TOGGLE)
+            .onNightModeSelected = { rect ->
+            val decorView = requireActivity().window.decorView
+            mainViewModel.setCircularReveal(decorView, rect)
         }
 
         preferenceIgnoreBatteryOptimize =
@@ -90,22 +70,9 @@ class OtherFragment : PreferenceFragmentCompat() {
                 }
             }
 
-        requirePreference<Preference>(OtherPreferences.KEY_FULL_NET_USAGE)
-            .onPreferenceClickListener {
-                findNavController().navigate(R.id.action_other_to_netUsageFragment)
-            }
-
-        requirePreference<Preference>(OtherPreferences.KEY_DONATE)
-            .onPreferenceClickListener {
-                findNavController().navigate(R.id.action_other_to_dialogDonate)
-            }
         requirePreference<Preference>(OtherPreferences.KEY_RATE)
             .onPreferenceClickListener {
                 requireContext().market(requireContext().packageName)
-            }
-        requirePreference<Preference>(OtherPreferences.KEY_BETA)
-            .onPreferenceClickListener {
-                requireContext().browse(R.string.url_pgyer)
             }
         requirePreference<Preference>(OtherPreferences.KEY_SHARE)
             .onPreferenceClickListener {
@@ -115,14 +82,6 @@ class OtherFragment : PreferenceFragmentCompat() {
             .onPreferenceClickListener {
                 requireContext().emailTo(R.string.email)
             }
-        requirePreference<Preference>(OtherPreferences.KEY_OPEN_SOURCE)
-            .onPreferenceClickListener {
-                findNavController().navigate(R.id.action_other_to_openSource)
-            }
-        requirePreference<Preference>(OtherPreferences.KEY_GITHUB)
-            .onPreferenceClickListener {
-                requireContext().browse(R.string.url_github)
-            }
     }
 
     private fun checkIgnoreBatteryOptimize() {
@@ -131,19 +90,24 @@ class OtherFragment : PreferenceFragmentCompat() {
 
     override fun onStart() {
         super.onStart()
+        globalPreferences.registerOnSharedPreferenceChangeListener(this)
         checkIgnoreBatteryOptimize()
     }
 
-    private fun removeDelay() {
-        val delayChangeNightMode = changeNightModeRunnable
-        if (delayChangeNightMode != null) {
-            uiHandler.removeCallbacks(delayChangeNightMode)
-        }
+    override fun onStop() {
+        super.onStop()
+        globalPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onDestroyView() {
-        removeDelay()
-        super.onDestroyView()
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+        when (key) {
+            OtherPreferences.KEY_NIGHT_MODE_TOGGLE -> {
+                // Wait for Popup to dismiss
+                uiHandler.postDelayed(300) {
+                    setNightMode(OtherPreferences.nightMode)
+                }
+            }
+        }
     }
 
 }

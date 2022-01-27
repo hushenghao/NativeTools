@@ -27,12 +27,14 @@ import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.other.OtherPreferences
+import com.dede.nativetools.ui.NavigatePreference
 import com.dede.nativetools.util.*
 
 /**
  * Main
  */
-class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
+class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
+    NavigatePreference.OnNavigateHandler {
 
     companion object {
         const val EXTRA_TOGGLE = "extra_toggle"
@@ -149,6 +151,14 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration)
+    }
+
+    /**
+     * NavigatePreference点击跳转
+     * @see NavigatePreference.OnNavigateHandler
+     */
+    override fun handleNavigate(id: Int) {
+        navController.navigate(id)
     }
 
     private fun getLayoutInflater(enableScene: Boolean): LayoutInflater {

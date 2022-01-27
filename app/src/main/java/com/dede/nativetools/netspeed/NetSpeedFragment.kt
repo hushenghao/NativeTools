@@ -63,10 +63,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private fun initGeneralPreferenceGroup() {
         statusSwitchPreference =
             requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
-        requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_ADVANCED)
-            .onPreferenceClickListener {
-                findNavController().navigate(R.id.action_netSpeed_to_netSpeedAdvanced)
-            }
     }
 
     private fun initNotificationPreferenceGroup() {

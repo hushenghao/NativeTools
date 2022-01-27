@@ -23,7 +23,6 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_USAGE = "net_speed_usage"
     const val KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION = "net_speed_locked_hide"
     const val KEY_NET_SPEED_HIDE_NOTIFICATION = "net_speed_hide_notification"
-    const val KEY_NET_SPEED_ADVANCED = "net_speed_advanced"
 
     const val KEY_NET_SPEED_TEXT_STYLE = "net_speed_text_style"
     const val KEY_NET_SPEED_FONT = "net_speed_font"
