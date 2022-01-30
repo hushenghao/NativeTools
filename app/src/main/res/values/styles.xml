@@ -4,6 +4,11 @@
         <item name="colorPrimary">@color/md_theme_primary</item>
     </style>
 
+    <style name="Style.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="paddingRightSystemWindowInsets">false</item>
+        <item name="paddingLeftSystemWindowInsets">false</item>
+    </style>
+
     <style name="Style.ActionMenu" parent="Widget.Material3.PopupMenu">
         <item name="android:dropDownVerticalOffset">6dp</item>
         <item name="android:dropDownHorizontalOffset">-6dp</item>

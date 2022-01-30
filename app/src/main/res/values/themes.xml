@@ -4,14 +4,13 @@
     <style name="BasicAppTheme" parent="Theme.Material3.DynamicColors.DayNight">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <!-- Customize your theme here. -->
 
         <item name="windowActionModeOverlay">true</item>
         <item name="actionOverflowMenuStyle">@style/Style.ActionMenu</item>
 
         <item name="materialAlertDialogTheme">@style/Style.MaterialAlertDialog</item>
-        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Material3.BottomSheetDialog</item>
-        <item name="materialCardViewStyle">?attr/materialCardViewElevatedStyle</item>
+        <item name="bottomSheetDialogTheme">@style/Style.BottomSheetDialog</item>
+        <!--<item name="materialCardViewStyle">?attr/materialCardViewElevatedStyle</item>-->
         <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
         <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
         <item name="spinnerStyle">@style/Style.Spinner</item>

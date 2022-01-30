@@ -13,7 +13,6 @@ import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
-import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
 import com.google.android.material.color.MaterialColors
@@ -84,7 +83,7 @@ fun Context.market(packageName: String) {
         .setData("market://details?id=$packageName")
         .newTask()
         .toChooser(R.string.chooser_label_market)
-    startActivity(market)
+    ContextCompat.startActivity(this, market, null)
 }
 
 fun Context.share(@StringRes textId: Int) {
@@ -92,7 +91,7 @@ fun Context.share(@StringRes textId: Int) {
         .setType("text/plain")
         .newTask()
         .toChooser(R.string.action_share)
-    startActivity(intent)
+    ContextCompat.startActivity(this, intent, null)
 }
 
 fun Context.emailTo(@StringRes addressRes: Int) {
@@ -100,13 +99,10 @@ fun Context.emailTo(@StringRes addressRes: Int) {
     val intent = Intent(Intent(Intent.ACTION_SENDTO, uri))
         .newTask()
         .toChooser(R.string.action_feedback)
-    startActivity(intent)
+    ContextCompat.startActivity(this, intent, null)
 }
 
 fun Context.copy(text: String) {
     val clipboardManager = this.requireSystemService<ClipboardManager>()
     clipboardManager.setPrimaryClip(ClipData.newPlainText("text", text))
 }
-
-fun Context.getVersionSummary() =
-    getString(R.string.summary_about_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)

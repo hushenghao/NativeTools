@@ -23,6 +23,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.DialogFragmentDonateBinding
 import com.dede.nativetools.databinding.ItemPaymentLayoutBinding
+import com.dede.nativetools.main.WindowEdgeManager
 import com.dede.nativetools.ui.SpaceItemDecoration
 import com.dede.nativetools.util.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -58,6 +59,7 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
+            WindowEdgeManager(requireContext()).applyEdgeToEdge(this.window)
             val behavior = (this as BottomSheetDialog).behavior
             behavior.skipCollapsed = true
         }

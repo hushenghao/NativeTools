@@ -9,6 +9,7 @@ import android.os.Process
 import android.provider.Settings
 import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatDelegate
+import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.other.OtherPreferences
 import java.util.*
@@ -37,6 +38,9 @@ val Context.isIgnoringBatteryOptimizations
         val powerManager = this.requireSystemService<PowerManager>()
         return powerManager.isIgnoringBatteryOptimizations(this.packageName)
     }
+
+fun Context.getVersionSummary() =
+    getString(R.string.summary_about_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
 
 object Logic {
 

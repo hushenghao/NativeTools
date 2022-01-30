@@ -78,9 +78,6 @@ fun Intent.toChooser(@StringRes titleId: Int): Intent =
 @kotlin.internal.InlineOnly
 inline fun Intent.launchActivity(context: Context) = context.launchActivity(this)
 
-fun Intent.toPendingActivity(context: Context, flags: Int): PendingIntent =
-    PendingIntent.getActivity(context, 0, this, flags)
-
 fun Intent.toPendingBroadcast(context: Context, flags: Int): PendingIntent =
     PendingIntent.getBroadcast(context, 0, this, flags)
 

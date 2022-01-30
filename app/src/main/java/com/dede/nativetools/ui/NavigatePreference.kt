@@ -1,6 +1,7 @@
 package com.dede.nativetools.ui
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.util.AttributeSet
 import androidx.annotation.IdRes
 import androidx.preference.Preference
@@ -35,6 +36,21 @@ class NavigatePreference @JvmOverloads constructor(
             return
         }
         if (navigateId == -1) return
-        (context as? OnNavigateHandler)?.handleNavigate(navigateId)
+        (resolveContext(context) as? OnNavigateHandler)?.handleNavigate(navigateId)
+    }
+
+    private fun resolveContext(context: Context): Context? {
+        var ctx: Context? = context
+        while (ctx != null) {
+            if (!ctx.isRestricted) {
+                return ctx
+            }
+            ctx = if (ctx is ContextWrapper) {
+                ctx.baseContext
+            } else {
+                null
+            }
+        }
+        return null
     }
 }
