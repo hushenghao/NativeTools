@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="tag_recycler_view" type="id" />
+
+    <dimen name="open_source_item_size">320dp</dimen>
 </resources>
