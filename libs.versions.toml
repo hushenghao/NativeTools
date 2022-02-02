@@ -4,7 +4,7 @@ kotlin = "1.6.10"
 [libraries]
 android-gradle = "com.android.tools.build:gradle:7.1.0"
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-diffplug-spotless = "com.diffplug.spotless:spotless-plugin-gradle:6.1.0"
+diffplug-spotless = "com.diffplug.spotless:spotless-plugin-gradle:6.2.1"
 tinify = "com.tinify:tinify:1.6.4"
 
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
