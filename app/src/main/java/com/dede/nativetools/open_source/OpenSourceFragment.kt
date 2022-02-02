@@ -10,9 +10,9 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.math.MathUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentOpenSourceBinding
@@ -34,16 +34,15 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
         applyBottomBarsInsets(binding.recyclerView)
 
-        val adapter = Adapter()
-        binding.recyclerView.adapter = adapter
         val spanCount = calculateGridSpanCount()
         if (spanCount == 1) {
             binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         } else {
-            binding.recyclerView.layoutManager = StaggeredGridLayoutManager(spanCount,
-                StaggeredGridLayoutManager.VERTICAL)
+            binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
         }
-        viewModel.openSourceList.observe(this, adapter::setData)
+        viewModel.openSourceList.observe(this) {
+            binding.recyclerView.adapter = Adapter(it)
+        }
     }
 
     private fun calculateGridSpanCount(): Int {
@@ -51,18 +50,10 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         val displayWidth = displayMetrics.widthPixels
         val itemSize = resources.getDimensionPixelSize(R.dimen.open_source_item_size)
         val gridSpanCount = displayWidth / itemSize
-        return MathUtils.clamp(gridSpanCount, 1, 3)
+        return MathUtils.clamp(gridSpanCount, 1, 2)
     }
 
-    private class Adapter : RecyclerView.Adapter<ViewHolder>() {
-
-        private val list = mutableListOf<OpenSource>()
-
-        fun setData(data: List<OpenSource>) {
-            val start = this.list.size
-            this.list.addAll(data)
-            notifyItemRangeInserted(start, list.size - 1)
-        }
+    private class Adapter(private val list: List<OpenSource>) : RecyclerView.Adapter<ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val itemView = LayoutInflater.from(parent.context)
@@ -117,7 +108,7 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
                             context.toast(R.string.toast_copyed)
                         }
                     }
-                    R.id.action_open -> {
+                    R.id.action_homepage -> {
                         if (openSource.url.isNotEmpty()) {
                             context.browse(openSource.url)
                         }

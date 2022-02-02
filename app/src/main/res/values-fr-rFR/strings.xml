@@ -58,7 +58,6 @@
     <string name="toast_saved">Enregistré</string>
     <string name="label_home">Page d\'accueil</string>
     <string name="toast_open_battery_optimization">S\'il vous plaît trouver \"Vitesse Net\" et activer manuellement l\'optimisation de la batterie</string>
-    <string name="action_open_link">Voir</string>
     <string name="label_privacy_agreement">Accord de confidentialité</string>
     <string name="label_net_speed_style">Style de police</string>
     <string name="label_net_speed_text_scale">Zoom du texte</string>

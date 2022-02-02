@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 typealias OverrideItemOffsets = (outRect: Rect) -> Unit
 
@@ -69,10 +68,6 @@ class SpaceItemDecoration(
     private fun getSpanCount(recyclerView: RecyclerView): Int {
         val layoutManager = recyclerView.layoutManager
         if (layoutManager is GridLayoutManager) {
-            return layoutManager.spanCount
-        }
-
-        if (layoutManager is StaggeredGridLayoutManager) {
             return layoutManager.spanCount
         }
         return 1

@@ -58,7 +58,6 @@
     <string name="toast_saved">저장됨</string>
     <string name="label_home">첫 페이지</string>
     <string name="toast_open_battery_optimization">네트워크 속도 표시기를 찾아 수동으로 배터리 최적화를 켜십시오</string>
-    <string name="action_open_link">보기</string>
     <string name="label_privacy_agreement">프라이버시 규약</string>
     <string name="label_net_speed_style">글꼴 스타일</string>
     <string name="label_net_speed_advanced">고급 설정</string>

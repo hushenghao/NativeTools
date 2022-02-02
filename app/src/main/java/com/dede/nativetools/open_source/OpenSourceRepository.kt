@@ -2,6 +2,7 @@ package com.dede.nativetools.open_source
 
 import androidx.annotation.DrawableRes
 import com.dede.nativetools.R
+import java.text.Collator
 
 class OpenSource(
     val name: String,
@@ -10,13 +11,14 @@ class OpenSource(
     val url: String?,
     @DrawableRes
     val foregroundLogo: Int,
-    val license: String?
+    val license: String?,
 )
 
 class OpenSourceRepository {
 
     fun getOpenSourceList(): List<OpenSource> {
-        return arrayListOf(
+        val collator = Collator.getInstance()
+        val list = arrayListOf(
             OpenSource(
                 "Kotlin",
                 "JetBrains",
@@ -106,5 +108,9 @@ class OpenSourceRepository {
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
             )
         )
+        list.sortWith { c1, c2 ->
+            collator.compare(c1.name, c2.name)
+        }
+        return list
     }
 }

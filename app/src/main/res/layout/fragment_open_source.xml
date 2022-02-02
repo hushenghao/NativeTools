@@ -9,8 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:itemCount="10"
-        tools:layoutManager="StaggeredGridLayoutManager"
-        tools:listitem="@layout/item_open_source"
-        tools:spanCount="1" />
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_open_source" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
