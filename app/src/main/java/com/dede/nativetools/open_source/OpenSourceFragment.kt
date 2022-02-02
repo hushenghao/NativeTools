@@ -50,7 +50,7 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         val displayWidth = displayMetrics.widthPixels
         val itemSize = resources.getDimensionPixelSize(R.dimen.open_source_item_size)
         val gridSpanCount = displayWidth / itemSize
-        return MathUtils.clamp(gridSpanCount, 1, 2)
+        return MathUtils.clamp(gridSpanCount, 1, 3)
     }
 
     private class Adapter(private val list: List<OpenSource>) : RecyclerView.Adapter<ViewHolder>() {
