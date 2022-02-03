@@ -22,6 +22,8 @@
 
 -printconfiguration ./build/full-r8-config.txt
 
+-keep class me.weishu.reflection.* {*;}
+
 -keepclassmembernames class androidx.appcompat.widget.AppCompatSpinner {
     private androidx.appcompat.widget.AppCompatSpinner$SpinnerPopup mPopup;
 }
