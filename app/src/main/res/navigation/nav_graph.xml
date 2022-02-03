@@ -53,8 +53,11 @@
             android:id="@+id/action_other_to_openSource"
             app:destination="@id/openSource" />
         <action
-            android:id="@+id/action_other_to_netUsageFragment"
+            android:id="@+id/action_other_to_netUsage"
             app:destination="@id/netUsageFragment" />
+        <action
+            android:id="@+id/action_other_to_diagnosis"
+            app:destination="@id/diagnosisFragment" />
     </fragment>
 
     <fragment
@@ -67,4 +70,10 @@
         android:name="com.dede.nativetools.other.NetUsageFragment"
         android:label="@string/label_full_net_usage"
         tools:layout="@layout/fragment_net_usage" />
+
+    <fragment
+        android:id="@+id/diagnosisFragment"
+        android:name="com.dede.nativetools.diagnosis.DiagnosisFragment"
+        android:label="@string/label_diagnosis"
+        tools:layout="@layout/fragment_diagnosis" />
 </navigation>

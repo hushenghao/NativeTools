@@ -83,4 +83,5 @@
     <string name="label_full_net_usage">인터넷 사용 통계</string>
     <string name="label_today">오늘</string>
     <string name="label_month">지난</string>
+    <string name="label_diagnosis">진단</string>
 </resources>

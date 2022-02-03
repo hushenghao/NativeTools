@@ -57,11 +57,11 @@ object ChromeTabsBrowser {
     /**
      * 预热并预加载
      */
-    fun warmup(context: Context, vararg mayLaunchUrls: Uri) {
-        if (customTabsSession != null) return
+    fun warmup(context: Context, vararg mayLaunchUrls: Uri): Boolean {
+        if (customTabsSession != null) return true
         this.mayLaunchUrls = mayLaunchUrls
         val appContext = context.applicationContext
-        CustomTabsClient.bindCustomTabsService(
+        return CustomTabsClient.bindCustomTabsService(
             appContext,
             CUSTOM_TAB_PACKAGE_NAME,
             customTabsServiceConnection

@@ -25,7 +25,7 @@
 
         <com.dede.nativetools.ui.NavigatePreference
             app:icon="@drawable/ic_outline_data_usage"
-            app:navigateId="@id/action_other_to_netUsageFragment"
+            app:navigateId="@id/action_other_to_netUsage"
             app:title="@string/label_full_net_usage" />
 
         <com.dede.nativetools.ui.NavigatePreference
@@ -66,6 +66,11 @@
             app:icon="@drawable/ic_action_share"
             app:key="share"
             app:title="@string/action_share" />
+
+        <com.dede.nativetools.ui.NavigatePreference
+            app:icon="@drawable/ic_outline_pest_control"
+            app:navigateId="@id/action_other_to_diagnosis"
+            app:title="@string/label_diagnosis" />
 
         <Preference
             app:icon="@drawable/ic_outline_feedback"

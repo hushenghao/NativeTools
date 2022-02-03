@@ -10,6 +10,8 @@ import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.toast
 
+typealias OnCloseCallback = () -> Unit
+
 class NetSpeedServiceController(context: Context) : INetSpeedInterface.Default(),
     ServiceConnection {
 
@@ -17,7 +19,7 @@ class NetSpeedServiceController(context: Context) : INetSpeedInterface.Default()
 
     private var binder: INetSpeedInterface? = null
 
-    var onCloseCallback: Function0<Unit>? = null
+    var onCloseCallback: OnCloseCallback? = null
 
     private val closeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -28,8 +30,11 @@ class NetSpeedServiceController(context: Context) : INetSpeedInterface.Default()
         }
     }
 
+    val status: Boolean
+        get() = NetSpeedPreferences.status
+
     fun startService(bind: Boolean = false) {
-        if (!NetSpeedPreferences.status) return
+        if (!status) return
         val intent = NetSpeedService.createIntent(appContext)
         ContextCompat.startForegroundService(appContext, intent)
         if (bind) {
@@ -37,8 +42,8 @@ class NetSpeedServiceController(context: Context) : INetSpeedInterface.Default()
         }
     }
 
-    fun bindService(onCloseCallback: Function0<Unit>? = null) {
-        if (!NetSpeedPreferences.status) return
+    fun bindService(onCloseCallback: OnCloseCallback? = null) {
+        if (!status) return
         this.onCloseCallback = onCloseCallback
         val intent = NetSpeedService.createIntent(appContext)
         appContext.bindService(intent, this, Context.BIND_AUTO_CREATE)

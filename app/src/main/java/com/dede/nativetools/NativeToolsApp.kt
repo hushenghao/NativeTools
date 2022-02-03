@@ -20,11 +20,15 @@ class NativeToolsApp : Application() {
         }
     }
 
+    var unseal: Int = -1
+        private set
+
     override fun attachBaseContext(base: Context?) {
         instance = this
         super.attachBaseContext(base)
         val unseal = Reflection.unseal(base)
         Log.i("NativeToolsApp", "unseal: $unseal")
+        this.unseal = unseal
     }
 
     override fun onCreate() {

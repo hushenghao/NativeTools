@@ -5,6 +5,7 @@ import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.net.ConnectivityManager
 import androidx.annotation.WorkerThread
+import com.dede.nativetools.util.Logic
 import com.dede.nativetools.util.mainScope
 import com.dede.nativetools.util.requireSystemService
 import com.dede.nativetools.util.toZeroH
@@ -74,6 +75,16 @@ object NetworkUsageUtil {
         return todayNetworkUsageJob.data
     }
 
+    fun networkUsageDiagnosis(context: Context): Long {
+        if (!Logic.checkAppOps(context)) {
+            return -1
+        }
+        val start = Calendar.getInstance().toZeroH()
+        return runBlocking {
+            getNetworkUsageBytesInternal(context, start)
+        }
+    }
+
     private suspend fun getNetworkUsageBytesInternal(context: Context, start: Calendar): Long {
         val networkStatsManager = context.requireSystemService<NetworkStatsManager>()
         val startTime = start.timeInMillis
@@ -99,7 +110,7 @@ object NetworkUsageUtil {
     private fun NetworkStatsManager.queryNetworkUsageBytes(
         networkType: Int,
         startTime: Long,
-        endTime: Long
+        endTime: Long,
     ): Long {
         val bucket = this.queryNetworkUsageBucket(networkType, startTime, endTime) ?: return 0L
         return bucket.rxBytes + bucket.txBytes
@@ -109,7 +120,7 @@ object NetworkUsageUtil {
     fun NetworkStatsManager.queryNetworkUsageBucket(
         networkType: Int,
         startTime: Long,
-        endTime: Long
+        endTime: Long,
     ): NetworkStats.Bucket? {
         return this.querySummaryForDevice(networkType, null, startTime, endTime)
     }

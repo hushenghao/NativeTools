@@ -102,4 +102,5 @@
     <string name="label_month">本月</string>
     <string name="action_license">License</string>
     <string name="action_homepage">Homepage</string>
+    <string name="label_diagnosis">诊断</string>
 </resources>

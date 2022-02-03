@@ -13,7 +13,9 @@ import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.utils.NetSpeedCompute
 import com.dede.nativetools.util.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 
 
 class NetSpeedService : Service() {

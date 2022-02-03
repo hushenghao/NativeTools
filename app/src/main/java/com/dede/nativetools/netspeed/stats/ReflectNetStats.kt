@@ -7,6 +7,9 @@ import java.lang.reflect.Method
 
 class ReflectNetStats : NetStats {
 
+    override val name: String
+        get() = "ReflectNetStats"
+
     private var methodGetRxBytes: Method? = null
     private var methodGetTxBytes: Method? = null
 

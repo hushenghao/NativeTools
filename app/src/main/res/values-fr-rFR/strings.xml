@@ -83,4 +83,5 @@
     <string name="label_full_net_usage">Statistiques d’utilisation du web</string>
     <string name="label_today">Aujourd\'hui</string>
     <string name="label_month">Mois</string>
+    <string name="label_diagnosis">Diagnostic</string>
 </resources>

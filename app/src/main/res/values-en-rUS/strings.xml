@@ -83,4 +83,5 @@
     <string name="label_month">Month</string>
     <string name="label_today">Today</string>
     <string name="label_full_net_usage">Network Usage statistics</string>
+    <string name="label_diagnosis">Diagnosis</string>
 </resources>

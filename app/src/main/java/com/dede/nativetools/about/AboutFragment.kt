@@ -5,10 +5,10 @@ import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.*
+import android.view.HapticFeedbackConstants
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
@@ -56,11 +56,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     )
     private val outlineProvider = ViewOvalOutlineProvider(true)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        ChromeTabsBrowser.warmup(requireContext(), Uri.parse(getString(R.string.url_github)))
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         applyBarsInsets(view, bottom = view)// navigation bar
@@ -92,7 +87,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private fun appendFollowView(
         followViews: ArrayList<ImageView>,
         template: ImageView,
-        target: Int
+        target: Int,
     ) {
         var count = followViews.size
         if (count >= MAX_FOLLOW_COUNT) {

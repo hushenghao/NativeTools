@@ -54,6 +54,11 @@
             android:exported="false"
             android:label="@string/label_net_speed"
             android:process=":netspeed" />
+        <service
+            android:name=".diagnosis.DiagnosisFragment$Service"
+            android:exported="false"
+            android:label="@string/label_diagnosis"
+            android:process=":netspeed" />
 
         <service
             android:name=".netspeed.service.NetTileService"
