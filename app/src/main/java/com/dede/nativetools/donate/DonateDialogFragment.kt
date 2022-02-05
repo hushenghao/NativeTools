@@ -15,6 +15,8 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -44,7 +46,7 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.dialog_fragment_donate, container, false)
     }
@@ -96,6 +98,13 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
             if (isNightMode()) {
                 binding.ivLogo.imageTintList = ColorStateList.valueOf(Color.WHITE)
             }
+            if (payment.title.isEmpty()) {
+                binding.tvTitle.isGone = true
+            } else {
+                binding.tvTitle.text = payment.title
+                binding.tvTitle.isVisible = true
+
+            }
         }
     }
 
@@ -107,6 +116,10 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
         fun handleClick(payment: Payment) {
             val context = host.requireContext()
             when (payment.resId) {
+                R.drawable.img_logo_eth -> {
+                    context.copy(context.getString(R.string.payment_eth_address))
+                    context.toast(R.string.toast_copyed)
+                }
                 R.drawable.img_logo_alipay -> {
                     context.browse(R.string.url_alipay_payment_code)
                 }
