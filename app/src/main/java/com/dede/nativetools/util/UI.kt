@@ -5,14 +5,17 @@ import android.content.DialogInterface
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.IntDef
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.TextViewCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
@@ -34,6 +37,16 @@ fun Configuration.isSmallestScreenWidthDpAtLast(swDp: Int): Boolean {
 
 val Configuration.isLandscape: Boolean
     get() = this.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+@Suppress("EXTENSION_SHADOWED_BY_MEMBER")
+fun TextView.setCompoundDrawablesRelative(
+    start: Drawable? = null,
+    top: Drawable? = null,
+    end: Drawable? = null,
+    bottom: Drawable? = null
+) {
+    TextViewCompat.setCompoundDrawablesRelative(this, start, top, end, bottom)
+}
 
 object UI {
 

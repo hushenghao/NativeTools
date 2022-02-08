@@ -11,6 +11,8 @@ import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.R
 import com.dede.nativetools.ui.FreestyleDropDownPreference
 import com.dede.nativetools.util.dp
+import com.dede.nativetools.util.requireDrawable
+import com.dede.nativetools.util.setCompoundDrawablesRelative
 import com.dede.nativetools.util.toast
 
 /**
@@ -28,13 +30,12 @@ class FontDropDownPreference @JvmOverloads constructor(
         val getter = TypefaceGetter.create(context, fontKey)
         if (!getter.canApply()) {
             textView.compoundDrawablePadding = 6.dp
-            textView.setCompoundDrawablesWithIntrinsicBounds(
-                0, 0,
-                R.drawable.ic_outline_file_download, 0
+            textView.setCompoundDrawablesRelative(
+                end = context.requireDrawable(R.drawable.ic_outline_file_download)
             )
             return
         }
-        textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+        textView.setCompoundDrawablesRelative()
         if (fontKey == TypefaceGetter.FONT_DEBUG && getter is DebugTypeface) {
             // for debug
             textView.text = getter.fontName
