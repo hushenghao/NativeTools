@@ -25,13 +25,7 @@ fun Handler.singlePost(r: Runnable, delayMillis: Long = 0) {
 
 val uiExecutor by lazy { ExecutorCompat.create(uiHandler) }
 
-val exceptionHandler by lazy {
-    CoroutineExceptionHandler { _, e ->
-        e.printStackTrace()
-    }
-}
-
-val mainScope by lazy { MainScope() + exceptionHandler }
+val mainScope by lazy { MainScope() + CoroutineExceptionHandler { _, e -> e.printStackTrace() } }
 
 typealias HandlerMessage = Message.() -> Unit
 
@@ -41,7 +35,7 @@ interface HandlerCallback : Handler.Callback {
         return true
     }
 
-    abstract fun onHandleMessage(msg: Message);
+    fun onHandleMessage(msg: Message)
 }
 
 class LifecycleHandlerCallback(

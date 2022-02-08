@@ -32,7 +32,6 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis), ServiceConnecti
             val rMsg = Message.obtain().apply {
                 data = bundleOf("result" to Logic.collectionDiagnosis(NativeToolsApp.getInstance()))
             }
-            Thread.sleep(5000)
             try {
                 msg.replyTo.send(rMsg)
             } catch (e: RemoteException) {
