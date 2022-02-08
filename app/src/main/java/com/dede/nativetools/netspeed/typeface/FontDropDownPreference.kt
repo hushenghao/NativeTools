@@ -6,9 +6,11 @@ import android.util.AttributeSet
 import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.work.*
+import androidx.work.WorkInfo
 import com.dede.nativetools.BuildConfig
+import com.dede.nativetools.R
 import com.dede.nativetools.ui.FreestyleDropDownPreference
+import com.dede.nativetools.util.dp
 import com.dede.nativetools.util.toast
 
 /**
@@ -25,8 +27,14 @@ class FontDropDownPreference @JvmOverloads constructor(
         val fontKey = entryValues[position].toString()
         val getter = TypefaceGetter.create(context, fontKey)
         if (!getter.canApply()) {
+            textView.compoundDrawablePadding = 6.dp
+            textView.setCompoundDrawablesWithIntrinsicBounds(
+                0, 0,
+                R.drawable.ic_outline_file_download, 0
+            )
             return
         }
+        textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
         if (fontKey == TypefaceGetter.FONT_DEBUG && getter is DebugTypeface) {
             // for debug
             textView.text = getter.fontName

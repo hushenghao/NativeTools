@@ -83,8 +83,22 @@ fun Context.assets(fileName: String): InputStream {
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T : Drawable> Context.requireDrawable(@DrawableRes drawableId: Int): T {
-    return checkNotNull(AppCompatResources.getDrawable(this, drawableId) as T)
+fun <T : Drawable> Context.requireDrawable(
+    @DrawableRes drawableId: Int,
+    @Px width: Int = 0,
+    @Px height: Int = 0
+): T {
+    val drawable = AppCompatResources.getDrawable(this, drawableId)!!
+    var right = width
+    if (right <= 0) {
+        right = drawable.intrinsicWidth
+    }
+    var bottom = height
+    if (bottom <= 0) {
+        bottom = drawable.intrinsicHeight
+    }
+    drawable.setBounds(0, 0, right, bottom)
+    return checkNotNull(drawable as T)
 }
 
 @ColorInt

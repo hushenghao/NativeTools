@@ -58,10 +58,9 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         private val binding = ItemOpenSourceBinding.bind(view)
 
         fun bindViewData(openSource: OpenSource) {
-            itemView.context.requireDrawable<Drawable>(openSource.foregroundLogo).apply {
-                setBounds(0, 0, 18.dp, 18.dp)
-                binding.tvProjectName.setCompoundDrawables(this, null, null, null)
-            }
+            val drawable =
+                itemView.context.requireDrawable<Drawable>(openSource.foregroundLogo, 18.dp, 18.dp)
+            binding.tvProjectName.setCompoundDrawables(drawable, null, null, null)
             binding.tvProjectName.text = openSource.name
             binding.tvAuthorName.text = openSource.author
             binding.tvProjectDesc.text = openSource.desc
