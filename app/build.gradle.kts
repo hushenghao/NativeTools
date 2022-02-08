@@ -34,7 +34,8 @@ android {
                 "ko-rKR",
                 "ru-rRU",
                 "de-rDE",
-                "fr-rFR"
+                "fr-rFR",
+                "es-rES"
             )
         )
 
