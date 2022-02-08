@@ -51,8 +51,8 @@
     <string name="label_privacy_agreement">Acordo de privacidade</string>
     <string name="label_today">Hoje</string>
     <string name="label_usage_just_mobile">Mostrar apenas uso de tráfego móvel</string>
-    <string name="notify_net_speed_msg">Up: %s • Down: %s</string>
-    <string name="notify_net_speed_sub">Hoje: %s • Este mês: %s</string>
+    <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">Hoje: %s • Este mês: %s</string>
     <string name="settings">Ir para configurações</string>
     <string name="share_text">Encontrei um gadget fácil de usar \'Ir para empoderamento\'Ir para download! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
     <string name="summary_default">Por omissão</string>
