@@ -84,4 +84,5 @@
     <string name="label_today">Today</string>
     <string name="label_month">Month</string>
     <string name="label_diagnosis">диагноз</string>
+    <string name="label_usage_just_mobile">Показывает только использование мобильных трафиков</string>
 </resources>

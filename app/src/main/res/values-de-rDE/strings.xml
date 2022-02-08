@@ -84,4 +84,5 @@
     <string name="label_today">Kröte</string>
     <string name="label_month">Monat</string>
     <string name="label_diagnosis">Diagnose</string>
+    <string name="label_usage_just_mobile">Anzeige nur mit gleitender traffic</string>
 </resources>

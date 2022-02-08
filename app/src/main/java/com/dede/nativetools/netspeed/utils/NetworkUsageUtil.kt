@@ -49,6 +49,33 @@ object NetworkUsageUtil {
     private val todayNetworkUsageJob = NetworkUsageJob<Long>(0)
 
     /**
+     * 获取每月移动网络使用字节数
+     */
+    fun monthMobileUsageBytes(context: Context): Long {
+        val weakRefContext = WeakReference(context)
+        monthNetworkUsageJob.execute {
+            val ctx = weakRefContext.get() ?: return@execute 0
+            val start = Calendar.getInstance().toZeroH()
+            start.set(Calendar.DAY_OF_MONTH, 1)
+            getMobileUsageBytesInternal(ctx, start)
+        }
+        return monthNetworkUsageJob.data
+    }
+
+    /**
+     * 获取每天移动网络使用字节数
+     */
+    fun todayMobileUsageBytes(context: Context): Long {
+        val weakRefContext = WeakReference(context)
+        todayNetworkUsageJob.execute {
+            val ctx = weakRefContext.get() ?: return@execute 0
+            val start = Calendar.getInstance().toZeroH()
+            getMobileUsageBytesInternal(ctx, start)
+        }
+        return todayNetworkUsageJob.data
+    }
+
+    /**
      * 获取每月网络使用字节数
      */
     fun monthNetworkUsageBytes(context: Context): Long {
@@ -83,6 +110,20 @@ object NetworkUsageUtil {
         return runBlocking {
             getNetworkUsageBytesInternal(context, start)
         }
+    }
+
+    private suspend fun getMobileUsageBytesInternal(context: Context, start: Calendar): Long {
+        val networkStatsManager = context.requireSystemService<NetworkStatsManager>()
+        val startTime = start.timeInMillis
+        val endTime = System.currentTimeMillis()
+        val mobileUsageBytes = withContext(Dispatchers.IO) {
+            networkStatsManager.queryNetworkUsageBytes(
+                @Suppress("DEPRECATION") ConnectivityManager.TYPE_MOBILE,
+                startTime,
+                endTime
+            )
+        }
+        return mobileUsageBytes shr 12 shl 12// tolerance 4096
     }
 
     private suspend fun getNetworkUsageBytesInternal(context: Context, start: Calendar): Long {

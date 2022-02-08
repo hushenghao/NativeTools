@@ -101,7 +101,8 @@
     <string name="label_full_net_usage">网络使用统计</string>
     <string name="label_today">今日</string>
     <string name="label_month">本月</string>
-    <string name="action_license">License</string>
-    <string name="action_homepage">Homepage</string>
+    <string name="action_license" translatable="false">License</string>
+    <string name="action_homepage" translatable="false">Homepage</string>
     <string name="label_diagnosis">诊断</string>
+    <string name="label_usage_just_mobile">只显示移动流量使用</string>
 </resources>

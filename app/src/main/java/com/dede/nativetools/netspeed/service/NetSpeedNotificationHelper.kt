@@ -79,14 +79,21 @@ object NetSpeedNotificationHelper {
     }
 
     /**
-     * 获取所有数据使用量
+     * 获取数据使用量
      */
-    private fun getUsageText(context: Context): String? {
+    private fun getUsageText(context: Context, configuration: NetSpeedConfiguration): String? {
         if (!Logic.checkAppOps(context)) {
             return null
         }
-        val todayBytes = NetworkUsageUtil.todayNetworkUsageBytes(context)
-        val monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
+        val todayBytes: Long
+        val monthBytes: Long
+        if (configuration.justMobileUsage) {
+            todayBytes = NetworkUsageUtil.todayMobileUsageBytes(context)
+            monthBytes = NetworkUsageUtil.monthMobileUsageBytes(context)
+        } else {
+            todayBytes = NetworkUsageUtil.todayNetworkUsageBytes(context)
+            monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
+        }
         return context.getString(
             R.string.notify_net_speed_sub,
             NetFormatter.format(
@@ -115,7 +122,7 @@ object NetSpeedNotificationHelper {
         context: Context,
         configuration: NetSpeedConfiguration,
         rxSpeed: Long = 0L,
-        txSpeed: Long = 0L
+        txSpeed: Long = 0L,
     ): Notification {
         val downloadSpeedStr: String =
             NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
@@ -163,7 +170,7 @@ object NetSpeedNotificationHelper {
                 context.getString(R.string.notify_net_speed_msg, uploadSpeedStr, downloadSpeedStr)
             builder.setContentTitle(contentStr)
             if (configuration.usage) {
-                val usageText = getUsageText(context)
+                val usageText = getUsageText(context, configuration)
                 builder.setContentText(usageText)
             }
 
@@ -205,7 +212,7 @@ object NetSpeedNotificationHelper {
     private fun createIconCompat(
         configuration: NetSpeedConfiguration,
         rxSpeed: Long,
-        txSpeed: Long
+        txSpeed: Long,
     ): IconCompat {
         val bitmap = NetTextIconFactory.create(rxSpeed, txSpeed, configuration)
         return IconCompat.createWithBitmap(bitmap)

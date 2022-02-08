@@ -84,4 +84,5 @@
     <string name="label_today">Today</string>
     <string name="label_full_net_usage">Network Usage statistics</string>
     <string name="label_diagnosis">Diagnosis</string>
+    <string name="label_usage_just_mobile">Only mobile traffic usage is displayed</string>
 </resources>

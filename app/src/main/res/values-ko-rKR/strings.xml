@@ -84,4 +84,5 @@
     <string name="label_today">오늘</string>
     <string name="label_month">지난</string>
     <string name="label_diagnosis">진단</string>
+    <string name="label_usage_just_mobile">이동 데이터 사용량만 표시합니다</string>
 </resources>

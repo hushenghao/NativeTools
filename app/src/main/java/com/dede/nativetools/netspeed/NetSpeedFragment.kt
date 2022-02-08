@@ -99,6 +99,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION,
+            NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE,
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
                 updateConfiguration()
             }

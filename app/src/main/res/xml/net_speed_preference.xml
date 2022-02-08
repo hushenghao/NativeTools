@@ -56,10 +56,17 @@
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:dependency="net_speed_hide_notification"
+            app:disableDependentsState="false"
             app:icon="@drawable/ic_outline_data_usage"
             app:key="net_speed_usage"
             app:summary="@string/summary_net_speed_usage"
             app:title="@string/label_net_speed_usage" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:dependency="net_speed_usage"
+            app:key="net_speed_usage_just_mobile"
+            app:title="@string/label_usage_just_mobile" />
 
         <SwitchPreferenceCompat
             android:key="net_speed_notify_clickable"

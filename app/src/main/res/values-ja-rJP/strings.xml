@@ -84,4 +84,5 @@
     <string name="label_today">今日</string>
     <string name="label_month">今月</string>
     <string name="label_diagnosis">診断</string>
+    <string name="label_usage_just_mobile">移動量のみ表示しています</string>
 </resources>
