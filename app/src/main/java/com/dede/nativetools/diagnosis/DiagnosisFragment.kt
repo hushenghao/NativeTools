@@ -1,27 +1,27 @@
 package com.dede.nativetools.diagnosis
 
-import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.*
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentDiagnosisBinding
 import com.dede.nativetools.util.HandlerCallback
-import com.dede.nativetools.util.LifecycleHandlerCallback
+import com.dede.nativetools.util.LifecycleHandler
 import com.dede.nativetools.util.Logic
+import com.dede.nativetools.util.bindService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * 诊断页
  */
-class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis), ServiceConnection {
+class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
 
     // 诊断服务，进程 netspeed
     class Service : android.app.Service(), HandlerCallback {
@@ -30,12 +30,11 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis), ServiceConnecti
 
         override fun onHandleMessage(msg: Message) {
             val rMsg = Message.obtain().apply {
-                data = bundleOf("result" to Logic.collectionDiagnosis(NativeToolsApp.getInstance()))
+                data = bundleOf("data" to Logic.collectionDiagnosis())
             }
             try {
                 msg.replyTo.send(rMsg)
-            } catch (e: RemoteException) {
-                e.printStackTrace()
+            } catch (ignore: RemoteException) {
             }
         }
 
@@ -54,32 +53,45 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis), ServiceConnecti
 
     private val binding by viewBinding(FragmentDiagnosisBinding::bind)
 
-    private val callback = LifecycleHandlerCallback(this) {
-        binding.tvDiagnosisMsg.text = data.getString("result")
-        binding.progressCircular.isGone = true
-    }
-    private val handler = Handler(Looper.getMainLooper(), callback)
+    private val handler = LifecycleHandler(Looper.getMainLooper(), this, handlerMessage = {
+        val data = data.getString("data")
+        setData(data)
+    })
     private val responseMessenger = Messenger(handler)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.progressCircular.isVisible = true
-        val intent = Intent(requireContext(), Service::class.java)
-        requireContext().bindService(intent, this, Context.BIND_AUTO_CREATE)
+        requireContext().bindService(
+            intent = Intent(requireContext(), Service::class.java),
+            onConnected = {
+                // 绑定成功
+                val requestMessenger = Messenger(it)
+                val msg = Message.obtain().apply { replyTo = responseMessenger }
+                try {
+                    requestMessenger.send(msg)
+                } catch (e: RemoteException) {
+                    collectionNow()
+                    e.printStackTrace()
+                }
+            }, onFailed = {
+                // 绑定失败时在主进程收集诊断信息
+                collectionNow()
+            }, lifecycleOwner = this)
     }
 
-    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        val requestMessenger = Messenger(service)
-        val msg = Message.obtain().apply { replyTo = responseMessenger }
-        requestMessenger.send(msg)
+    private fun collectionNow() {
+        lifecycleScope.launchWhenCreated {
+            val result = withContext(Dispatchers.IO) {
+                Logic.collectionDiagnosis()
+            }
+            setData(result)
+        }
     }
 
-    override fun onServiceDisconnected(name: ComponentName?) {
-    }
-
-    override fun onDestroyView() {
-        requireContext().unbindService(this)
-        super.onDestroyView()
+    private fun setData(data: String?) {
+        binding.tvDiagnosisMsg.text = data
+        binding.progressCircular.isGone = true
     }
 
 }

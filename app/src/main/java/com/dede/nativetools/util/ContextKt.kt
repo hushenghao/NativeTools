@@ -2,17 +2,18 @@
 
 package com.dede.nativetools.util
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
+import android.content.*
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.IBinder
 import android.widget.Toast
 import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
 import com.google.android.material.color.MaterialColors
@@ -40,6 +41,40 @@ fun Context.startService(intent: Intent, foreground: Boolean) {
         ContextCompat.startForegroundService(this, intent)
     } else {
         this.startService(intent)
+    }
+}
+
+typealias OnServiceConnected = (service: IBinder?) -> Unit
+
+fun Context.bindService(
+    intent: Intent,
+    onConnected: OnServiceConnected,
+    onFailed: () -> Unit,
+    lifecycleOwner: LifecycleOwner,
+): Boolean {
+    val conn = LifecycleServiceConnection(this, onConnected)
+    val bind = this.bindService(intent, conn, Context.BIND_AUTO_CREATE)
+    if (!bind) {
+        onFailed.invoke()
+    }
+    lifecycleOwner.lifecycle.addObserver(conn)
+    return bind
+}
+
+private class LifecycleServiceConnection(
+    val context: Context,
+    val onConnected: OnServiceConnected,
+) : ServiceConnection, DefaultLifecycleObserver {
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        context.unbindService(this)
+    }
+
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        onConnected.invoke(service)
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) {
     }
 }
 

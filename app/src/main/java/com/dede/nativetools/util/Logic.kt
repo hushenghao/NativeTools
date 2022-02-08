@@ -144,7 +144,8 @@ object Logic {
         }
     }
 
-    fun collectionDiagnosis(app: NativeToolsApp): String {
+    fun collectionDiagnosis(): String {
+        val app = NativeToolsApp.getInstance()
         val sb = StringBuilder()
             .appendPart("Manufacturer", Build.MANUFACTURER)
             .appendPart("Brand", Build.BRAND)
@@ -176,7 +177,7 @@ object Logic {
             .appendPart("TotalTxBytes", TrafficStats.getTotalTxBytes())
             .appendPart("TotalRxBytes", TrafficStats.getTotalRxBytes())
             .appendPart("AppOps", checkAppOps(app))
-            .appendPart("Today usage", NetworkUsageUtil.networkUsageDiagnosis(app))
+            .appendPart("Today usage", NetworkUsageUtil.networkUsageDiagnosis(app))// work thread
 
         return sb.toString()
     }

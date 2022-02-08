@@ -38,10 +38,11 @@ interface HandlerCallback : Handler.Callback {
     fun onHandleMessage(msg: Message)
 }
 
-class LifecycleHandlerCallback(
+class LifecycleHandler(
+    looper: Looper,
     lifecycleOwner: LifecycleOwner,
     handlerMessage: HandlerMessage,
-) : HandlerCallback, DefaultLifecycleObserver {
+) : Handler(looper), DefaultLifecycleObserver {
 
     private val holder = HandlerHolder(handlerMessage)
 
@@ -64,10 +65,11 @@ class LifecycleHandlerCallback(
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
+        removeCallbacksAndMessages(null)
         holder.clear()
     }
 
-    override fun onHandleMessage(msg: Message) {
+    override fun handleMessage(msg: Message) {
         holder.handlerMessage?.invoke(msg)
     }
 }
