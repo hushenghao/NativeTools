@@ -7,11 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.math.MathUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
@@ -34,23 +31,10 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
         applyBottomBarsInsets(binding.recyclerView)
 
-        val spanCount = calculateGridSpanCount()
-        if (spanCount == 1) {
-            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        } else {
-            binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
-        }
+        binding.recyclerView.layoutManager = Logic.calculateAndCreateLayoutManager(requireContext())
         viewModel.openSourceList.observe(this) {
             binding.recyclerView.adapter = Adapter(it)
         }
-    }
-
-    private fun calculateGridSpanCount(): Int {
-        val displayMetrics = resources.displayMetrics
-        val displayWidth = displayMetrics.widthPixels
-        val itemSize = resources.getDimensionPixelSize(R.dimen.open_source_item_size)
-        val gridSpanCount = displayWidth / itemSize
-        return MathUtils.clamp(gridSpanCount, 1, 3)
     }
 
     private class Adapter(private val list: List<OpenSource>) : RecyclerView.Adapter<ViewHolder>() {
