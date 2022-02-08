@@ -50,7 +50,7 @@
     <string name="label_other">Andere</string>
     <string name="label_net_speed_hide_notification">Verbergen Sie Benachrichtigungen</string>
     <string name="summary_net_speed_hide_notification">Verbergen Sie Benachrichtigungen durch Ersetzen der Standardnotifizierungsart (alle Geräte können nicht unterstützt werden)</string>
-    <string name="i_know">Ich hab\'s!</string>
+    <string name="i_know">Ich hab\'s</string>
     <string name="tip_easter_egg">Buntes Ei</string>
     <string name="action_rate">Gib mir einen guten Kommentar</string>
     <string name="action_donate">Spende</string>
