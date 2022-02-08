@@ -153,6 +153,7 @@ object Logic {
             .appendPart("Display", Build.DISPLAY)
             .appendPart("Android version", Build.VERSION.RELEASE)
             .appendPart("Sdk", Build.VERSION.SDK_INT)
+            .appendPart("Locale", getLocale(app))
             .appendPart("Screen width", UI.displayMetrics().widthPixels)
             .appendPart("Screen height", UI.displayMetrics().heightPixels)
             .appendPart("Density dpi", UI.displayMetrics().densityDpi)
@@ -168,7 +169,6 @@ object Logic {
         }
         sb.appendPart("Process", app.processName())
             .appendPart("Thread", Thread.currentThread().name)
-            .appendPart("Locale", getLocale(app))
             .appendPart("Status", NetSpeedPreferences.status)
             .appendPart("Free reflection", app.unseal)
             .appendPart("Notification", NetSpeedNotificationHelper.areNotificationEnabled(app))

@@ -21,7 +21,7 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 51
+        versionCode = 52
         versionName = "3.6.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
