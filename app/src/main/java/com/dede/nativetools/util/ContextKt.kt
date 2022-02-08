@@ -82,6 +82,10 @@ fun Context.assets(fileName: String): InputStream {
     return assets.open(fileName)
 }
 
+fun <T : Drawable> Context.requireDrawable(@DrawableRes drawableId: Int, @Px size: Int = 0): T {
+    return requireDrawable(drawableId, size, size)
+}
+
 @Suppress("UNCHECKED_CAST")
 fun <T : Drawable> Context.requireDrawable(
     @DrawableRes drawableId: Int,
