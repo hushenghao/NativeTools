@@ -1,10 +1,11 @@
-import org.jetbrains.kotlin.konan.properties.loadProperties
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.util.Properties
 
-val keystoreProperties = runCatching { loadProperties("key.properties") }
-    .onFailure(Throwable::printStackTrace).getOrElse { Properties() }
+val keystoreProperties = Properties().apply {
+    rootProject.file("key.properties")
+        .takeIf { it.exists() }?.inputStream()?.use(this::load)
+}
 
 plugins {
     id("com.android.application")
