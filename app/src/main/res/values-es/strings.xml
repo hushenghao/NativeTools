@@ -33,7 +33,7 @@
     <string name="chooser_label_market">Seleccione una tienda de aplicaciones</string>
     <string name="label_open_source">Relacionado con código abierto</string>
     <string name="action_share">Compartir</string>
-    <string name="share_text">Encontrado un buen Indicador de velocidad internet \"Indicador de velocidad\" rápido para descargar! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text" formatted="false">Encontrado un buen uso del gadget \"%s\" rápido ir a descargar! %s</string>
     <string name="toast_copyed">Ha sido copiado</string>
     <string name="summary_night_mode_follow_system">Sigue el sistema</string>
     <string name="label_night_mode">Modo nocturno</string>

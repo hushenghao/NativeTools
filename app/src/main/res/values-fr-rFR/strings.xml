@@ -39,7 +39,7 @@
     <string name="chooser_label_market">Sélectionner le magasin</string>
     <string name="label_open_source">Open Source related</string>
     <string name="action_share">Partager</string>
-    <string name="share_text">J\'a i trouvé un bon gadget \"Vitesse Net\" à télécharger! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text" formatted="false">J\'a i trouvé un bon gadget \"%s\" à télécharger! %s</string>
     <string name="action_feedback">Rétroaction sur les questions</string>
     <string name="toast_copyed">Copié</string>
     <string name="toast_wx_payment_tip">S\'il vous plaît appuyez longtemps pour enregistrer l\'image et numériser le Code de paiement Wechat</string>

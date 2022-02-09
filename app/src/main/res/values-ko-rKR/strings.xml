@@ -39,7 +39,7 @@
     <string name="chooser_label_market">앱스토어 선택</string>
     <string name="label_open_source">오픈소스 관련</string>
     <string name="action_share">나누기</string>
-    <string name="share_text">사용하기 좋은 작은 도구\"인터넷 속도 지시기\"를 발견했으니, 가서 다운로드하세요! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text" formatted="false">사용하기 좋은 작은 도구\"%s\"를 발견했으니, 가서 다운로드하세요! %s</string>
     <string name="action_feedback">문제 피드백</string>
     <string name="toast_copyed">복사됨</string>
     <string name="toast_wx_payment_tip">위챗 결제코드 길게 눌러서 그림 저장하신 후 스캔해주세요</string>

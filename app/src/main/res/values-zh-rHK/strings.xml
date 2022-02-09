@@ -39,7 +39,7 @@
     <string name="chooser_label_market">選擇應用商店</string>
     <string name="label_open_source">開源相關</string>
     <string name="action_share">分享</string>
-    <string name="share_text">發現了一個好用的小工具“網速指示器”快去下載吧！https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text" formatted="false">發現了一個好用的小工具“%s”快去下載吧！%s</string>
     <string name="action_feedback">問題迴響</string>
     <string name="toast_copyed">已複製</string>
     <string name="toast_wx_payment_tip">微信付款碼請長按保存圖片後掃描</string>

@@ -41,6 +41,8 @@
     <string name="desc_net_speed_notify">网速指示器需要通过通知来显示</string>
     <string name="chooser_label_browse">选择浏览器打开</string>
 
+    <string name="url_play_store" translatable="false">https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="url_cool_apk" translatable="false">https://www.coolapk.com/apk/com.dede.nativetools</string>
     <string name="url_github" translatable="false">https://github.com/hushenghao/NativeTools</string>
     <string name="url_hide_lock_notification" translatable="false">https://github.com/hushenghao/NativeTools/wiki/Hide-lock-screen-notification</string>
     <string name="url_privacy_agreement" translatable="false">https://github.com/hushenghao/NativeTools/wiki/%E9%9A%90%E7%A7%81%E5%8D%8F%E8%AE%AE</string>
@@ -53,7 +55,7 @@
     <string name="label_open_source">开源相关</string>
     <string name="action_share">分享</string>
 
-    <string name="share_text">发现了一个好用的小工具“网速指示器”快去下载吧！https://www.coolapk.com/apk/com.dede.nativetools</string>
+    <string name="share_text" formatted="false">发现了一个好用的小工具“%s”快去下载吧！%s</string>
     <string name="action_beta" translatable="false">Beta</string>
     <string name="action_feedback">问题反馈</string>
     <string name="email" translatable="false">dede.hu@qq.com</string>

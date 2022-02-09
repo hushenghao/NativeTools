@@ -90,7 +90,7 @@ fun <T : Drawable> Context.requireDrawable(@DrawableRes drawableId: Int, @Px siz
 fun <T : Drawable> Context.requireDrawable(
     @DrawableRes drawableId: Int,
     @Px width: Int = 0,
-    @Px height: Int = 0
+    @Px height: Int = 0,
 ): T {
     val drawable = AppCompatResources.getDrawable(this, drawableId)!!
     var right = width
@@ -139,8 +139,8 @@ fun Context.market(packageName: String) {
     ContextCompat.startActivity(this, market, null)
 }
 
-fun Context.share(@StringRes textId: Int) {
-    val intent = Intent(Intent.ACTION_SEND, Intent.EXTRA_TEXT to getString(textId))
+fun Context.share(text: String) {
+    val intent = Intent(Intent.ACTION_SEND, Intent.EXTRA_TEXT to text)
         .setType("text/plain")
         .newTask()
         .toChooser(R.string.action_share)

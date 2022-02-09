@@ -39,7 +39,7 @@
     <string name="chooser_label_market">اختر متجر التطبيق</string>
     <string name="label_open_source">المصدر المفتوح</string>
     <string name="action_share">تبادل</string>
-    <string name="share_text">لقد وجدت أداة صغيرة، \"مؤشر السرعة\" https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text" formatted="false">لقد وجدت أداة صغيرة، \"%s\" %s</string>
     <string name="action_feedback">ردود الأسئلة</string>
     <string name="toast_copyed">تم نسخ</string>
     <string name="toast_wx_payment_tip">الرجاء مسحها ضوئيا بعد حفظ الصورة</string>
