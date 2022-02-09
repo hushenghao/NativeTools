@@ -38,7 +38,7 @@ task<Task>("tinify") {
         "app/src/main/ic_launcher-playstore.png",
     )
     doFirst {
-        Tinify.setKey("1Ny9z3LtggWW7TlnVj2jNkqRRHT9LFsK")// Free plan
+        Tinify.setKey(project.property("tinify.key").toString())
         Tinify.setAppIdentifier("Gradle task")
         var file: File
         for (image in images) {

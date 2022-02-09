@@ -1,11 +1,10 @@
+import org.jetbrains.kotlin.konan.properties.loadProperties
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.util.Properties
 
-val keystoreProperties = Properties().apply {
-    rootProject.file("key.properties")
-        .takeIf { it.exists() }?.inputStream()?.use(this::load)
-}
+val keystoreProperties = runCatching { loadProperties("key.properties") }
+    .onFailure(Throwable::printStackTrace).getOrElse { Properties() }
 
 plugins {
     id("com.android.application")
@@ -147,10 +146,6 @@ configurations.all {
 }
 
 tasks.register<Exec>("pgyer") {
-    val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
-        "pgyer.api_key not found"
-    }
-
     val assemble = tasks.named("assembleBeta").get()
     dependsOn("clean", assemble)
     assemble.mustRunAfter("clean")
@@ -160,6 +155,9 @@ tasks.register<Exec>("pgyer") {
         builtBy("assembleBeta")
     }
     doFirst {
+        val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
+            "pgyer.api_key not found"
+        }
         val apkPath = tree.single().absolutePath
         println("Upload Apk: $apkPath")
 
