@@ -74,7 +74,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         val bytes = preference.text.toLongOrNull()
         return if (bytes != null) {
             val threshold = NetFormatter.format(bytes,
-                NetFormatter.FLAG_BYTE,
+                NetFormatter.FLAG_FULL,
                 NetFormatter.ACCURACY_EXACT).splicing()
             getString(R.string.summary_net_speed_hide_threshold, threshold)
         } else {
