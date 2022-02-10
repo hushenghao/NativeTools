@@ -126,6 +126,14 @@ object NetSpeedNotificationHelper {
         showBlankNotification = true
     }
 
+    /**
+     * 创建网速通知
+     *
+     * @param context 上下文
+     * @param configuration 配置
+     * @param rxSpeed 下行网速
+     * @param txSpeed 上行网速
+     */
     fun createNotification(
         context: Context,
         configuration: NetSpeedConfiguration,
@@ -149,7 +157,11 @@ object NetSpeedNotificationHelper {
             .setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
             .setColorized(false)
 
-        val speed = max(rxSpeed, txSpeed)
+        val speed = when (configuration.mode) {
+            NetSpeedConfiguration.MODE_ALL -> max(rxSpeed, txSpeed)
+            NetSpeedConfiguration.MODE_UP -> txSpeed
+            else -> rxSpeed
+        }
         if (speed < configuration.hideThreshold) {
             if (!HandlerCompat.hasCallbacks(uiHandler, showBlankNotificationRunnable)) {
                 // 延迟3s再显示透明图标，防止通知图标频繁变动
@@ -222,7 +234,7 @@ object NetSpeedNotificationHelper {
         val channel =
             NotificationChannelCompat.Builder(
                 CHANNEL_ID,
-                NotificationManagerCompat.IMPORTANCE_DEFAULT// 只允许降级
+                NotificationManagerCompat.IMPORTANCE_LOW// 只允许降级
             )
                 .setName(context.getString(R.string.label_net_speed))
                 .setDescription(context.getString(R.string.desc_net_speed_notify))
