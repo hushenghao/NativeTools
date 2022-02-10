@@ -85,4 +85,7 @@
     <string name="label_month">هذا الشهر</string>
     <string name="label_diagnosis">التشخيص</string>
     <string name="label_usage_just_mobile">فقط إظهار تدفق المحمول المستخدمة</string>
+    <string name="summary_threshold_error">عتبة المدخل غير صحيحة</string>
+    <string name="summary_net_speed_hide_threshold" formatted="false">مخبأة عند سرعة تقل عن %s</string>
+    <string name="label_net_speed_hide_threshold">عتبة مخفية</string>
 </resources>

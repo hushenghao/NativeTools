@@ -12,6 +12,7 @@ import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.graphics.drawable.IconCompat
+import androidx.core.os.HandlerCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
@@ -19,6 +20,7 @@ import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
 import com.dede.nativetools.util.*
+import kotlin.math.max
 
 /**
  * 网速通知
@@ -118,6 +120,12 @@ object NetSpeedNotificationHelper {
                 context.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.S
     }
 
+    private const val DELAY_BLANK_NOTIFICATION_ICON = 3000L
+    private var showBlankNotification = true
+    private val showBlankNotificationRunnable = Runnable {
+        showBlankNotification = true
+    }
+
     fun createNotification(
         context: Context,
         configuration: NetSpeedConfiguration,
@@ -140,8 +148,25 @@ object NetSpeedNotificationHelper {
             .setSound(null)
             .setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
             .setColorized(false)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setSmallIcon(createIconCompat(configuration, rxSpeed, txSpeed))
+
+        val speed = max(rxSpeed, txSpeed)
+        if (speed < configuration.hideThreshold) {
+            if (!HandlerCompat.hasCallbacks(uiHandler, showBlankNotificationRunnable)) {
+                // 延迟3s再显示透明图标，防止通知图标频繁变动
+                uiHandler.postDelayed(showBlankNotificationRunnable, DELAY_BLANK_NOTIFICATION_ICON)
+            }
+        } else {
+            uiHandler.removeCallbacks(showBlankNotificationRunnable)
+            showBlankNotification = false
+        }
+        if (showBlankNotification) {
+            // 显示透明图标，并降低通知优先级
+            builder.setPriority(NotificationCompat.PRIORITY_LOW)
+                .setSmallIcon(createBlankIcon(configuration))
+        } else {
+            builder.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setSmallIcon(createIconCompat(configuration, rxSpeed, txSpeed))
+        }
 
         createChannel(context)
 
@@ -215,6 +240,11 @@ object NetSpeedNotificationHelper {
         txSpeed: Long,
     ): IconCompat {
         val bitmap = NetTextIconFactory.create(rxSpeed, txSpeed, configuration)
+        return IconCompat.createWithBitmap(bitmap)
+    }
+
+    private fun createBlankIcon(configuration: NetSpeedConfiguration): IconCompat {
+        val bitmap = NetTextIconFactory.createBlank(configuration)
         return IconCompat.createWithBitmap(bitmap)
     }
 

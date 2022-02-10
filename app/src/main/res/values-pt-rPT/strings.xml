@@ -85,4 +85,7 @@
     <string name="toast_wx_payment_tip">Para o código de pagamento wechat, por favor, pressione e segure a imagem para digitalizá-la</string>
     <string name="usage_states_title">Condições de uso autorização de acesso</string>
     <string name="usage_stats_msg">É necessário permitir o acesso ao uso de estatísticas de tráfego.</string>
+    <string name="summary_threshold_error">O limiar introduzido não está correto</string>
+    <string name="label_net_speed_hide_threshold">Ocultar o limiar</string>
+    <string name="summary_net_speed_hide_threshold" formatted="false">Ocultar a velocidade da rede da coluna de estado quando a velocidade é inferior a %s</string>
 </resources>

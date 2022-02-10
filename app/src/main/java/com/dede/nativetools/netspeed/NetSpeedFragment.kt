@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.navigation.fragment.findNavController
+import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -12,6 +12,7 @@ import com.dede.nativetools.R
 import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.dede.nativetools.netspeed.service.NetSpeedServiceController
+import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.util.*
 
@@ -19,7 +20,8 @@ import com.dede.nativetools.util.*
  * 网速指示器设置页
  */
 class NetSpeedFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
+    SharedPreferences.OnSharedPreferenceChangeListener,
+    Preference.SummaryProvider<EditTextPreference> {
 
     private val configuration = NetSpeedConfiguration.initialize()
 
@@ -63,6 +65,21 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private fun initGeneralPreferenceGroup() {
         statusSwitchPreference =
             requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
+        val thresholdEditTextPreference =
+            requirePreference<EditTextPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD)
+        thresholdEditTextPreference.summaryProvider = this
+    }
+
+    override fun provideSummary(preference: EditTextPreference): CharSequence {
+        val bytes = preference.text.toLongOrNull()
+        return if (bytes != null) {
+            val threshold = NetFormatter.format(bytes,
+                NetFormatter.FLAG_BYTE,
+                NetFormatter.ACCURACY_EXACT).splicing()
+            getString(R.string.summary_net_speed_hide_threshold, threshold)
+        } else {
+            getString(R.string.summary_threshold_error)
+        }
     }
 
     private fun initNotificationPreferenceGroup() {
@@ -100,8 +117,17 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION,
             NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE,
-            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION,
+            -> {
                 updateConfiguration()
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD -> {
+                val hideThreshold = NetSpeedPreferences.hideThresholdStr?.toLongOrNull()
+                if (hideThreshold == null) {
+                    toast(R.string.summary_threshold_error)
+                } else {
+                    updateConfiguration()
+                }
             }
             NetSpeedPreferences.KEY_NET_SPEED_USAGE -> {
                 updateConfiguration()

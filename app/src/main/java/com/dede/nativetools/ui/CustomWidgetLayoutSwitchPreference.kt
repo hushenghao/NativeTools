@@ -5,7 +5,6 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.widget.TextView
 import androidx.preference.PreferenceViewHolder
-import androidx.preference.R
 import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.util.browse
 
@@ -15,12 +14,8 @@ import com.dede.nativetools.util.browse
  * @author hsh
  * @since 2021/10/9 1:40 下午
  */
-open class CustomWidgetLayoutSwitchPreference @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.switchPreferenceCompatStyle,
-    defStyleRes: Int = 0
-) : SwitchPreferenceCompat(context, attrs, defStyleAttr, defStyleRes) {
+open class CustomWidgetLayoutSwitchPreference(context: Context, attrs: AttributeSet?) :
+    SwitchPreferenceCompat(context, attrs) {
 
     var bindCustomWidget: ((holder: PreferenceViewHolder) -> Unit)? = null
         set(value) {
@@ -34,15 +29,12 @@ open class CustomWidgetLayoutSwitchPreference @JvmOverloads constructor(
     }
 }
 
-class HideNotificationSwitchPreference @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.switchPreferenceCompatStyle,
-    defStyleRes: Int = 0
-) : CustomWidgetLayoutSwitchPreference(context, attrs, defStyleAttr, defStyleRes) {
+class HideNotificationSwitchPreference(context: Context, attrs: AttributeSet?) :
+    CustomWidgetLayoutSwitchPreference(context, attrs) {
 
     init {
-        widgetLayoutResource = com.dede.nativetools.R.layout.override_preference_widget_switch_compat
+        widgetLayoutResource =
+            com.dede.nativetools.R.layout.override_preference_widget_switch_compat
         bindCustomWidget = {
             it.findViewById(com.dede.nativetools.R.id.iv_preference_help)?.setOnClickListener {
                 context.browse("https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications")

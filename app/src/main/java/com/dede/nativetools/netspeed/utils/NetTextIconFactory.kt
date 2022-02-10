@@ -76,6 +76,10 @@ object NetTextIconFactory {
         return cache
     }
 
+    fun createBlank(configuration: NetSpeedConfiguration, size: Int = iconSize): Bitmap {
+        return createBitmapInternal(size, configuration.cachedBitmap)
+    }
+
     /**
      * 创建网速图标
      *
@@ -89,7 +93,7 @@ object NetTextIconFactory {
         txSpeed: Long,
         configuration: NetSpeedConfiguration,
         size: Int = iconSize,
-        assistLine: Boolean = DEBUG_MODE
+        assistLine: Boolean = DEBUG_MODE,
     ): Bitmap {
         var rxByte = rxSpeed
         var txByte = txSpeed
@@ -139,7 +143,7 @@ object NetTextIconFactory {
         text2: String,
         size: Int,
         configuration: NetSpeedConfiguration,
-        assistLine: Boolean = false
+        assistLine: Boolean = false,
     ): Bitmap {
         val w = size
         val wf = w.toFloat()

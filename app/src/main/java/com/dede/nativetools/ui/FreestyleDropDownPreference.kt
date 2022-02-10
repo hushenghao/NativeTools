@@ -17,12 +17,8 @@ import androidx.preference.PreferenceViewHolder
 import com.dede.nativetools.util.declaredField
 import com.dede.nativetools.util.getRectOnFullWindow
 
-abstract class FreestyleDropDownPreference @JvmOverloads constructor(
-    context: Context?,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = androidx.preference.R.attr.dropdownPreferenceStyle,
-    defStyleRes: Int = 0
-) : DropDownPreference(context, attrs, defStyleAttr, defStyleRes) {
+abstract class FreestyleDropDownPreference(context: Context, attrs: AttributeSet?) :
+    DropDownPreference(context, attrs) {
 
     abstract fun freestyle(position: Int, textView: TextView)
 
@@ -39,7 +35,7 @@ abstract class FreestyleDropDownPreference @JvmOverloads constructor(
             override fun getDropDownView(
                 position: Int,
                 convertView: View?,
-                parent: ViewGroup
+                parent: ViewGroup,
             ): View {
                 val itemView = super.getDropDownView(position, convertView, parent)
                 val textView = itemView.findViewById<TextView>(android.R.id.text1)
@@ -69,12 +65,8 @@ abstract class FreestyleDropDownPreference @JvmOverloads constructor(
 /**
  * 自定义字体样式
  */
-class TypefaceDropDownPreference @JvmOverloads constructor(
-    context: Context?,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = androidx.preference.R.attr.dropdownPreferenceStyle,
-    defStyleRes: Int = 0
-) : FreestyleDropDownPreference(context, attrs, defStyleAttr, defStyleRes) {
+class TypefaceDropDownPreference(context: Context, attrs: AttributeSet?) :
+    FreestyleDropDownPreference(context, attrs) {
 
     override fun freestyle(position: Int, textView: TextView) {
         val style = entryValues[position].toString().toIntOrNull() ?: Typeface.NORMAL
@@ -82,12 +74,8 @@ class TypefaceDropDownPreference @JvmOverloads constructor(
     }
 }
 
-class NightModeDropDownPreference @JvmOverloads constructor(
-    context: Context?,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = androidx.preference.R.attr.dropdownPreferenceStyle,
-    defStyleRes: Int = 0
-) : DropDownPreference(context, attrs, defStyleAttr, defStyleRes) {
+class NightModeDropDownPreference(context: Context, attrs: AttributeSet?) :
+    DropDownPreference(context, attrs) {
 
     private val selectedViewRect = Rect()
 
