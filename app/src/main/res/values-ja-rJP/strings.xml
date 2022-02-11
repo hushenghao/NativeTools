@@ -88,4 +88,5 @@
     <string name="summary_threshold_error">入力のしきい値が正しくない</string>
     <string name="label_net_speed_hide_threshold">隠し閾値</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">速度が%s未満の場合隠蔽状態折戸速度</string>
+    <string name="summary_net_speed_unhide">隠さない</string>
 </resources>

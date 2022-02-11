@@ -88,4 +88,5 @@
     <string name="label_net_speed_hide_threshold">隱藏閾值</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">當速度小於%s時隱藏狀態列網速</string>
     <string name="summary_threshold_error">輸入的閾值不正確</string>
+    <string name="summary_net_speed_unhide">不隱藏</string>
 </resources>

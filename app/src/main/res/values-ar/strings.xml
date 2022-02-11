@@ -88,4 +88,5 @@
     <string name="summary_threshold_error">عتبة المدخل غير صحيحة</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">مخبأة عند سرعة تقل عن %s</string>
     <string name="label_net_speed_hide_threshold">عتبة مخفية</string>
+    <string name="summary_net_speed_unhide">لا تخفي</string>
 </resources>

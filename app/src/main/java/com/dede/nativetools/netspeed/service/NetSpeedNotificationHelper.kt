@@ -208,7 +208,12 @@ object NetSpeedNotificationHelper {
         return builder.build()
     }
 
+    private var notificationChannelCreated = false
+
     private fun createChannel(context: Context) {
+        if (notificationChannelCreated) {
+            return
+        }
         val channel =
             NotificationChannelCompat.Builder(
                 CHANNEL_ID,
@@ -222,6 +227,7 @@ object NetSpeedNotificationHelper {
                 .setSound(null, null)
                 .build()
         NotificationManagerCompat.from(context).createNotificationChannel(channel)
+        notificationChannelCreated = true
     }
 
     private fun createIconCompat(

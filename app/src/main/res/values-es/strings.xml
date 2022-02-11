@@ -88,4 +88,5 @@
     <string name="summary_threshold_error">El umbral introducido no es correcto</string>
     <string name="label_net_speed_hide_threshold">Ocultar el umbral</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Ocultar la velocidad de la red de la columna de estado cuando la velocidad es inferior a %s</string>
+    <string name="summary_net_speed_unhide">No oculto</string>
 </resources>

@@ -88,4 +88,5 @@
     <string name="summary_threshold_error">Le seuil entré est incorrect</string>
     <string name="label_net_speed_hide_threshold">Masquer le seuil</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Masquer la vitesse du réseau de la colonne d’état lorsque la vitesse est inférieure à %s</string>
+    <string name="summary_net_speed_unhide">Ne pas cacher</string>
 </resources>

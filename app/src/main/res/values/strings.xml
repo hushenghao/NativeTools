@@ -110,4 +110,5 @@
     <string name="label_net_speed_hide_threshold">隐藏阈值</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">当速度小于%s时隐藏状态栏网速</string>
     <string name="summary_threshold_error">输入的阈值不正确</string>
+    <string name="summary_net_speed_unhide">不隐藏</string>
 </resources>

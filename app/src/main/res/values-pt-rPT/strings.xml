@@ -88,4 +88,5 @@
     <string name="summary_threshold_error">O limiar introduzido não está correto</string>
     <string name="label_net_speed_hide_threshold">Ocultar o limiar</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Ocultar a velocidade da rede da coluna de estado quando a velocidade é inferior a %s</string>
+    <string name="summary_net_speed_unhide">Não se esconde</string>
 </resources>

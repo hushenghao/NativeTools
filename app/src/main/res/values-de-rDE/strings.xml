@@ -88,4 +88,5 @@
     <string name="summary_threshold_error">Die schwelle stimmt nicht</string>
     <string name="label_net_speed_hide_threshold">Es wird eng</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Die geschwindigkeit auswendig geben, wenn die geschwindigkeit unter %s liegt</string>
+    <string name="summary_net_speed_unhide">Nicht verstecken</string>
 </resources>

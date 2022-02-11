@@ -88,4 +88,5 @@
     <string name="summary_threshold_error">Входной порог неправильный</string>
     <string name="label_net_speed_hide_threshold">Скрытый порог</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Скорость скрытой сетки, когда скорость меньше %s</string>
+    <string name="summary_net_speed_unhide">Нет</string>
 </resources>
