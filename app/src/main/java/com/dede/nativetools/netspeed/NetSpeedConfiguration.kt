@@ -40,6 +40,9 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
     @IgnoredOnParcel
     var cachedBitmap: Bitmap? = null
 
+    @IgnoredOnParcel
+    var showBlankNotification: Boolean = false
+
     fun reinitialize(): NetSpeedConfiguration {
         return this.updateFrom(initialize())
     }
