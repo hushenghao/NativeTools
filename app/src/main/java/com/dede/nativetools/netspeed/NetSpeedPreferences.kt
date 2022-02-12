@@ -108,11 +108,11 @@ object NetSpeedPreferences {
             defaultConfiguration.notifyClickable
         )
 
-    val hideThresholdStr: String?
-        get() = globalPreferences.getString(KEY_NET_SPEED_HIDE_THRESHOLD, null)
-
     val hideThreshold: Long
-        get() = hideThresholdStr?.toLongOrNull() ?: defaultConfiguration.hideThreshold
+        get() = globalPreferences.get(
+            KEY_NET_SPEED_HIDE_THRESHOLD,
+            defaultConfiguration.hideThreshold.toString()
+        ).toLongOrNull() ?: defaultConfiguration.hideThreshold
 
     val quickCloseable: Boolean
         get() = globalPreferences.get(
@@ -124,8 +124,10 @@ object NetSpeedPreferences {
         get() = globalPreferences.get(KEY_NET_SPEED_USAGE, defaultConfiguration.usage)
 
     val justMobileUsage: Boolean
-        get() = globalPreferences.get(KEY_NET_SPEED_USAGE_JUST_MOBILE,
-            defaultConfiguration.justMobileUsage)
+        get() = globalPreferences.get(
+            KEY_NET_SPEED_USAGE_JUST_MOBILE,
+            defaultConfiguration.justMobileUsage
+        )
 
     val hideNotification: Boolean
         get() = globalPreferences.get(

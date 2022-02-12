@@ -24,6 +24,7 @@ class NavigatePreference(context: Context, attrs: AttributeSet) : Preference(con
         navigateId = typedArray.getResourceId(R.styleable.NavigatePreference_navigateId, -1)
         navigateUrl = typedArray.getString(R.styleable.NavigatePreference_navigateUrl)
         typedArray.recycle()
+        isPersistent = false
     }
 
     override fun onClick() {

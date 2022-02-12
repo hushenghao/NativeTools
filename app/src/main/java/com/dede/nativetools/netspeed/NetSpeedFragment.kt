@@ -68,6 +68,14 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         val thresholdEditTextPreference =
             requirePreference<EditTextPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD)
         thresholdEditTextPreference.summaryProvider = this
+        thresholdEditTextPreference.onPreferenceChangeListener<String> { _, newValue ->
+            val hideThreshold = newValue.toLongOrNull()
+            if (hideThreshold == null) {
+                toast(R.string.summary_threshold_error)
+                return@onPreferenceChangeListener false
+            }
+            return@onPreferenceChangeListener true
+        }
     }
 
     override fun provideSummary(preference: EditTextPreference): CharSequence {
@@ -124,16 +132,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION,
             NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE,
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION,
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD,
             -> {
                 updateConfiguration()
-            }
-            NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD -> {
-                val hideThreshold = NetSpeedPreferences.hideThresholdStr?.toLongOrNull()
-                if (hideThreshold == null) {
-                    toast(R.string.summary_threshold_error)
-                } else {
-                    updateConfiguration()
-                }
             }
             NetSpeedPreferences.KEY_NET_SPEED_USAGE -> {
                 updateConfiguration()

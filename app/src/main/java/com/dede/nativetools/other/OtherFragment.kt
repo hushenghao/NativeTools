@@ -67,6 +67,7 @@ class OtherFragment : PreferenceFragmentCompat(),
                         startActivity(intent)
                         toast(getString(R.string.toast_open_battery_optimization))
                     }
+                    return@onPreferenceChangeListener true
                 }
             }
 
