@@ -39,7 +39,7 @@
     <string name="chooser_label_market">Sélectionner le magasin</string>
     <string name="label_open_source">Open Source related</string>
     <string name="action_share">Partager</string>
-    <string name="share_text">J\'a i trouvé un bon gadget \"Vitesse Net\" à télécharger! https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text" formatted="false">J\'a i trouvé un bon gadget \"%s\" à télécharger! %s</string>
     <string name="action_feedback">Rétroaction sur les questions</string>
     <string name="toast_copyed">Copié</string>
     <string name="toast_wx_payment_tip">S\'il vous plaît appuyez longtemps pour enregistrer l\'image et numériser le Code de paiement Wechat</string>
@@ -50,7 +50,7 @@
     <string name="label_other">Autres</string>
     <string name="label_net_speed_hide_notification">Masquer les notifications de la barre de notification</string>
     <string name="summary_net_speed_hide_notification">Masquer les notifications en remplaçant le style de notification par défaut (tous les appareils peuvent ne pas être pris en charge)</string>
-    <string name="i_know">Je le vois.</string>
+    <string name="i_know">Je le vois</string>
     <string name="tip_easter_egg">Oeufs de couleur</string>
     <string name="action_rate">Donne - moi une bonne note.</string>
     <string name="action_donate">Dons</string>
@@ -85,4 +85,8 @@
     <string name="label_month">Mois</string>
     <string name="label_diagnosis">Diagnostic</string>
     <string name="label_usage_just_mobile">Afficher uniquement l’utilisation du trafic mobile</string>
+    <string name="summary_threshold_error">Le seuil entré est incorrect</string>
+    <string name="label_net_speed_hide_threshold">Masquer le seuil</string>
+    <string name="summary_net_speed_hide_threshold" formatted="false">Masquer la vitesse du réseau de la colonne d’état lorsque la vitesse est inférieure à %s</string>
+    <string name="summary_net_speed_unhide">Ne pas cacher</string>
 </resources>

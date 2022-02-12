@@ -67,6 +67,7 @@ class OtherFragment : PreferenceFragmentCompat(),
                         startActivity(intent)
                         toast(getString(R.string.toast_open_battery_optimization))
                     }
+                    return@onPreferenceChangeListener true
                 }
             }
 
@@ -76,7 +77,10 @@ class OtherFragment : PreferenceFragmentCompat(),
             }
         requirePreference<Preference>(OtherPreferences.KEY_SHARE)
             .onPreferenceClickListener {
-                requireContext().share(R.string.share_text)
+                val appName = getString(R.string.app_name)
+                val url = if (Logic.isSimplifiedChinese(requireContext()))
+                    getString(R.string.url_cool_apk) else getString(R.string.url_play_store)
+                requireContext().share(getString(R.string.share_text, appName, url))
             }
         requirePreference<Preference>(OtherPreferences.KEY_FEEDBACK)
             .onPreferenceClickListener {

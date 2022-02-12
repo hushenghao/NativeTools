@@ -23,6 +23,7 @@ import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.service.NetSpeedService
@@ -40,7 +41,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         const val EXTRA_TOGGLE = "extra_toggle"
     }
 
-    private lateinit var binding: ActivityMainBinding
+    private val binding by viewBinding {
+        ActivityMainBinding.inflate(it.getLayoutInflater(!UI.isWideSize()))
+    }
     private val navController by navController(R.id.nav_host_fragment)
     private val topLevelDestinationIds = intArrayOf(R.id.netSpeed, R.id.other)
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -76,8 +79,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             }
         }
 
-        val isWideSizeMode = UI.isWideSize()
-        binding = ActivityMainBinding.inflate(getLayoutInflater(!isWideSizeMode))
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
@@ -95,7 +96,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         NavFragmentAssistant(supportFragmentManager)
             .setupWithNavFragment(R.id.nav_host_fragment)
         val appBarBuilder = AppBarConfiguration.Builder(*topLevelDestinationIds)
-        if (isWideSizeMode) {
+        if (UI.isWideSize()) {
             // bind drawer
             appBarBuilder.setOpenableLayout(binding.drawerLayout)
             val headerView =
@@ -125,7 +126,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     override fun onDestinationChanged(
         controller: NavController,
         destination: NavDestination,
-        arguments: Bundle?
+        arguments: Bundle?,
     ) {
         if (destination is DialogFragmentNavigator.Destination) {
             return
@@ -176,7 +177,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             parent: View?,
             name: String,
             context: Context,
-            attrs: AttributeSet
+            attrs: AttributeSet,
         ): View? {
             if (name == MotionLayout::class.qualifiedName) {
                 // remove app:layoutDescription="@xml/activity_main_scene", disable scene

@@ -6,27 +6,32 @@ import android.util.AttributeSet
 import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.work.*
+import androidx.work.WorkInfo
 import com.dede.nativetools.BuildConfig
+import com.dede.nativetools.R
 import com.dede.nativetools.ui.FreestyleDropDownPreference
+import com.dede.nativetools.util.dp
+import com.dede.nativetools.util.requireDrawable
+import com.dede.nativetools.util.setCompoundDrawablesRelative
 import com.dede.nativetools.util.toast
 
 /**
  * 自定义字体
  */
-class FontDropDownPreference @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = androidx.preference.R.attr.dropdownPreferenceStyle,
-    defStyleRes: Int = 0
-) : FreestyleDropDownPreference(context, attrs, defStyleAttr, defStyleRes), Observer<WorkInfo> {
+class FontDropDownPreference(context: Context, attrs: AttributeSet?) :
+    FreestyleDropDownPreference(context, attrs), Observer<WorkInfo> {
 
     override fun freestyle(position: Int, textView: TextView) {
         val fontKey = entryValues[position].toString()
         val getter = TypefaceGetter.create(context, fontKey)
         if (!getter.canApply()) {
+            textView.compoundDrawablePadding = 6.dp
+            textView.setCompoundDrawablesRelative(
+                end = context.requireDrawable(R.drawable.ic_outline_file_download)
+            )
             return
         }
+        textView.setCompoundDrawablesRelative()
         if (fontKey == TypefaceGetter.FONT_DEBUG && getter is DebugTypeface) {
             // for debug
             textView.text = getter.fontName

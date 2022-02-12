@@ -47,6 +47,10 @@ fun SharedPreferences.set(key: String, value: Float) {
     this.edit().putFloat(key, value).apply()
 }
 
+fun SharedPreferences.set(key: String, value: String?) {
+    this.edit().putString(key, value).apply()
+}
+
 fun Preference.onPreferenceClickListener(listener: (preference: Preference) -> Unit) {
     this.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
         listener.invoke(preference)
@@ -55,10 +59,9 @@ fun Preference.onPreferenceClickListener(listener: (preference: Preference) -> U
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T> Preference.onPreferenceChangeListener(listener: (preference: Preference, newValue: T) -> Unit) {
+fun <T> Preference.onPreferenceChangeListener(listener: (preference: Preference, newValue: T) -> Boolean) {
     this.onPreferenceChangeListener =
         Preference.OnPreferenceChangeListener { preference, newValue ->
             listener.invoke(preference, newValue as T)
-            true
         }
 }

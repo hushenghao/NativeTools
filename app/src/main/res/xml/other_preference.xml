@@ -45,6 +45,7 @@
         <Preference
             app:icon="@drawable/ic_baseline_sentiment_very_satisfied"
             app:key="rate"
+            app:persistent="false"
             app:title="@string/action_rate" />
 
         <com.dede.nativetools.ui.NavigatePreference
@@ -65,6 +66,7 @@
         <Preference
             app:icon="@drawable/ic_action_share"
             app:key="share"
+            app:persistent="false"
             app:title="@string/action_share" />
 
         <com.dede.nativetools.ui.NavigatePreference
@@ -75,6 +77,7 @@
         <Preference
             app:icon="@drawable/ic_outline_feedback"
             app:key="feedback"
+            app:persistent="false"
             app:title="@string/action_feedback" />
 
     </PreferenceCategory>

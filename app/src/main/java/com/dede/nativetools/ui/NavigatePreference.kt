@@ -9,11 +9,7 @@ import com.dede.nativetools.R
 import com.dede.nativetools.util.browse
 import com.dede.nativetools.util.isNotEmpty
 
-class NavigatePreference @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = androidx.preference.R.attr.preferenceStyle
-) : Preference(context, attrs, defStyleAttr) {
+class NavigatePreference(context: Context, attrs: AttributeSet) : Preference(context, attrs) {
 
     interface OnNavigateHandler {
         fun handleNavigate(@IdRes id: Int)
@@ -28,6 +24,7 @@ class NavigatePreference @JvmOverloads constructor(
         navigateId = typedArray.getResourceId(R.styleable.NavigatePreference_navigateId, -1)
         navigateUrl = typedArray.getString(R.styleable.NavigatePreference_navigateUrl)
         typedArray.recycle()
+        isPersistent = false
     }
 
     override fun onClick() {

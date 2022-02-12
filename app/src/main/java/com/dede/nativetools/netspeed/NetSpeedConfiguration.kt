@@ -22,6 +22,7 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
     var textStyle: Int = NetSpeedPreferences.DEFAULT_TEXT_STYLE,
     var font: String = NetSpeedPreferences.DEFAULT_FONT,
     var mode: String = MODE_DOWN,
+    var hideThreshold: Long = 0,
     @FloatRange(from = -0.5, to = 0.5)
     var verticalOffset: Float = -0.05f,// Y轴偏移量
     @FloatRange(from = -0.5, to = 0.5)
@@ -39,6 +40,9 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
     @IgnoredOnParcel
     var cachedBitmap: Bitmap? = null
 
+    @IgnoredOnParcel
+    var showBlankNotification: Boolean = false
+
     fun reinitialize(): NetSpeedConfiguration {
         return this.updateFrom(initialize())
     }
@@ -54,6 +58,7 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
         this.textStyle = configuration.textStyle
         this.font = configuration.font
         this.mode = configuration.mode
+        this.hideThreshold = configuration.hideThreshold
         this.verticalOffset = configuration.verticalOffset
         this.horizontalOffset = configuration.horizontalOffset
         this.relativeRatio = configuration.relativeRatio
@@ -113,6 +118,9 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
             NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE -> {
                 this.horizontalScale = NetSpeedPreferences.horizontalScale
             }
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD -> {
+                this.hideThreshold = NetSpeedPreferences.hideThreshold
+            }
         }
     }
 
@@ -137,6 +145,7 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
                 textStyle = NetSpeedPreferences.textStyle,
                 font = NetSpeedPreferences.font,
                 mode = NetSpeedPreferences.mode,
+                hideThreshold = NetSpeedPreferences.hideThreshold,
                 verticalOffset = NetSpeedPreferences.verticalOffset,
                 horizontalOffset = NetSpeedPreferences.horizontalOffset,
                 relativeRatio = NetSpeedPreferences.relativeRatio,

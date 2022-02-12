@@ -9,6 +9,7 @@
         <item name="actionOverflowMenuStyle">@style/Style.ActionMenu</item>
 
         <item name="materialAlertDialogTheme">@style/Style.MaterialAlertDialog</item>
+<!--        <item name="alertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>-->
         <item name="bottomSheetDialogTheme">@style/Style.BottomSheetDialog</item>
         <!--<item name="materialCardViewStyle">?attr/materialCardViewElevatedStyle</item>-->
         <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>

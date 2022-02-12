@@ -16,7 +16,7 @@ plugins {
 
 android {
     compileSdk = 31
-    buildToolsVersion = "31.0.0"
+    buildToolsVersion = "32.0.0"
     defaultConfig {
         applicationId = "com.dede.nativetools"
         minSdk = 23
@@ -34,7 +34,10 @@ android {
                 "ko-rKR",
                 "ru-rRU",
                 "de-rDE",
-                "fr-rFR"
+                "fr-rFR",
+                "es",
+                "pt-rPT",
+                "ar"
             )
         )
 
@@ -144,10 +147,6 @@ configurations.all {
 }
 
 tasks.register<Exec>("pgyer") {
-    val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
-        "pgyer.api_key not found"
-    }
-
     val assemble = tasks.named("assembleBeta").get()
     dependsOn("clean", assemble)
     assemble.mustRunAfter("clean")
@@ -157,6 +156,9 @@ tasks.register<Exec>("pgyer") {
         builtBy("assembleBeta")
     }
     doFirst {
+        val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
+            "pgyer.api_key not found"
+        }
         val apkPath = tree.single().absolutePath
         println("Upload Apk: $apkPath")
 

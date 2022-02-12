@@ -82,9 +82,27 @@ fun Context.assets(fileName: String): InputStream {
     return assets.open(fileName)
 }
 
+fun <T : Drawable> Context.requireDrawable(@DrawableRes drawableId: Int, @Px size: Int = 0): T {
+    return requireDrawable(drawableId, size, size)
+}
+
 @Suppress("UNCHECKED_CAST")
-fun <T : Drawable> Context.requireDrawable(@DrawableRes drawableId: Int): T {
-    return checkNotNull(AppCompatResources.getDrawable(this, drawableId) as T)
+fun <T : Drawable> Context.requireDrawable(
+    @DrawableRes drawableId: Int,
+    @Px width: Int = 0,
+    @Px height: Int = 0,
+): T {
+    val drawable = AppCompatResources.getDrawable(this, drawableId)!!
+    var right = width
+    if (right <= 0) {
+        right = drawable.intrinsicWidth
+    }
+    var bottom = height
+    if (bottom <= 0) {
+        bottom = drawable.intrinsicHeight
+    }
+    drawable.setBounds(0, 0, right, bottom)
+    return checkNotNull(drawable as T)
 }
 
 @ColorInt
@@ -121,8 +139,8 @@ fun Context.market(packageName: String) {
     ContextCompat.startActivity(this, market, null)
 }
 
-fun Context.share(@StringRes textId: Int) {
-    val intent = Intent(Intent.ACTION_SEND, Intent.EXTRA_TEXT to getString(textId))
+fun Context.share(text: String) {
+    val intent = Intent(Intent.ACTION_SEND, Intent.EXTRA_TEXT to text)
         .setType("text/plain")
         .newTask()
         .toChooser(R.string.action_share)

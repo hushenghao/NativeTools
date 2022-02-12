@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.os.PowerManager
+import androidx.core.os.HandlerCompat
 import com.dede.nativetools.netspeed.INetSpeedInterface
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.NetSpeedPreferences
@@ -16,9 +17,10 @@ import com.dede.nativetools.util.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
+import kotlin.math.max
 
 
-class NetSpeedService : Service() {
+class NetSpeedService : Service(), Runnable {
 
     class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
@@ -34,6 +36,8 @@ class NetSpeedService : Service() {
 
     companion object {
         private const val NOTIFY_ID = 10
+        private const val DELAY_BLANK_NOTIFICATION_ICON = 3000L
+
         const val ACTION_CLOSE = "com.dede.nativetools.CLOSE"
 
         const val EXTRA_CONFIGURATION = "extra_configuration"
@@ -68,10 +72,38 @@ class NetSpeedService : Service() {
 
     val lifecycleJob = Job()
 
+    private val showBlankNotificationRunnable = this
+
+    override fun run() {
+        // 显示透明图标通知
+        configuration.showBlankNotification = true
+        val notify =
+            NetSpeedNotificationHelper.createNotification(this,
+                configuration,
+                netSpeedCompute.rxSpeed,
+                netSpeedCompute.txSpeed)
+        notificationManager.notify(NOTIFY_ID, notify)
+    }
+
     private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
         if (!powerManager.isInteractive) {
             // ACTION_SCREEN_OFF广播有一定的延迟，所以设备不可交互时不处理
             return@NetSpeedCompute
+        }
+
+        val speed = when (configuration.mode) {
+            NetSpeedConfiguration.MODE_ALL -> max(rxSpeed, txSpeed)
+            NetSpeedConfiguration.MODE_UP -> txSpeed
+            else -> rxSpeed
+        }
+        if (speed < configuration.hideThreshold) {
+            if (!HandlerCompat.hasCallbacks(uiHandler, showBlankNotificationRunnable)) {
+                // 延迟3s再显示透明图标，防止通知图标频繁变动
+                uiHandler.postDelayed(showBlankNotificationRunnable, DELAY_BLANK_NOTIFICATION_ICON)
+            }
+        } else {
+            uiHandler.removeCallbacks(showBlankNotificationRunnable)
+            configuration.showBlankNotification = false
         }
         val notify =
             NetSpeedNotificationHelper.createNotification(this, configuration, rxSpeed, txSpeed)

@@ -2,6 +2,7 @@ package com.dede.nativetools
 
 import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
 import android.util.Log
 import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.util.installShortcuts
@@ -41,6 +42,11 @@ class NativeToolsApp : Application() {
             installShortcuts()
             setNightMode(OtherPreferences.nightMode)
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        installShortcuts()
     }
 
 }
