@@ -72,4 +72,6 @@ interface NetStats {
      */
     fun getTxBytes(): Long
 
+    val name: String
+
 }

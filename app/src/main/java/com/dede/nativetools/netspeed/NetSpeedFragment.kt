@@ -2,10 +2,9 @@ package com.dede.nativetools.netspeed
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.navigation.fragment.findNavController
+import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -13,6 +12,7 @@ import com.dede.nativetools.R
 import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.dede.nativetools.netspeed.service.NetSpeedServiceController
+import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.util.*
 
@@ -20,7 +20,8 @@ import com.dede.nativetools.util.*
  * 网速指示器设置页
  */
 class NetSpeedFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
+    SharedPreferences.OnSharedPreferenceChangeListener,
+    Preference.SummaryProvider<EditTextPreference> {
 
     private val configuration = NetSpeedConfiguration.initialize()
 
@@ -46,11 +47,11 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             statusSwitchPreference.isChecked = false
         })
         statusSwitchPreference.isChecked = NetSpeedPreferences.status
-        if (!requireContext().checkAppOps()) {
+        if (!Logic.checkAppOps(requireContext())) {
             usageSwitchPreference.isChecked = false
         }
 
-        if (UI.isSmallestScreenWidthDpAtLast(UI.SW600DP) || UI.isLandscape) {
+        if (UI.isWideSize()) {
             applyBottomBarsInsets(listView)
         }
     }
@@ -64,10 +65,35 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private fun initGeneralPreferenceGroup() {
         statusSwitchPreference =
             requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
-        requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_ADVANCED)
-            .onPreferenceClickListener {
-                findNavController().navigate(R.id.action_netSpeed_to_netSpeedAdvanced)
+        val thresholdEditTextPreference =
+            requirePreference<EditTextPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD)
+        thresholdEditTextPreference.summaryProvider = this
+        thresholdEditTextPreference.onPreferenceChangeListener<String> { _, newValue ->
+            val hideThreshold = newValue.toLongOrNull()
+            if (hideThreshold == null) {
+                toast(R.string.summary_threshold_error)
+                return@onPreferenceChangeListener false
             }
+            return@onPreferenceChangeListener true
+        }
+    }
+
+    override fun provideSummary(preference: EditTextPreference): CharSequence {
+        val bytes = preference.text.toLongOrNull()
+        return if (bytes != null) {
+            if (bytes > 0) {
+                val threshold = NetFormatter.format(
+                    bytes,
+                    NetFormatter.FLAG_FULL,
+                    NetFormatter.ACCURACY_EXACT
+                ).splicing()
+                getString(R.string.summary_net_speed_hide_threshold, threshold)
+            } else {
+                getString(R.string.summary_net_speed_unhide)
+            }
+        } else {
+            getString(R.string.summary_threshold_error)
+        }
     }
 
     private fun initNotificationPreferenceGroup() {
@@ -104,7 +130,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION,
-            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
+            NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE,
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION,
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD,
+            -> {
                 updateConfiguration()
             }
             NetSpeedPreferences.KEY_NET_SPEED_USAGE -> {
@@ -142,25 +171,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         if (!configuration.usage) {
             return
         }
-        val context = requireContext()
-        if (context.checkAppOps()) {
-            return
-        }
-        context.alert(R.string.usage_states_title, R.string.usage_stats_msg) {
-            positiveButton(R.string.access) {
-                val intent = Intent(
-                    Settings.ACTION_USAGE_ACCESS_SETTINGS, "package:${context.packageName}"
-                )
-                if (!intent.queryImplicitActivity(context)) {
-                    intent.data = null
-                }
-                activityResultLauncherCompat.launch(intent) {
-                    usageSwitchPreference.isChecked = requireContext().checkAppOps()
-                }
-            }
-            negativeButton(android.R.string.cancel) {
-                usageSwitchPreference.isChecked = false
-            }
+        Logic.requestOpsPermission(requireContext(), activityResultLauncherCompat, {
+            usageSwitchPreference.isChecked = true
+        }) {
+            usageSwitchPreference.isChecked = false
         }
     }
 

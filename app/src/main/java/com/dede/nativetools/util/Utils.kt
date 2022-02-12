@@ -3,6 +3,7 @@
 package com.dede.nativetools.util
 
 import android.text.TextUtils
+import java.util.Calendar
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -25,3 +26,11 @@ inline fun String?.isNotEmpty(): Boolean {
 }
 
 fun Pair<String, String>.splicing(): String = this.first + this.second
+
+fun Calendar.toZeroH(): Calendar {
+    set(Calendar.HOUR_OF_DAY, 0)
+    set(Calendar.MINUTE, 0)
+    set(Calendar.SECOND, 0)
+    set(Calendar.MILLISECOND, 0)
+    return this
+}

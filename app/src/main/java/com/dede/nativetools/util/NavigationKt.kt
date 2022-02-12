@@ -6,6 +6,8 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.Navigator
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -31,6 +33,9 @@ private fun FragmentActivity.findNavControllerCompat(@IdRes viewId: Int): NavCon
     return this.findNavController(viewId)
 }
 
+fun NavDestination.matchDestinations(destinationIds: IntArray): Boolean =
+    hierarchy.any { destinationIds.contains(it.id) }
+
 internal inline fun <reified T : Navigator<*>> NavController.getNavigator(): T {
     return navigatorProvider.getNavigator(T::class.java)
 }
@@ -39,31 +44,26 @@ internal inline fun <reified T : Navigator<*>> NavController.getNavigator(): T {
 
 object NavigationBars {
 
-    interface NavigationItemSelectedListener : NavigationBarView.OnItemSelectedListener,
-        NavigationView.OnNavigationItemSelectedListener
-
     fun setupWithNavController(
         navController: NavController,
-        listener: NavigationItemSelectedListener,
-        bottomNavigationView: BottomNavigationView,
-        navigationRailView: NavigationRailView
+        bottomNavigationView: BottomNavigationView? = null,
+        navigationRailView: NavigationRailView? = null,
+        navigationView: NavigationView? = null
     ) {
-        bottomNavigationView.setup(navController, listener)
-        navigationRailView.setup(navController, listener)
+        bottomNavigationView.setup(navController)
+        navigationRailView.setup(navController)
+        navigationView.setup(navController)
     }
 }
 
 private fun View?.setup(
     navController: NavController,
-    listener: NavigationBars.NavigationItemSelectedListener
 ) = when (this) {
     null -> Unit
     is NavigationBarView -> {
-        this.setOnItemSelectedListener(listener)
         NavigationUI.setupWithNavController(this, navController)
     }
     is NavigationView -> {
-        this.setNavigationItemSelectedListener(listener)
         NavigationUI.setupWithNavController(this, navController)
     }
     else -> throw IllegalArgumentException("${this.javaClass} don`t impl")

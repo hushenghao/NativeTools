@@ -27,7 +27,7 @@
     <string name="summary_net_speed_usage">通知はモバイルデータとWLANトラフィックの合計使用量を示します</string>
     <string name="summary_ignore_battery_optimize">フロントサービスが作動しないことを防止するためにホワイトリストを最適化するバッテリーを追加(一部の機器向け)</string>
     <string name="usage_states_title">使用状況アクセス許可</string>
-    <string name="usage_stats_msg">1日当たりのトラフィックの利用状況を集計するには,利用状況へのアクセスを許可する必要がある。</string>
+    <string name="usage_stats_msg">トラフィックの使用状況を集計するには、使用状況へのアクセスを許可する必要がある。</string>
     <string name="alert_title_notification_disable">通知権限が開いていない</string>
     <string name="alert_msg_notification_disable">通知権限がオンになっていない場合、通信速度表示器が正常に表示されません。</string>
     <string name="settings">設置する</string>
@@ -39,7 +39,7 @@
     <string name="chooser_label_market">アプリストアを選ぶ</string>
     <string name="label_open_source">オープンソース関係</string>
     <string name="action_share">分かち合い</string>
-    <string name="share_text">便利なガジェット「网速指示器」を見つけたらダウンロードしてください! \nCoolApk: https://www.coolapk.com/apk/com.dede.nativetools\nPlayStore: https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text" formatted="false">便利なガジェット「%s」を見つけたらダウンロードしてください! %s</string>
     <string name="action_feedback">問題フィードバック</string>
     <string name="toast_copyed">複製済み</string>
     <string name="toast_wx_payment_tip">WeChat決済コードは保存画像を押してスキャンしてください</string>
@@ -58,7 +58,6 @@
     <string name="toast_saved">保存済み</string>
     <string name="label_home">トップページ</string>
     <string name="toast_open_battery_optimization">「网速指示器」を見つけて、手動でバッテリーを開けて最適化してください</string>
-    <string name="action_open_link">チェック</string>
     <string name="label_privacy_agreement">プライバシー協定</string>
     <string name="label_net_speed_style">書体様式</string>
     <string name="label_net_speed_text_scale">文字スケーリング</string>
@@ -81,4 +80,13 @@
     <string name="toast_download_font_succeeded">フォントダウンロード成功</string>
     <string name="toast_download_font_failed">フォントのダウンロードに失敗</string>
     <string name="label_net_speed_horizontal_scale">X軸スケーリング</string>
+    <string name="label_full_net_usage">インターネット利用統計</string>
+    <string name="label_today">今日</string>
+    <string name="label_month">今月</string>
+    <string name="label_diagnosis">診断</string>
+    <string name="label_usage_just_mobile">移動量のみ表示しています</string>
+    <string name="summary_threshold_error">入力のしきい値が正しくない</string>
+    <string name="label_net_speed_hide_threshold">隠し閾値</string>
+    <string name="summary_net_speed_hide_threshold" formatted="false">速度が%s未満の場合隠蔽状態折戸速度</string>
+    <string name="summary_net_speed_unhide">隠さない</string>
 </resources>

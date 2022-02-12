@@ -39,9 +39,9 @@ class WindowEdgeManager(private val context: Context) {
                 context, android.R.attr.colorBackground, Color.BLACK
             )
         )
-//        val lightStatusBar = MaterialColors.isColorLight(statusBarColor)
-        val showDarkStatusBarIcons = false
-//            lightStatusBar || statusBarColor == Color.TRANSPARENT && lightBackground
+        val lightStatusBar = MaterialColors.isColorLight(statusBarColor)
+        val showDarkStatusBarIcons =
+            lightStatusBar || statusBarColor == Color.TRANSPARENT && lightBackground
         val lightNavbar = MaterialColors.isColorLight(navbarColor)
         val showDarkNavbarIcons = lightNavbar || navbarColor == Color.TRANSPARENT && lightBackground
         val decorView = window.decorView

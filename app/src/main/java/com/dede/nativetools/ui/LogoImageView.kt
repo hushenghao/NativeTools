@@ -115,8 +115,9 @@ class LogoImageView @JvmOverloads constructor(
                 downPoint.set(event.rawX, event.rawY)
                 cleanUpAnimator()
                 moved = false
-                super.onTouchEvent(event)
+                //super.onTouchEvent(event)
                 ViewCompat.setElevation(this, maxElevation)
+                isPressed = true
                 return true
             }
             MotionEvent.ACTION_MOVE -> {

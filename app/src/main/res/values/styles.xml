@@ -1,7 +1,12 @@
 <resources>
 
     <style name="Style.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
-        <item name="colorPrimary">@color/secondaryLightColor</item>
+        <item name="colorPrimary">@color/md_theme_primary</item>
+    </style>
+
+    <style name="Style.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="paddingRightSystemWindowInsets">false</item>
+        <item name="paddingLeftSystemWindowInsets">false</item>
     </style>
 
     <style name="Style.ActionMenu" parent="Widget.Material3.PopupMenu">
@@ -14,8 +19,4 @@
         <item name="android:spinnerMode">dropdown</item>
     </style>
 
-    <style name="TextAppearance.Title" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:textColor">@color/primaryTextColor</item>
-        <item name="android:textSize">20sp</item>
-    </style>
 </resources>

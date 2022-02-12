@@ -5,4 +5,13 @@
         <attr name="android:valueTo" format="float" />
         <attr name="android:stepSize" format="float" />
     </declare-styleable>
+
+    <declare-styleable name="NavigatePreference">
+        <attr name="navigateId" format="reference" />
+        <attr name="navigateUrl" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="_Manifest">
+        <attr name="name" format="string" />
+    </declare-styleable>
 </resources>

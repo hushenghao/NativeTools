@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
@@ -29,52 +28,16 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = Adapter()
-        binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
         applyBottomBarsInsets(binding.recyclerView)
-        val itemTouchSwapCallback = ItemTouchSwapCallback(adapter::onSwap)
-        val itemTouchHelper = ItemTouchHelper(itemTouchSwapCallback)
-        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
-        viewModel.openSourceList.observe(this, adapter::setData)
-    }
-
-    private class ItemTouchSwapCallback(private val onSwap: (from: Int, to: Int) -> Boolean) :
-        ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
-
-        override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder
-        ): Boolean {
-            val from = viewHolder.bindingAdapterPosition
-            val to = target.bindingAdapterPosition
-            return onSwap(from, to)
-        }
-
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        binding.recyclerView.layoutManager = Logic.calculateAndCreateLayoutManager(requireContext())
+        viewModel.openSourceList.observe(this) {
+            binding.recyclerView.adapter = Adapter(it)
         }
     }
 
-    private class Adapter : RecyclerView.Adapter<ViewHolder>() {
-
-        private val list = mutableListOf<OpenSource>()
-
-        fun setData(data: List<OpenSource>) {
-            val start = this.list.size
-            this.list.addAll(data)
-            notifyItemRangeInserted(start, list.size - 1)
-        }
-
-        fun onSwap(from: Int, to: Int): Boolean {
-            val range = 0 until list.size
-            if (from !in range || to !in range)
-                return false
-            list.add(to, list.removeAt(from))
-            notifyItemMoved(from, to)
-            return true
-        }
+    private class Adapter(private val list: List<OpenSource>) : RecyclerView.Adapter<ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val itemView = LayoutInflater.from(parent.context)
@@ -95,10 +58,9 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         private val binding = ItemOpenSourceBinding.bind(view)
 
         fun bindViewData(openSource: OpenSource) {
-            itemView.context.requireDrawable<Drawable>(openSource.foregroundLogo).apply {
-                setBounds(0, 0, 18.dp, 18.dp)
-                binding.tvProjectName.setCompoundDrawables(this, null, null, null)
-            }
+            val drawable =
+                itemView.context.requireDrawable<Drawable>(openSource.foregroundLogo, 18.dp)
+            binding.tvProjectName.setCompoundDrawablesRelative(start = drawable)
             binding.tvProjectName.text = openSource.name
             binding.tvAuthorName.text = openSource.author
             binding.tvProjectDesc.text = openSource.desc
@@ -129,7 +91,7 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
                             context.toast(R.string.toast_copyed)
                         }
                     }
-                    R.id.action_open -> {
+                    R.id.action_homepage -> {
                         if (openSource.url.isNotEmpty()) {
                             context.browse(openSource.url)
                         }

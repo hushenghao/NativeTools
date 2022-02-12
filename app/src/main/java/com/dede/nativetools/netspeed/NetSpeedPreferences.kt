@@ -21,9 +21,10 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_MODE = "net_speed_mode_1"
     const val KEY_NET_SPEED_QUICK_CLOSEABLE = "net_speed_notify_quick_closeable"
     const val KEY_NET_SPEED_USAGE = "net_speed_usage"
+    const val KEY_NET_SPEED_USAGE_JUST_MOBILE = "net_speed_usage_just_mobile"
     const val KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION = "net_speed_locked_hide"
     const val KEY_NET_SPEED_HIDE_NOTIFICATION = "net_speed_hide_notification"
-    const val KEY_NET_SPEED_ADVANCED = "net_speed_advanced"
+    const val KEY_NET_SPEED_HIDE_THRESHOLD = "net_speed_hide_threshold"
 
     const val KEY_NET_SPEED_TEXT_STYLE = "net_speed_text_style"
     const val KEY_NET_SPEED_FONT = "net_speed_font"
@@ -107,15 +108,26 @@ object NetSpeedPreferences {
             defaultConfiguration.notifyClickable
         )
 
+    val hideThreshold: Long
+        get() = globalPreferences.get(
+            KEY_NET_SPEED_HIDE_THRESHOLD,
+            defaultConfiguration.hideThreshold.toString()
+        ).toLongOrNull() ?: defaultConfiguration.hideThreshold
+
     val quickCloseable: Boolean
         get() = globalPreferences.get(
             KEY_NET_SPEED_QUICK_CLOSEABLE,
             defaultConfiguration.quickCloseable
         )
 
-    var usage: Boolean
+    val usage: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_USAGE, defaultConfiguration.usage)
-        set(value) = globalPreferences.set(KEY_NET_SPEED_USAGE, value)
+
+    val justMobileUsage: Boolean
+        get() = globalPreferences.get(
+            KEY_NET_SPEED_USAGE_JUST_MOBILE,
+            defaultConfiguration.justMobileUsage
+        )
 
     val hideNotification: Boolean
         get() = globalPreferences.get(

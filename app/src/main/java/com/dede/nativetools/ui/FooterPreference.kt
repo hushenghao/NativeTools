@@ -10,11 +10,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.dede.nativetools.R
 
-class FooterPreference @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = -1
-) : Preference(context, attrs, defStyleAttr) {
+class FooterPreference(context: Context, attrs: AttributeSet?) : Preference(context, attrs) {
 
     init {
         layoutResource = R.layout.layout_footer_preference
@@ -24,9 +20,7 @@ class FooterPreference @JvmOverloads constructor(
     }
 }
 
-class AndroidView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null
-) : AppCompatImageView(context, attrs) {
+class AndroidView(context: Context, attrs: AttributeSet?) : AppCompatImageView(context, attrs) {
 
     companion object {
         private const val ANIMATOR_DURATION = 600L

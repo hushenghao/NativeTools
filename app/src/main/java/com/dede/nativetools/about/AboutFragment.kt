@@ -5,10 +5,10 @@ import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.*
+import android.view.HapticFeedbackConstants
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
@@ -39,12 +39,10 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private val viewModel by viewModels<AboutViewModel>()
     private var toasted = false
     private val colorIds: IntArray = intArrayOf(
-        R.color.secondaryColor,
-        R.color.secondaryDarkColor,
-        R.color.secondaryLightColor,
-        R.color.primaryColor,
-        R.color.primaryDarkColor,
-        R.color.primaryLightColor,
+        R.color.md_theme_secondary,
+        R.color.md_theme_secondaryContainer,
+        R.color.md_theme_primary,
+        R.color.md_theme_primaryContainer,
         android.R.color.black,
         android.R.color.holo_red_light,
         android.R.color.holo_blue_light,
@@ -57,11 +55,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         com.google.android.material.R.color.material_grey_900,
     )
     private val outlineProvider = ViewOvalOutlineProvider(true)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        ChromeTabsBrowser.warmup(requireContext(), Uri.parse(getString(R.string.url_github)))
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,7 +76,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             }
         }
         binding.ivLogo.dragEnable = false
-        binding.ivLogo.setTintColor(R.color.primaryColor)
         binding.ivLogo.setOnClickListener {
             viewModel.addFollowCount()
             playAnimator(true)
@@ -95,7 +87,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private fun appendFollowView(
         followViews: ArrayList<ImageView>,
         template: ImageView,
-        target: Int
+        target: Int,
     ) {
         var count = followViews.size
         if (count >= MAX_FOLLOW_COUNT) {

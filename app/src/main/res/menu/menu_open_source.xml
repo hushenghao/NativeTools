@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_open"
-        android:title="@string/action_open_link" />
+        android:id="@+id/action_homepage"
+        android:title="@string/action_homepage" />
+    <item
+        android:id="@+id/action_license"
+        android:title="@string/action_license" />
     <item
         android:id="@+id/action_copy"
         android:title="@android:string/copyUrl" />
-    <item
-        android:id="@+id/action_license"
-        android:title="License" />
 </menu>

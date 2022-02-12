@@ -16,13 +16,13 @@ plugins {
 
 android {
     compileSdk = 31
-    buildToolsVersion = "31.0.0"
+    buildToolsVersion = "32.0.0"
     defaultConfig {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 50
-        versionName = "3.5.0"
+        versionCode = 52
+        versionName = "3.6.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(
@@ -34,7 +34,10 @@ android {
                 "ko-rKR",
                 "ru-rRU",
                 "de-rDE",
-                "fr-rFR"
+                "fr-rFR",
+                "es",
+                "pt-rPT",
+                "ar"
             )
         )
 
@@ -58,6 +61,7 @@ android {
     buildTypes {
         val config = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
         getByName("debug") {
+            versionNameSuffix = "-debug"
             signingConfig = config
         }
         getByName("release") {
@@ -143,19 +147,18 @@ configurations.all {
 }
 
 tasks.register<Exec>("pgyer") {
-    val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
-        "pgyer.api_key not found"
-    }
-
     val assemble = tasks.named("assembleBeta").get()
     dependsOn("clean", assemble)
     assemble.mustRunAfter("clean")
 
-    val tree = fileTree("build/outputs/apk/beta") {
+    val tree = fileTree("build/intermediates/apk/beta") {
         include("*.apk")
         builtBy("assembleBeta")
     }
     doFirst {
+        val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
+            "pgyer.api_key not found"
+        }
         val apkPath = tree.single().absolutePath
         println("Upload Apk: $apkPath")
 

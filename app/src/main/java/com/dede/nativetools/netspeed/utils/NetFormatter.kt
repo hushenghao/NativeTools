@@ -13,21 +13,32 @@ object NetFormatter {
 
     /**
      * 精确等宽格式
+     *
+     * 888
+     * 88.8
+     * 8.88
      */
     const val ACCURACY_EQUAL_WIDTH_EXACT = 1
 
     /**
      * 精确格式
+     *
+     * 88.88
      */
     const val ACCURACY_EXACT = 2
 
     /**
      * 低精度格式
+     *
+     * 88.8
      */
     const val ACCURACY_SHORTER = 4
 
     /**
      * 等宽格式
+     *
+     * 88
+     * 8.8
      */
     const val ACCURACY_EQUAL_WIDTH = 3
 
@@ -67,6 +78,7 @@ object NetFormatter {
     // android.text.format.Formatter.formatFileSize(android.content.Context, long)
     // 8.0以后使用的单位是1000，非1024
     private const val UNIT_SIZE = 1024
+
     private const val THRESHOLD = 900
 
     fun format(bytes: Long, flags: Int, accuracy: Int): Pair<String, String> {
@@ -100,22 +112,6 @@ object NetFormatter {
     }
 
     private fun formatNumberInternal(num: Double, accuracy: Int): String {
-//        val format = when (accuracy) {
-//            ACCURACY_EQUAL_WIDTH_EXACT -> when {
-//                num >= 100 -> "%.0f" // 100.2 -> 100
-//                num >= 10 -> "%.1f" // 10.22 -> 10.2
-//                else -> "%.2f" // 0.223 -> 0.22
-//            }
-//            ACCURACY_EQUAL_WIDTH -> when {
-//                num >= 10 -> "%.0f" // 10.2 -> 10
-//                else -> "%.1f" // 1.22 -> 1.2
-//            }
-//            ACCURACY_EXACT -> "%.2f" // 0.223 -> 0.22
-//            ACCURACY_SHORTER -> "%.1f"
-//            else -> "%.2f"
-//        }
-//        return format.format(num).trimZeroAndDot()
-
         val pattern = when (accuracy) {
             ACCURACY_EQUAL_WIDTH_EXACT -> when {
                 num >= 100 -> "0" // 100.2 -> 100

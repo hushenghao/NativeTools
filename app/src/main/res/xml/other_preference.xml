@@ -4,8 +4,8 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:key="key_other"
         app:initialExpandedChildrenCount="7"
+        app:key="key_other"
         app:title="@string/label_other">
 
         <SwitchPreferenceCompat
@@ -23,47 +23,61 @@
             app:title="@string/label_night_mode"
             app:useSimpleSummaryProvider="true" />
 
-        <Preference
+        <com.dede.nativetools.ui.NavigatePreference
+            app:icon="@drawable/ic_outline_data_usage"
+            app:navigateId="@id/action_other_to_netUsage"
+            app:title="@string/label_full_net_usage" />
+
+        <com.dede.nativetools.ui.NavigatePreference
             app:allowDividerAbove="true"
             app:enableCopying="true"
             app:icon="@drawable/ic_outline_info"
             app:key="about"
+            app:navigateId="@id/action_other_to_about"
             app:summary="@string/summary_about_version"
             app:title="@string/label_about" />
 
-        <Preference
+        <com.dede.nativetools.ui.NavigatePreference
             app:icon="@drawable/ic_outline_coffee"
-            app:key="donate"
+            app:navigateId="@id/action_other_to_dialogDonate"
             app:title="@string/action_donate" />
 
         <Preference
             app:icon="@drawable/ic_baseline_sentiment_very_satisfied"
             app:key="rate"
+            app:persistent="false"
             app:title="@string/action_rate" />
 
-        <Preference
+        <com.dede.nativetools.ui.NavigatePreference
             app:icon="@drawable/ic_outline_pest_control"
-            app:key="beta"
+            app:navigateUrl="@string/url_pgyer"
             app:title="@string/action_beta" />
 
-        <Preference
+        <com.dede.nativetools.ui.NavigatePreference
             app:icon="@drawable/ic_github_cat"
-            app:key="github"
+            app:navigateUrl="@string/url_github"
             app:title="@string/github" />
 
-        <Preference
+        <com.dede.nativetools.ui.NavigatePreference
             app:icon="@drawable/ic_open_source_line"
-            app:key="open_source"
+            app:navigateId="@id/action_other_to_openSource"
             app:title="@string/label_open_source" />
 
         <Preference
             app:icon="@drawable/ic_action_share"
             app:key="share"
+            app:persistent="false"
             app:title="@string/action_share" />
+
+        <com.dede.nativetools.ui.NavigatePreference
+            app:icon="@drawable/ic_outline_pest_control"
+            app:navigateId="@id/action_other_to_diagnosis"
+            app:title="@string/label_diagnosis" />
 
         <Preference
             app:icon="@drawable/ic_outline_feedback"
             app:key="feedback"
+            app:persistent="false"
             app:title="@string/action_feedback" />
 
     </PreferenceCategory>

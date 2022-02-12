@@ -1,16 +1,12 @@
 package com.dede.nativetools.netspeed.utils
 
-import android.content.res.Resources
 import android.graphics.*
 import android.text.TextPaint
 import android.util.DisplayMetrics
 import android.util.Log
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.typeface.TypefaceGetter
-import com.dede.nativetools.util.dpf
-import com.dede.nativetools.util.globalContext
-import com.dede.nativetools.util.saveToAlbum
-import com.dede.nativetools.util.splicing
+import com.dede.nativetools.util.*
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -26,10 +22,7 @@ object NetTextIconFactory {
     private const val DEBUG_MODE = false
 
     // 888M 931135488L
-    private const val DEBUG_MODE_ALL_BYTES = (2 shl 19) * 888L
-
-    // 88.8M 93113549L
-    private const val DEBUG_MODE_SINGLE_BYTES = ((2 shl 19) * 88.8F).toLong()
+    private const val DEBUG_MODE_BYTES = (2 shl 19) * 888L
 
     private val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         //isFakeBoldText = true
@@ -41,7 +34,7 @@ object NetTextIconFactory {
     private val iconSize: Int
 
     init {
-        val resources = Resources.getSystem()
+        val resources = UI.resources
         val dpi = resources.displayMetrics.densityDpi
         val default = when {
             dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
@@ -66,6 +59,12 @@ object NetTextIconFactory {
         if (cache == null) {
             return Bitmap.createBitmap(size, size, DEFAULT_CONFIG)
         }
+
+        if (size > cache.width || size > cache.height) {
+            cache.recycle()
+            return Bitmap.createBitmap(size, size, DEFAULT_CONFIG)
+        }
+
         if (cache.config != DEFAULT_CONFIG || cache.width != size || cache.height != size) {
             cache.reconfigure(size, size, DEFAULT_CONFIG)
         }
@@ -75,6 +74,10 @@ object NetTextIconFactory {
         // contents individually, so we do so here.
         cache.eraseColor(Color.TRANSPARENT)
         return cache
+    }
+
+    fun createBlank(configuration: NetSpeedConfiguration, size: Int = iconSize): Bitmap {
+        return createBitmapInternal(size, configuration.cachedBitmap)
     }
 
     /**
@@ -90,51 +93,32 @@ object NetTextIconFactory {
         txSpeed: Long,
         configuration: NetSpeedConfiguration,
         size: Int = iconSize,
-        assistLine: Boolean = DEBUG_MODE
+        assistLine: Boolean = DEBUG_MODE,
     ): Bitmap {
         var rxByte = rxSpeed
         var txByte = txSpeed
         if (assistLine) {
             // Check that the text is displayed completely
-            if (configuration.mode == NetSpeedConfiguration.MODE_ALL) {
-                rxByte = DEBUG_MODE_ALL_BYTES
-                txByte = DEBUG_MODE_ALL_BYTES
-            } else {
-                rxByte = DEBUG_MODE_SINGLE_BYTES
-                txByte = DEBUG_MODE_SINGLE_BYTES
-            }
+            rxByte = DEBUG_MODE_BYTES
+            txByte = DEBUG_MODE_BYTES
         }
 
+        // 降低精度以保证更大字体显示
+        val accuracy: Int = NetFormatter.ACCURACY_EQUAL_WIDTH
         val text1: String
         val text2: String
         when (configuration.mode) {
             NetSpeedConfiguration.MODE_ALL -> {
-                text1 = NetFormatter.format(
-                    txByte,
-                    NetFormatter.FLAG_NULL,
-                    NetFormatter.ACCURACY_EQUAL_WIDTH
-                ).splicing()
-                text2 = NetFormatter.format(
-                    rxByte,
-                    NetFormatter.FLAG_NULL,
-                    NetFormatter.ACCURACY_EQUAL_WIDTH
-                ).splicing()
+                text1 = NetFormatter.format(txByte, NetFormatter.FLAG_NULL, accuracy).splicing()
+                text2 = NetFormatter.format(rxByte, NetFormatter.FLAG_NULL, accuracy).splicing()
             }
             NetSpeedConfiguration.MODE_UP -> {
-                val upSplit = NetFormatter.format(
-                    txByte,
-                    NetFormatter.FLAG_FULL,
-                    NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
-                )
+                val upSplit = NetFormatter.format(txByte, NetFormatter.FLAG_FULL, accuracy)
                 text1 = upSplit.first
                 text2 = upSplit.second
             }
             else -> {
-                val downSplit = NetFormatter.format(
-                    rxByte,
-                    NetFormatter.FLAG_FULL,
-                    NetFormatter.ACCURACY_EQUAL_WIDTH_EXACT
-                )
+                val downSplit = NetFormatter.format(rxByte, NetFormatter.FLAG_FULL, accuracy)
                 text1 = downSplit.first
                 text2 = downSplit.second
             }
@@ -159,7 +143,7 @@ object NetTextIconFactory {
         text2: String,
         size: Int,
         configuration: NetSpeedConfiguration,
-        assistLine: Boolean = false
+        assistLine: Boolean = false,
     ): Bitmap {
         val w = size
         val wf = w.toFloat()

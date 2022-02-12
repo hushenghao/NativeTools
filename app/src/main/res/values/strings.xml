@@ -31,7 +31,7 @@
     <string name="summary_ignore_battery_optimize">添加电池优化白名单，防止前台服务无法保活（针对部分设备）</string>
 
     <string name="usage_states_title">使用情况访问授权</string>
-    <string name="usage_stats_msg">统计每日流量使用情况时需要允许使用情况访问权限。</string>
+    <string name="usage_stats_msg">统计流量使用情况时需要允许使用情况访问权限。</string>
     <string name="alert_title_notification_disable">通知权限未开启</string>
     <string name="alert_msg_notification_disable">通知权限未开启，网速指示器将无法正常显示</string>
     <string name="settings">去设置</string>
@@ -41,19 +41,21 @@
     <string name="desc_net_speed_notify">网速指示器需要通过通知来显示</string>
     <string name="chooser_label_browse">选择浏览器打开</string>
 
-    <string name="percent_seek_bar_company" translatable="false">%</string>
+    <string name="url_play_store" translatable="false">https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="url_cool_apk" translatable="false">https://www.coolapk.com/apk/com.dede.nativetools</string>
     <string name="url_github" translatable="false">https://github.com/hushenghao/NativeTools</string>
     <string name="url_hide_lock_notification" translatable="false">https://github.com/hushenghao/NativeTools/wiki/Hide-lock-screen-notification</string>
     <string name="url_privacy_agreement" translatable="false">https://github.com/hushenghao/NativeTools/wiki/%E9%9A%90%E7%A7%81%E5%8D%8F%E8%AE%AE</string>
     <string name="url_alipay_payment_code" translatable="false">https://qr.alipay.com/fkx102121bvcoglww05av58</string>
     <string name="url_wx_payment_code" translatable="false">wxp://f2f0HUx189brtInq9P5t6f8ei40cJnbCmh6DdC9gVai6cHBPAb40fxNLfCQBMZCGvxQP</string>
     <string name="url_paypal_payment_code" translatable="false">https://paypal.me/dede2233?country.x=C2&amp;locale.x=zh_XC</string>
+    <string name="payment_eth_address" translatable="false">0xd6Cbe7E6C6eD7E3DeA3D733D29f4f3884C6211c2</string>
     <string name="github" translatable="false">Github</string>
     <string name="chooser_label_market">选择应用商店</string>
     <string name="label_open_source">开源相关</string>
     <string name="action_share">分享</string>
 
-    <string name="share_text">发现了一个好用的小工具“网速指示器”快去下载吧！\nCoolApk：https://www.coolapk.com/apk/com.dede.nativetools\nPlayStore：https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text" formatted="false">发现了一个好用的小工具“%s”快去下载吧！%s</string>
     <string name="action_beta" translatable="false">Beta</string>
     <string name="action_feedback">问题反馈</string>
     <string name="email" translatable="false">dede.hu@qq.com</string>
@@ -75,7 +77,6 @@
     <string name="toast_saved">已保存</string>
     <string name="label_home">首页</string>
     <string name="toast_open_battery_optimization">请找到“网速指示器”，并手动开启电池优化</string>
-    <string name="action_open_link">查看</string>
     <string name="label_android" translatable="false">Android</string>
     <string name="label_privacy_agreement">隐私协议</string>
     <string name="label_net_speed_style">字体样式</string>
@@ -99,4 +100,15 @@
     <string name="toast_download_font_succeeded">字体下载成功</string>
     <string name="toast_download_font_failed">字体下载失败</string>
     <string name="label_net_speed_horizontal_scale">X轴缩放</string>
+    <string name="label_full_net_usage">网络使用统计</string>
+    <string name="label_today">今日</string>
+    <string name="label_month">本月</string>
+    <string name="action_license" translatable="false">License</string>
+    <string name="action_homepage" translatable="false">Homepage</string>
+    <string name="label_diagnosis">诊断</string>
+    <string name="label_usage_just_mobile">只显示移动流量使用</string>
+    <string name="label_net_speed_hide_threshold">隐藏阈值</string>
+    <string name="summary_net_speed_hide_threshold" formatted="false">当速度小于%s时隐藏状态栏网速</string>
+    <string name="summary_threshold_error">输入的阈值不正确</string>
+    <string name="summary_net_speed_unhide">不隐藏</string>
 </resources>

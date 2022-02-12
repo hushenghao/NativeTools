@@ -1,14 +1,17 @@
 package com.dede.nativetools.netspeed.service
 
-import android.app.*
+import android.app.KeyguardManager
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Icon
 import android.os.Build
 import android.provider.Settings
 import android.widget.RemoteViews
-import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationChannelCompat
+import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.graphics.drawable.IconCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
@@ -61,16 +64,14 @@ object NetSpeedNotificationHelper {
     }
 
     fun areNotificationEnabled(context: Context): Boolean {
-        val areNotificationsEnabled =
-            NotificationManagerCompat.from(context).areNotificationsEnabled()
-        val notificationManager = context.requireSystemService<NotificationManager>()
+        val notificationManagerCompat = NotificationManagerCompat.from(context)
+        val areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled()
         var channelDisabled = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel =
-                notificationManager.getNotificationChannel(CHANNEL_ID)
+            val notificationChannel = notificationManagerCompat.getNotificationChannel(CHANNEL_ID)
             if (notificationChannel != null) {
                 val importance = notificationChannel.importance
-                channelDisabled = importance <= NotificationManager.IMPORTANCE_MIN
+                channelDisabled = importance <= NotificationManagerCompat.IMPORTANCE_MIN
             }
         }
 
@@ -78,14 +79,21 @@ object NetSpeedNotificationHelper {
     }
 
     /**
-     * 获取所有数据使用量
+     * 获取数据使用量
      */
-    private fun getUsageText(context: Context): String? {
-        if (!context.checkAppOps()) {
+    private fun getUsageText(context: Context, configuration: NetSpeedConfiguration): String? {
+        if (!Logic.checkAppOps(context)) {
             return null
         }
-        val todayBytes = NetworkUsageUtil.todayNetworkUsageBytes(context)
-        val monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
+        val todayBytes: Long
+        val monthBytes: Long
+        if (configuration.justMobileUsage) {
+            todayBytes = NetworkUsageUtil.todayMobileUsageBytes(context)
+            monthBytes = NetworkUsageUtil.monthMobileUsageBytes(context)
+        } else {
+            todayBytes = NetworkUsageUtil.todayNetworkUsageBytes(context)
+            monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
+        }
         return context.getString(
             R.string.notify_net_speed_sub,
             NetFormatter.format(
@@ -110,11 +118,19 @@ object NetSpeedNotificationHelper {
                 context.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.S
     }
 
+    /**
+     * 创建网速通知
+     *
+     * @param context 上下文
+     * @param configuration 配置
+     * @param rxSpeed 下行网速
+     * @param txSpeed 上行网速
+     */
     fun createNotification(
         context: Context,
         configuration: NetSpeedConfiguration,
         rxSpeed: Long = 0L,
-        txSpeed: Long = 0L
+        txSpeed: Long = 0L,
     ): Notification {
         val downloadSpeedStr: String =
             NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
@@ -123,67 +139,60 @@ object NetSpeedNotificationHelper {
             NetFormatter.format(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
 
-        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannel(context)
-            Notification.Builder(context, CHANNEL_ID)
-        } else {
-            @Suppress("DEPRECATION")
-            Notification.Builder(context)
-                .setPriority(Notification.PRIORITY_DEFAULT)
-                .setSound(null)
-            //.setDefaults(Notification.DEFAULT_VIBRATE)
-        }
-        builder.setCategory(null)
-            .setSmallIcon(createIcon(configuration, rxSpeed, txSpeed))
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setOnlyAlertOnce(false)
             .setOngoing(true)
             .setLocalOnly(true)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            builder.setFlag(Notification.FLAG_BUBBLE, false)
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder.setBadgeIconType(Notification.BADGE_ICON_NONE)
-                .setColorized(false)
+            .setShowWhen(false)
+            .setCategory(null)
+            .setSound(null)
+            .setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
+            .setColorized(false)
+
+        if (configuration.showBlankNotification) {
+            // 显示透明图标，并降低通知优先级
+            builder.setPriority(NotificationCompat.PRIORITY_LOW)
+                .setSmallIcon(createBlankIcon(configuration))
+        } else {
+            builder.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setSmallIcon(createIconCompat(configuration, rxSpeed, txSpeed))
         }
 
+        createChannel(context)
+
         if (configuration.hideLockNotification) {
-            builder.setVisibility(Notification.VISIBILITY_SECRET)
+            builder.setVisibility(NotificationCompat.VISIBILITY_SECRET)
         } else {
-            builder.setVisibility(Notification.VISIBILITY_PUBLIC)
+            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
         }
 
         var pendingFlag = PendingIntent.FLAG_UPDATE_CURRENT
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             // https://developer.android.com/about/versions/12/behavior-changes-all#foreground-service-notification-delay
-            builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
+            @Suppress("WrongConstant")
+            builder.foregroundServiceBehavior = NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
             // https://developer.android.com/about/versions/12/behavior-changes-12#pending-intent-mutability
             pendingFlag = PendingIntent.FLAG_MUTABLE
         }
 
         if (configuration.hideNotification && !itSSAbove(context)) {
+            // context.applicationInfo.targetSdkVersion < Build.VERSION_CODES.S
+            // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
             val remoteViews = RemoteViews(context.packageName, R.layout.notification_empty_view)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                // context.applicationInfo.targetSdkVersion < Build.VERSION_CODES.S
-                // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
-                builder.setCustomContentView(remoteViews)
-            } else {
-                @Suppress("DEPRECATION")
-                builder.setContent(remoteViews)
-            }
+            builder.setCustomContentView(remoteViews)
         } else {
             val contentStr =
                 context.getString(R.string.notify_net_speed_msg, uploadSpeedStr, downloadSpeedStr)
             builder.setContentTitle(contentStr)
             if (configuration.usage) {
-                val usageText = getUsageText(context)
+                val usageText = getUsageText(context, configuration)
                 builder.setContentText(usageText)
             }
 
             if (configuration.quickCloseable) {
-                val closeAction = Intent(NetSpeedService.ACTION_CLOSE)
+                val closePending = Intent(NetSpeedService.ACTION_CLOSE)
                     .toPendingBroadcast(context, pendingFlag)
-                    .toNotificationAction(R.string.action_close)
-                builder.addAction(closeAction)
+                builder.addAction(closePending.toNotificationCompatAction(R.string.action_close))
             }
         }
 
@@ -199,34 +208,40 @@ object NetSpeedNotificationHelper {
         return builder.build()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    private var notificationChannelCreated = false
+
     private fun createChannel(context: Context) {
-        val notificationManager = context.requireSystemService<NotificationManager>()
-        val notificationChannel = NotificationChannel(
-            CHANNEL_ID,
-            context.getString(R.string.label_net_speed),
-            NotificationManager.IMPORTANCE_DEFAULT
-        ).apply {
-            description = context.getString(R.string.desc_net_speed_notify)
-            setShowBadge(false)
-            enableVibration(false)
-            enableLights(false)
-            setSound(null, null)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                setAllowBubbles(false)
-            }
-            lockscreenVisibility = Notification.VISIBILITY_SECRET
+        if (notificationChannelCreated) {
+            return
         }
-        notificationManager.createNotificationChannel(notificationChannel)
+        val channel =
+            NotificationChannelCompat.Builder(
+                CHANNEL_ID,
+                NotificationManagerCompat.IMPORTANCE_LOW// 只允许降级
+            )
+                .setName(context.getString(R.string.label_net_speed))
+                .setDescription(context.getString(R.string.desc_net_speed_notify))
+                .setShowBadge(false)
+                .setVibrationEnabled(false)
+                .setLightsEnabled(false)
+                .setSound(null, null)
+                .build()
+        NotificationManagerCompat.from(context).createNotificationChannel(channel)
+        notificationChannelCreated = true
     }
 
-    private fun createIcon(
+    private fun createIconCompat(
         configuration: NetSpeedConfiguration,
         rxSpeed: Long,
-        txSpeed: Long
-    ): Icon {
+        txSpeed: Long,
+    ): IconCompat {
         val bitmap = NetTextIconFactory.create(rxSpeed, txSpeed, configuration)
-        return Icon.createWithBitmap(bitmap)
+        return IconCompat.createWithBitmap(bitmap)
+    }
+
+    private fun createBlankIcon(configuration: NetSpeedConfiguration): IconCompat {
+        val bitmap = NetTextIconFactory.createBlank(configuration)
+        return IconCompat.createWithBitmap(bitmap)
     }
 
 }

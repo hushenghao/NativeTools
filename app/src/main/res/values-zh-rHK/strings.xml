@@ -27,7 +27,7 @@
     <string name="summary_net_speed_usage">通知顯示移動數據和WLAN流量使用總和</string>
     <string name="summary_ignore_battery_optimize">添加電池優化白名單，防止前臺服務無法保活（針對部分設備）</string>
     <string name="usage_states_title">使用情况訪問授權</string>
-    <string name="usage_stats_msg">統計每日流量使用情况時需要允許使用情况存取權限。</string>
+    <string name="usage_stats_msg">統計流量使用情况時需要允許使用情况存取權限。</string>
     <string name="alert_title_notification_disable">通知許可權未開啟</string>
     <string name="alert_msg_notification_disable">通知許可權未開啟，網速指示器將無法正常顯示</string>
     <string name="settings">去設定</string>
@@ -39,7 +39,7 @@
     <string name="chooser_label_market">選擇應用商店</string>
     <string name="label_open_source">開源相關</string>
     <string name="action_share">分享</string>
-    <string name="share_text">發現了一個好用的小工具“網速指示器”快去下載吧！ \nCoolApk：https://www.coolapk.com/apk/com.dede.nativetools\nPlayStore：https://play.google.com/store/apps/details?id=com.dede.nativetools</string>
+    <string name="share_text" formatted="false">發現了一個好用的小工具“%s”快去下載吧！%s</string>
     <string name="action_feedback">問題迴響</string>
     <string name="toast_copyed">已複製</string>
     <string name="toast_wx_payment_tip">微信付款碼請長按保存圖片後掃描</string>
@@ -58,7 +58,6 @@
     <string name="toast_saved">已保存</string>
     <string name="label_home">首頁</string>
     <string name="toast_open_battery_optimization">請找到“網速指示器”，並手動關閉</string>
-    <string name="action_open_link">查看</string>
     <string name="label_privacy_agreement">隱私協定</string>
     <string name="label_net_speed_style">字體樣式</string>
     <string name="label_net_speed_advanced">高級設定</string>
@@ -81,4 +80,13 @@
     <string name="toast_download_font_succeeded">字體下載成功</string>
     <string name="toast_download_font_failed">字體下載失敗</string>
     <string name="label_net_speed_horizontal_scale">X軸縮放</string>
+    <string name="label_full_net_usage">網絡使用統計</string>
+    <string name="label_today">今日</string>
+    <string name="label_month">本月</string>
+    <string name="label_diagnosis">診斷</string>
+    <string name="label_usage_just_mobile">只顯示移動流量使用</string>
+    <string name="label_net_speed_hide_threshold">隱藏閾值</string>
+    <string name="summary_net_speed_hide_threshold" formatted="false">當速度小於%s時隱藏狀態列網速</string>
+    <string name="summary_threshold_error">輸入的閾值不正確</string>
+    <string name="summary_net_speed_unhide">不隱藏</string>
 </resources>

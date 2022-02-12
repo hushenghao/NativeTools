@@ -1,5 +1,6 @@
 package com.dede.nativetools.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
 import android.os.Parcel
@@ -22,13 +23,8 @@ import kotlin.math.roundToInt
 /**
  * Slider
  */
-class SliderPreference @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = androidx.preference.R.attr.preferenceStyle,
-    defStyleRes: Int = 0
-) : Preference(context, attrs, defStyleAttr, defStyleRes), Slider.OnChangeListener,
-    Slider.OnSliderTouchListener, View.OnKeyListener {
+class SliderPreference(context: Context, attrs: AttributeSet?) : Preference(context, attrs),
+    Slider.OnChangeListener, Slider.OnSliderTouchListener, View.OnKeyListener {
 
     private var stepSize: Float
     private var value: Float = 0f
@@ -48,12 +44,7 @@ class SliderPreference @JvmOverloads constructor(
 
     init {
         layoutResource = R.layout.preference_slider
-        val typedArray = context.obtainStyledAttributes(
-            attrs,
-            R.styleable.SliderPreference,
-            defStyleAttr,
-            defStyleRes
-        )
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.SliderPreference)
         valueFrom = typedArray.getFloat(R.styleable.SliderPreference_android_valueFrom, 0f)
         valueTo = typedArray.getFloat(R.styleable.SliderPreference_android_valueTo, 1f)
         stepSize = typedArray.getFloat(R.styleable.SliderPreference_android_stepSize, 0.01f)
@@ -168,6 +159,7 @@ class SliderPreference @JvmOverloads constructor(
         return slider?.onKeyDown(keyCode, event) ?: false
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onValueChange(slider: Slider, value: Float, fromUser: Boolean) {
         if (fromUser) {
             slider.performHapticFeedback(
@@ -177,7 +169,6 @@ class SliderPreference @JvmOverloads constructor(
         }
         val format = formatValue(value)
         updateLabelValue(format)
-        @Suppress("RestrictedApi")
         onChangeListener?.onValueChange(slider, format, fromUser)
     }
 
@@ -186,9 +177,11 @@ class SliderPreference @JvmOverloads constructor(
         return int * stepSize
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onStartTrackingTouch(slider: Slider) {
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onStopTrackingTouch(slider: Slider) {
         val value = formatValue(slider.value)
         if (this.value != value) {

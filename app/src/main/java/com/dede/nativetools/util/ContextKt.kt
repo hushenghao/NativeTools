@@ -2,22 +2,18 @@
 
 package com.dede.nativetools.util
 
-import android.app.AppOpsManager
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
+import android.content.*
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Build
-import android.os.PowerManager
-import android.os.Process
+import android.os.IBinder
 import android.widget.Toast
 import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
-import com.dede.nativetools.BuildConfig
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
 import com.google.android.material.color.MaterialColors
@@ -27,12 +23,6 @@ import kotlin.properties.ReadOnlyProperty
 
 val globalContext: Context
     get() = NativeToolsApp.getInstance()
-
-val Context.isIgnoringBatteryOptimizations
-    get():Boolean {
-        val powerManager = this.requireSystemService<PowerManager>()
-        return powerManager.isIgnoringBatteryOptimizations(this.packageName)
-    }
 
 inline fun <reified T : Any> Context.requireSystemService(): T {
     return checkNotNull(applicationContext.getSystemService())
@@ -54,32 +44,65 @@ fun Context.startService(intent: Intent, foreground: Boolean) {
     }
 }
 
-fun Context.checkAppOps(): Boolean {
-    val appOpsManager = requireSystemService<AppOpsManager>()
-    val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        appOpsManager.unsafeCheckOpNoThrow(
-            AppOpsManager.OPSTR_GET_USAGE_STATS,
-            Process.myUid(),
-            this.packageName
-        )
-    } else {
-        @Suppress("DEPRECATION")
-        appOpsManager.checkOpNoThrow(
-            AppOpsManager.OPSTR_GET_USAGE_STATS,
-            Process.myUid(),
-            this.packageName
-        )
+typealias OnServiceConnected = (service: IBinder?) -> Unit
+
+fun Context.bindService(
+    intent: Intent,
+    onConnected: OnServiceConnected,
+    onFailed: () -> Unit,
+    lifecycleOwner: LifecycleOwner,
+): Boolean {
+    val conn = LifecycleServiceConnection(this, onConnected)
+    val bind = this.bindService(intent, conn, Context.BIND_AUTO_CREATE)
+    if (!bind) {
+        onFailed.invoke()
     }
-    return result == AppOpsManager.MODE_ALLOWED
+    lifecycleOwner.lifecycle.addObserver(conn)
+    return bind
+}
+
+private class LifecycleServiceConnection(
+    val context: Context,
+    val onConnected: OnServiceConnected,
+) : ServiceConnection, DefaultLifecycleObserver {
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        context.unbindService(this)
+    }
+
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        onConnected.invoke(service)
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) {
+    }
 }
 
 fun Context.assets(fileName: String): InputStream {
     return assets.open(fileName)
 }
 
+fun <T : Drawable> Context.requireDrawable(@DrawableRes drawableId: Int, @Px size: Int = 0): T {
+    return requireDrawable(drawableId, size, size)
+}
+
 @Suppress("UNCHECKED_CAST")
-fun <T : Drawable> Context.requireDrawable(@DrawableRes drawableId: Int): T {
-    return checkNotNull(AppCompatResources.getDrawable(this, drawableId) as T)
+fun <T : Drawable> Context.requireDrawable(
+    @DrawableRes drawableId: Int,
+    @Px width: Int = 0,
+    @Px height: Int = 0,
+): T {
+    val drawable = AppCompatResources.getDrawable(this, drawableId)!!
+    var right = width
+    if (right <= 0) {
+        right = drawable.intrinsicWidth
+    }
+    var bottom = height
+    if (bottom <= 0) {
+        bottom = drawable.intrinsicHeight
+    }
+    drawable.setBounds(0, 0, right, bottom)
+    return checkNotNull(drawable as T)
 }
 
 @ColorInt
@@ -113,15 +136,15 @@ fun Context.market(packageName: String) {
         .setData("market://details?id=$packageName")
         .newTask()
         .toChooser(R.string.chooser_label_market)
-    startActivity(market)
+    ContextCompat.startActivity(this, market, null)
 }
 
-fun Context.share(@StringRes textId: Int) {
-    val intent = Intent(Intent.ACTION_SEND, Intent.EXTRA_TEXT to getString(textId))
+fun Context.share(text: String) {
+    val intent = Intent(Intent.ACTION_SEND, Intent.EXTRA_TEXT to text)
         .setType("text/plain")
         .newTask()
         .toChooser(R.string.action_share)
-    startActivity(intent)
+    ContextCompat.startActivity(this, intent, null)
 }
 
 fun Context.emailTo(@StringRes addressRes: Int) {
@@ -129,22 +152,10 @@ fun Context.emailTo(@StringRes addressRes: Int) {
     val intent = Intent(Intent(Intent.ACTION_SENDTO, uri))
         .newTask()
         .toChooser(R.string.action_feedback)
-    startActivity(intent)
+    ContextCompat.startActivity(this, intent, null)
 }
 
 fun Context.copy(text: String) {
     val clipboardManager = this.requireSystemService<ClipboardManager>()
     clipboardManager.setPrimaryClip(ClipData.newPlainText("text", text))
 }
-
-fun Context.readClipboard(): String? {
-    val clipboardManager = this.requireSystemService<ClipboardManager>()
-    val primaryClip = clipboardManager.primaryClip ?: return null
-    if (primaryClip.itemCount > 0) {
-        return primaryClip.getItemAt(0)?.text?.toString()
-    }
-    return null
-}
-
-fun Context.getVersionSummary() =
-    getString(R.string.summary_about_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)

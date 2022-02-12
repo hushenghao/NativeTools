@@ -15,6 +15,8 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,8 +25,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.DialogFragmentDonateBinding
 import com.dede.nativetools.databinding.ItemPaymentLayoutBinding
-import com.dede.nativetools.ui.SpaceItemDecoration
 import com.dede.nativetools.main.WindowEdgeManager
+import com.dede.nativetools.ui.SpaceItemDecoration
 import com.dede.nativetools.util.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -44,7 +46,7 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.dialog_fragment_donate, container, false)
     }
@@ -55,11 +57,12 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
             binding.recyclerView.adapter = Adapter(it, clickHandler)
         }
         binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
+        binding.recyclerView.layoutManager = Logic.calculateAndCreateLayoutManager(requireContext())
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
-            WindowEdgeManager(requireContext()).applyEdgeToEdge(window)
+            WindowEdgeManager(requireContext()).applyEdgeToEdge(this.window)
             val behavior = (this as BottomSheetDialog).behavior
             behavior.skipCollapsed = true
         }
@@ -96,6 +99,13 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
             if (isNightMode()) {
                 binding.ivLogo.imageTintList = ColorStateList.valueOf(Color.WHITE)
             }
+            if (payment.title.isEmpty()) {
+                binding.tvTitle.isGone = true
+            } else {
+                binding.tvTitle.text = payment.title
+                binding.tvTitle.isVisible = true
+
+            }
         }
     }
 
@@ -107,6 +117,10 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
         fun handleClick(payment: Payment) {
             val context = host.requireContext()
             when (payment.resId) {
+                R.drawable.img_logo_eth -> {
+                    context.copy(context.getString(R.string.payment_eth_address))
+                    context.toast(R.string.toast_copyed)
+                }
                 R.drawable.img_logo_alipay -> {
                     context.browse(R.string.url_alipay_payment_code)
                 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:title="@string/label_net_speed">
 
     <PreferenceCategory
@@ -32,9 +33,17 @@
             app:title="@string/label_net_speed_interval"
             app:useSimpleSummaryProvider="true" />
 
-        <PreferenceScreen
+        <com.dede.nativetools.ui.MaterialEditTextPreference
+            app:defaultValue="0"
+            app:dialogLayout="@layout/override_preference_dialog_edittext"
+            app:icon="@drawable/ic_baseline_remove_circle"
+            app:key="net_speed_hide_threshold"
+            app:title="@string/label_net_speed_hide_threshold"
+            tools:useSimpleSummaryProvider="true" />
+
+        <com.dede.nativetools.ui.NavigatePreference
             app:icon="@drawable/ic_outline_settings"
-            app:key="net_speed_advanced"
+            app:navigateId="@id/action_netSpeed_to_netSpeedAdvanced"
             app:summary="@string/summary_net_speed_advanced"
             app:title="@string/label_net_speed_advanced" />
 
@@ -56,10 +65,17 @@
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:dependency="net_speed_hide_notification"
+            app:disableDependentsState="false"
             app:icon="@drawable/ic_outline_data_usage"
             app:key="net_speed_usage"
             app:summary="@string/summary_net_speed_usage"
             app:title="@string/label_net_speed_usage" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:dependency="net_speed_usage"
+            app:key="net_speed_usage_just_mobile"
+            app:title="@string/label_usage_just_mobile" />
 
         <SwitchPreferenceCompat
             android:key="net_speed_notify_clickable"

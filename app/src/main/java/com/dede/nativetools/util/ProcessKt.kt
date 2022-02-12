@@ -54,6 +54,13 @@ fun Context.isMainProcess(): Boolean {
     return currentProcess().isMainProcess(this)
 }
 
+fun Context.processName(): String? {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        return Application.getProcessName()
+    }
+    return currentProcess()?.processName
+}
+
 @OptIn(ExperimentalContracts::class)
 fun ActivityManager.RunningAppProcessInfo?.isMainProcess(context: Context): Boolean {
     contract {

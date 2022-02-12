@@ -1,58 +1,66 @@
 package com.dede.nativetools.main
 
+import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewAnimationUtils
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.view.LayoutInflaterCompat
 import androidx.core.view.doOnAttach
 import androidx.core.view.isGone
+import androidx.core.view.updatePadding
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.navigateUp
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.other.OtherPreferences
+import com.dede.nativetools.ui.NavigatePreference
 import com.dede.nativetools.util.*
 
 /**
  * Main
  */
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
-    NavigationBars.NavigationItemSelectedListener {
+    NavigatePreference.OnNavigateHandler {
 
     companion object {
         const val EXTRA_TOGGLE = "extra_toggle"
     }
 
-    private val binding by viewBinding(ActivityMainBinding::bind)
+    private val binding by viewBinding {
+        ActivityMainBinding.inflate(it.getLayoutInflater(!UI.isWideSize()))
+    }
     private val navController by navController(R.id.nav_host_fragment)
     private val topLevelDestinationIds = intArrayOf(R.id.netSpeed, R.id.other)
-
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val windowEdgeManager = WindowEdgeManager(this)
-        windowEdgeManager.applyEdgeToEdge(window)
-
         val isToggle = intent.extra(EXTRA_TOGGLE, false)
         if (isToggle) {
             NetSpeedService.toggle(this)
             finish()
             return
         }
+
+        val windowEdgeManager = WindowEdgeManager(this)
+        windowEdgeManager.applyEdgeToEdge(window)
+        setNightMode(OtherPreferences.nightMode)
 
         val circularReveal = viewModel.getCircularRevealAndClean()
         if (circularReveal != null) {
@@ -71,52 +79,70 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             }
         }
 
-        setContentView(R.layout.activity_main)
-        setNightMode(OtherPreferences.nightMode)
+        setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
         applyBarsInsets(
             root = binding.root,
-            top = binding.toolbar,  // status bar
-            left = binding.toolbar, // navigation bar, Insert padding only in the toolbar
-            right = binding.root,   // navigation bar
+            // top status bar, android:fitsSystemWindows="true"
+            left = binding.toolbar,         // navigation bar, Insert padding only in the toolbar
+            right = binding.motionLayout,   // navigation bar
             // Some devices have navigation bars on the side, when landscape.
-        )
-
-        if (VERSION.SDK_INT >= VERSION_CODES.N) {
-            val color = this.color(
-                android.R.attr.colorBackground,
-                if (isNightMode()) Color.BLACK else Color.WHITE
-            )
-            binding.navHostFragment.setBackgroundColor(color)
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            // Remove the default background, make the 'android:windowBackgroundFallback' effect, to split screen mode.
+        ) {
+            val systemBar = it.systemBar()
+            binding.navigationView.updatePadding(left = systemBar.left)
         }
 
         NavFragmentAssistant(supportFragmentManager)
             .setupWithNavFragment(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration.Builder(*topLevelDestinationIds).build()
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
-        NavigationBars.setupWithNavController(
-            navController, this,
-            binding.bottomNavigationView,
-            binding.navigationRailView
-        )
-
-        val start = binding.root.getConstraintSet(R.id.start)
-        val end = binding.root.getConstraintSet(R.id.end)
-        if (UI.isSmallestScreenWidthDpAtLast(UI.SW600DP) || UI.isLandscape) {
+        val appBarBuilder = AppBarConfiguration.Builder(*topLevelDestinationIds)
+        if (UI.isWideSize()) {
+            // bind drawer
+            appBarBuilder.setOpenableLayout(binding.drawerLayout)
+            val headerView =
+                binding.navigationView.inflateHeaderView(R.layout.layout_navigation_header)
+            headerView.findViewById<TextView>(R.id.tv_version).text = this.getVersionSummary()
+            // hide bottomNavigationView
             binding.bottomNavigationView.isGone = true
-            start.setVisibility(R.id.bottom_navigation_view, View.GONE)
-            end.setVisibility(R.id.bottom_navigation_view, View.GONE)
         } else {
+            // lock drawer
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            // hide navigationRailView
             binding.navigationRailView.isGone = true
-            start.setVisibility(R.id.navigation_rail_view, View.GONE)
-            end.setVisibility(R.id.navigation_rail_view, View.GONE)
             navController.addOnDestinationChangedListener(this)
         }
+        appBarConfiguration = appBarBuilder.build()
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+        NavigationBars.setupWithNavController(
+            navController = navController,
+            bottomNavigationView = binding.bottomNavigationView,
+            navigationRailView = binding.navigationRailView,
+            navigationView = binding.navigationView
+        )
 
         navController.handleDeepLink(intent)
+    }
+
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?,
+    ) {
+        if (destination is DialogFragmentNavigator.Destination) {
+            return
+        }
+        if (destination.matchDestinations(topLevelDestinationIds)) {
+            binding.motionLayout.transitionToStart()
+        } else {
+            binding.motionLayout.transitionToEnd()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home && navController.navigateUp(appBarConfiguration)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -125,27 +151,46 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp()
+        return navController.navigateUp(appBarConfiguration)
     }
 
-    override fun onDestinationChanged(
-        controller: NavController,
-        destination: NavDestination,
-        arguments: Bundle?
-    ) {
-        if (destination is DialogFragmentNavigator.Destination) {
-            return
+    /**
+     * NavigatePreference点击跳转
+     * @see NavigatePreference.OnNavigateHandler
+     */
+    override fun handleNavigate(id: Int) {
+        navController.navigate(id)
+    }
+
+    private fun getLayoutInflater(enableScene: Boolean): LayoutInflater {
+        val layoutInflater = LayoutInflater.from(this)
+        if (enableScene) {
+            return layoutInflater
         }
-        val motionLayout = binding.root as? MotionLayout ?: return
-        if (topLevelDestinationIds.contains(destination.id)) {
-            motionLayout.transitionToStart()
-        } else {
-            motionLayout.transitionToEnd()
+        val cloneInflater = layoutInflater.cloneInContext(this)
+        LayoutInflaterCompat.setFactory2(cloneInflater, MotionLayoutFactory())
+        return cloneInflater
+    }
+
+    private class MotionLayoutFactory : LayoutInflater.Factory2 {
+        override fun onCreateView(
+            parent: View?,
+            name: String,
+            context: Context,
+            attrs: AttributeSet,
+        ): View? {
+            if (name == MotionLayout::class.qualifiedName) {
+                // remove app:layoutDescription="@xml/activity_main_scene", disable scene
+                val template = MotionLayout(context, attrs)
+                return MotionLayout(context).apply {
+                    id = template.id
+                }
+            }
+            return null
+        }
+
+        override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+            return null
         }
     }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(item, navController)
-    }
-
 }

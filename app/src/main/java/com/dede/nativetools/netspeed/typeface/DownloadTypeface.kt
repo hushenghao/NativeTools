@@ -5,14 +5,13 @@ import android.graphics.Typeface
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.work.*
+import com.dede.nativetools.util.Logic
 import com.dede.nativetools.util.isEmpty
-import com.dede.nativetools.util.isSimplifiedChinese
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.*
 
 abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
 
@@ -87,7 +86,7 @@ open class DownloadTypefaceImpl(context: Context, override val fontName: String)
 
     override val downloadUrl: String
         get() {
-            return if (isSimplifiedChinese(context)) {
+            return if (Logic.isSimplifiedChinese(context)) {
                 // 大陆访问 gitee 仓库
                 "https://gitee.com/dede_hu/fonts/raw/master/$fontName"
             } else {

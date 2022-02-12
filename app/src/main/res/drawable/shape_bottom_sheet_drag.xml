@@ -4,7 +4,7 @@
 
     <corners android:radius="4dp" />
 
-    <solid android:color="@color/secondaryColor" />
+    <solid android:color="@color/md_theme_secondary" />
 
     <size
         android:width="20dp"

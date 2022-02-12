@@ -2,11 +2,9 @@ package com.dede.nativetools.util
 
 import android.content.ComponentName
 import android.content.Context
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import androidx.browser.customtabs.*
-import com.google.android.material.color.MaterialColors
 
 /**
  * CustomTabs Help
@@ -59,11 +57,11 @@ object ChromeTabsBrowser {
     /**
      * 预热并预加载
      */
-    fun warmup(context: Context, vararg mayLaunchUrls: Uri) {
-        if (customTabsSession != null) return
+    fun warmup(context: Context, vararg mayLaunchUrls: Uri): Boolean {
+        if (customTabsSession != null) return true
         this.mayLaunchUrls = mayLaunchUrls
         val appContext = context.applicationContext
-        CustomTabsClient.bindCustomTabsService(
+        return CustomTabsClient.bindCustomTabsService(
             appContext,
             CUSTOM_TAB_PACKAGE_NAME,
             customTabsServiceConnection
@@ -74,17 +72,9 @@ object ChromeTabsBrowser {
         val isNightMode = isNightMode()
         val colorScheme =
             if (isNightMode) CustomTabsIntent.COLOR_SCHEME_DARK else CustomTabsIntent.COLOR_SCHEME_LIGHT
-
-        val color = MaterialColors.getColor(context, android.R.attr.colorPrimary, Color.WHITE)
-        val params = CustomTabColorSchemeParams.Builder()
-            .setToolbarColor(color)
-            .setNavigationBarColor(if (isNightMode) Color.BLACK else Color.WHITE)
-            .build()
-
         val builder = CustomTabsIntent.Builder()
             .setColorScheme(colorScheme)
             .setShareState(CustomTabsIntent.SHARE_STATE_ON)
-            .setDefaultColorSchemeParams(params)
         val session = customTabsSession
         if (session != null) {
             builder.setSession(session)
