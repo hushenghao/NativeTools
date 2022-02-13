@@ -30,11 +30,7 @@ class NetSpeedServiceController(context: Context) : INetSpeedInterface.Default()
         }
     }
 
-    val status: Boolean
-        get() = NetSpeedPreferences.status
-
     fun startService(bind: Boolean = false) {
-        if (!status) return
         val intent = NetSpeedService.createIntent(appContext)
         ContextCompat.startForegroundService(appContext, intent)
         if (bind) {
@@ -43,7 +39,6 @@ class NetSpeedServiceController(context: Context) : INetSpeedInterface.Default()
     }
 
     fun bindService(onCloseCallback: OnCloseCallback? = null) {
-        if (!status) return
         this.onCloseCallback = onCloseCallback
         val intent = NetSpeedService.createIntent(appContext)
         appContext.bindService(intent, this, Context.BIND_AUTO_CREATE)

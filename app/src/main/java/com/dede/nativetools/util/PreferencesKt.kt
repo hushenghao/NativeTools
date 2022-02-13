@@ -65,3 +65,12 @@ fun <T> Preference.onPreferenceChangeListener(listener: (preference: Preference,
             listener.invoke(preference, newValue as T)
         }
 }
+
+fun PreferenceFragmentCompat.bindPreferenceChangeListener(
+    listener: Preference.OnPreferenceChangeListener,
+    vararg keys: String
+) {
+    for (key in keys) {
+        requirePreference<Preference>(key).onPreferenceChangeListener = listener
+    }
+}

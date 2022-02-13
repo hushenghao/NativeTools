@@ -114,7 +114,6 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
             val work = OneTimeWorkRequestBuilder<DownloadFontWork>()
-                .setInputMerger(OverwritingInputMerger::class)
                 .setInputData(data)
                 .setConstraints(constraints)
                 .build()
@@ -161,8 +160,8 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
         try {
             connect = (URL(url).openConnection() as? HttpURLConnection) ?: return
             connect.requestMethod = "GET"
-            connect.connectTimeout = 15000
-            connect.readTimeout = 15000
+            connect.connectTimeout = 10000
+            connect.readTimeout = 10000
             connect.connect()
             if (connect.responseCode == 200) {
                 connect.inputStream.use {

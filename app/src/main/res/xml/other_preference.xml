@@ -11,6 +11,7 @@
         <SwitchPreferenceCompat
             app:icon="@drawable/ic_baseline_remove_circle"
             app:key="ignore_battery_optimize"
+            app:persistent="false"
             app:summary="@string/summary_ignore_battery_optimize"
             app:title="@string/label_ignore_battery_optimize" />
 

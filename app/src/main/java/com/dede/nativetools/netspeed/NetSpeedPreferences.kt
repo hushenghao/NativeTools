@@ -1,7 +1,6 @@
 package com.dede.nativetools.netspeed
 
 import android.graphics.Typeface
-import com.dede.nativetools.netspeed.NetSpeedConfiguration.Companion.defaultConfiguration
 import com.dede.nativetools.netspeed.typeface.TypefaceGetter
 import com.dede.nativetools.util.get
 import com.dede.nativetools.util.globalPreferences
@@ -46,99 +45,11 @@ object NetSpeedPreferences {
         get() = globalPreferences.get(KEY_NET_SPEED_STATUS, false)
         set(value) = globalPreferences.set(KEY_NET_SPEED_STATUS, value)
 
-    val textStyle: Int
-        get() = globalPreferences.get(KEY_NET_SPEED_TEXT_STYLE, DEFAULT_TEXT_STYLE.toString())
-            .toIntOrNull() ?: defaultConfiguration.textStyle
-
-    val font: String
-        get() = globalPreferences.get(KEY_NET_SPEED_FONT, defaultConfiguration.font)
-
-    val verticalOffset: Float
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_VERTICAL_OFFSET,
-            defaultConfiguration.verticalOffset
-        )
-
-    val horizontalOffset: Float
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_HORIZONTAL_OFFSET,
-            defaultConfiguration.horizontalOffset
-        )
-
-    val horizontalScale: Float
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_HORIZONTAL_SCALE,
-            defaultConfiguration.horizontalScale
-        )
-
-    val relativeRatio: Float
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_RELATIVE_RATIO,
-            defaultConfiguration.relativeRatio
-        )
-
-    val relativeDistance: Float
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_RELATIVE_DISTANCE,
-            defaultConfiguration.relativeDistance
-        )
-
-    val textScale: Float
-        get() = globalPreferences.get(KEY_NET_SPEED_TEXT_SCALE, defaultConfiguration.textScale)
-
     val autoStart: Boolean
         get() = globalPreferences.get(KEY_NET_SPEED_AUTO_START, false)
 
     var dontAskNotify: Boolean
         get() = globalPreferences.get(KEY_NOTIFICATION_DONT_ASK, false)
         set(value) = globalPreferences.set(KEY_NOTIFICATION_DONT_ASK, value)
-
-    val interval: Int
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_INTERVAL,
-            DEFAULT_INTERVAL.toString()
-        ).toIntOrNull() ?: defaultConfiguration.interval
-
-    val mode: String
-        get() = globalPreferences.get(KEY_NET_SPEED_MODE, defaultConfiguration.mode)
-
-    val notifyClickable: Boolean
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_NOTIFY_CLICKABLE,
-            defaultConfiguration.notifyClickable
-        )
-
-    val hideThreshold: Long
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_HIDE_THRESHOLD,
-            defaultConfiguration.hideThreshold.toString()
-        ).toLongOrNull() ?: defaultConfiguration.hideThreshold
-
-    val quickCloseable: Boolean
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_QUICK_CLOSEABLE,
-            defaultConfiguration.quickCloseable
-        )
-
-    val usage: Boolean
-        get() = globalPreferences.get(KEY_NET_SPEED_USAGE, defaultConfiguration.usage)
-
-    val justMobileUsage: Boolean
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_USAGE_JUST_MOBILE,
-            defaultConfiguration.justMobileUsage
-        )
-
-    val hideNotification: Boolean
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_HIDE_NOTIFICATION,
-            defaultConfiguration.hideNotification
-        )
-
-    val hideLockNotification: Boolean
-        get() = globalPreferences.get(
-            KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION,
-            defaultConfiguration.hideLockNotification
-        )
 
 }

@@ -1,13 +1,13 @@
 package com.dede.nativetools.netspeed
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.LayoutNetSpeedAdvancedPreviewBinding
@@ -17,7 +17,7 @@ import com.dede.nativetools.netspeed.service.NetSpeedServiceController
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.ui.SliderPreference
 import com.dede.nativetools.util.UI
-import com.dede.nativetools.util.globalPreferences
+import com.dede.nativetools.util.bindPreferenceChangeListener
 import com.dede.nativetools.util.matchParent
 import com.dede.nativetools.util.requirePreference
 import com.google.android.material.slider.LabelFormatter
@@ -28,7 +28,7 @@ import kotlin.math.roundToInt
  * 高级设置
  */
 class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener, Slider.OnChangeListener {
+    Preference.OnPreferenceChangeListener, Slider.OnChangeListener {
 
     private val configuration = NetSpeedConfiguration.initialize()
     private val controller by lazy { NetSpeedServiceController(requireContext()) }
@@ -40,6 +40,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         labelFormatter: LabelFormatter
     ) {
         this.onChangeListener = listener
+        this.onPreferenceChangeListener = listener
         this.sliderLabelFormatter = labelFormatter
     }
 
@@ -87,6 +88,13 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.net_speed_advanced_preference)
+        bindPreferenceChangeListener(
+            this,
+            NetSpeedPreferences.KEY_NET_SPEED_FONT,
+            NetSpeedPreferences.KEY_NET_SPEED_TEXT_STYLE,
+            NetSpeedPreferences.KEY_NET_SPEED_MODE
+        )
+
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET)
             .initialize(this, labelFormatterPercent)
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET)
@@ -103,7 +111,9 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controller.bindService()
+        if (NetSpeedPreferences.status) {
+            controller.bindService()
+        }
 
         applyBottomBarsInsets(listView)
         if (UI.isWideSize()) {
@@ -137,6 +147,15 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         } else {
             config.updateFrom(configuration)
         }
+        updateConfigurationFloatValue(key, config, value)
+        updatePreview(config)
+    }
+
+    private fun updateConfigurationFloatValue(
+        key: String,
+        config: NetSpeedConfiguration,
+        value: Float
+    ) {
         when (key) {
             NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET -> {
                 config.verticalOffset = value
@@ -156,37 +175,33 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE -> {
                 config.horizontalScale = value
             }
-            else -> return
         }
-        updatePreview(config)
     }
 
-    override fun onStart() {
-        super.onStart()
-        globalPreferences.registerOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        globalPreferences.unregisterOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
-        configuration.updateOnPreferenceChanged(key)
-        when (key) {
-            NetSpeedPreferences.KEY_NET_SPEED_TEXT_STYLE,
-            NetSpeedPreferences.KEY_NET_SPEED_FONT,
-            NetSpeedPreferences.KEY_NET_SPEED_MODE,
+    override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
+        when (preference.key) {
+            NetSpeedPreferences.KEY_NET_SPEED_FONT -> {
+                configuration.font = newValue as String
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_TEXT_STYLE -> {
+                configuration.textStyle = (newValue as String).toInt()
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_MODE -> {
+                configuration.mode = newValue as String
+            }
             NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET,
             NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET,
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO,
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE,
             NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE,
             NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE -> {
-                updatePreview(configuration)
-                controller.updateConfiguration(configuration)
+                updateConfigurationFloatValue(preference.key, configuration, newValue as Float)
             }
+            else -> return true
         }
+        updatePreview(configuration)
+        controller.updateConfiguration(configuration)
+        return true
     }
 
     override fun onDestroyView() {

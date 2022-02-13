@@ -1,7 +1,6 @@
 package com.dede.nativetools.other
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
@@ -17,8 +16,7 @@ import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.ui.NightModeDropDownPreference
 import com.dede.nativetools.util.*
 
-class OtherFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
+class OtherFragment : PreferenceFragmentCompat() {
 
     private val activityResultLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
@@ -43,10 +41,18 @@ class OtherFragment : PreferenceFragmentCompat(),
         requirePreference<Preference>(OtherPreferences.KEY_ABOUT)
             .summary = requireContext().getVersionSummary()
 
-        requirePreference<NightModeDropDownPreference>(OtherPreferences.KEY_NIGHT_MODE_TOGGLE)
-            .onNightModeSelected = { rect ->
-            val decorView = requireActivity().window.decorView
-            mainViewModel.setCircularReveal(decorView, rect)
+        requirePreference<NightModeDropDownPreference>(OtherPreferences.KEY_NIGHT_MODE_TOGGLE).let {
+            it.onNightModeSelected = { rect ->
+                val decorView = requireActivity().window.decorView
+                mainViewModel.setCircularReveal(decorView, rect)
+            }
+            it.onPreferenceChangeListener<String> { _, mode ->
+                // Wait for Popup to dismiss
+                uiHandler.postDelayed(300) {
+                    setNightMode(mode.toInt())
+                }
+                return@onPreferenceChangeListener true
+            }
         }
 
         preferenceIgnoreBatteryOptimize =
@@ -94,24 +100,7 @@ class OtherFragment : PreferenceFragmentCompat(),
 
     override fun onStart() {
         super.onStart()
-        globalPreferences.registerOnSharedPreferenceChangeListener(this)
         checkIgnoreBatteryOptimize()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        globalPreferences.unregisterOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
-        when (key) {
-            OtherPreferences.KEY_NIGHT_MODE_TOGGLE -> {
-                // Wait for Popup to dismiss
-                uiHandler.postDelayed(300) {
-                    setNightMode(OtherPreferences.nightMode)
-                }
-            }
-        }
     }
 
 }
