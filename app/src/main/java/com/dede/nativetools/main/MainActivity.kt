@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                     circularReveal.startRadius,
                     circularReveal.endRadius
                 ).apply {
-                    duration = 1200
+                    duration = 1000
                     start()
                 }
             }

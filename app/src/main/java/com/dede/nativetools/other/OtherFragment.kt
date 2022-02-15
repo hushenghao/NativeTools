@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.os.postDelayed
 import androidx.fragment.app.activityViewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -42,15 +41,11 @@ class OtherFragment : PreferenceFragmentCompat() {
             .summary = requireContext().getVersionSummary()
 
         requirePreference<NightModeDropDownPreference>(OtherPreferences.KEY_NIGHT_MODE_TOGGLE).let {
-            it.onNightModeSelected = { rect ->
-                val decorView = requireActivity().window.decorView
-                mainViewModel.setCircularReveal(decorView, rect)
-            }
             it.onPreferenceChangeListener<String> { _, mode ->
-                // Wait for Popup to dismiss
-                uiHandler.postDelayed(300) {
-                    setNightMode(mode.toInt())
-                }
+                val decorView = requireActivity().window.decorView
+                mainViewModel.setCircularReveal(decorView, it.pressedPoint)
+
+                setNightMode(mode.toInt())
                 return@onPreferenceChangeListener true
             }
         }

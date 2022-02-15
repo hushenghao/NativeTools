@@ -32,5 +32,5 @@
     private androidx.appcompat.widget.AppCompatSpinner$SpinnerPopup mPopup;
 }
 -keepclassmembernames class androidx.appcompat.widget.ListPopupWindow {
-    private android.widget.AdapterView$OnItemClickListener mItemClickListener;
+    android.widget.PopupWindow mPopup;
 }
