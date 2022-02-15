@@ -3,7 +3,10 @@ package com.dede.nativetools.netspeed
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.preference.*
+import androidx.preference.EditTextPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
@@ -25,6 +28,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private lateinit var usageSwitchPreference: SwitchPreferenceCompat
     private lateinit var statusSwitchPreference: SwitchPreferenceCompat
+    private lateinit var thresholdEditTextPreference: EditTextPreference
 
     private val activityResultLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
@@ -64,10 +68,11 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_INTERVAL)
             .onPreferenceChangeListener = this
 
-        requirePreference<EditTextPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD).let {
-            it.summaryProvider = this
-            it.onPreferenceChangeListener = this
-        }
+        thresholdEditTextPreference =
+            requirePreference<EditTextPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD).also {
+                it.summaryProvider = this
+                it.onPreferenceChangeListener = this
+            }
     }
 
     override fun provideSummary(preference: EditTextPreference): CharSequence {
@@ -127,6 +132,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                     return false
                 }
                 configuration.hideThreshold = hideThreshold
+
+                val hideThresholdStr = hideThreshold.toString()
+                if (hideThresholdStr != newValue) {
+                    thresholdEditTextPreference.text = hideThresholdStr
+                    return false
+                }
             }
 
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION -> {
