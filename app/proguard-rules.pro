@@ -22,6 +22,10 @@
 
 -printconfiguration ./build/full-r8-config.txt
 
+-keep public class * extends com.dede.nativetools.netspeed.stats.NetStats {
+   public <init>();
+}
+
 -keep class me.weishu.reflection.* {*;}
 
 -keepclassmembernames class androidx.appcompat.widget.AppCompatSpinner {

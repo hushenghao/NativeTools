@@ -4,9 +4,6 @@ import android.net.TrafficStats
 
 class NormalNetStats : NetStats {
 
-    override val name: String
-        get() = "NormalNetStats"
-
     override fun supported(): Boolean {
         return true
     }
