@@ -24,7 +24,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private val configuration = NetSpeedConfiguration.initialize()
 
-    private val controller by lazy { NetSpeedServiceController(requireContext()) }
+    private val controller by later { NetSpeedServiceController(requireContext()) }
 
     private lateinit var usageSwitchPreference: SwitchPreferenceCompat
     private lateinit var statusSwitchPreference: SwitchPreferenceCompat

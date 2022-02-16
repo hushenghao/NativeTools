@@ -16,10 +16,7 @@ import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.netspeed.service.NetSpeedServiceController
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.ui.SliderPreference
-import com.dede.nativetools.util.UI
-import com.dede.nativetools.util.bindPreferenceChangeListener
-import com.dede.nativetools.util.matchParent
-import com.dede.nativetools.util.requirePreference
+import com.dede.nativetools.util.*
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
 import kotlin.math.roundToInt
@@ -31,7 +28,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     Preference.OnPreferenceChangeListener, Slider.OnChangeListener {
 
     private val configuration = NetSpeedConfiguration.initialize()
-    private val controller by lazy { NetSpeedServiceController(requireContext()) }
+    private val controller by later { NetSpeedServiceController(requireContext()) }
 
     private lateinit var binding: LayoutNetSpeedAdvancedPreviewBinding
 

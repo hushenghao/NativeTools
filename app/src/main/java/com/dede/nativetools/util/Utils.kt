@@ -34,3 +34,8 @@ fun Calendar.toZeroH(): Calendar {
     set(Calendar.MILLISECOND, 0)
     return this
 }
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun <T> later(noinline initializer: () -> T): Lazy<T> {
+    return lazy(LazyThreadSafetyMode.NONE, initializer)
+}
