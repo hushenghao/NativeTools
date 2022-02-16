@@ -1,9 +1,10 @@
 package com.dede.nativetools.netspeed
 
 import android.graphics.Typeface
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import com.dede.nativetools.netspeed.typeface.TypefaceGetter
 import com.dede.nativetools.util.get
-import com.dede.nativetools.util.globalPreferences
+import com.dede.nativetools.util.globalDataStore
 import com.dede.nativetools.util.set
 
 /**
@@ -42,14 +43,14 @@ object NetSpeedPreferences {
     const val DEFAULT_FONT = TypefaceGetter.FONT_NORMAL
 
     var status: Boolean
-        get() = globalPreferences.get(KEY_NET_SPEED_STATUS, false)
-        set(value) = globalPreferences.set(KEY_NET_SPEED_STATUS, value)
+        get() = globalDataStore.get(booleanPreferencesKey(KEY_NET_SPEED_STATUS), false)
+        set(value) = globalDataStore.set(booleanPreferencesKey(KEY_NET_SPEED_STATUS), value)
 
     val autoStart: Boolean
-        get() = globalPreferences.get(KEY_NET_SPEED_AUTO_START, false)
+        get() = globalDataStore.get(booleanPreferencesKey(KEY_NET_SPEED_AUTO_START), false)
 
     var dontAskNotify: Boolean
-        get() = globalPreferences.get(KEY_NOTIFICATION_DONT_ASK, false)
-        set(value) = globalPreferences.set(KEY_NOTIFICATION_DONT_ASK, value)
+        get() = globalDataStore.get(booleanPreferencesKey(KEY_NOTIFICATION_DONT_ASK), false)
+        set(value) = globalDataStore.set(booleanPreferencesKey(KEY_NOTIFICATION_DONT_ASK), value)
 
 }

@@ -33,20 +33,17 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private val activityResultLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (NetSpeedPreferences.status) {
-            checkNotificationEnable()
-            controller.startService(false)
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controller.bindService(onCloseCallback = {
+        val status = NetSpeedPreferences.status
+        if (status) {
+            checkNotificationEnable()
+            controller.startService(true)
+        }
+        controller.onCloseCallback = {
             statusSwitchPreference.isChecked = false
-        })
-        statusSwitchPreference.isChecked = NetSpeedPreferences.status
+        }
+        statusSwitchPreference.isChecked = status
         if (!Logic.checkAppOps(requireContext())) {
             usageSwitchPreference.isChecked = false
         }
@@ -57,6 +54,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        preferenceManager.preferenceDataStore = DataStorePreference(requireContext())
         addPreferencesFromResource(R.xml.net_speed_preference)
         initGeneralPreferenceGroup()
         initNotificationPreferenceGroup()
@@ -126,7 +124,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 configuration.interval = (newValue as String).toInt()
             }
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD -> {
-                val hideThreshold = (newValue as String).toLongOrNull()
+                val strValue = (newValue as String)
+                val hideThreshold = if (strValue.isEmpty()) 0 else strValue.toLongOrNull()
                 if (hideThreshold == null) {
                     toast(R.string.summary_threshold_error)
                     return false

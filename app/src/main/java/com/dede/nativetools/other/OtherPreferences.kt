@@ -1,8 +1,9 @@
 package com.dede.nativetools.other
 
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.dede.nativetools.util.get
-import com.dede.nativetools.util.globalPreferences
+import com.dede.nativetools.util.globalDataStore
 
 object OtherPreferences {
 
@@ -17,7 +18,9 @@ object OtherPreferences {
     private const val DEFAULT_NIGHT_MODE = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 
     val nightMode: Int
-        get() = globalPreferences.get(KEY_NIGHT_MODE_TOGGLE, DEFAULT_NIGHT_MODE.toString())
-            .toIntOrNull() ?: DEFAULT_NIGHT_MODE
+        get() = globalDataStore.get(
+            stringPreferencesKey(KEY_NIGHT_MODE_TOGGLE),
+            DEFAULT_NIGHT_MODE.toString()
+        ).toIntOrNull() ?: DEFAULT_NIGHT_MODE
 
 }

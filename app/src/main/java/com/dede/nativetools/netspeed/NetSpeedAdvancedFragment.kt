@@ -84,6 +84,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        preferenceManager.preferenceDataStore = DataStorePreference(requireContext())
         addPreferencesFromResource(R.xml.net_speed_advanced_preference)
         bindPreferenceChangeListener(
             this,

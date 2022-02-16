@@ -3,8 +3,13 @@ package com.dede.nativetools.netspeed
 import android.graphics.Bitmap
 import android.os.Parcelable
 import androidx.annotation.FloatRange
+import com.dede.nativetools.util.dataStore
 import com.dede.nativetools.util.get
-import com.dede.nativetools.util.globalPreferences
+import com.dede.nativetools.util.globalContext
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.runBlocking
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -80,110 +85,113 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
         const val MODE_UP = "2"
 
         fun initialize(): NetSpeedConfiguration {
+            return runBlocking {
+                val dataStore = globalContext.dataStore
+                val defaultConfiguration = NetSpeedConfiguration()
+                dataStore.data.map {
+                    val textStyle: Int = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_TEXT_STYLE,
+                        defaultConfiguration.textStyle.toString()
+                    ).toIntOrNull() ?: defaultConfiguration.textStyle
 
-            val textStyle: Int = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_TEXT_STYLE,
-                NetSpeedPreferences.DEFAULT_TEXT_STYLE.toString()
-            ).toIntOrNull() ?: defaultConfiguration.textStyle
+                    val font: String =
+                        it.get(NetSpeedPreferences.KEY_NET_SPEED_FONT, defaultConfiguration.font)
 
-            val font: String = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_FONT,
-                defaultConfiguration.font
-            )
+                    val verticalOffset: Float = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET,
+                        defaultConfiguration.verticalOffset
+                    )
 
-            val verticalOffset: Float = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET,
-                defaultConfiguration.verticalOffset
-            )
+                    val horizontalOffset: Float = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET,
+                        defaultConfiguration.horizontalOffset
+                    )
 
-            val horizontalOffset: Float = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET,
-                defaultConfiguration.horizontalOffset
-            )
+                    val horizontalScale: Float = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE,
+                        defaultConfiguration.horizontalScale
+                    )
 
-            val horizontalScale: Float = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE,
-                defaultConfiguration.horizontalScale
-            )
+                    val relativeRatio: Float = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO,
+                        defaultConfiguration.relativeRatio
+                    )
 
-            val relativeRatio: Float = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO,
-                defaultConfiguration.relativeRatio
-            )
+                    val relativeDistance: Float = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE,
+                        defaultConfiguration.relativeDistance
+                    )
 
-            val relativeDistance: Float = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE,
-                defaultConfiguration.relativeDistance
-            )
+                    val textScale: Float = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE,
+                        defaultConfiguration.textScale
+                    )
 
-            val textScale: Float = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE,
-                defaultConfiguration.textScale
-            )
+                    val interval: Int = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
+                        defaultConfiguration.interval.toString()
+                    ).toIntOrNull() ?: defaultConfiguration.interval
 
-            val interval: Int = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
-                NetSpeedPreferences.DEFAULT_INTERVAL.toString()
-            ).toIntOrNull() ?: defaultConfiguration.interval
+                    val mode: String = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_MODE,
+                        defaultConfiguration.mode
+                    )
 
-            val mode: String = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_MODE,
-                defaultConfiguration.mode
-            )
+                    val notifyClickable: Boolean = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
+                        defaultConfiguration.notifyClickable
+                    )
 
-            val notifyClickable: Boolean = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
-                defaultConfiguration.notifyClickable
-            )
+                    val hideThreshold: Long = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD,
+                        defaultConfiguration.hideThreshold.toString()
+                    ).toLongOrNull() ?: defaultConfiguration.hideThreshold
 
-            val hideThreshold: Long = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD,
-                defaultConfiguration.hideThreshold.toString()
-            ).toLongOrNull() ?: defaultConfiguration.hideThreshold
+                    val quickCloseable: Boolean = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
+                        defaultConfiguration.quickCloseable
+                    )
 
-            val quickCloseable: Boolean = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
-                defaultConfiguration.quickCloseable
-            )
+                    val usage: Boolean = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_USAGE,
+                        defaultConfiguration.usage
+                    )
 
-            val usage: Boolean = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_USAGE,
-                defaultConfiguration.usage
-            )
+                    val justMobileUsage: Boolean = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE,
+                        defaultConfiguration.justMobileUsage
+                    )
 
-            val justMobileUsage: Boolean = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE,
-                defaultConfiguration.justMobileUsage
-            )
+                    val hideNotification: Boolean = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION,
+                        defaultConfiguration.hideNotification
+                    )
 
-            val hideNotification: Boolean = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION,
-                defaultConfiguration.hideNotification
-            )
-
-            val hideLockNotification: Boolean = globalPreferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION,
-                defaultConfiguration.hideLockNotification
-            )
-            return NetSpeedConfiguration(
-                interval = interval,
-                notifyClickable = notifyClickable,
-                quickCloseable = quickCloseable,
-                usage = usage,
-                justMobileUsage = justMobileUsage,
-                hideNotification = hideNotification,
-                hideLockNotification = hideLockNotification,
-                textStyle = textStyle,
-                font = font,
-                mode = mode,
-                hideThreshold = hideThreshold,
-                verticalOffset = verticalOffset,
-                horizontalOffset = horizontalOffset,
-                relativeRatio = relativeRatio,
-                relativeDistance = relativeDistance,
-                textScale = textScale,
-                horizontalScale = horizontalScale
-            )
+                    val hideLockNotification: Boolean = it.get(
+                        NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION,
+                        defaultConfiguration.hideLockNotification
+                    )
+                    NetSpeedConfiguration(
+                        interval = interval,
+                        notifyClickable = notifyClickable,
+                        quickCloseable = quickCloseable,
+                        usage = usage,
+                        justMobileUsage = justMobileUsage,
+                        hideNotification = hideNotification,
+                        hideLockNotification = hideLockNotification,
+                        textStyle = textStyle,
+                        font = font,
+                        mode = mode,
+                        hideThreshold = hideThreshold,
+                        verticalOffset = verticalOffset,
+                        horizontalOffset = horizontalOffset,
+                        relativeRatio = relativeRatio,
+                        relativeDistance = relativeDistance,
+                        textScale = textScale,
+                        horizontalScale = horizontalScale
+                    )
+                }.first()
+            }
         }
     }
 
