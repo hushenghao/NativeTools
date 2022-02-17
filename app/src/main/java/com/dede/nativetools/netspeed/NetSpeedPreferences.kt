@@ -42,6 +42,10 @@ object NetSpeedPreferences {
     const val DEFAULT_TEXT_STYLE = Typeface.BOLD
     const val DEFAULT_FONT = TypefaceGetter.FONT_NORMAL
 
+    const val MODE_DOWN = "0"
+    const val MODE_ALL = "1"
+    const val MODE_UP = "2"
+
     var status: Boolean
         get() = globalDataStore.get(booleanPreferencesKey(KEY_NET_SPEED_STATUS), false)
         set(value) = globalDataStore.set(booleanPreferencesKey(KEY_NET_SPEED_STATUS), value)

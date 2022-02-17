@@ -3,6 +3,7 @@ package com.dede.nativetools.netspeed
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -14,6 +15,7 @@ import com.dede.nativetools.netspeed.service.NetSpeedServiceController
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.util.*
+import kotlinx.coroutines.flow.collect
 
 /**
  * 网速指示器设置页
@@ -22,7 +24,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     Preference.OnPreferenceChangeListener,
     Preference.SummaryProvider<EditTextPreference> {
 
-    private val configuration = NetSpeedConfiguration.initialize()
+    private val configuration = NetSpeedConfiguration()
 
     private val controller by later { NetSpeedServiceController(requireContext()) }
 
@@ -35,15 +37,22 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val status = NetSpeedPreferences.status
-        if (status) {
-            checkNotificationEnable()
-            controller.startService(true)
+        lifecycleScope.launchWhenCreated {
+            globalDataStore.data.collect {
+                configuration.updateFrom(it)
+
+                val status = NetSpeedPreferences.status
+                if (status) {
+                    checkNotificationEnable()
+                    controller.startService(true)
+                }
+                statusSwitchPreference.isChecked = status
+            }
         }
+
         controller.onCloseCallback = {
             statusSwitchPreference.isChecked = false
         }
-        statusSwitchPreference.isChecked = status
         if (!Logic.checkAppOps(requireContext())) {
             usageSwitchPreference.isChecked = false
         }

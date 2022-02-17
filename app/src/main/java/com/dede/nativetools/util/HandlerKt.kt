@@ -10,9 +10,6 @@ import androidx.core.os.HandlerCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.plus
 
 val uiHandler by lazy { Handler(Looper.getMainLooper()) }
 
@@ -24,8 +21,6 @@ fun Handler.singlePost(r: Runnable, delayMillis: Long = 0) {
 }
 
 val uiExecutor by lazy { ExecutorCompat.create(uiHandler) }
-
-val mainScope by lazy { MainScope() + CoroutineExceptionHandler { _, e -> e.printStackTrace() } }
 
 typealias HandlerMessage = Message.() -> Unit
 

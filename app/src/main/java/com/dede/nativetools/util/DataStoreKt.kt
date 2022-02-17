@@ -2,21 +2,22 @@ package com.dede.nativetools.util
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.SharedPreferencesMigration
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.singleOrNull
 
 private val dataStoreScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     name = "settings",
-    //corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+    corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
     produceMigrations = {
         listOf(SharedPreferencesMigration(produceSharedPreferences = {
             PreferenceManager.getDefaultSharedPreferences(globalContext)
@@ -24,8 +25,15 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     },
     scope = dataStoreScope
 )
+
 val globalDataStore: DataStore<Preferences>
     get() = globalContext.dataStore
+
+fun DataStore<Preferences>.load(): Preferences {
+    return runBlocking(dataStoreScope.coroutineContext) {
+        this@load.data.first()
+    }
+}
 
 fun <T> DataStore<Preferences>.get(key: Preferences.Key<T>, defValue: T): T {
     return runBlocking(dataStoreScope.coroutineContext) {
