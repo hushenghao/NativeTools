@@ -6,10 +6,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.work.*
 import com.dede.nativetools.util.Logic
+import com.dede.nativetools.util.closeFinally
 import com.dede.nativetools.util.isEmpty
-import kotlinx.coroutines.*
-import java.io.File
-import java.io.IOException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -21,40 +22,30 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
             return TypefaceGetter.create(context, key) as? DownloadTypeface
         }
 
-        private fun getFontDir(context: Context): File {
-            return File(context.filesDir, "fonts").apply {
-                if (!exists()) {
-                    mkdirs()
-                }
-            }
-        }
-
         fun getFontFile(context: Context, fontName: String): File {
-            return File(getFontDir(context), fontName)
+            return File(File(context.filesDir, "fonts"), fontName)
         }
 
-        @Throws(IOException::class)
-        fun loadFont(context: Context, fontName: String): Typeface {
+        fun loadFont(context: Context, fontName: String): Typeface? {
             val fontFile = getFontFile(context, fontName)
-            return Typeface.createFromFile(fontFile)
-        }
-
-        fun checkFont(context: Context, fontName: String): Boolean {
-            val fontFile = getFontFile(context, fontName)
-            if (!fontFile.exists()) return false
-            val typeface = fontFile.runCatching(Typeface::createFromFile)
+            return fontFile.runCatching(Typeface::createFromFile)
                 .onFailure(Throwable::printStackTrace)
                 .getOrNull()
-            return typeface != null && typeface != Typeface.DEFAULT
         }
     }
 
     private var basic: Typeface? = null
 
-    private var canApplyCache = false
-
     override fun canApply(): Boolean {
-        return checkFont(context, fontName).apply { canApplyCache = this }
+        return loadFont() != null
+    }
+
+    private fun loadFont(): Typeface? {
+        var typeface = this.basic
+        if (typeface == null) {
+            typeface = loadFont(context, fontName).apply { basic = this }
+        }
+        return typeface
     }
 
     abstract val downloadUrl: String
@@ -62,17 +53,8 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
     abstract val fontName: String
 
     override fun get(style: Int): Typeface {
-        var typeface = this.basic
-        if (typeface == null) {
-            typeface = loadFont(context, fontName).apply { basic = this }
-        }
-        if (canApplyCache) {
-            // 内存缓存，减少io操作
-            return applyStyle(typeface, style)
-        }
-        if (!canApply()) {
-            return TypefaceGetter.getOrDefault(TypefaceGetter.FONT_NORMAL, style)
-        }
+        val typeface = loadFont()
+            ?: return TypefaceGetter.getOrDefault(TypefaceGetter.FONT_NORMAL, style)
         return applyStyle(typeface, style)
     }
 
@@ -135,17 +117,21 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
         }
         return withContext(Dispatchers.IO) {
             Log.i("DownloadFontWork", "download: $downloadUrl")
-            var result = DownloadTypeface.checkFont(context, fontName)
-            if (result) {
+            var result = DownloadTypeface.loadFont(context, fontName)
+            if (result != null) {
                 // 已下载
                 return@withContext Result.success(workDataOf(EXTRA_FONT_KEY to fontKey))
             }
             // 开始下载
             val fontFile = DownloadTypeface.getFontFile(context, fontName)
+            val dir = fontFile.parentFile
+            if (dir != null && !dir.exists()) {
+                dir.mkdirs()
+            }
             download(downloadUrl, fontFile)
             // 检查下载结果
-            result = DownloadTypeface.checkFont(context, fontName)
-            return@withContext if (result)
+            result = DownloadTypeface.loadFont(context, fontName)
+            return@withContext if (result != null)
                 Result.success(workDataOf(EXTRA_FONT_KEY to fontKey))
             else
                 Result.failure()
@@ -157,6 +143,8 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
      */
     private fun download(url: String, output: File) {
         var connect: HttpURLConnection? = null
+        var outputStream: OutputStream? = null
+        var inputStream: InputStream? = null
         try {
             connect = (URL(url).openConnection() as? HttpURLConnection) ?: return
             connect.requestMethod = "GET"
@@ -164,13 +152,15 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
             connect.readTimeout = 10000
             connect.connect()
             if (connect.responseCode == 200) {
-                connect.inputStream.use {
-                    it.copyTo(output.outputStream())
-                }
+                inputStream = connect.inputStream
+                outputStream = FileOutputStream(output)
+                inputStream.copyTo(outputStream)
             }
         } catch (e: IOException) {
             e.printStackTrace()
         } finally {
+            outputStream?.closeFinally()
+            inputStream?.closeFinally()
             connect?.disconnect()
         }
     }
