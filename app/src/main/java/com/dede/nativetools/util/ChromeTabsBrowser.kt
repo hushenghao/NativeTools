@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import androidx.browser.customtabs.*
+import com.google.firebase.perf.metrics.AddTrace
 
 /**
  * CustomTabs Help
@@ -57,6 +58,7 @@ object ChromeTabsBrowser {
     /**
      * 预热并预加载
      */
+    @AddTrace(name = "CustomTabs.warmup")
     fun warmup(context: Context, vararg mayLaunchUrls: Uri): Boolean {
         if (customTabsSession != null) return true
         this.mayLaunchUrls = mayLaunchUrls
@@ -68,6 +70,7 @@ object ChromeTabsBrowser {
         )
     }
 
+    @AddTrace(name = "CustomTabs.launch")
     fun launchUrl(context: Context, uri: Uri) {
         val isNightMode = isNightMode()
         val colorScheme =

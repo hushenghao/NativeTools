@@ -6,6 +6,9 @@ android-gradle = "com.android.tools.build:gradle:7.1.1"
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 diffplug-spotless = "com.diffplug.spotless:spotless-plugin-gradle:6.2.1"
 tinify = "com.tinify:tinify:1.6.4"
+google-services = "com.google.gms:google-services:4.3.10"
+firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.8.1"
+firebase-perf = "com.google.firebase:perf-plugin:1.4.1"
 
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 androidx-appcompat = "androidx.appcompat:appcompat:1.3.1"
@@ -29,6 +32,12 @@ viewbinding-property-delegate = "com.github.kirich1409:viewbindingpropertydelega
 
 squareup-leakcanary-startup = "com.squareup.leakcanary:leakcanary-android-startup:2.8"
 squareup-leakcanary-core = "com.squareup.leakcanary:leakcanary-android-core:2.8"
+
+firebase-bom = "com.google.firebase:firebase-bom:29.0.4"
+# get recommended versions from the platform project
+firebase-analytics-ktx = "com.google.firebase:firebase-analytics-ktx:*"
+firebase-crashlytics-ktx = "com.google.firebase:firebase-crashlytics-ktx:*"
+firebase-perf-ktx = "com.google.firebase:firebase-perf-ktx:*"
 
 junit = "junit:junit:4.13.2"
 androidx-junit = "androidx.test.ext:junit:1.1.3"

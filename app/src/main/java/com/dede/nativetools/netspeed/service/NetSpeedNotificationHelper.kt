@@ -19,6 +19,7 @@ import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
 import com.dede.nativetools.util.*
+import com.google.firebase.perf.metrics.AddTrace
 
 /**
  * 网速通知
@@ -126,6 +127,7 @@ object NetSpeedNotificationHelper {
      * @param rxSpeed 下行网速
      * @param txSpeed 上行网速
      */
+    @AddTrace(name = "创建通知")
     fun createNotification(
         context: Context,
         configuration: NetSpeedConfiguration,

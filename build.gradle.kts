@@ -14,6 +14,9 @@ buildscript {
         classpath(deps.android.gradle)
         classpath(deps.kotlin.gradle)
         classpath(deps.diffplug.spotless)
+        classpath(deps.google.services)
+        classpath(deps.firebase.crashlytics.gradle)
+        classpath(deps.firebase.perf)
         classpath(deps.tinify)
     }
 }

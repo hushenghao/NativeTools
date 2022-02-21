@@ -11,6 +11,9 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-parcelize")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
     id("com.diffplug.spotless")
 }
 
@@ -63,6 +66,10 @@ android {
         getByName("debug") {
             versionNameSuffix = "-debug"
             signingConfig = config
+            // https://firebase.google.com/docs/crashlytics/get-deobfuscated-reports?authuser=0&platform=android#keep-obfuscated-build-variants
+            // val extensions = extensions.getByName("firebaseCrashlytics") as
+            //        com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+            // extensions.mappingFileUploadEnabled = false
         }
         getByName("release") {
             isMinifyEnabled = true
@@ -110,6 +117,11 @@ dependencies {
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)
+
+    implementation(platform(deps.firebase.bom))
+    implementation(deps.firebase.analytics.ktx)
+    implementation(deps.firebase.crashlytics.ktx)
+    implementation(deps.firebase.perf.ktx)
 
     debugImplementation(deps.bundles.squareup.leakcanary)
 

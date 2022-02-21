@@ -2,6 +2,7 @@ package com.dede.nativetools.netspeed.stats
 
 import android.net.TrafficStats
 import android.util.Log
+import com.google.firebase.perf.metrics.AddTrace
 
 interface NetStats {
 
@@ -24,6 +25,7 @@ interface NetStats {
 
         private var netStats: NetStats? = null
 
+        @AddTrace(name = "创建NetStats")
         fun getInstance(): NetStats {
             if (netStats != null) {
                 return netStats!!
