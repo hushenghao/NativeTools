@@ -37,6 +37,7 @@ object NetSpeedPreferences {
 
     private const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
     private const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
+    private const val KEY_PRIVACY_AGREED = "privacy_agreed"
 
     const val DEFAULT_INTERVAL = 1000
     const val DEFAULT_TEXT_STYLE = Typeface.BOLD
@@ -45,6 +46,10 @@ object NetSpeedPreferences {
     const val MODE_DOWN = "0"
     const val MODE_ALL = "1"
     const val MODE_UP = "2"
+
+    var privacyAgreed: Boolean
+        get() = globalDataStore.get(booleanPreferencesKey(KEY_PRIVACY_AGREED), false)
+        set(value) = globalDataStore.set(booleanPreferencesKey(KEY_PRIVACY_AGREED), value)
 
     var status: Boolean
         get() = globalDataStore.get(booleanPreferencesKey(KEY_NET_SPEED_STATUS), false)

@@ -8,6 +8,10 @@ import androidx.work.*
 import com.dede.nativetools.util.Logic
 import com.dede.nativetools.util.closeFinally
 import com.dede.nativetools.util.isEmpty
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.perf.FirebasePerformance
+import com.google.firebase.perf.ktx.performance
+import com.google.firebase.perf.ktx.trace
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*
@@ -141,27 +145,34 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
     /**
      * 下载网络字体
      */
-    private fun download(url: String, output: File) {
-        var connect: HttpURLConnection? = null
-        var outputStream: OutputStream? = null
-        var inputStream: InputStream? = null
-        try {
-            connect = (URL(url).openConnection() as? HttpURLConnection) ?: return
-            connect.requestMethod = "GET"
-            connect.connectTimeout = 10000
-            connect.readTimeout = 10000
-            connect.connect()
-            if (connect.responseCode == 200) {
-                inputStream = connect.inputStream
-                outputStream = FileOutputStream(output)
-                inputStream.copyTo(outputStream)
+    private fun download(urlStr: String, output: File) {
+        val url = URL(urlStr)
+        Firebase.performance.newHttpMetric(url.host, FirebasePerformance.HttpMethod.GET)
+            .trace {
+                var connect: HttpURLConnection? = null
+                var outputStream: OutputStream? = null
+                var inputStream: InputStream? = null
+                try {
+                    connect = (url.openConnection() as? HttpURLConnection) ?: return
+                    connect.requestMethod = "GET"
+                    connect.connectTimeout = 10000
+                    connect.readTimeout = 10000
+                    connect.doOutput = true
+                    connect.connect()
+                    val responseCode = connect.responseCode
+                    setHttpResponseCode(responseCode)
+                    if (responseCode == 200) {
+                        inputStream = connect.inputStream
+                        outputStream = FileOutputStream(output)
+                        inputStream.copyTo(outputStream)
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } finally {
+                    outputStream?.closeFinally()
+                    inputStream?.closeFinally()
+                    connect?.disconnect()
+                }
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            outputStream?.closeFinally()
-            inputStream?.closeFinally()
-            connect?.disconnect()
-        }
     }
 }

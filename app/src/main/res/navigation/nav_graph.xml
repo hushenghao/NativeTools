@@ -78,4 +78,9 @@
         tools:layout="@layout/fragment_diagnosis">
         <deepLink app:uri="https://dede.nativetools/diagnosis" />
     </fragment>
+
+    <dialog
+        android:id="@+id/dialogGuide"
+        android:name="com.dede.nativetools.main.GuideDialogFragment"
+        android:label="@string/label_privacy_agreement" />
 </navigation>

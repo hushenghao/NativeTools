@@ -1,5 +1,6 @@
 package com.dede.nativetools.util
 
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Configuration
@@ -43,7 +44,7 @@ fun TextView.setCompoundDrawablesRelative(
     start: Drawable? = null,
     top: Drawable? = null,
     end: Drawable? = null,
-    bottom: Drawable? = null
+    bottom: Drawable? = null,
 ) {
     TextViewCompat.setCompoundDrawablesRelative(this, start, top, end, bottom)
 }
@@ -125,6 +126,7 @@ class AlertBuilder(private val builder: AlertDialog.Builder) {
         set(value) {
             builder.setCancelable(value)
         }
+    var show: Boolean = true
 
     fun positiveButton(@StringRes textId: Int, onClick: DialogOnClick? = null) {
         builder.setPositiveButton(textId) { dialog, _ ->
@@ -149,13 +151,18 @@ class AlertBuilder(private val builder: AlertDialog.Builder) {
 fun Context.alert(
     @StringRes titleId: Int,
     @StringRes messageId: Int,
-    init: (AlertBuilder.() -> Unit)? = null
-) {
+    init: (AlertBuilder.() -> Unit)? = null,
+): Dialog {
     val builder = MaterialAlertDialogBuilder(this)
         .setTitle(titleId)
         .setMessage(messageId)
-    init?.invoke(AlertBuilder(builder))
-    builder.show()
+    val alertBuilder = AlertBuilder(builder)
+    init?.invoke(alertBuilder)
+    return if (alertBuilder.show) {
+        builder.show()
+    } else {
+        builder.create()
+    }
 }
 
 fun Context.showHideLockNotificationDialog() {

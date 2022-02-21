@@ -4,11 +4,14 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.util.Log
+import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.util.installShortcuts
 import com.dede.nativetools.util.isMainProcess
 import com.dede.nativetools.util.setNightMode
 import com.google.android.material.color.DynamicColors
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import me.weishu.reflection.Reflection
 
 class NativeToolsApp : Application() {
@@ -41,6 +44,9 @@ class NativeToolsApp : Application() {
         if (isMainProcess()) {
             installShortcuts()
             setNightMode(OtherPreferences.nightMode)
+        }
+        if (NetSpeedPreferences.privacyAgreed) {
+            Firebase.analytics.setAnalyticsCollectionEnabled(true)
         }
     }
 
