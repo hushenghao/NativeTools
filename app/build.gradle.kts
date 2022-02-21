@@ -106,6 +106,7 @@ dependencies {
     implementation(deps.androidx.browser)
     implementation(deps.androidx.startup)
     implementation(deps.androidx.work.runtime.ktx)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)

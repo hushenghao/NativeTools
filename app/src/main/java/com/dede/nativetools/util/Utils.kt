@@ -3,7 +3,9 @@
 package com.dede.nativetools.util
 
 import android.text.TextUtils
-import java.util.Calendar
+import java.io.Closeable
+import java.io.IOException
+import java.util.*
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -38,4 +40,12 @@ fun Calendar.toZeroH(): Calendar {
 @Suppress("NOTHING_TO_INLINE")
 inline fun <T> later(noinline initializer: () -> T): Lazy<T> {
     return lazy(LazyThreadSafetyMode.NONE, initializer)
+}
+
+fun Closeable?.closeFinally() {
+    if (this == null) return
+    try {
+        this.close()
+    } catch (e: IOException) {
+    }
 }

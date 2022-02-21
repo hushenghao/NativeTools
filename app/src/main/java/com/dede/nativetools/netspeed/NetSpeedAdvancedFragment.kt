@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.dede.nativetools.R
@@ -19,6 +20,7 @@ import com.dede.nativetools.ui.SliderPreference
 import com.dede.nativetools.util.*
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
+import kotlinx.coroutines.flow.collect
 import kotlin.math.roundToInt
 
 /**
@@ -27,14 +29,14 @@ import kotlin.math.roundToInt
 class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     Preference.OnPreferenceChangeListener, Slider.OnChangeListener {
 
-    private val configuration = NetSpeedConfiguration.initialize()
+    private val configuration = NetSpeedConfiguration()
     private val controller by later { NetSpeedServiceController(requireContext()) }
 
     private lateinit var binding: LayoutNetSpeedAdvancedPreviewBinding
 
     private fun SliderPreference.initialize(
         listener: NetSpeedAdvancedFragment,
-        labelFormatter: LabelFormatter
+        labelFormatter: LabelFormatter,
     ) {
         this.onChangeListener = listener
         this.onPreferenceChangeListener = listener
@@ -44,7 +46,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState)?.apply {
             binding =
@@ -84,6 +86,12 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        lifecycleScope.launchWhenCreated {
+            globalDataStore.data.collect {
+                configuration.updateFrom(it)
+            }
+        }
+        preferenceManager.preferenceDataStore = DataStorePreference(requireContext())
         addPreferencesFromResource(R.xml.net_speed_advanced_preference)
         bindPreferenceChangeListener(
             this,
@@ -151,7 +159,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     private fun updateConfigurationFloatValue(
         key: String,
         config: NetSpeedConfiguration,
-        value: Float
+        value: Float,
     ) {
         when (key) {
             NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET -> {
@@ -191,7 +199,8 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO,
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE,
             NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE,
-            NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE -> {
+            NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE,
+            -> {
                 updateConfigurationFloatValue(preference.key, configuration, newValue as Float)
             }
             else -> return true

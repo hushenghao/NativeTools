@@ -5,6 +5,7 @@ import android.text.TextPaint
 import android.util.DisplayMetrics
 import android.util.Log
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
+import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.typeface.TypefaceGetter
 import com.dede.nativetools.util.*
 import kotlin.math.max
@@ -108,11 +109,11 @@ object NetTextIconFactory {
         val text1: String
         val text2: String
         when (configuration.mode) {
-            NetSpeedConfiguration.MODE_ALL -> {
+            NetSpeedPreferences.MODE_ALL -> {
                 text1 = NetFormatter.format(txByte, NetFormatter.FLAG_NULL, accuracy).splicing()
                 text2 = NetFormatter.format(rxByte, NetFormatter.FLAG_NULL, accuracy).splicing()
             }
-            NetSpeedConfiguration.MODE_UP -> {
+            NetSpeedPreferences.MODE_UP -> {
                 val upSplit = NetFormatter.format(txByte, NetFormatter.FLAG_FULL, accuracy)
                 text1 = upSplit.first
                 text2 = upSplit.second
@@ -227,7 +228,7 @@ object NetTextIconFactory {
 
     private fun createLauncherForeground() {
         val bitmap =
-            createIconInternal("18.8", "KB/s", 512, NetSpeedConfiguration.defaultConfiguration)
+            createIconInternal("18.8", "KB/s", 512, NetSpeedConfiguration())
         bitmap.saveToAlbum(globalContext, "ic_launcher_foreground.png", "Net Monitor")
     }
 

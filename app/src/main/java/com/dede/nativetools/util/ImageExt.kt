@@ -134,7 +134,7 @@ private fun String.getBitmapFormat(): Bitmap.CompressFormat {
         fileName.endsWith(".png") -> Bitmap.CompressFormat.PNG
         fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") -> Bitmap.CompressFormat.JPEG
         fileName.endsWith(".webp") -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-            Bitmap.CompressFormat.WEBP_LOSSLESS else Bitmap.CompressFormat.WEBP
+            Bitmap.CompressFormat.WEBP_LOSSLESS else @Suppress("DEPRECATION") Bitmap.CompressFormat.WEBP
         else -> Bitmap.CompressFormat.PNG
     }
 }
