@@ -20,6 +20,7 @@ import com.dede.nativetools.ui.SliderPreference
 import com.dede.nativetools.util.*
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.flow.collect
 import kotlin.math.roundToInt
 
@@ -187,12 +188,24 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         when (preference.key) {
             NetSpeedPreferences.KEY_NET_SPEED_FONT -> {
                 configuration.font = newValue as String
+                event(FirebaseAnalytics.Event.SELECT_ITEM) {
+                    param(FirebaseAnalytics.Param.ITEM_NAME, configuration.font)
+                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "字体")
+                }
             }
             NetSpeedPreferences.KEY_NET_SPEED_TEXT_STYLE -> {
                 configuration.textStyle = (newValue as String).toInt()
+                event(FirebaseAnalytics.Event.SELECT_ITEM) {
+                    param(FirebaseAnalytics.Param.ITEM_NAME, configuration.textStyle.toLong())
+                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "字体样式")
+                }
             }
             NetSpeedPreferences.KEY_NET_SPEED_MODE -> {
                 configuration.mode = newValue as String
+                event(FirebaseAnalytics.Event.SELECT_ITEM) {
+                    param(FirebaseAnalytics.Param.ITEM_NAME, configuration.mode)
+                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "显示模式")
+                }
             }
             NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET,
             NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET,

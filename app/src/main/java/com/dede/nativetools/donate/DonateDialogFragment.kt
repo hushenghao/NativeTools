@@ -30,6 +30,7 @@ import com.dede.nativetools.ui.SpaceItemDecoration
 import com.dede.nativetools.util.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -116,20 +117,29 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
 
         fun handleClick(payment: Payment) {
             val context = host.requireContext()
+            var name = ""
             when (payment.resId) {
                 R.drawable.img_logo_eth -> {
                     context.copy(context.getString(R.string.payment_eth_address))
                     context.toast(R.string.toast_copyed)
+                    name = "ETH"
                 }
                 R.drawable.img_logo_alipay -> {
                     context.browse(R.string.url_alipay_payment_code)
+                    name = "支付宝"
                 }
                 R.drawable.img_logo_paypal -> {
                     context.browse(R.string.url_paypal_payment_code)
+                    name = "PayPal"
                 }
                 R.drawable.img_logo_wxpay -> {
                     context.toast(R.string.toast_wx_payment_tip)
+                    name = "微信"
                 }
+            }
+            event(FirebaseAnalytics.Event.SELECT_ITEM) {
+                param(FirebaseAnalytics.Param.ITEM_NAME, name)
+                param(FirebaseAnalytics.Param.CONTENT_TYPE, "捐赠")
             }
         }
 

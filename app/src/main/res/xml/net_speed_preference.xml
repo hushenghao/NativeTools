@@ -42,6 +42,7 @@
             tools:useSimpleSummaryProvider="true" />
 
         <com.dede.nativetools.ui.NavigatePreference
+            app:eventName="高级设置"
             app:icon="@drawable/ic_outline_settings"
             app:navigateId="@id/action_netSpeed_to_netSpeedAdvanced"
             app:summary="@string/summary_net_speed_advanced"

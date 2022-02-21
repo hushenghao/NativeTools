@@ -10,7 +10,6 @@ import com.dede.nativetools.util.requireSystemService
 import com.dede.nativetools.util.toZeroH
 import kotlinx.coroutines.*
 import java.lang.ref.WeakReference
-import com.google.firebase.perf.metrics.AddTrace
 import java.util.*
 import java.util.concurrent.atomic.AtomicReference
 
@@ -80,7 +79,6 @@ object NetworkUsageUtil {
     /**
      * 获取每月网络使用字节数
      */
-    @AddTrace(name = "每月数据使用量获取")
     fun monthNetworkUsageBytes(context: Context): Long {
         val weakRefContext = WeakReference(context)
         monthNetworkUsageJob.execute {

@@ -14,6 +14,7 @@ import com.dede.nativetools.main.MainViewModel
 import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.ui.NightModeDropDownPreference
 import com.dede.nativetools.util.*
+import com.google.firebase.analytics.FirebaseAnalytics
 
 class OtherFragment : PreferenceFragmentCompat() {
 
@@ -76,6 +77,9 @@ class OtherFragment : PreferenceFragmentCompat() {
         requirePreference<Preference>(OtherPreferences.KEY_RATE)
             .onPreferenceClickListener {
                 requireContext().market(requireContext().packageName)
+                event(FirebaseAnalytics.Event.SELECT_ITEM) {
+                    param(FirebaseAnalytics.Param.ITEM_NAME, "去评分")
+                }
             }
         requirePreference<Preference>(OtherPreferences.KEY_SHARE)
             .onPreferenceClickListener {
@@ -83,10 +87,14 @@ class OtherFragment : PreferenceFragmentCompat() {
                 val url = if (Logic.isSimplifiedChinese(requireContext()))
                     getString(R.string.url_cool_apk) else getString(R.string.url_play_store)
                 requireContext().share(getString(R.string.share_text, appName, url))
+                event(FirebaseAnalytics.Event.SHARE)
             }
         requirePreference<Preference>(OtherPreferences.KEY_FEEDBACK)
             .onPreferenceClickListener {
                 requireContext().emailTo(R.string.email)
+                event(FirebaseAnalytics.Event.SELECT_ITEM) {
+                    param(FirebaseAnalytics.Param.ITEM_NAME, "反馈")
+                }
             }
     }
 

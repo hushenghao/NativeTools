@@ -30,6 +30,7 @@ import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.ui.NavigatePreference
 import com.dede.nativetools.util.*
+import com.google.firebase.analytics.FirebaseAnalytics
 
 /**
  * Main
@@ -52,6 +53,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val isToggle = intent.extra(EXTRA_TOGGLE, false)
+        event(FirebaseAnalytics.Event.APP_OPEN) {
+            param(FirebaseAnalytics.Param.METHOD, if (isToggle) "toggle" else "normal")
+        }
         if (isToggle) {
             NetSpeedService.toggle(this)
             finish()
@@ -120,7 +124,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             navigationView = binding.navigationView
         )
 
-        navController.handleDeepLink(intent)
+        handleDeepLink(intent)
     }
 
     override fun onDestinationChanged(
@@ -147,7 +151,15 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        navController.handleDeepLink(intent)
+        handleDeepLink(intent)
+    }
+
+    private fun handleDeepLink(intent: Intent?) {
+        if (navController.handleDeepLink(intent)) {
+            event(FirebaseAnalytics.Event.APP_OPEN) {
+                param(FirebaseAnalytics.Param.METHOD, "deeplink")
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
