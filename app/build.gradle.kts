@@ -155,6 +155,8 @@ configurations.all {
     exclude("androidx.documentfile", "documentfile")
     exclude("androidx.print", "print")
     exclude("androidx.cursoradapter", "cursoradapter")
+    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
+    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk7")
 }
 
 tasks.register<Exec>("pgyer") {
