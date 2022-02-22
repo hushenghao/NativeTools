@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         handleDeepLink(intent)
 
-        if (true||!NetSpeedPreferences.privacyAgreed) {
+        if (!NetSpeedPreferences.privacyAgreed) {
             navController.navigate(R.id.dialogGuide)
         }
     }
