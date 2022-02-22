@@ -23,8 +23,8 @@ import com.google.firebase.ktx.Firebase
 class GuideDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        isCancelable = false
         return requireContext().alert(R.string.label_privacy_agreement) {
-            isCancelable = false
             show = false
             val privacyAgreement = getString(R.string.label_privacy_agreement)
             val string = getString(R.string.alert_msg_guide,
