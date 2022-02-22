@@ -89,4 +89,5 @@
     <string name="label_net_speed_hide_threshold">Скрытый порог</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Скорость скрытой сетки, когда скорость меньше %s</string>
     <string name="summary_net_speed_unhide">Нет</string>
+    <string name="alert_msg_guide" formatted="false">Спасибо за использование %s, мы уважаем и защищаем вашу личную информацию, и в %s мы подробно изучим соответствующие вопросы, включая конфиденциальные инструкции по использованию оборудования, которые могут потребоваться для применения. \nПеред тем, как использовать наш продукт, вы должны внимательно прочитать весь %s.</string>
 </resources>

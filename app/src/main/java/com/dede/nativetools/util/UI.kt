@@ -128,6 +128,14 @@ class AlertBuilder(private val builder: AlertDialog.Builder) {
         }
     var show: Boolean = true
 
+    fun setMessage(@StringRes messageId: Int) {
+        builder.setMessage(messageId)
+    }
+
+    fun setMessage(message: CharSequence) {
+        builder.setMessage(message)
+    }
+
     fun positiveButton(@StringRes textId: Int, onClick: DialogOnClick? = null) {
         builder.setPositiveButton(textId) { dialog, _ ->
             onClick?.invoke(dialog)
@@ -150,12 +158,14 @@ class AlertBuilder(private val builder: AlertDialog.Builder) {
 
 fun Context.alert(
     @StringRes titleId: Int,
-    @StringRes messageId: Int,
+    @StringRes messageId: Int = -1,
     init: (AlertBuilder.() -> Unit)? = null,
 ): Dialog {
     val builder = MaterialAlertDialogBuilder(this)
         .setTitle(titleId)
-        .setMessage(messageId)
+    if (messageId > 0) {
+        builder.setMessage(messageId)
+    }
     val alertBuilder = AlertBuilder(builder)
     init?.invoke(alertBuilder)
     return if (alertBuilder.show) {

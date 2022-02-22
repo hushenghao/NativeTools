@@ -10,6 +10,7 @@ import com.dede.nativetools.util.installShortcuts
 import com.dede.nativetools.util.isMainProcess
 import com.dede.nativetools.util.setNightMode
 import com.google.android.material.color.DynamicColors
+import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import me.weishu.reflection.Reflection
@@ -22,6 +23,8 @@ class NativeToolsApp : Application() {
         fun getInstance(): NativeToolsApp {
             return checkNotNull(instance)
         }
+
+        private const val TAG = "NativeToolsApp"
     }
 
     var unseal: Int = -1
@@ -31,7 +34,7 @@ class NativeToolsApp : Application() {
         instance = this
         super.attachBaseContext(base)
         val unseal = Reflection.unseal(base)
-        Log.i("NativeToolsApp", "unseal: $unseal")
+        Log.i(TAG, "unseal: $unseal")
         this.unseal = unseal
     }
 
@@ -44,6 +47,16 @@ class NativeToolsApp : Application() {
         if (isMainProcess()) {
             installShortcuts()
             setNightMode(OtherPreferences.nightMode)
+        }
+
+        initFirebase()
+    }
+
+    private fun initFirebase() {
+        if (FirebaseApp.initializeApp(this) == null) {
+            Log.i(TAG, "FirebaseApp initialization unsuccessful")
+        } else {
+            Log.i(TAG, "FirebaseApp initialization successful")
         }
         if (NetSpeedPreferences.privacyAgreed) {
             Firebase.analytics.setAnalyticsCollectionEnabled(true)

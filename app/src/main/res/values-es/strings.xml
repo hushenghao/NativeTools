@@ -89,4 +89,5 @@
     <string name="label_net_speed_hide_threshold">Ocultar el umbral</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Ocultar la velocidad de la red de la columna de estado cuando la velocidad es inferior a %s</string>
     <string name="summary_net_speed_unhide">No oculto</string>
+    <string name="alert_msg_guide" formatted="false">Gracias por usar %s. Respetamos y protegemos su información personal. Los asuntos relacionados se explican en detalle en %s, incluyendo la explicación de los permisos sensibles del dispositivo que pueden ser necesarios para la aplicación. \nAntes de usar nuestros productos, lea atentamente el contenido completo de %s.</string>
 </resources>

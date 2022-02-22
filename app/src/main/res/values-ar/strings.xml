@@ -89,4 +89,5 @@
     <string name="summary_net_speed_hide_threshold" formatted="false">مخبأة عند سرعة تقل عن %s</string>
     <string name="label_net_speed_hide_threshold">عتبة مخفية</string>
     <string name="summary_net_speed_unhide">لا تخفي</string>
+    <string name="alert_msg_guide" formatted="false">نشكركم على استخدام %s ونحن نحترم ونحمي معلوماتكم الشخصية ونقدم وصفا مفصلا في %s للمسائل ذات الصلة، بما في ذلك بيان الصلاحيات الحساسة للمعدات التي قد تلزم لتطبيقها. قبل استخدام منتجاتنا، يرجى قراءة محتوى %s بعناية.</string>
 </resources>

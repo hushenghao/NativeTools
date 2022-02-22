@@ -89,4 +89,5 @@
     <string name="label_net_speed_hide_threshold">隠し閾値</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">速度が%s未満の場合隠蔽状態折戸速度</string>
     <string name="summary_net_speed_unhide">隠さない</string>
+    <string name="alert_msg_guide" formatted="false">%sをご利用いただき、ありがとうございます。私たちは、あなたの個人情報を尊重し、保護します。また、%sで関連事項について詳しく説明します。 \n弊社の制品をご使用になる前に、%sのすべてをよくお読みください。</string>
 </resources>
