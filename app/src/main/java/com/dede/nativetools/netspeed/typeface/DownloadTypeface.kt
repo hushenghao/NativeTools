@@ -33,7 +33,6 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
         fun loadFont(context: Context, fontName: String): Typeface? {
             val fontFile = getFontFile(context, fontName)
             return fontFile.runCatching(Typeface::createFromFile)
-                .onFailure(Throwable::printStackTrace)
                 .getOrNull()
         }
     }
@@ -147,7 +146,7 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
      */
     private fun download(urlStr: String, output: File) {
         val url = URL(urlStr)
-        Firebase.performance.newHttpMetric(url.host, FirebasePerformance.HttpMethod.GET)
+        Firebase.performance.newHttpMetric(url, FirebasePerformance.HttpMethod.GET)
             .trace {
                 var connect: HttpURLConnection? = null
                 var outputStream: OutputStream? = null
@@ -157,8 +156,7 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
                     connect.requestMethod = "GET"
                     connect.connectTimeout = 10000
                     connect.readTimeout = 10000
-                    connect.doOutput = true
-                    connect.connect()
+                    connect.doOutput = false
                     val responseCode = connect.responseCode
                     setHttpResponseCode(responseCode)
                     if (responseCode == 200) {
