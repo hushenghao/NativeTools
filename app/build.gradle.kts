@@ -164,9 +164,8 @@ tasks.register<Exec>("pgyer") {
     dependsOn("clean", assemble)
     assemble.mustRunAfter("clean")
 
-    val tree = fileTree("build/intermediates/apk/beta") {
-        include("*.apk")
-        builtBy("assembleBeta")
+    val tree = fileTree("build") {
+        include("outputs/apk/beta/*.apk", "intermediates/apk/beta/*.apk")
     }
     doFirst {
         val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
