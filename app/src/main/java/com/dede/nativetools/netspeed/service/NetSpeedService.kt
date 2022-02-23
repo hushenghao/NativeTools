@@ -126,7 +126,9 @@ class NetSpeedService : Service(), Runnable {
     }
 
     private fun startForeground() {
-        val notify = NetSpeedNotificationHelper.createNotification(this, configuration)
+        val notify = track("创建通知") {
+            NetSpeedNotificationHelper.createNotification(this, configuration)
+        }
         startForeground(NOTIFY_ID, notify)
     }
 
