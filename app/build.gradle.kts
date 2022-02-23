@@ -1,5 +1,7 @@
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Properties
 
 val keystoreProperties = Properties().apply {
@@ -14,6 +16,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
+    id("com.google.firebase.appdistribution")
     id("com.diffplug.spotless")
 }
 
@@ -66,10 +69,6 @@ android {
         getByName("debug") {
             versionNameSuffix = "-debug"
             signingConfig = config
-            // https://firebase.google.com/docs/crashlytics/get-deobfuscated-reports?authuser=0&platform=android#keep-obfuscated-build-variants
-            // val extensions = extensions.getByName("firebaseCrashlytics") as
-            //        com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
-            // extensions.mappingFileUploadEnabled = false
         }
         getByName("release") {
             isMinifyEnabled = true
@@ -82,7 +81,11 @@ android {
         }
         create("beta") {
             initWith(getByName("release"))
-            versionNameSuffix = "-beta"
+            versionNameSuffix = "-beta-${SimpleDateFormat("yyMMdd.HHmm").format(Date())}"
+            println("VersionNameSuffix: $versionNameSuffix")
+            firebaseAppDistribution {
+                groups = "beta"
+            }
         }
     }
 
@@ -119,9 +122,7 @@ dependencies {
     implementation(deps.viewbinding.property.delegate)
 
     implementation(platform(deps.firebase.bom))
-    implementation(deps.firebase.analytics.ktx)
-    implementation(deps.firebase.crashlytics.ktx)
-    implementation(deps.firebase.perf.ktx)
+    implementation(deps.bundles.firebase.ktx)
 
     debugImplementation(deps.bundles.squareup.leakcanary)
 

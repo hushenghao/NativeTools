@@ -60,6 +60,7 @@
     <string name="action_feedback">问题反馈</string>
     <string name="email" translatable="false">dede.hu@qq.com</string>
     <string name="url_pgyer" translatable="false">https://www.pgyer.com/U9kJ</string>
+    <string name="url_firebase_app_distribution" translatable="false">https://appdistribution.firebase.dev/i/fcdac68f4991245f</string>
     <string name="toast_copyed">已复制</string>
     <string name="toast_wx_payment_tip">微信付款码请长按保存图片后扫描</string>
     <string name="label_net_speed_toggle">切换</string>
