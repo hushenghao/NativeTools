@@ -1,6 +1,5 @@
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Properties
 
@@ -50,6 +49,7 @@ android {
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797
         setProperty("archivesBaseName", "native_tools_${versionName}_$versionCode")
+        buildConfigField("long", "BUILD_TIMESTAMP", "${Date().time}")
     }
 
     signingConfigs {
@@ -81,8 +81,7 @@ android {
         }
         create("beta") {
             initWith(getByName("release"))
-            versionNameSuffix = "-beta-${SimpleDateFormat("yyMMdd.HHmm").format(Date())}"
-            println("VersionNameSuffix: $versionNameSuffix")
+            versionNameSuffix = "-beta"
             firebaseAppDistribution {
                 groups = "beta"
             }

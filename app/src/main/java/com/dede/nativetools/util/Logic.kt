@@ -18,6 +18,7 @@ import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.dede.nativetools.netspeed.stats.NetStats
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
 import com.dede.nativetools.other.OtherPreferences
+import java.text.SimpleDateFormat
 import java.util.*
 
 fun isNightMode(): Boolean {
@@ -46,8 +47,16 @@ val Context.isIgnoringBatteryOptimizations
         return powerManager.isIgnoringBatteryOptimizations(this.packageName)
     }
 
-fun Context.getVersionSummary() =
-    getString(R.string.summary_about_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
+fun Context.getVersionSummary(): String {
+    val versionName = if (BuildConfig.DEBUG || BuildConfig.BUILD_TYPE == "beta") {
+        val timestamp = BuildConfig.BUILD_TIMESTAMP
+        val time = SimpleDateFormat("yyMMdd.HHmm", Locale.getDefault()).format(Date(timestamp))
+        BuildConfig.VERSION_NAME + "-" + time
+    } else {
+        BuildConfig.VERSION_NAME
+    }
+    return getString(R.string.summary_about_version, versionName, BuildConfig.VERSION_CODE)
+}
 
 object Logic {
 
