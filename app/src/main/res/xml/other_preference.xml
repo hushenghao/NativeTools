@@ -43,6 +43,7 @@
             app:eventName="捐赠"
             app:icon="@drawable/ic_outline_coffee"
             app:navigateId="@id/action_other_to_dialogDonate"
+            app:summary="@string/label_coffee"
             app:title="@string/action_donate" />
 
         <Preference

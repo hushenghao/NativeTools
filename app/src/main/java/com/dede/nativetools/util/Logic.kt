@@ -10,10 +10,6 @@ import android.os.Process
 import android.provider.Settings
 import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.math.MathUtils
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
@@ -54,24 +50,6 @@ fun Context.getVersionSummary() =
     getString(R.string.summary_about_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
 
 object Logic {
-
-    fun calculateAndCreateLayoutManager(context: Context): RecyclerView.LayoutManager {
-        val spanCount = calculateGridSpanCount(context)
-        return if (spanCount == 1) {
-            LinearLayoutManager(context)
-        } else {
-            GridLayoutManager(context, spanCount)
-        }
-    }
-
-    private fun calculateGridSpanCount(context: Context): Int {
-        val resources = context.resources
-        val displayMetrics = resources.displayMetrics
-        val displayWidth = displayMetrics.widthPixels
-        val itemWidth = resources.getDimensionPixelSize(R.dimen.dynamic_item_width)
-        val gridSpanCount = displayWidth / itemWidth
-        return MathUtils.clamp(gridSpanCount, 1, 3)
-    }
 
     fun isSimplifiedChinese(context: Context): Boolean {
         val local = getLocale(context)

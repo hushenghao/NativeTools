@@ -31,7 +31,6 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
         binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
         applyBottomBarsInsets(binding.recyclerView)
 
-        binding.recyclerView.layoutManager = Logic.calculateAndCreateLayoutManager(requireContext())
         viewModel.openSourceList.observe(this) {
             binding.recyclerView.adapter = Adapter(it)
         }

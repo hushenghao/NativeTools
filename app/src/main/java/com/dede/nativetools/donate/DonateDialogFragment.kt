@@ -58,7 +58,6 @@ class DonateDialogFragment : BottomSheetDialogFragment() {
             binding.recyclerView.adapter = Adapter(it, clickHandler)
         }
         binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
-        binding.recyclerView.layoutManager = Logic.calculateAndCreateLayoutManager(requireContext())
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
