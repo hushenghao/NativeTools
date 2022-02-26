@@ -55,7 +55,7 @@
         <com.dede.nativetools.ui.NavigatePreference
             app:eventName="@string/action_beta"
             app:icon="@drawable/ic_outline_pest_control"
-            app:navigateId="@id/action_other_to_beta"
+            app:navigateId="@id/action_other_to_dialogBeta"
             app:title="@string/action_beta" />
 
         <com.dede.nativetools.ui.NavigatePreference

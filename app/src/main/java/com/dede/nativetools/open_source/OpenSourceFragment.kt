@@ -87,7 +87,6 @@ class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
                     R.id.action_copy -> {
                         if (openSource.url.isNotEmpty()) {
                             context.copy(openSource.url)
-                            context.toast(R.string.toast_copyed)
                         }
                     }
                     R.id.action_homepage -> {

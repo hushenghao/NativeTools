@@ -7,7 +7,7 @@
     <solid android:color="@color/md_theme_secondary" />
 
     <size
-        android:width="20dp"
+        android:width="26dp"
         android:height="4dp" />
 
 </shape>

@@ -33,7 +33,7 @@
         android:id="@+id/dialogDonate"
         android:name="com.dede.nativetools.donate.DonateDialogFragment"
         android:label="@string/action_donate"
-        tools:layout="@layout/dialog_fragment_donate" />
+        tools:layout="@layout/fragment_bottom_sheet_list" />
 
     <fragment
         android:id="@+id/other"
@@ -59,8 +59,8 @@
             android:id="@+id/action_other_to_diagnosis"
             app:destination="@id/diagnosisFragment" />
         <action
-            android:id="@+id/action_other_to_beta"
-            app:destination="@id/betaFragment" />
+            android:id="@+id/action_other_to_dialogBeta"
+            app:destination="@id/dialogBeta" />
     </fragment>
 
     <fragment
@@ -87,8 +87,8 @@
         android:name="com.dede.nativetools.main.GuideDialogFragment"
         android:label="@string/label_privacy_agreement" />
 
-    <fragment
-        android:id="@+id/betaFragment"
+    <dialog
+        android:id="@+id/dialogBeta"
         android:name="com.dede.nativetools.beta.BetaFragment"
-        android:label="@string/action_beta" />
+        tools:layout="@layout/fragment_bottom_sheet_list" />
 </navigation>

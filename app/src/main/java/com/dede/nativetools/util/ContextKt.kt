@@ -158,4 +158,9 @@ fun Context.emailTo(@StringRes addressRes: Int) {
 fun Context.copy(text: String) {
     val clipboardManager = this.requireSystemService<ClipboardManager>()
     clipboardManager.setPrimaryClip(ClipData.newPlainText("text", text))
+    this.toast(R.string.toast_copyed)
+}
+
+fun Context.copy(@StringRes textId: Int) {
+    this.copy(this.getString(textId))
 }

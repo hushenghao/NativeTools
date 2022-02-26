@@ -1,4 +1,4 @@
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">网速指示器</string>
     <string name="notify_net_speed_msg" formatted="false">上传：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • 下载：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g></string>
     <string name="notify_net_speed_sub" formatted="false">今日：<xliff:g example="10.5GB" id="usage">%s</xliff:g> • 本月：<xliff:g example="10.5GB" id="usage">%s</xliff:g></string>
@@ -113,6 +113,11 @@
     <string name="summary_threshold_error">输入的阈值不正确</string>
     <string name="summary_net_speed_unhide">不隐藏</string>
     <string name="alert_msg_guide" formatted="false">感谢您使用%s，我们尊重并保护您的个人信息，并在%s对相关事项进行了详细说明，包括应用所可能需要的设备敏感权限说明。\n在使用我们的产品前，请您认真阅读%s的全部内容。</string>
-    <string name="label_pgyer" translatable="false">Pgyer</string>
+
+    <string name="label_pgyer" tools:ignore="MissingTranslation">Pgyer</string>
     <string name="label_firebase" translatable="false">Firebase</string>
+    <string name="label_payment_wxpay" tools:ignore="MissingTranslation">WeChat Pay</string>
+    <string name="label_payment_alipay" tools:ignore="MissingTranslation">Alipay</string>
+    <string name="label_payment_eth" tools:ignore="MissingTranslation">ETH</string>
+    <string name="label_payment_paypal" translatable="false">Paypal</string>
 </resources>
