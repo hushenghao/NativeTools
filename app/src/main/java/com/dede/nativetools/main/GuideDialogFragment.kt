@@ -60,6 +60,7 @@ class GuideDialogFragment : DialogFragment() {
                 ds.color = requireContext().color(
                     com.google.android.material.R.attr.colorPrimary,
                     Color.BLUE)
+                ds.isUnderlineText = true
             }
 
             override fun onClick(widget: View) {
