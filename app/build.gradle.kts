@@ -159,6 +159,9 @@ configurations.all {
 }
 
 tasks.register<Exec>("pgyer") {
+    val assemble = tasks.named("assembleBeta").get()
+    dependsOn(assemble)
+
     val tree = fileTree("build") {
         include("outputs/apk/beta/*.apk", "intermediates/apk/beta/*.apk")
     }
