@@ -22,7 +22,7 @@ private fun createShortcutIcon(context: Context, resId: Int): IconCompat {
     val bitmap = LayerDrawable(
         arrayOf(
             GradientDrawable().apply {
-                setColor(context.color(R.color.md_theme_primary))
+                setColor(context.color(R.color.ic_launcher_background))
                 shape = GradientDrawable.OVAL
             },
             InsetDrawable(context.requireDrawable(resId), 4.dp).apply {
