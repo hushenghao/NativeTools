@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:title="@string/action_beta">
+
+    <com.dede.nativetools.ui.NavigatePreference
+        app:enableCopying="true"
+        app:eventName="@string/label_pgyer"
+        app:icon="@drawable/drawable_logo_pgyer"
+        app:navigateUrl="@string/url_pgyer"
+        app:summary="@string/url_pgyer"
+        app:title="@string/label_pgyer" />
+
+    <com.dede.nativetools.ui.NavigatePreference
+        app:enableCopying="true"
+        app:eventName="@string/label_firebase"
+        app:icon="@drawable/ic_logo_firebase"
+        app:navigateUrl="@string/url_firebase_app_distribution"
+        app:summary="@string/url_firebase_app_distribution"
+        app:title="@string/label_firebase" />
+
+</PreferenceScreen>

@@ -58,6 +58,9 @@
         <action
             android:id="@+id/action_other_to_diagnosis"
             app:destination="@id/diagnosisFragment" />
+        <action
+            android:id="@+id/action_other_to_beta"
+            app:destination="@id/betaFragment" />
     </fragment>
 
     <fragment
@@ -83,4 +86,9 @@
         android:id="@+id/dialogGuide"
         android:name="com.dede.nativetools.main.GuideDialogFragment"
         android:label="@string/label_privacy_agreement" />
+
+    <fragment
+        android:id="@+id/betaFragment"
+        android:name="com.dede.nativetools.beta.BetaFragment"
+        android:label="@string/action_beta" />
 </navigation>

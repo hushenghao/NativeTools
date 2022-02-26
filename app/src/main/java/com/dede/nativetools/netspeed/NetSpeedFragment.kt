@@ -65,7 +65,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore = DataStorePreference(requireContext())
-        addPreferencesFromResource(R.xml.net_speed_preference)
+        addPreferencesFromResource(R.xml.preference_net_speed)
         initGeneralPreferenceGroup()
         initNotificationPreferenceGroup()
     }

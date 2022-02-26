@@ -14,8 +14,8 @@ class DonateRepository {
     fun getPaymentList(): List<Payment> {
         return arrayListOf(
             Payment(R.drawable.img_logo_eth, "ETH"),
-            Payment(R.drawable.img_logo_wxpay),
             Payment(R.drawable.img_logo_alipay),
+            Payment(R.drawable.img_logo_wxpay),
             Payment(R.drawable.img_logo_paypal)
         )
     }
