@@ -10,7 +10,6 @@ import com.dede.nativetools.databinding.ItemBottomSheetListBinding
 import com.dede.nativetools.ui.BottomSheetListFragment
 import com.dede.nativetools.util.browse
 import com.dede.nativetools.util.copy
-import com.dede.nativetools.util.toast
 
 class BetaFragment : BottomSheetListFragment<BetaFragment.Beta>() {
 
@@ -39,14 +38,15 @@ class BetaFragment : BottomSheetListFragment<BetaFragment.Beta>() {
         )
     }
 
-    override fun onBindViewHolder(binding: ItemBottomSheetListBinding, position: Int, t: Beta) {
-        binding.ivLogo.setImageResource(t.resId)
-        binding.tvTitle.setText(t.textId)
+    @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
+    override fun onBindViewHolder(binding: ItemBottomSheetListBinding, position: Int, beta: Beta) {
+        binding.ivLogo.setImageResource(beta.resId)
+        binding.tvTitle.setText(beta.textId)
         binding.root.setOnClickListener {
-            requireContext().browse(t.urlId)
+            requireContext().browse(beta.urlId)
         }
         binding.root.setOnLongClickListener {
-            requireContext().copy(t.urlId)
+            requireContext().copy(beta.urlId)
             return@setOnLongClickListener true
         }
     }

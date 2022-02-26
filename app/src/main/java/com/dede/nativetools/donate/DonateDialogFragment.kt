@@ -39,6 +39,7 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
         binding.tvMessage.isGone = true
     }
 
+    @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
     override fun onBindViewHolder(
         binding: ItemBottomSheetListBinding,
         position: Int,
