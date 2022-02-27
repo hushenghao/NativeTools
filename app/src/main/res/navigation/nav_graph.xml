@@ -23,7 +23,7 @@
         <deepLink app:uri="https://dede.nativetools/about" />
     </fragment>
 
-    <fragment
+    <dialog
         android:id="@+id/openSource"
         android:name="com.dede.nativetools.open_source.OpenSourceFragment"
         android:label="@string/label_open_source"

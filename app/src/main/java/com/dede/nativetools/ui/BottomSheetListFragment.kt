@@ -1,8 +1,6 @@
 package com.dede.nativetools.ui
 
 import android.app.Dialog
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +12,40 @@ import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentBottomSheetListBinding
 import com.dede.nativetools.databinding.ItemBottomSheetListBinding
 import com.dede.nativetools.main.WindowEdgeManager
-import com.dede.nativetools.util.isNightMode
+import com.dede.nativetools.main.applyBottomBarsInsets
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-abstract class BottomSheetListFragment<T> : BottomSheetDialogFragment() {
+open class BottomSheetListFragment<T> :
+    AbsBottomSheetListFragment<T, BottomSheetListFragment.Holder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup): Holder {
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_bottom_sheet_list, parent, false)
+        return Holder(itemView)
+    }
+
+    override fun setData(list: List<T>) {
+        super.setData(list)
+        if (list.size < 4) {
+            binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), list.size)
+        }
+    }
+
+    override fun onBindViewHolder(holder: Holder, position: Int, t: T) {
+        onBindViewHolder(holder.binding, position, t)
+    }
+
+    open fun onBindViewHolder(binding: ItemBottomSheetListBinding, position: Int, t: T) {
+    }
+
+    class Holder(view: View) : RecyclerView.ViewHolder(view) {
+        val binding = ItemBottomSheetListBinding.bind(itemView)
+    }
+}
+
+abstract class AbsBottomSheetListFragment<T, H : RecyclerView.ViewHolder> :
+    BottomSheetDialogFragment() {
 
     protected val binding by viewBinding(FragmentBottomSheetListBinding::bind)
 
@@ -38,30 +65,30 @@ abstract class BottomSheetListFragment<T> : BottomSheetDialogFragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        applyBottomBarsInsets(binding.recyclerView)
+    }
+
     open fun setData(list: List<T>) {
-        if (list.size < 4) {
-            binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), list.size)
-        }
         binding.recyclerView.adapter = Adapter(list, this)
     }
 
-    open fun onBindViewHolder(binding: ItemBottomSheetListBinding, position: Int, t: T) {
-        if (isNightMode()) {
-            binding.ivLogo.imageTintList = ColorStateList.valueOf(Color.WHITE)
-        }
-    }
+    abstract fun onCreateViewHolder(parent: ViewGroup): H
 
-    private class Adapter<T>(val data: List<T>, val fragment: BottomSheetListFragment<T>) :
-        RecyclerView.Adapter<Holder>() {
+    abstract fun onBindViewHolder(holder: H, position: Int, t: T)
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-            val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_bottom_sheet_list, parent, false)
-            return Holder(itemView)
+    private class Adapter<T, H : RecyclerView.ViewHolder>(
+        val data: List<T>,
+        val fragment: AbsBottomSheetListFragment<T, H>
+    ) : RecyclerView.Adapter<H>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): H {
+            return fragment.onCreateViewHolder(parent)
         }
 
-        override fun onBindViewHolder(holder: Holder, position: Int) {
-            fragment.onBindViewHolder(holder.binding, position, data[position])
+        override fun onBindViewHolder(holder: H, position: Int) {
+            fragment.onBindViewHolder(holder, position, data[position])
         }
 
         override fun getItemCount(): Int {
@@ -69,7 +96,4 @@ abstract class BottomSheetListFragment<T> : BottomSheetDialogFragment() {
         }
     }
 
-    private class Holder(view: View) : RecyclerView.ViewHolder(view) {
-        val binding = ItemBottomSheetListBinding.bind(itemView)
-    }
 }

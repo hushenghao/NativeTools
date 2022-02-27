@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
+    android:layout_margin="12dp"
     android:background="?attr/selectableItemBackground"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -13,7 +13,7 @@
         android:id="@+id/iv_logo"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        app:shapeAppearance="@style/Style.RoundedCornerImage"
+        app:shapeAppearance="@style/Shape.RoundedCornerImage"
         tools:src="@drawable/ic_logo_eth" />
 
     <TextView

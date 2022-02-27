@@ -7,53 +7,45 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
-import androidx.fragment.app.Fragment
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
-import com.dede.nativetools.databinding.FragmentOpenSourceBinding
 import com.dede.nativetools.databinding.ItemOpenSourceBinding
-import com.dede.nativetools.main.applyBottomBarsInsets
+import com.dede.nativetools.ui.AbsBottomSheetListFragment
 import com.dede.nativetools.ui.SpaceItemDecoration
 import com.dede.nativetools.util.*
 
 /**
  * 开源相关
  */
-class OpenSourceFragment : Fragment(R.layout.fragment_open_source) {
+class OpenSourceFragment : AbsBottomSheetListFragment<OpenSource, OpenSourceFragment.ViewHolder>() {
 
-    private val binding by viewBinding(FragmentOpenSourceBinding::bind)
     private val viewModel by viewModels<OpenSourceViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.tvMessage.isGone = true
+        binding.tvTitle.isGone = true
         binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
-        applyBottomBarsInsets(binding.recyclerView)
-
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.openSourceList.observe(this) {
-            binding.recyclerView.adapter = Adapter(it)
+            setData(it)
         }
     }
 
-    private class Adapter(private val list: List<OpenSource>) : RecyclerView.Adapter<ViewHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_open_source, parent, false)
-            return ViewHolder(itemView)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bindViewData(list[position])
-        }
-
-        override fun getItemCount(): Int {
-            return list.size
-        }
+    override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_open_source, parent, false)
+        return ViewHolder(itemView)
     }
 
-    private class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, t: OpenSource) {
+        holder.bindViewData(t)
+    }
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ItemOpenSourceBinding.bind(view)
 
         fun bindViewData(openSource: OpenSource) {

@@ -28,7 +28,7 @@ class BetaFragment : BottomSheetListFragment<BetaFragment.Beta>() {
         binding.tvMessage.isGone = true
         setData(
             listOf(
-                Beta(R.drawable.drawable_logo_pgyer, R.string.label_pgyer, R.string.url_pgyer),
+                Beta(R.drawable.ic_logo_pgyer, R.string.label_pgyer, R.string.url_pgyer),
                 Beta(
                     R.drawable.ic_logo_firebase,
                     R.string.label_firebase,

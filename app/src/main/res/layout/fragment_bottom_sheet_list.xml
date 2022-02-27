@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@null"
-        android:paddingVertical="15dp"
+        android:paddingVertical="16dp"
         android:src="@drawable/shape_bottom_sheet_drag" />
 
     <TextView
@@ -38,8 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:overScrollMode="never"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="10dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="4"
         tools:itemCount="8"
