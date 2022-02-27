@@ -18,7 +18,7 @@ import kotlin.math.roundToInt
  */
 object NetTextIconFactory {
 
-    private val DEFAULT_CONFIG = Bitmap.Config.ARGB_8888
+    private val DEFAULT_CONFIG = Bitmap.Config.ALPHA_8
 
     private const val DEBUG_MODE = false
 
@@ -191,7 +191,6 @@ object NetTextIconFactory {
         if (assistLine) {
             // 居中辅助线
             paint.style = Paint.Style.STROKE
-            paint.color = Color.YELLOW
             paint.strokeWidth = 1.5f.dpf
             paint.pathEffect = pathEffect
             canvas.drawLine(wh, 0f, wh, hf, paint)
@@ -206,7 +205,6 @@ object NetTextIconFactory {
     private fun resetPaint() {
         paint.pathEffect = null
         paint.strokeWidth = 0.5f.dpf
-        paint.color = Color.WHITE
         paint.style = Paint.Style.FILL
     }
 
@@ -215,7 +213,6 @@ object NetTextIconFactory {
         // 斜体字边框测量不准确???
         paint.getTextBounds(text, 0, text.length, rect)
         paint.style = Paint.Style.STROKE
-        paint.color = Color.WHITE
         paint.strokeWidth = 0.5f.dpf
         paint.pathEffect = pathEffect
         // 画笔字体对齐为方式为center
