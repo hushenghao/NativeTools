@@ -169,7 +169,7 @@ tasks.register<Exec>("pgyer") {
         val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
             "pgyer.api_key not found"
         }
-        val apkPath = tree.single().absolutePath
+        val apkPath = tree.first().absolutePath
         println("Upload Apk: $apkPath")
 
         commandLine(
