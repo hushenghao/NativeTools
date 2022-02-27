@@ -44,7 +44,7 @@ object NetSpeedNotificationHelper {
             Intent(
                 Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
                 Settings.EXTRA_APP_PACKAGE to context.packageName,
-                Settings.EXTRA_CHANNEL_ID to CHANNEL_ID_SILENCE
+                Settings.EXTRA_CHANNEL_ID to CHANNEL_ID_DEFAULT
             )
         } else {
             // Settings.ACTION_NOTIFICATION_SETTINGS
