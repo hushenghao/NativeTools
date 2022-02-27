@@ -91,7 +91,7 @@
     <string name="summary_net_speed_unhide">Não se esconde</string>
     <string name="alert_msg_guide" formatted="false">Obrigado por usar %s. Respeitamos e protegemos suas informações pessoais. Os assuntos relevantes são detalhados em %s, incluindo instruções sobre permissões sensíveis do dispositivo que podem ser necessárias para a aplicação. \nPor favor, leia atentamente todo o conteúdo de %s antes de usar nossos produtos.</string>
     <string name="label_net_speed_service">Serviço de indicador de velocidade</string>
-    <string name="label_net_speed_silence_channel">Notificar quando oculto</string>
-    <string name="label_net_speed_default_channel">Notificação quando ativo</string>
+    <string name="label_net_speed_silence_channel">Notificações silenciosas</string>
+    <string name="label_net_speed_default_channel">Notificação de atividades</string>
     <string name="alert_msg_hide_threshold">Ocultar o ícone de velocidade da internet quando a velocidade é menor que o valor especificado (unidade B, 1024B=1KB)</string>
 </resources>

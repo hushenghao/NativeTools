@@ -91,7 +91,7 @@
     <string name="summary_net_speed_unhide">隠さない</string>
     <string name="alert_msg_guide" formatted="false">%sをご利用いただき、ありがとうございます。私たちは、あなたの個人情報を尊重し、保護します。また、%sで関連事項について詳しく説明します。 \n弊社の制品をご使用になる前に、%sのすべてをよくお読みください。</string>
     <string name="label_net_speed_service">网速指示器サービス</string>
-    <string name="label_net_speed_silence_channel">隠すときに知らせる</string>
-    <string name="label_net_speed_default_channel">イベント時のお知らせ</string>
+    <string name="label_net_speed_silence_channel">無言の通知</string>
+    <string name="label_net_speed_default_channel">イベントのお知らせ</string>
     <string name="alert_msg_hide_threshold">速度が指定された値未満の場合は、通信速度を隠すアイコン(単位B, 1024B=1KB)</string>
 </resources>

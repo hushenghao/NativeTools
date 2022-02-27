@@ -91,7 +91,7 @@
     <string name="summary_net_speed_unhide">不隱藏</string>
     <string name="alert_msg_guide" formatted="false">感謝您使用%s，我們尊重並保護您的個人資訊，並在%s對相關事項進行了詳細說明，包括應用所可能需要的設備敏感許可權說明。\n在使用我們的產品前，請您認真閱讀%s的全部內容。</string>
     <string name="label_net_speed_service">網速指示器服務</string>
-    <string name="label_net_speed_silence_channel">隱藏時通知</string>
-    <string name="label_net_speed_default_channel">活動時通知</string>
+    <string name="label_net_speed_silence_channel">隱藏通知</string>
+    <string name="label_net_speed_default_channel">活動通知</string>
     <string name="alert_msg_hide_threshold">當速度小於指定值時隱藏網速圖標（組織B，1024B=1KB）</string>
 </resources>

@@ -91,7 +91,7 @@
     <string name="summary_net_speed_unhide">Nicht verstecken</string>
     <string name="alert_msg_guide" formatted="false">Danke, dass sie %s genutzt haben, dass wir ihre persönlichen informationen geachtet und geschützt haben und dass wir in %s eine detaillierte beschreibung der fragen erhalten haben, einschließlich der beschreibung der erforderlichen geräte und empfänglichkeit. \nBevor sie unsere produkte benutzen, sollten sie den gesamten inhalt Von %s gründlich lesen</string>
     <string name="label_net_speed_service">Anzeige der Net dienen</string>
-    <string name="label_net_speed_silence_channel">Tag und nacht in der versteck</string>
-    <string name="label_net_speed_default_channel">Ankündigung der tätigkeit</string>
+    <string name="label_net_speed_silence_channel">Stille Benachrichtigung</string>
+    <string name="label_net_speed_default_channel">Meldung von Tätigkeiten</string>
     <string name="alert_msg_hide_threshold">Netzwerk-funktionen ausblenden, wenn die geschwindigkeit kleiner als der angegebene wert ist (kilometereinheit B, 1024B=1KB)</string>
 </resources>

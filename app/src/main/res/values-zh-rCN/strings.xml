@@ -102,7 +102,7 @@
     <string name="label_payment_alipay">支付宝</string>
     <string name="label_payment_eth">以太坊</string>
     <string name="label_net_speed_service">网速指示器服务</string>
-    <string name="label_net_speed_silence_channel">隐藏时通知</string>
-    <string name="label_net_speed_default_channel">活动时通知</string>
+    <string name="label_net_speed_silence_channel">隐藏通知</string>
+    <string name="label_net_speed_default_channel">活动通知</string>
     <string name="alert_msg_hide_threshold">当速度小于指定值时隐藏网速图标（单位B，1024B=1KB）</string>
 </resources>

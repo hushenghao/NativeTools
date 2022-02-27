@@ -91,7 +91,7 @@
     <string name="summary_net_speed_unhide">Don\'t hide</string>
     <string name="alert_msg_guide" formatted="false">Thank you for using %s. We respect and protect your personal information, and give a detailed description of relevant matters on %s, including the description of device sensitive permissions that may be required by the application. \nPlease read all the contents of %s carefully before using our products.</string>
     <string name="label_net_speed_service">Net Monitor Service</string>
-    <string name="label_net_speed_silence_channel">Hide time notification</string>
-    <string name="label_net_speed_default_channel">Notification of activities</string>
+    <string name="label_net_speed_silence_channel">Silent notification</string>
+    <string name="label_net_speed_default_channel">Event notification</string>
     <string name="alert_msg_hide_threshold">Hide the network speed icon when the speed is less than the specified value (unit B, 1024b = 1KB)</string>
 </resources>

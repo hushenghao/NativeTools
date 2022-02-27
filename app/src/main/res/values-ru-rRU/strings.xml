@@ -91,7 +91,7 @@
     <string name="summary_net_speed_unhide">Нет</string>
     <string name="alert_msg_guide" formatted="false">Спасибо за использование %s, мы уважаем и защищаем вашу личную информацию, и в %s мы подробно изучим соответствующие вопросы, включая конфиденциальные инструкции по использованию оборудования, которые могут потребоваться для применения. \nПеред тем, как использовать наш продукт, вы должны внимательно прочитать весь %s.</string>
     <string name="label_net_speed_service">Сервис по индикатору скорости сети</string>
-    <string name="label_net_speed_silence_channel">Скрытое уведомление</string>
+    <string name="label_net_speed_silence_channel">Тишина в эфире</string>
     <string name="label_net_speed_default_channel">Уведомление о деятельности</string>
     <string name="alert_msg_hide_threshold">Скрытая икона скорости меньше указанного значения (единица B, 1024B=1KB)</string>
 </resources>
