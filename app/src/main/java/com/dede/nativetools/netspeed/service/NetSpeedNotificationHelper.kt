@@ -224,7 +224,7 @@ object NetSpeedNotificationHelper {
         val manager = NotificationManagerCompat.from(context)
 
         val channelGroup = NotificationChannelGroupCompat.Builder(CHANNEL_GROUP_ID)
-            .setName(context.getString(R.string.label_net_speed))
+            .setName(context.getString(R.string.label_net_speed_service))
             .setDescription(context.getString(R.string.desc_net_speed_notify))
             .build()
         manager.createNotificationChannelGroup(channelGroup)
@@ -243,15 +243,14 @@ object NetSpeedNotificationHelper {
             NotificationChannelCompat.Builder(
                 CHANNEL_ID_SILENCE,
                 NotificationManagerCompat.IMPORTANCE_LOW
-            )
+            ).setName(this.getString(R.string.label_net_speed_silence_channel))
         } else {
             NotificationChannelCompat.Builder(
                 CHANNEL_ID_DEFAULT,
                 NotificationManagerCompat.IMPORTANCE_DEFAULT
-            )
+            ).setName(this.getString(R.string.label_net_speed_default_channel))
         }
-        return builder.setName(this.getString(R.string.label_net_speed))
-            .setDescription(this.getString(R.string.desc_net_speed_notify))
+        return builder.setDescription(this.getString(R.string.desc_net_speed_notify))
             .setShowBadge(false)
             .setGroup(CHANNEL_GROUP_ID)
             .setVibrationEnabled(false)

@@ -74,7 +74,7 @@
         <service
             android:name=".netspeed.service.NetSpeedService"
             android:exported="false"
-            android:label="@string/label_net_speed"
+            android:label="@string/label_net_speed_service"
             android:process=":netspeed" />
         <service
             android:name=".diagnosis.DiagnosisFragment$Service"
@@ -86,7 +86,7 @@
             android:name=".netspeed.service.NetTileService"
             android:exported="true"
             android:icon="@drawable/ic_launcher_icon"
-            android:label="@string/label_net_speed"
+            android:label="@string/label_net_speed_service"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />

@@ -91,7 +91,7 @@
     <string name="label_diagnosis">诊断</string>
     <string name="label_usage_just_mobile">只显示移动流量使用</string>
     <string name="label_net_speed_hide_threshold">隐藏阈值</string>
-    <string name="summary_net_speed_hide_threshold" formatted="false">当速度小于%s时隐藏状态栏网速</string>
+    <string name="summary_net_speed_hide_threshold" formatted="false">当速度小于%s时隐藏状态栏网速图标</string>
     <string name="summary_threshold_error">输入的阈值不正确</string>
     <string name="summary_net_speed_unhide">不隐藏</string>
     <string name="alert_msg_guide" formatted="false">感谢您使用%s，我们尊重并保护您的个人信息，并在%s对相关事项进行了详细说明，包括应用所可能需要的设备敏感权限说明。\n在使用我们的产品前，请您认真阅读%s的全部内容。</string>
@@ -101,4 +101,8 @@
     <string name="label_payment_wxpay">微信</string>
     <string name="label_payment_alipay">支付宝</string>
     <string name="label_payment_eth">以太坊</string>
+    <string name="label_net_speed_service">网速指示器服务</string>
+    <string name="label_net_speed_silence_channel">隐藏时通知</string>
+    <string name="label_net_speed_default_channel">活动时通知</string>
+    <string name="alert_msg_hide_threshold">当速度小于指定值时隐藏网速图标（单位B，1024B=1KB）</string>
 </resources>

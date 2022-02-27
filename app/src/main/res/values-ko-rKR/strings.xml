@@ -90,4 +90,8 @@
     <string name="summary_net_speed_hide_threshold" formatted="false">속도가%s보다 작으면 사육 속도를 숨긴다</string>
     <string name="summary_net_speed_unhide">숨기기 않음</string>
     <string name="alert_msg_guide" formatted="false">%s을 (를) 사용해 주셔서 감사합니다. 당사는 귀하의 개인 정보를 존중하고 보호하며,%s에서 어플리케이션에 필요한 장치별 권한 설명을 포함한 자세한 정보를 제공합니다. \n저희 제품을 사용하기 전에%s의 모든 내용을 주의 깊게 읽어 주시기 바랍니다.</string>
+    <string name="label_net_speed_service">인터넷 속도 표시기 서비스</string>
+    <string name="label_net_speed_silence_channel">숨길 때 알림</string>
+    <string name="label_net_speed_default_channel">행사시 안내</string>
+    <string name="alert_msg_hide_threshold">속도가 지정된 값보다 작을 때 네트워크 속도 아이콘 숨기기 (단위 B, 1024B = 1KB)</string>
 </resources>

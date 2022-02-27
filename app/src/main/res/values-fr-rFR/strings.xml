@@ -90,4 +90,8 @@
     <string name="summary_net_speed_hide_threshold" formatted="false">Masquer la vitesse du réseau de la colonne d’état lorsque la vitesse est inférieure à %s</string>
     <string name="summary_net_speed_unhide">Ne pas cacher</string>
     <string name="alert_msg_guide" formatted="false">Merci d’utiliser %s. Nous respectons et protégeons vos informations personnelles et les questions pertinentes sont détaillées dans %s, y compris les instructions sur les autorisations sensibles de l’appareil qui peuvent être nécessaires pour l’application. \nVeuillez lire attentivement l’intégralité du contenu de %s avant d’utiliser nos produits.</string>
+    <string name="label_net_speed_default_channel">Notification des activités</string>
+    <string name="label_net_speed_silence_channel">Notification en cas de caché</string>
+    <string name="label_net_speed_service">Service Vitesse Net</string>
+    <string name="alert_msg_hide_threshold">Masquer l’icône de vitesse internet lorsque la vitesse est inférieure à la valeur spécifiée (unité B, 1024B= 1KB)</string>
 </resources>
