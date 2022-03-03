@@ -13,6 +13,7 @@
 
     <style name="Style.BottomSheetStyle" parent="Widget.Material3.BottomSheet.Modal">
         <item name="shapeAppearance">@style/Shape.BottomSheetCorner</item>
+        <item name="android:maxWidth">480dp</item>
     </style>
 
     <style name="Shape.BottomSheetCorner" parent="">

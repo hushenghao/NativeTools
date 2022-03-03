@@ -59,7 +59,6 @@ abstract class AbsBottomSheetListFragment<T, H : RecyclerView.ViewHolder> :
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             WindowEdgeManager(requireContext()).applyEdgeToEdge(this.window)
-            //val behavior = (this as BottomSheetDialog).behavior
         }
     }
 

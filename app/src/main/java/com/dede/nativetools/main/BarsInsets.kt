@@ -7,7 +7,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
-import com.dede.nativetools.ui.SafeSpaceDecoration
+import com.dede.nativetools.ui.SafeDistance
 
 typealias OnWindowInsetsListener = (insets: WindowInsetsCompat) -> Unit
 
@@ -28,7 +28,7 @@ fun applyBottomBarsInsets(recyclerView: RecyclerView) {
         if (isAdded()) return@onWindowInsetsApply
 
         val systemBar = it.systemBar()
-        val itemDecoration = SafeSpaceDecoration(bottom = systemBar.bottom)
+        val itemDecoration = SafeDistance(bottom = systemBar.bottom)
         recyclerView.addItemDecoration(itemDecoration)
         recyclerView.setTag(R.id.tag_recycler_view, true)
         recyclerView.requestLayout()
