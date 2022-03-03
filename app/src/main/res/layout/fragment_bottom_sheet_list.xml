@@ -10,11 +10,11 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:clickable="false"
         android:contentDescription="@null"
         android:focusable="false"
         android:importantForAccessibility="no"
-        android:layout_marginTop="16dp"
         android:soundEffectsEnabled="false"
         android:src="@drawable/shape_bottom_sheet_drag" />
 
@@ -41,7 +41,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="4"
