@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class SafeDistance(private val top: Int = 0, private val bottom: Int = 0) :
+class EdgeItemDecoration(private val top: Int = 0, private val bottom: Int = 0) :
     RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
@@ -39,7 +39,7 @@ class SafeDistance(private val top: Int = 0, private val bottom: Int = 0) :
     }
 }
 
-class SpaceItemDecoration(
+class GridItemDecoration(
     private val spacing: Int,
     private val includeEdge: Boolean = true,
     private val spanCount: Int = 1

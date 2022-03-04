@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ItemOpenSourceBinding
 import com.dede.nativetools.ui.AbsBottomSheetListFragment
-import com.dede.nativetools.ui.SpaceItemDecoration
+import com.dede.nativetools.ui.GridItemDecoration
 import com.dede.nativetools.util.*
 
 /**
@@ -28,11 +28,12 @@ class OpenSourceFragment : AbsBottomSheetListFragment<OpenSource, OpenSourceFrag
         super.onViewCreated(view, savedInstanceState)
         binding.tvMessage.isGone = true
         binding.tvTitle.isGone = true
-        binding.recyclerView.addItemDecoration(SpaceItemDecoration(12.dp))
+        binding.recyclerView.addItemDecoration(GridItemDecoration(12.dp))
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.openSourceList.observe(this) {
             setData(it)
         }
+        // "^(META-INF/)?([^/]+)\\.(version|properties)$"
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {

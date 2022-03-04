@@ -13,6 +13,7 @@ import com.dede.nativetools.databinding.FragmentBottomSheetListBinding
 import com.dede.nativetools.databinding.ItemBottomSheetListBinding
 import com.dede.nativetools.main.WindowEdgeManager
 import com.dede.nativetools.main.applyBottomBarsInsets
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 open class BottomSheetListFragment<T> :
@@ -59,6 +60,10 @@ abstract class AbsBottomSheetListFragment<T, H : RecyclerView.ViewHolder> :
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             WindowEdgeManager(requireContext()).applyEdgeToEdge(this.window)
+            val behavior = (this as BottomSheetDialog).behavior
+            behavior.skipCollapsed = true
+            @Suppress("VisibleForTests", "RestrictedApi")
+            behavior.disableShapeAnimations()
         }
     }
 
