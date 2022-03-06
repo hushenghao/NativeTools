@@ -9,6 +9,7 @@ import android.os.Build
 import android.provider.Settings
 import android.widget.RemoteViews
 import androidx.core.app.NotificationChannelCompat
+import androidx.core.app.NotificationChannelGroupCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.graphics.drawable.IconCompat
@@ -25,7 +26,10 @@ import com.dede.nativetools.util.*
  */
 object NetSpeedNotificationHelper {
 
-    private const val CHANNEL_ID = "net_speed_2"
+    private const val CHANNEL_GROUP_ID = "net_speed_channel_group"
+
+    private const val CHANNEL_ID_DEFAULT = "net_speed_channel_default"
+    private const val CHANNEL_ID_SILENCE = "net_speed_channel_silence"
 
     private fun isSecure(context: Context): Boolean {
         val keyguardManager = context.requireSystemService<KeyguardManager>()
@@ -40,7 +44,7 @@ object NetSpeedNotificationHelper {
             Intent(
                 Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
                 Settings.EXTRA_APP_PACKAGE to context.packageName,
-                Settings.EXTRA_CHANNEL_ID to CHANNEL_ID
+                Settings.EXTRA_CHANNEL_ID to CHANNEL_ID_DEFAULT
             )
         } else {
             // Settings.ACTION_NOTIFICATION_SETTINGS
@@ -55,7 +59,7 @@ object NetSpeedNotificationHelper {
             Intent(
                 Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
                 Settings.EXTRA_APP_PACKAGE to packageName,
-                Settings.EXTRA_CHANNEL_ID to CHANNEL_ID
+                Settings.EXTRA_CHANNEL_ID to CHANNEL_ID_DEFAULT
             )
         } else {
             Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:$packageName")
@@ -68,7 +72,8 @@ object NetSpeedNotificationHelper {
         val areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled()
         var channelDisabled = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = notificationManagerCompat.getNotificationChannel(CHANNEL_ID)
+            val notificationChannel =
+                notificationManagerCompat.getNotificationChannel(CHANNEL_ID_DEFAULT)
             if (notificationChannel != null) {
                 val importance = notificationChannel.importance
                 channelDisabled = importance <= NotificationManagerCompat.IMPORTANCE_MIN
@@ -132,15 +137,21 @@ object NetSpeedNotificationHelper {
         rxSpeed: Long = 0L,
         txSpeed: Long = 0L,
     ): Notification {
-        val downloadSpeedStr: String =
-            NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
-                .splicing()
-        val uploadSpeedStr: String =
-            NetFormatter.format(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
-                .splicing()
 
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setOnlyAlertOnce(false)
+        createChannels(context)
+
+        val builder = if (configuration.showBlankNotification) {
+            // 显示透明图标，并降低通知优先级
+            NotificationCompat.Builder(context, CHANNEL_ID_SILENCE)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setSmallIcon(createBlankIcon(configuration))
+        } else {
+            NotificationCompat.Builder(context, CHANNEL_ID_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setSmallIcon(createIconCompat(configuration, rxSpeed, txSpeed))
+        }
+
+        builder.setOnlyAlertOnce(false)
             .setOngoing(true)
             .setLocalOnly(true)
             .setShowWhen(false)
@@ -148,17 +159,6 @@ object NetSpeedNotificationHelper {
             .setSound(null)
             .setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
             .setColorized(false)
-
-        if (configuration.showBlankNotification) {
-            // 显示透明图标，并降低通知优先级
-            builder.setPriority(NotificationCompat.PRIORITY_LOW)
-                .setSmallIcon(createBlankIcon(configuration))
-        } else {
-            builder.setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setSmallIcon(createIconCompat(configuration, rxSpeed, txSpeed))
-        }
-
-        createChannel(context)
 
         if (configuration.hideLockNotification) {
             builder.setVisibility(NotificationCompat.VISIBILITY_SECRET)
@@ -181,6 +181,13 @@ object NetSpeedNotificationHelper {
             val remoteViews = RemoteViews(context.packageName, R.layout.notification_empty_view)
             builder.setCustomContentView(remoteViews)
         } else {
+            val downloadSpeedStr: String =
+                NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+                    .splicing()
+            val uploadSpeedStr: String =
+                NetFormatter.format(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+                    .splicing()
+
             val contentStr =
                 context.getString(R.string.notify_net_speed_msg, uploadSpeedStr, downloadSpeedStr)
             builder.setContentTitle(contentStr)
@@ -210,24 +217,46 @@ object NetSpeedNotificationHelper {
 
     private var notificationChannelCreated = false
 
-    private fun createChannel(context: Context) {
+    private fun createChannels(context: Context) {
         if (notificationChannelCreated) {
             return
         }
-        val channel =
-            NotificationChannelCompat.Builder(
-                CHANNEL_ID,
-                NotificationManagerCompat.IMPORTANCE_LOW// 只允许降级
-            )
-                .setName(context.getString(R.string.label_net_speed))
-                .setDescription(context.getString(R.string.desc_net_speed_notify))
-                .setShowBadge(false)
-                .setVibrationEnabled(false)
-                .setLightsEnabled(false)
-                .setSound(null, null)
-                .build()
-        NotificationManagerCompat.from(context).createNotificationChannel(channel)
+        val manager = NotificationManagerCompat.from(context)
+
+        val channelGroup = NotificationChannelGroupCompat.Builder(CHANNEL_GROUP_ID)
+            .setName(context.getString(R.string.label_net_speed_service))
+            .setDescription(context.getString(R.string.desc_net_speed_notify))
+            .build()
+        manager.createNotificationChannelGroup(channelGroup)
+
+        val channelSilence = context.createChannel(true)
+        manager.createNotificationChannel(channelSilence)
+
+        val channelDefault = context.createChannel(false)
+        manager.createNotificationChannel(channelDefault)
+
         notificationChannelCreated = true
+    }
+
+    private fun Context.createChannel(isSilence: Boolean): NotificationChannelCompat {
+        val builder = if (isSilence) {
+            NotificationChannelCompat.Builder(
+                CHANNEL_ID_SILENCE,
+                NotificationManagerCompat.IMPORTANCE_LOW
+            ).setName(this.getString(R.string.label_net_speed_silence_channel))
+        } else {
+            NotificationChannelCompat.Builder(
+                CHANNEL_ID_DEFAULT,
+                NotificationManagerCompat.IMPORTANCE_DEFAULT
+            ).setName(this.getString(R.string.label_net_speed_default_channel))
+        }
+        return builder.setDescription(this.getString(R.string.desc_net_speed_notify))
+            .setShowBadge(false)
+            .setGroup(CHANNEL_GROUP_ID)
+            .setVibrationEnabled(false)
+            .setLightsEnabled(false)
+            .setSound(null, null)
+            .build()
     }
 
     private fun createIconCompat(

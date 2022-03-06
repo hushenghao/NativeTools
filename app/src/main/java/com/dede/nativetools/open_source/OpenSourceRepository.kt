@@ -106,7 +106,14 @@ class OpenSourceRepository {
                 "https://github.com/material-foundation/material-theme-builder",
                 R.drawable.ic_logo_material3,
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
-            )
+            ),
+            OpenSource(
+                "Firebase",
+                "Google",
+                "Firebase is an app development platform with tools to help you build, grow and monetize your app.",
+                "https://firebase.google.com/",
+                R.drawable.ic_logo_firebase,
+                "https://www.apache.org/licenses/LICENSE-2.0.txt")
         )
         list.sortWith { c1, c2 ->
             collator.compare(c1.name, c2.name)

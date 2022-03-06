@@ -1,13 +1,15 @@
 package com.dede.nativetools.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Rect
+import android.graphics.Point
 import android.graphics.Typeface
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.PopupWindow
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatSpinner
@@ -15,7 +17,7 @@ import androidx.appcompat.widget.ListPopupWindow
 import androidx.preference.DropDownPreference
 import androidx.preference.PreferenceViewHolder
 import com.dede.nativetools.util.declaredField
-import com.dede.nativetools.util.getRectOnFullWindow
+import kotlin.math.roundToInt
 
 abstract class FreestyleDropDownPreference(context: Context, attrs: AttributeSet?) :
     DropDownPreference(context, attrs) {
@@ -77,30 +79,32 @@ class TypefaceDropDownPreference(context: Context, attrs: AttributeSet?) :
 class NightModeDropDownPreference(context: Context, attrs: AttributeSet?) :
     DropDownPreference(context, attrs) {
 
-    private val selectedViewRect = Rect()
-
-    var onNightModeSelected: ((selectedViewRect: Rect) -> Unit)? = null
+    val pressedPoint = Point()
+    private var popupWindow: PopupWindow? = null
 
     override fun onBindViewHolder(view: PreferenceViewHolder) {
         super.onBindViewHolder(view)
         val spinner =
             view.findViewById(androidx.preference.R.id.spinner) as? AppCompatSpinner ?: return
-        spinner.runCatching {
+        popupWindow = spinner.runCatching {
             val fieldPopup = AppCompatSpinner::class.java.declaredField("mPopup")
             val listPopupWindow = fieldPopup.get(this) as ListPopupWindow
-            val fieldItemClickListener =
-                ListPopupWindow::class.java.declaredField("mItemClickListener")
-            val oldOnItemClickListener =
-                fieldItemClickListener.get(listPopupWindow) as AdapterView.OnItemClickListener
-            listPopupWindow.setOnItemClickListener { parent, view, position, id ->
-                view.getRectOnFullWindow(selectedViewRect)
-                if (!selectedViewRect.isEmpty) {
-                    onNightModeSelected?.invoke(Rect(selectedViewRect))
-                }
-                selectedViewRect.setEmpty()
+            val fieldPopupWindow = ListPopupWindow::class.java.declaredField("mPopup")
+            fieldPopupWindow.get(listPopupWindow) as PopupWindow
+        }.onFailure(Throwable::printStackTrace).getOrNull()
+    }
 
-                oldOnItemClickListener.onItemClick(parent, view, position, id)
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onClick() {
+        super.onClick()
+        val contentView = popupWindow?.contentView ?: return
+        contentView.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_UP -> {
+                    pressedPoint.set(event.rawX.roundToInt(), event.rawY.roundToInt())
+                }
             }
-        }.onFailure(Throwable::printStackTrace)
+            return@setOnTouchListener false
+        }
     }
 }

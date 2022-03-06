@@ -48,6 +48,8 @@ class FontDropDownPreference(context: Context, attrs: AttributeSet?) :
                 // 下载字体
                 downloadFont(fontKey)
                 notifyChanged()// fix Spinner.OnItemSelectedListener cannot recall
+            } else {
+                preferenceChangeListener?.onPreferenceChange(this, newValue)
             }
             return@setOnPreferenceChangeListener canApply// 下载过的字体才应用
         }
@@ -79,6 +81,7 @@ class FontDropDownPreference(context: Context, attrs: AttributeSet?) :
                 context.toast(com.dede.nativetools.R.string.toast_download_font_succeeded)
                 val fontKey = workInfo.outputData.getString(DownloadFontWork.EXTRA_FONT_KEY)
                 value = fontKey// 更新下载
+                preferenceChangeListener?.onPreferenceChange(this, value)
             }
             WorkInfo.State.FAILED -> {
                 context.toast(com.dede.nativetools.R.string.toast_download_font_failed)
@@ -97,7 +100,9 @@ class FontDropDownPreference(context: Context, attrs: AttributeSet?) :
         super.onDetached()
     }
 
+    private var preferenceChangeListener: OnPreferenceChangeListener? = null
+
     override fun setOnPreferenceChangeListener(onPreferenceChangeListener: OnPreferenceChangeListener?) {
-        throw IllegalStateException("setOnPreferenceChangeListener method cannot be override")
+        this.preferenceChangeListener = onPreferenceChangeListener
     }
 }

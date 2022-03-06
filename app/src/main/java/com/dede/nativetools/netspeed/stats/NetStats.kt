@@ -2,6 +2,7 @@ package com.dede.nativetools.netspeed.stats
 
 import android.net.TrafficStats
 import android.util.Log
+import com.google.firebase.perf.metrics.AddTrace
 
 interface NetStats {
 
@@ -10,7 +11,7 @@ interface NetStats {
         const val UNSUPPORTED = TrafficStats.UNSUPPORTED.toLong()
 
         const val WLAN_IFACE = "wlan0"
-        const val MOBILE_IFACE = "rmnet_data0"
+        //const val MOBILE_IFACE = "rmnet_data0"
 
         val Long.isSupported: Boolean get() = this != UNSUPPORTED
 
@@ -24,6 +25,7 @@ interface NetStats {
 
         private var netStats: NetStats? = null
 
+        @AddTrace(name = "创建NetStats")
         fun getInstance(): NetStats {
             if (netStats != null) {
                 return netStats!!
@@ -42,18 +44,14 @@ interface NetStats {
                 netStats = instance
                 break
             }
-            Log.i("NetSpeedHelper", "INetStats: $netStats")
+            Log.i("NetStats", "INetStats: $netStats")
             return checkNotNull(netStats) { "Not found supported INetStats" }
         }
 
         private fun create(clazz: Class<out NetStats>): NetStats? {
-            return when (clazz) {
-                Android31NetStats::class.java -> Android31NetStats()
-                ReflectNetStats::class.java -> ReflectNetStats()
-                ExcludeLoNetStats::class.java -> ExcludeLoNetStats()
-                NormalNetStats::class.java -> NormalNetStats()
-                else -> null
-            }
+            return clazz.runCatching { newInstance() }
+                .onFailure(Throwable::printStackTrace)
+                .getOrElse { NormalNetStats() }
         }
     }
 
@@ -73,5 +71,6 @@ interface NetStats {
     fun getTxBytes(): Long
 
     val name: String
+        get() = this.javaClass.simpleName
 
 }

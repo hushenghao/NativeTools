@@ -6,7 +6,7 @@
     <!-- http://zhongguose.com -->
     <!-- 深灰蓝 -->
     <!-- https://material-foundation.github.io/material-theme-builder -->
-    <color name="ic_launcher_background">#132C33</color>
+    <color name="ic_launcher_background">#00677C</color>>
 
     <color name="md_theme_primary">#00677C</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>

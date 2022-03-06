@@ -7,9 +7,6 @@ import java.lang.reflect.Method
 
 class ExcludeLoNetStats : NetStats {
 
-    override val name: String
-        get() = "ExcludeLoNetStats"
-
     override fun supported(): Boolean {
         return methodGetLoopbackRxBytes != null && methodGetLoopbackTxBytes != null
                 && getLoopbackRxBytes().isSupported

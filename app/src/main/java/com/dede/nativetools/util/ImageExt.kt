@@ -1,4 +1,5 @@
 @file:JvmName("ImageExt")
+@file:Suppress("unused")
 
 package com.dede.nativetools.util
 
@@ -17,8 +18,6 @@ import java.io.OutputStream
 
 private const val TAG = "ImageExt"
 
-const val MIME_PNG = "image/png"
-const val MIME_JPG = "image/jpg"
 private val ALBUM_DIR = Environment.DIRECTORY_PICTURES
 
 private class OutputFileTaker(var file: File? = null)
@@ -79,7 +78,7 @@ fun Bitmap.saveToAlbum(
     context: Context,
     fileName: String,
     relativePath: String? = null,
-    quality: Int = 75
+    quality: Int = 75,
 ): Uri? {
     // 插入图片信息
     val resolver = context.contentResolver
@@ -92,8 +91,7 @@ fun Bitmap.saveToAlbum(
 
     // 保存图片
     (imageUri.outputStream(resolver) ?: return null).use {
-        val format =
-            if (fileName.endsWith(".png")) Bitmap.CompressFormat.PNG else Bitmap.CompressFormat.JPEG
+        val format = fileName.getBitmapFormat()
         this@saveToAlbum.compress(format, quality, it)
         imageUri.finishPending(context, resolver, outputFile.file)
     }
@@ -112,7 +110,7 @@ private fun Uri.outputStream(resolver: ContentResolver): OutputStream? {
 private fun Uri.finishPending(
     context: Context,
     resolver: ContentResolver,
-    outputFile: File?
+    outputFile: File?,
 ) {
     val imageValues = ContentValues()
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
@@ -130,18 +128,42 @@ private fun Uri.finishPending(
     }
 }
 
+private fun String.getBitmapFormat(): Bitmap.CompressFormat {
+    val fileName = this.lowercase()
+    return when {
+        fileName.endsWith(".png") -> Bitmap.CompressFormat.PNG
+        fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") -> Bitmap.CompressFormat.JPEG
+        fileName.endsWith(".webp") -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+            Bitmap.CompressFormat.WEBP_LOSSLESS else @Suppress("DEPRECATION") Bitmap.CompressFormat.WEBP
+        else -> Bitmap.CompressFormat.PNG
+    }
+}
+
+private fun String.getMimeType(): String? {
+    val fileName = this.lowercase()
+    return when {
+        fileName.endsWith(".png") -> "image/png"
+        fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") -> "image/jpeg"
+        fileName.endsWith(".webp") -> "image/webp"
+        fileName.endsWith(".gif") -> "image/gif"
+        else -> null
+    }
+}
+
 /**
  * 插入图片到媒体库
  */
 private fun ContentResolver.insertMediaImage(
     fileName: String,
     relativePath: String?,
-    outputFileTaker: OutputFileTaker? = null
+    outputFileTaker: OutputFileTaker? = null,
 ): Uri? {
     // 图片信息
     val imageValues = ContentValues().apply {
-        val mimeType = if (fileName.endsWith(".png")) MIME_PNG else MIME_JPG
-        put(MediaStore.Images.Media.MIME_TYPE, mimeType)
+        val mimeType = fileName.getMimeType()
+        if (mimeType != null) {
+            put(MediaStore.Images.Media.MIME_TYPE, mimeType)
+        }
         val date = System.currentTimeMillis() / 1000
         put(MediaStore.Images.Media.DATE_ADDED, date)
         put(MediaStore.Images.Media.DATE_MODIFIED, date)

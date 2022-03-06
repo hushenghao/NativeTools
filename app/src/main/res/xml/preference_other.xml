@@ -11,6 +11,7 @@
         <SwitchPreferenceCompat
             app:icon="@drawable/ic_baseline_remove_circle"
             app:key="ignore_battery_optimize"
+            app:persistent="false"
             app:summary="@string/summary_ignore_battery_optimize"
             app:title="@string/label_ignore_battery_optimize" />
 
@@ -24,6 +25,7 @@
             app:useSimpleSummaryProvider="true" />
 
         <com.dede.nativetools.ui.NavigatePreference
+            app:eventName="网络使用统计"
             app:icon="@drawable/ic_outline_data_usage"
             app:navigateId="@id/action_other_to_netUsage"
             app:title="@string/label_full_net_usage" />
@@ -38,8 +40,10 @@
             app:title="@string/label_about" />
 
         <com.dede.nativetools.ui.NavigatePreference
+            app:eventName="捐赠"
             app:icon="@drawable/ic_outline_coffee"
             app:navigateId="@id/action_other_to_dialogDonate"
+            app:summary="@string/label_coffee"
             app:title="@string/action_donate" />
 
         <Preference
@@ -49,16 +53,19 @@
             app:title="@string/action_rate" />
 
         <com.dede.nativetools.ui.NavigatePreference
+            app:eventName="@string/action_beta"
             app:icon="@drawable/ic_outline_pest_control"
-            app:navigateUrl="@string/url_pgyer"
+            app:navigateId="@id/action_other_to_dialogBeta"
             app:title="@string/action_beta" />
 
         <com.dede.nativetools.ui.NavigatePreference
+            app:eventName="@string/github"
             app:icon="@drawable/ic_github_cat"
             app:navigateUrl="@string/url_github"
             app:title="@string/github" />
 
         <com.dede.nativetools.ui.NavigatePreference
+            app:eventName="开源相关"
             app:icon="@drawable/ic_open_source_line"
             app:navigateId="@id/action_other_to_openSource"
             app:title="@string/label_open_source" />
@@ -70,6 +77,7 @@
             app:title="@string/action_share" />
 
         <com.dede.nativetools.ui.NavigatePreference
+            app:eventName="诊断"
             app:icon="@drawable/ic_outline_pest_control"
             app:navigateId="@id/action_other_to_diagnosis"
             app:title="@string/label_diagnosis" />

@@ -5,6 +5,7 @@ import android.text.TextPaint
 import android.util.DisplayMetrics
 import android.util.Log
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
+import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.typeface.TypefaceGetter
 import com.dede.nativetools.util.*
 import kotlin.math.max
@@ -17,7 +18,7 @@ import kotlin.math.roundToInt
  */
 object NetTextIconFactory {
 
-    private val DEFAULT_CONFIG = Bitmap.Config.ARGB_8888
+    private val DEFAULT_CONFIG = Bitmap.Config.ALPHA_8
 
     private const val DEBUG_MODE = false
 
@@ -108,11 +109,11 @@ object NetTextIconFactory {
         val text1: String
         val text2: String
         when (configuration.mode) {
-            NetSpeedConfiguration.MODE_ALL -> {
+            NetSpeedPreferences.MODE_ALL -> {
                 text1 = NetFormatter.format(txByte, NetFormatter.FLAG_NULL, accuracy).splicing()
                 text2 = NetFormatter.format(rxByte, NetFormatter.FLAG_NULL, accuracy).splicing()
             }
-            NetSpeedConfiguration.MODE_UP -> {
+            NetSpeedPreferences.MODE_UP -> {
                 val upSplit = NetFormatter.format(txByte, NetFormatter.FLAG_FULL, accuracy)
                 text1 = upSplit.first
                 text2 = upSplit.second
@@ -190,7 +191,6 @@ object NetTextIconFactory {
         if (assistLine) {
             // 居中辅助线
             paint.style = Paint.Style.STROKE
-            paint.color = Color.YELLOW
             paint.strokeWidth = 1.5f.dpf
             paint.pathEffect = pathEffect
             canvas.drawLine(wh, 0f, wh, hf, paint)
@@ -205,7 +205,6 @@ object NetTextIconFactory {
     private fun resetPaint() {
         paint.pathEffect = null
         paint.strokeWidth = 0.5f.dpf
-        paint.color = Color.WHITE
         paint.style = Paint.Style.FILL
     }
 
@@ -214,7 +213,6 @@ object NetTextIconFactory {
         // 斜体字边框测量不准确???
         paint.getTextBounds(text, 0, text.length, rect)
         paint.style = Paint.Style.STROKE
-        paint.color = Color.WHITE
         paint.strokeWidth = 0.5f.dpf
         paint.pathEffect = pathEffect
         // 画笔字体对齐为方式为center
@@ -227,7 +225,7 @@ object NetTextIconFactory {
 
     private fun createLauncherForeground() {
         val bitmap =
-            createIconInternal("18.8", "KB/s", 512, NetSpeedConfiguration.defaultConfiguration)
+            createIconInternal("18.8", "KB/s", 512, NetSpeedConfiguration())
         bitmap.saveToAlbum(globalContext, "ic_launcher_foreground.png", "Net Monitor")
     }
 

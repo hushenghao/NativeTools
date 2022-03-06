@@ -1,5 +1,6 @@
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.util.Date
 import java.util.Properties
 
 val keystoreProperties = Properties().apply {
@@ -11,6 +12,10 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-parcelize")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
+    id("com.google.firebase.appdistribution")
     id("com.diffplug.spotless")
 }
 
@@ -21,8 +26,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 52
-        versionName = "3.6.0"
+        versionCode = 54
+        versionName = "3.7.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(
@@ -36,14 +41,14 @@ android {
                 "de-rDE",
                 "fr-rFR",
                 "es",
-                "pt-rPT",
-                "ar"
+                "pt-rPT"
             )
         )
 
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797
         setProperty("archivesBaseName", "native_tools_${versionName}_$versionCode")
+        buildConfigField("long", "BUILD_TIMESTAMP", "${Date().time}")
     }
 
     signingConfigs {
@@ -76,6 +81,9 @@ android {
         create("beta") {
             initWith(getByName("release"))
             versionNameSuffix = "-beta"
+            firebaseAppDistribution {
+                groups = "beta"
+            }
         }
     }
 
@@ -106,9 +114,13 @@ dependencies {
     implementation(deps.androidx.browser)
     implementation(deps.androidx.startup)
     implementation(deps.androidx.work.runtime.ktx)
+    implementation(deps.androidx.datastore.preferences)
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)
+
+    implementation(platform(deps.firebase.bom))
+    implementation(deps.bundles.firebase.ktx)
 
     debugImplementation(deps.bundles.squareup.leakcanary)
 
@@ -148,18 +160,16 @@ configurations.all {
 
 tasks.register<Exec>("pgyer") {
     val assemble = tasks.named("assembleBeta").get()
-    dependsOn("clean", assemble)
-    assemble.mustRunAfter("clean")
+    dependsOn(assemble)
 
-    val tree = fileTree("build/intermediates/apk/beta") {
-        include("*.apk")
-        builtBy("assembleBeta")
+    val tree = fileTree("build") {
+        include("outputs/apk/beta/*.apk", "intermediates/apk/beta/*.apk")
     }
     doFirst {
         val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
             "pgyer.api_key not found"
         }
-        val apkPath = tree.single().absolutePath
+        val apkPath = tree.first().absolutePath
         println("Upload Apk: $apkPath")
 
         commandLine(

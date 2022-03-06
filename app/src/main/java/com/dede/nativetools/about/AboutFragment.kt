@@ -11,6 +11,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.ColorRes
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.animation.addListener
@@ -38,7 +39,8 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private val binding by viewBinding(FragmentAboutBinding::bind)
     private val viewModel by viewModels<AboutViewModel>()
     private var toasted = false
-    private val colorIds: IntArray = intArrayOf(
+
+    private val colorIdNormal: IntArray = intArrayOf(
         R.color.md_theme_secondary,
         R.color.md_theme_secondaryContainer,
         R.color.md_theme_primary,
@@ -54,6 +56,25 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         com.google.android.material.R.color.material_blue_grey_950,
         com.google.android.material.R.color.material_grey_900,
     )
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private val colorIdsS = intArrayOf(
+        android.R.color.system_accent1_300,
+        android.R.color.system_accent1_600,
+        android.R.color.system_accent1_900,
+        android.R.color.system_accent2_300,
+        android.R.color.system_accent2_600,
+        android.R.color.system_accent2_900,
+        android.R.color.system_neutral1_300,
+        android.R.color.system_neutral1_600,
+        android.R.color.system_neutral1_900,
+        android.R.color.system_neutral2_300,
+        android.R.color.system_neutral2_600,
+        android.R.color.system_neutral2_900,
+    )
+    private val colorIds =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) colorIdsS else colorIdNormal
+
     private val outlineProvider = ViewOvalOutlineProvider(true)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -114,13 +135,14 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             followViews[i].apply {
                 scaleX = value
                 scaleY = value
-                alpha = value
+                //alpha = value
                 setTintColor(colorIds[Random.nextInt(colorIds.size)])
             }
         }
         if (count == ENABLE_FOLLOW_COUNT) {
             if (target == ENABLE_FOLLOW_COUNT) {
                 toast("BZZZTT!!1!🥚")
+                event("enable_egg")
             }
             binding.ivLogo.dragEnable = true
         }

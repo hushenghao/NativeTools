@@ -14,9 +14,7 @@ import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.utils.NetSpeedCompute
 import com.dede.nativetools.util.*
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
+import kotlinx.coroutines.*
 import kotlin.math.max
 
 
@@ -24,7 +22,7 @@ class NetSpeedService : Service(), Runnable {
 
     class NetSpeedBinder(private val service: NetSpeedService) : INetSpeedInterface.Stub() {
 
-        private val coroutineScope = mainScope + service.lifecycleJob
+        private val coroutineScope = CoroutineScope(Dispatchers.Main + service.lifecycleJob)
 
         override fun updateConfiguration(configuration: NetSpeedConfiguration?) {
             if (configuration == null) return
@@ -43,10 +41,8 @@ class NetSpeedService : Service(), Runnable {
         const val EXTRA_CONFIGURATION = "extra_configuration"
 
         fun createIntent(context: Context): Intent {
-            return Intent<NetSpeedService>(
-                context,
-                EXTRA_CONFIGURATION to NetSpeedConfiguration.initialize()
-            )
+            val configuration = NetSpeedConfiguration().updateFrom(globalDataStore.load())
+            return Intent<NetSpeedService>(context, EXTRA_CONFIGURATION to configuration)
         }
 
         fun launchForeground(context: Context) {
@@ -92,8 +88,8 @@ class NetSpeedService : Service(), Runnable {
         }
 
         val speed = when (configuration.mode) {
-            NetSpeedConfiguration.MODE_ALL -> max(rxSpeed, txSpeed)
-            NetSpeedConfiguration.MODE_UP -> txSpeed
+            NetSpeedPreferences.MODE_ALL -> max(rxSpeed, txSpeed)
+            NetSpeedPreferences.MODE_UP -> txSpeed
             else -> rxSpeed
         }
         if (speed < configuration.hideThreshold) {
@@ -110,7 +106,7 @@ class NetSpeedService : Service(), Runnable {
         notificationManager.notify(NOTIFY_ID, notify)
     }
 
-    private val configuration = NetSpeedConfiguration.defaultConfiguration
+    private val configuration = NetSpeedConfiguration()
 
     override fun onBind(intent: Intent): IBinder {
         return NetSpeedBinder(this)
@@ -130,7 +126,9 @@ class NetSpeedService : Service(), Runnable {
     }
 
     private fun startForeground() {
-        val notify = NetSpeedNotificationHelper.createNotification(this, configuration)
+        val notify = track("创建通知") {
+            NetSpeedNotificationHelper.createNotification(this, configuration)
+        }
         startForeground(NOTIFY_ID, notify)
     }
 
@@ -191,7 +189,9 @@ class NetSpeedService : Service(), Runnable {
                     stopSelf()
                 }
                 Intent.ACTION_SCREEN_ON -> {
-                    resume()// 直接更新指示器
+                    track("网速服务广播亮屏恢复") {
+                        resume()// 直接更新指示器
+                    }
                 }
                 Intent.ACTION_SCREEN_OFF -> {
                     pause()// 关闭屏幕时显示，只保留服务保活

@@ -9,6 +9,7 @@
     <declare-styleable name="NavigatePreference">
         <attr name="navigateId" format="reference" />
         <attr name="navigateUrl" format="string" />
+        <attr name="eventName" format="string" />
     </declare-styleable>
 
     <declare-styleable name="_Manifest">

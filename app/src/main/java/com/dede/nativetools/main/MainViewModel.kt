@@ -1,35 +1,35 @@
 package com.dede.nativetools.main
 
-import android.graphics.Rect
+import android.graphics.Point
 import android.os.Parcelable
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dede.nativetools.util.dpf
 import kotlinx.parcelize.Parcelize
 import kotlin.math.hypot
-import kotlin.math.min
 
 @Parcelize
 data class CircularReveal(
     val centerX: Int,
     val centerY: Int,
     val startRadius: Float,
-    val endRadius: Float
+    val endRadius: Float,
 ) : Parcelable
 
 class MainViewModel : ViewModel() {
 
     private val circularReveal = MutableLiveData<CircularReveal?>(null)
 
-    fun setCircularReveal(decorView: View, rect: Rect) {
-        circularReveal.value = createCircularReveal(decorView, rect)
+    fun setCircularReveal(decorView: View, point: Point) {
+        circularReveal.value = createCircularReveal(decorView, point)
     }
 
-    private fun createCircularReveal(decorView: View, rect: Rect): CircularReveal {
+    private fun createCircularReveal(decorView: View, point: Point): CircularReveal {
         return CircularReveal(
-            rect.left + rect.width() / 2,
-            rect.top + rect.height() / 2,
-            min(rect.width() / 2f, rect.height() / 2f),
+            point.x,
+            point.y,
+            20.dpf,
             // 勾股定理，这次真的跟它有关系
             hypot(decorView.width.toFloat(), decorView.height.toFloat())
         )

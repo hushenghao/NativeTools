@@ -1,9 +1,9 @@
 package com.dede.nativetools.netspeed
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -15,38 +15,45 @@ import com.dede.nativetools.netspeed.service.NetSpeedServiceController
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.util.*
+import com.google.firebase.analytics.FirebaseAnalytics
+import kotlinx.coroutines.flow.collect
 
 /**
  * 网速指示器设置页
  */
 class NetSpeedFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener,
+    Preference.OnPreferenceChangeListener,
     Preference.SummaryProvider<EditTextPreference> {
 
-    private val configuration = NetSpeedConfiguration.initialize()
+    private val configuration = NetSpeedConfiguration()
 
-    private val controller by lazy { NetSpeedServiceController(requireContext()) }
+    private val controller by later { NetSpeedServiceController(requireContext()) }
 
     private lateinit var usageSwitchPreference: SwitchPreferenceCompat
     private lateinit var statusSwitchPreference: SwitchPreferenceCompat
+    private lateinit var thresholdEditTextPreference: EditTextPreference
 
     private val activityResultLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (NetSpeedPreferences.status) {
-            checkNotificationEnable()
-        }
-        controller.startService(false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controller.bindService(onCloseCallback = {
+        lifecycleScope.launchWhenCreated {
+            globalDataStore.data.collect {
+                configuration.updateFrom(it)
+
+                val status = NetSpeedPreferences.status
+                if (status) {
+                    checkNotificationEnable()
+                    controller.startService(true)
+                }
+                statusSwitchPreference.isChecked = status
+            }
+        }
+
+        controller.onCloseCallback = {
             statusSwitchPreference.isChecked = false
-        })
-        statusSwitchPreference.isChecked = NetSpeedPreferences.status
+        }
         if (!Logic.checkAppOps(requireContext())) {
             usageSwitchPreference.isChecked = false
         }
@@ -57,25 +64,23 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        addPreferencesFromResource(R.xml.net_speed_preference)
+        preferenceManager.preferenceDataStore = DataStorePreference(requireContext())
+        addPreferencesFromResource(R.xml.preference_net_speed)
         initGeneralPreferenceGroup()
         initNotificationPreferenceGroup()
     }
 
     private fun initGeneralPreferenceGroup() {
-        statusSwitchPreference =
-            requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
-        val thresholdEditTextPreference =
-            requirePreference<EditTextPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD)
-        thresholdEditTextPreference.summaryProvider = this
-        thresholdEditTextPreference.onPreferenceChangeListener<String> { _, newValue ->
-            val hideThreshold = newValue.toLongOrNull()
-            if (hideThreshold == null) {
-                toast(R.string.summary_threshold_error)
-                return@onPreferenceChangeListener false
+        statusSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
+        statusSwitchPreference.onPreferenceChangeListener = this
+        requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_INTERVAL)
+            .onPreferenceChangeListener = this
+
+        thresholdEditTextPreference =
+            requirePreference<EditTextPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD).also {
+                it.summaryProvider = this
+                it.onPreferenceChangeListener = this
             }
-            return@onPreferenceChangeListener true
-        }
     }
 
     override fun provideSummary(preference: EditTextPreference): CharSequence {
@@ -98,49 +103,93 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     private fun initNotificationPreferenceGroup() {
         usageSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_USAGE)
+        usageSwitchPreference.onPreferenceChangeListener = this
+
+        requirePreference<CustomWidgetLayoutSwitchPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION).let {
+            it.onPreferenceChangeListener = this
+            it.bindCustomWidget = { holder ->
+                holder.findViewById(R.id.iv_preference_help)?.setOnClickListener {
+                    requireContext().showHideLockNotificationDialog()
+                }
+            }
+        }
+        bindPreferenceChangeListener(
+            this,
+            NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE,
+            NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
+            NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION
+        )
 
         updateNotificationPreferenceVisible()
-
-        requirePreference<CustomWidgetLayoutSwitchPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION)
-            .bindCustomWidget = {
-            it.findViewById(R.id.iv_preference_help)?.setOnClickListener {
-                requireContext().showHideLockNotificationDialog()
-            }
-        }
     }
 
-    override fun onStart() {
-        super.onStart()
-        globalPreferences.registerOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        globalPreferences.unregisterOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onSharedPreferenceChanged(preferences: SharedPreferences, key: String) {
-        configuration.updateOnPreferenceChanged(key)
-        when (key) {
+    override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
+        when (preference.key) {
             NetSpeedPreferences.KEY_NET_SPEED_STATUS -> {
-                val status = NetSpeedPreferences.status
+                val status = newValue as Boolean
                 if (status) controller.startService(true) else controller.stopService()
             }
-            NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
-            NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
-            NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
-            NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION,
-            NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE,
-            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION,
-            NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD,
-            -> {
-                updateConfiguration()
+            NetSpeedPreferences.KEY_NET_SPEED_INTERVAL -> {
+                configuration.interval = (newValue as String).toInt()
+                event(FirebaseAnalytics.Event.SELECT_ITEM) {
+                    param(FirebaseAnalytics.Param.ITEM_NAME, configuration.interval.toLong())
+                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "刷新间隔")
+                }
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD -> {
+                val strValue = (newValue as String)
+                val hideThreshold = if (strValue.isEmpty()) 0 else strValue.toLongOrNull()
+                if (hideThreshold == null) {
+                    toast(R.string.summary_threshold_error)
+                    return false
+                }
+                configuration.hideThreshold = hideThreshold
+                event(FirebaseAnalytics.Event.SELECT_ITEM) {
+                    param(FirebaseAnalytics.Param.ITEM_NAME, configuration.hideThreshold)
+                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "隐藏阈值")
+                }
+
+                val hideThresholdStr = hideThreshold.toString()
+                if (hideThresholdStr != newValue) {
+                    thresholdEditTextPreference.text = hideThresholdStr
+                    return false
+                }
+            }
+
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION -> {
+                configuration.hideLockNotification = newValue as Boolean
             }
             NetSpeedPreferences.KEY_NET_SPEED_USAGE -> {
-                updateConfiguration()
+                configuration.usage = newValue as Boolean
                 checkOpsPermission()
             }
+            NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE -> {
+                configuration.justMobileUsage = newValue as Boolean
+                event(FirebaseAnalytics.Event.SELECT_ITEM) {
+                    param(FirebaseAnalytics.Param.ITEM_NAME,
+                        configuration.justMobileUsage.toString())
+                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "只显示移动流量使用")
+                }
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
+                configuration.notifyClickable = newValue as Boolean
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE -> {
+                configuration.quickCloseable = newValue as Boolean
+            }
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
+                configuration.hideNotification = newValue as Boolean
+                event(FirebaseAnalytics.Event.SELECT_ITEM) {
+                    param(FirebaseAnalytics.Param.ITEM_NAME,
+                        configuration.hideNotification.toString())
+                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "隐藏通知")
+                }
+            }
+            else -> return true
         }
+        controller.updateConfiguration(configuration)
+        return true
     }
 
     private fun updateNotificationPreferenceVisible() {
@@ -158,19 +207,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
     }
 
-    private fun updateConfiguration() {
-        controller.updateConfiguration(configuration)
-    }
-
     override fun onDestroyView() {
         controller.unbindService()
         super.onDestroyView()
     }
 
     private fun checkOpsPermission() {
-        if (!configuration.usage) {
-            return
-        }
         Logic.requestOpsPermission(requireContext(), activityResultLauncherCompat, {
             usageSwitchPreference.isChecked = true
         }) {

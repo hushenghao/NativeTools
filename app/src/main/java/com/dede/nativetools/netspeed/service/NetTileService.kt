@@ -12,22 +12,31 @@ import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetSpeedCompute
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.util.Intent
+import com.dede.nativetools.util.globalDataStore
 import com.dede.nativetools.util.newTask
 import com.dede.nativetools.util.splicing
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.N)
 class NetTileService : TileService() {
 
-    private val configuration = NetSpeedConfiguration.initialize()
+    private val configuration = NetSpeedConfiguration()
 
     private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
         update(rxSpeed, txSpeed)
     }
+    private val lifecycleJob = Job()
+    private val coroutineScope = CoroutineScope(Dispatchers.IO + lifecycleJob)
 
     override fun onStartListening() {
-        // 获取最新的配置
-        configuration.reinitialize().also {
-            netSpeedCompute.interval = it.interval
+        coroutineScope.launch {
+            globalDataStore.data.collect {
+                configuration.updateFrom(it)
+            }
         }
         netSpeedCompute.start()
     }
@@ -70,6 +79,7 @@ class NetTileService : TileService() {
     }
 
     override fun onDestroy() {
+        lifecycleJob.cancel()
         netSpeedCompute.destroy()
         super.onDestroy()
     }

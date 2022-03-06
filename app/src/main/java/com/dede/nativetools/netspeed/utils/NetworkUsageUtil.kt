@@ -6,7 +6,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import androidx.annotation.WorkerThread
 import com.dede.nativetools.util.Logic
-import com.dede.nativetools.util.mainScope
 import com.dede.nativetools.util.requireSystemService
 import com.dede.nativetools.util.toZeroH
 import kotlinx.coroutines.*
@@ -28,12 +27,14 @@ object NetworkUsageUtil {
 
         private var job: Job? = null
 
+        private val coroutineScope = CoroutineScope(Dispatchers.IO)
+
         fun execute(block: suspend CoroutineScope.() -> T) {
             var job = this.job
             if (job != null && !job.isCompleted && !job.isCancelled) {
                 return
             }
-            job = mainScope.launch {
+            job = coroutineScope.launch {
                 dataRef.set(block())
             }
             job.invokeOnCompletion(this)

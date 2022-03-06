@@ -1,4 +1,4 @@
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">网速指示器</string>
     <string name="notify_net_speed_msg" formatted="false">上传：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • 下载：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g></string>
     <string name="notify_net_speed_sub" formatted="false">今日：<xliff:g example="10.5GB" id="usage">%s</xliff:g> • 本月：<xliff:g example="10.5GB" id="usage">%s</xliff:g></string>
@@ -60,6 +60,7 @@
     <string name="action_feedback">问题反馈</string>
     <string name="email" translatable="false">dede.hu@qq.com</string>
     <string name="url_pgyer" translatable="false">https://www.pgyer.com/U9kJ</string>
+    <string name="url_firebase_app_distribution" translatable="false">https://appdistribution.firebase.dev/i/fcdac68f4991245f</string>
     <string name="toast_copyed">已复制</string>
     <string name="toast_wx_payment_tip">微信付款码请长按保存图片后扫描</string>
     <string name="label_net_speed_toggle">切换</string>
@@ -108,7 +109,19 @@
     <string name="label_diagnosis">诊断</string>
     <string name="label_usage_just_mobile">只显示移动流量使用</string>
     <string name="label_net_speed_hide_threshold">隐藏阈值</string>
-    <string name="summary_net_speed_hide_threshold" formatted="false">当速度小于%s时隐藏状态栏网速</string>
+    <string name="summary_net_speed_hide_threshold" formatted="false">当速度小于%s时隐藏状态栏网速图标</string>
     <string name="summary_threshold_error">输入的阈值不正确</string>
     <string name="summary_net_speed_unhide">不隐藏</string>
+    <string name="alert_msg_guide" formatted="false">感谢您使用%s，我们尊重并保护您的个人信息，并在%s对相关事项进行了详细说明，包括应用所可能需要的设备敏感权限说明。\n在使用我们的产品前，请您认真阅读%s的全部内容。</string>
+
+    <string name="label_pgyer" tools:ignore="MissingTranslation">Pgyer</string>
+    <string name="label_firebase" tools:ignore="MissingTranslation">Firebase</string>
+    <string name="label_payment_wxpay" tools:ignore="MissingTranslation">WeChat Pay</string>
+    <string name="label_payment_alipay" tools:ignore="MissingTranslation">Alipay</string>
+    <string name="label_payment_eth" tools:ignore="MissingTranslation">ETH</string>
+    <string name="label_payment_paypal" translatable="false">Paypal</string>
+    <string name="label_net_speed_service">网速指示器服务</string>
+    <string name="label_net_speed_silence_channel">静默通知</string>
+    <string name="label_net_speed_default_channel">活动通知</string>
+    <string name="alert_msg_hide_threshold">当速度小于指定值时隐藏网速图标（单位B，1024B=1KB）</string>
 </resources>

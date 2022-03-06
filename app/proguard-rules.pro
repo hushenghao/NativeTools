@@ -15,6 +15,7 @@
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 -keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
@@ -22,11 +23,15 @@
 
 -printconfiguration ./build/full-r8-config.txt
 
+-keep public class * extends com.dede.nativetools.netspeed.stats.NetStats {
+   public <init>();
+}
+
 -keep class me.weishu.reflection.* {*;}
 
 -keepclassmembernames class androidx.appcompat.widget.AppCompatSpinner {
     private androidx.appcompat.widget.AppCompatSpinner$SpinnerPopup mPopup;
 }
 -keepclassmembernames class androidx.appcompat.widget.ListPopupWindow {
-    private android.widget.AdapterView$OnItemClickListener mItemClickListener;
+    android.widget.PopupWindow mPopup;
 }
