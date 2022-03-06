@@ -1,5 +1,6 @@
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.util.Date
 import java.util.Properties
 
 val keystoreProperties = Properties().apply {
@@ -14,6 +15,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
+    id("com.google.firebase.appdistribution")
     id("com.diffplug.spotless")
 }
 
@@ -24,8 +26,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 53
-        versionName = "3.6.1"
+        versionCode = 54
+        versionName = "3.7.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(
@@ -39,14 +41,14 @@ android {
                 "de-rDE",
                 "fr-rFR",
                 "es",
-                "pt-rPT",
-                "ar"
+                "pt-rPT"
             )
         )
 
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797
         setProperty("archivesBaseName", "native_tools_${versionName}_$versionCode")
+        buildConfigField("long", "BUILD_TIMESTAMP", "${Date().time}")
     }
 
     signingConfigs {
@@ -66,10 +68,6 @@ android {
         getByName("debug") {
             versionNameSuffix = "-debug"
             signingConfig = config
-            // https://firebase.google.com/docs/crashlytics/get-deobfuscated-reports?authuser=0&platform=android#keep-obfuscated-build-variants
-            // val extensions = extensions.getByName("firebaseCrashlytics") as
-            //        com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
-            // extensions.mappingFileUploadEnabled = false
         }
         getByName("release") {
             isMinifyEnabled = true
@@ -83,6 +81,9 @@ android {
         create("beta") {
             initWith(getByName("release"))
             versionNameSuffix = "-beta"
+            firebaseAppDistribution {
+                groups = "beta"
+            }
         }
     }
 
@@ -119,9 +120,7 @@ dependencies {
     implementation(deps.viewbinding.property.delegate)
 
     implementation(platform(deps.firebase.bom))
-    implementation(deps.firebase.analytics.ktx)
-    implementation(deps.firebase.crashlytics.ktx)
-    implementation(deps.firebase.perf.ktx)
+    implementation(deps.bundles.firebase.ktx)
 
     debugImplementation(deps.bundles.squareup.leakcanary)
 
@@ -161,18 +160,16 @@ configurations.all {
 
 tasks.register<Exec>("pgyer") {
     val assemble = tasks.named("assembleBeta").get()
-    dependsOn("clean", assemble)
-    assemble.mustRunAfter("clean")
+    dependsOn(assemble)
 
-    val tree = fileTree("build/intermediates/apk/beta") {
-        include("*.apk")
-        builtBy("assembleBeta")
+    val tree = fileTree("build") {
+        include("outputs/apk/beta/*.apk", "intermediates/apk/beta/*.apk")
     }
     doFirst {
         val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
             "pgyer.api_key not found"
         }
-        val apkPath = tree.single().absolutePath
+        val apkPath = tree.first().absolutePath
         println("Upload Apk: $apkPath")
 
         commandLine(

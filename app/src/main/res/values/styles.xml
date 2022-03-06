@@ -5,8 +5,25 @@
     </style>
 
     <style name="Style.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-        <item name="paddingRightSystemWindowInsets">false</item>
         <item name="paddingLeftSystemWindowInsets">false</item>
+        <item name="paddingRightSystemWindowInsets">false</item>
+        <item name="paddingBottomSystemWindowInsets">false</item>
+        <item name="bottomSheetStyle">@style/Style.BottomSheetStyle</item>
+    </style>
+
+    <style name="Style.BottomSheetStyle" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="shapeAppearance">@style/Shape.BottomSheetCorner</item>
+        <item name="android:maxWidth">480dp</item>
+    </style>
+
+    <style name="Shape.BottomSheetCorner" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="Shape.RoundedCornerImage" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
     </style>
 
     <style name="Style.ActionMenu" parent="Widget.Material3.PopupMenu">

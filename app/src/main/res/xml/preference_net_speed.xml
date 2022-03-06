@@ -36,6 +36,7 @@
         <com.dede.nativetools.ui.MaterialEditTextPreference
             app:defaultValue="0"
             app:dialogLayout="@layout/override_preference_dialog_edittext"
+            app:dialogMessage="@string/alert_msg_hide_threshold"
             app:icon="@drawable/ic_baseline_remove_circle"
             app:key="net_speed_hide_threshold"
             app:title="@string/label_net_speed_hide_threshold"

@@ -34,7 +34,7 @@ class OtherFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore = DataStorePreference(requireContext())
-        addPreferencesFromResource(R.xml.other_preference)
+        addPreferencesFromResource(R.xml.preference_other)
         initOtherPreferenceGroup()
     }
 

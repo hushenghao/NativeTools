@@ -1,22 +1,24 @@
 package com.dede.nativetools.donate
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.dede.nativetools.R
 
 class Payment(
     @DrawableRes
     val resId: Int,
-    val title: String? = null,
+    @StringRes
+    val textId: Int
 )
 
 class DonateRepository {
 
     fun getPaymentList(): List<Payment> {
         return arrayListOf(
-            Payment(R.drawable.img_logo_eth, "ETH"),
-            Payment(R.drawable.img_logo_wxpay),
-            Payment(R.drawable.img_logo_alipay),
-            Payment(R.drawable.img_logo_paypal)
+            Payment(R.drawable.ic_logo_eth, R.string.label_payment_eth),
+            Payment(R.drawable.ic_logo_alipay, R.string.label_payment_alipay),
+            Payment(R.drawable.ic_logo_wxpay, R.string.label_payment_wxpay),
+            Payment(R.drawable.ic_logo_paypal, R.string.label_payment_paypal)
         )
     }
 

@@ -7,7 +7,7 @@
     <item
         android:width="100px"
         android:height="100px"
-        android:drawable="@drawable/ic_logo_wx"
+        android:drawable="@drawable/ic_logo_wxpay"
         android:gravity="center" />
     <item
         android:width="110px"

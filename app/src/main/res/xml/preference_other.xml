@@ -43,6 +43,7 @@
             app:eventName="捐赠"
             app:icon="@drawable/ic_outline_coffee"
             app:navigateId="@id/action_other_to_dialogDonate"
+            app:summary="@string/label_coffee"
             app:title="@string/action_donate" />
 
         <Preference
@@ -54,7 +55,7 @@
         <com.dede.nativetools.ui.NavigatePreference
             app:eventName="@string/action_beta"
             app:icon="@drawable/ic_outline_pest_control"
-            app:navigateUrl="@string/url_pgyer"
+            app:navigateId="@id/action_other_to_dialogBeta"
             app:title="@string/action_beta" />
 
         <com.dede.nativetools.ui.NavigatePreference

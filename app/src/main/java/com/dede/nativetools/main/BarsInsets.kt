@@ -7,7 +7,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
-import com.dede.nativetools.ui.SpaceItemDecoration
+import com.dede.nativetools.ui.EdgeItemDecoration
 
 typealias OnWindowInsetsListener = (insets: WindowInsetsCompat) -> Unit
 
@@ -22,19 +22,16 @@ fun View.onWindowInsetsApply(listener: OnWindowInsetsListener) {
 }
 
 fun applyBottomBarsInsets(recyclerView: RecyclerView) {
-    fun isAdded() = (recyclerView.getTag(R.id.tag_recycler_view) as? Boolean) ?: false
-    if (isAdded()) return
-    val itemDecoration = SpaceItemDecoration(0)
     recyclerView.onWindowInsetsApply {
+        val old = recyclerView.getTag(R.id.tag_recycler_view) as? RecyclerView.ItemDecoration
+        if (old != null) {
+            recyclerView.removeItemDecoration(old)
+        }
+
         val systemBar = it.systemBar()
-        itemDecoration.overrideLastItemOffsets = { outRect ->
-            outRect.bottom = systemBar.bottom
-        }
-        if (!isAdded()) {
-            recyclerView.addItemDecoration(itemDecoration)
-            recyclerView.setTag(R.id.tag_recycler_view, true)
-            return@onWindowInsetsApply
-        }
+        val itemDecoration = EdgeItemDecoration(bottom = systemBar.bottom)
+        recyclerView.addItemDecoration(itemDecoration)
+        recyclerView.setTag(R.id.tag_recycler_view, itemDecoration)
         recyclerView.requestLayout()
     }
 }

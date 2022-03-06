@@ -26,6 +26,7 @@ import androidx.navigation.ui.navigateUp
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ActivityMainBinding
+import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.ui.NavigatePreference
@@ -125,6 +126,10 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         )
 
         handleDeepLink(intent)
+
+        if (!NetSpeedPreferences.privacyAgreed) {
+            navController.navigate(R.id.dialogGuide)
+        }
     }
 
     override fun onDestinationChanged(

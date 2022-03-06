@@ -93,7 +93,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             }
         }
         preferenceManager.preferenceDataStore = DataStorePreference(requireContext())
-        addPreferencesFromResource(R.xml.net_speed_advanced_preference)
+        addPreferencesFromResource(R.xml.preference_net_speed_advanced)
         bindPreferenceChangeListener(
             this,
             NetSpeedPreferences.KEY_NET_SPEED_FONT,

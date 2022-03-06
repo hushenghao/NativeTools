@@ -10,10 +10,6 @@ import android.os.Process
 import android.provider.Settings
 import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.math.MathUtils
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.BuildConfig
 import com.dede.nativetools.NativeToolsApp
 import com.dede.nativetools.R
@@ -22,6 +18,7 @@ import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.dede.nativetools.netspeed.stats.NetStats
 import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
 import com.dede.nativetools.other.OtherPreferences
+import java.text.SimpleDateFormat
 import java.util.*
 
 fun isNightMode(): Boolean {
@@ -50,28 +47,18 @@ val Context.isIgnoringBatteryOptimizations
         return powerManager.isIgnoringBatteryOptimizations(this.packageName)
     }
 
-fun Context.getVersionSummary() =
-    getString(R.string.summary_about_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
+fun Context.getVersionSummary(): String {
+    val versionName = if (BuildConfig.DEBUG || BuildConfig.BUILD_TYPE == "beta") {
+        val timestamp = BuildConfig.BUILD_TIMESTAMP
+        val time = SimpleDateFormat("yyMMdd.HHmm", Locale.getDefault()).format(Date(timestamp))
+        BuildConfig.VERSION_NAME + "-" + time
+    } else {
+        BuildConfig.VERSION_NAME
+    }
+    return getString(R.string.summary_about_version, versionName, BuildConfig.VERSION_CODE)
+}
 
 object Logic {
-
-    fun calculateAndCreateLayoutManager(context: Context): RecyclerView.LayoutManager {
-        val spanCount = calculateGridSpanCount(context)
-        return if (spanCount == 1) {
-            LinearLayoutManager(context)
-        } else {
-            GridLayoutManager(context, spanCount)
-        }
-    }
-
-    private fun calculateGridSpanCount(context: Context): Int {
-        val resources = context.resources
-        val displayMetrics = resources.displayMetrics
-        val displayWidth = displayMetrics.widthPixels
-        val itemWidth = resources.getDimensionPixelSize(R.dimen.dynamic_item_width)
-        val gridSpanCount = displayWidth / itemWidth
-        return MathUtils.clamp(gridSpanCount, 1, 3)
-    }
 
     fun isSimplifiedChinese(context: Context): Boolean {
         val local = getLocale(context)
