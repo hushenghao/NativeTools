@@ -21,7 +21,7 @@ import com.dede.nativetools.util.*
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
 import com.google.firebase.analytics.FirebaseAnalytics
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.firstOrNull
 import kotlin.math.roundToInt
 
 /**
@@ -88,9 +88,8 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         lifecycleScope.launchWhenCreated {
-            globalDataStore.data.collect {
-                configuration.updateFrom(it)
-            }
+            val preferences = globalDataStore.data.firstOrNull() ?: return@launchWhenCreated
+            configuration.updateFrom(preferences)
         }
         preferenceManager.preferenceDataStore = DataStorePreference(requireContext())
         addPreferencesFromResource(R.xml.preference_net_speed_advanced)

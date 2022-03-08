@@ -16,7 +16,7 @@ import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.util.*
 import com.google.firebase.analytics.FirebaseAnalytics
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.firstOrNull
 
 /**
  * 网速指示器设置页
@@ -39,16 +39,15 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launchWhenCreated {
-            globalDataStore.data.collect {
-                configuration.updateFrom(it)
+            val preferences = globalDataStore.data.firstOrNull() ?: return@launchWhenCreated
+            configuration.updateFrom(preferences)
 
-                val status = NetSpeedPreferences.status
-                if (status) {
-                    checkNotificationEnable()
-                    controller.startService(true)
-                }
-                statusSwitchPreference.isChecked = status
+            val status = NetSpeedPreferences.status
+            if (status) {
+                checkNotificationEnable()
+                controller.startService(true)
             }
+            statusSwitchPreference.isChecked = status
         }
 
         controller.onCloseCallback = {
@@ -167,8 +166,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE -> {
                 configuration.justMobileUsage = newValue as Boolean
                 event(FirebaseAnalytics.Event.SELECT_ITEM) {
-                    param(FirebaseAnalytics.Param.ITEM_NAME,
-                        configuration.justMobileUsage.toString())
+                    param(
+                        FirebaseAnalytics.Param.ITEM_NAME,
+                        configuration.justMobileUsage.toString()
+                    )
                     param(FirebaseAnalytics.Param.CONTENT_TYPE, "只显示移动流量使用")
                 }
             }
@@ -181,8 +182,10 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
                 configuration.hideNotification = newValue as Boolean
                 event(FirebaseAnalytics.Event.SELECT_ITEM) {
-                    param(FirebaseAnalytics.Param.ITEM_NAME,
-                        configuration.hideNotification.toString())
+                    param(
+                        FirebaseAnalytics.Param.ITEM_NAME,
+                        configuration.hideNotification.toString()
+                    )
                     param(FirebaseAnalytics.Param.CONTENT_TYPE, "隐藏通知")
                 }
             }
