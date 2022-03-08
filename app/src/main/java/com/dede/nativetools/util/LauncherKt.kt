@@ -17,6 +17,8 @@ import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.dede.nativetools.R
 import com.dede.nativetools.main.MainActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 private fun createShortcutIcon(context: Context, resId: Int): IconCompat {
     val bitmap = LayerDrawable(
@@ -36,23 +38,32 @@ private fun createShortcutIcon(context: Context, resId: Int): IconCompat {
 fun installShortcuts() {
     val context = globalContext
     val shortcuts = arrayListOf(
-        context.createShortcutInfo("shortcut_diagnosis",
+        context.createShortcutInfo(
+            "shortcut_diagnosis",
             Intent(Intent.ACTION_VIEW, Uri.parse("https://dede.nativetools/diagnosis"))
                 .setClass(context, MainActivity::class.java),
             R.drawable.ic_outline_pest_control,
-            R.string.label_diagnosis),
-        context.createShortcutInfo("shortcut_about",
+            R.string.label_diagnosis
+        ),
+        context.createShortcutInfo(
+            "shortcut_about",
             Intent(Intent.ACTION_VIEW, Uri.parse("https://dede.nativetools/about"))
                 .setClass(context, MainActivity::class.java),
             R.drawable.ic_outline_info,
-            R.string.label_about),
-        context.createShortcutInfo("shortcut_toggle",
+            R.string.label_about
+        ),
+        context.createShortcutInfo(
+            "shortcut_toggle",
             Intent(Intent.ACTION_VIEW, MainActivity.EXTRA_TOGGLE to true)
                 .setClass(context, MainActivity::class.java),
             R.drawable.ic_outline_toggle_on,
-            R.string.label_net_speed_toggle)
+            R.string.label_net_speed_toggle
+        )
     )
-    ShortcutManagerCompat.setDynamicShortcuts(context, shortcuts)
+    mainScope.launch(Dispatchers.IO) {
+        // ANR ???
+        ShortcutManagerCompat.setDynamicShortcuts(context, shortcuts)
+    }
 }
 
 private fun Context.createShortcutInfo(
