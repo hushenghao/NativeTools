@@ -20,7 +20,8 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+//    compileSdk = 31
+    compileSdkPreview = "Tiramisu"
     buildToolsVersion = "32.0.0"
     defaultConfig {
         applicationId = "com.dede.nativetools"
