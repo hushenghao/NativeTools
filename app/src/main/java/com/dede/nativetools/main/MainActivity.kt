@@ -94,8 +94,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             right = binding.motionLayout,   // navigation bar
             // Some devices have navigation bars on the side, when landscape.
         ) {
-            val systemBar = it.systemBar()
-            binding.navigationView.updatePadding(left = systemBar.left)
+            val insets = it.stableInsets()
+            binding.navigationView.updatePadding(left = insets.left)
         }
 
         NavFragmentAssistant(supportFragmentManager)

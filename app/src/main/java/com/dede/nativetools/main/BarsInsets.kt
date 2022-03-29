@@ -11,8 +11,8 @@ import com.dede.nativetools.ui.EdgeItemDecoration
 
 typealias OnWindowInsetsListener = (insets: WindowInsetsCompat) -> Unit
 
-fun WindowInsetsCompat.systemBar(): Insets =
-    this.getInsets(WindowInsetsCompat.Type.systemBars())
+fun WindowInsetsCompat.stableInsets(): Insets =
+    this.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
 
 fun View.onWindowInsetsApply(listener: OnWindowInsetsListener) {
     ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets: WindowInsetsCompat ->
@@ -28,8 +28,8 @@ fun applyBottomBarsInsets(recyclerView: RecyclerView) {
             recyclerView.removeItemDecoration(old)
         }
 
-        val systemBar = it.systemBar()
-        val itemDecoration = EdgeItemDecoration(bottom = systemBar.bottom)
+        val insets = it.stableInsets()
+        val itemDecoration = EdgeItemDecoration(bottom = insets.bottom)
         recyclerView.addItemDecoration(itemDecoration)
         recyclerView.setTag(R.id.tag_recycler_view, itemDecoration)
         recyclerView.requestLayout()
@@ -42,18 +42,18 @@ fun applyBarsInsets(
     top: View? = null,
     right: View? = null,
     bottom: View? = null,
-    listener: OnWindowInsetsListener? = null
+    listener: OnWindowInsetsListener? = null,
 ) {
     if (left == null && top == null && right == null && bottom == null && listener == null) {
         return
     }
-    root.onWindowInsetsApply { insets ->
-        val systemBar = insets.systemBar()
-        left?.updatePadding(left = systemBar.left)
-        top?.updatePadding(top = systemBar.top)
-        right?.updatePadding(right = systemBar.right)
-        bottom?.updatePadding(bottom = systemBar.bottom)
+    root.onWindowInsetsApply {
+        val insets = it.stableInsets()
+        left?.updatePadding(left = insets.left)
+        top?.updatePadding(top = insets.top)
+        right?.updatePadding(right = insets.right)
+        bottom?.updatePadding(bottom = insets.bottom)
         root.requestLayout()
-        listener?.invoke(insets)
+        listener?.invoke(it)
     }
 }
