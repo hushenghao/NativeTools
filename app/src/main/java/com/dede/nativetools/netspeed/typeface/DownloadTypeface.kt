@@ -72,8 +72,8 @@ open class DownloadTypefaceImpl(context: Context, override val fontName: String)
     override val downloadUrl: String
         get() {
             return if (Logic.isSimplifiedChinese(context)) {
-                // 大陆访问 gitee 仓库
-                "https://gitee.com/dede_hu/fonts/raw/master/$fontName"
+                //"https://gitee.com/dede_hu/fonts/raw/master/$fontName"
+                "https://gitlab.com/hushenghao/fonts/-/raw/master/$fontName"
             } else {
                 "https://github.com/hushenghao/fonts/raw/master/$fontName"
             }

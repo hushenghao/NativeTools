@@ -164,6 +164,7 @@ object NetworkUsageUtil {
         startTime: Long,
         endTime: Long,
     ): NetworkStats.Bucket? {
-        return this.querySummaryForDevice(networkType, null, startTime, endTime)
+        return this.runCatching { querySummaryForDevice(networkType, null, startTime, endTime) }
+            .getOrNull()
     }
 }

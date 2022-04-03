@@ -19,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -34,9 +35,8 @@ class NetTileService : TileService() {
 
     override fun onStartListening() {
         coroutineScope.launch {
-            globalDataStore.data.collect {
-                configuration.updateFrom(it)
-            }
+            val preferences = globalDataStore.data.firstOrNull() ?: return@launch
+            configuration.updateFrom(preferences)
         }
         netSpeedCompute.start()
     }
