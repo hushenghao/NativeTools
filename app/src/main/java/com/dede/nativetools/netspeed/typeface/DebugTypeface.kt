@@ -6,7 +6,7 @@ import com.dede.nativetools.R
 
 class DebugTypeface(context: Context) : TypefaceGetter {
 
-    var fontName = "RobotoCondensed.ttf"
+    var fontName = "GoogleSans-Regular.ttf"
         private set
 
     private val typeface = kotlin.runCatching {

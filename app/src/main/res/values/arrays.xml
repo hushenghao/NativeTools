@@ -47,7 +47,8 @@
         <item>BebasKai</item>
         <item>BebasNeue</item>
         <item>RobotoCondensed</item>
-        <!--<item>Roboto</item>-->
+        <item>OpenSans_Condensed</item>
+        <item>GoogleSans</item>
         <item>FjallaOne</item>
 
         <item>ChakraPetch</item>
@@ -64,7 +65,8 @@
         <item>Bebas Kai</item>
         <item>Bebas Neue</item>
         <item>Roboto Condensed</item>
-        <!--你说的对--><!--<item>Roboto</item>-->
+        <item>Open Sans Condensed</item>
+        <item>Google Sans</item>
         <item>Fjalla One</item>
 
         <item>Chakra Petch</item>
