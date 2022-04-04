@@ -50,7 +50,7 @@ object NetSpeedPreferences {
     const val MODE_UP = "2"
 
     private const val DEFAULT_DOWNLOAD_SOURCE =
-        "https://gitlab.com/hushenghao/fonts/-/raw/master/%s"
+        "https://gitlab.com/hushenghao/fonts/-/raw/master/%s.ttf"
 
     var privacyAgreed: Boolean
         get() = globalDataStore.get(booleanPreferencesKey(KEY_PRIVACY_AGREED), false)
