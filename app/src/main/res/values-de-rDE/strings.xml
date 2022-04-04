@@ -94,4 +94,5 @@
     <string name="label_net_speed_silence_channel">Stille Benachrichtigung</string>
     <string name="label_net_speed_default_channel">Meldung von Tätigkeiten</string>
     <string name="alert_msg_hide_threshold">Netzwerk-funktionen ausblenden, wenn die geschwindigkeit kleiner als der angegebene wert ist (kilometereinheit B, 1024B=1KB)</string>
+    <string name="label_font_download_source">Die quelle runterladen</string>
 </resources>

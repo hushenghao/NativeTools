@@ -94,4 +94,5 @@
     <string name="label_net_speed_silence_channel">Тишина в эфире</string>
     <string name="label_net_speed_default_channel">Уведомление о деятельности</string>
     <string name="alert_msg_hide_threshold">Скрытая икона скорости меньше указанного значения (единица B, 1024B=1KB)</string>
+    <string name="label_font_download_source">Источник скачивания шрифта</string>
 </resources>

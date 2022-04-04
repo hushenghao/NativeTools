@@ -94,4 +94,5 @@
     <string name="label_net_speed_silence_channel">隱藏通知</string>
     <string name="label_net_speed_default_channel">活動通知</string>
     <string name="alert_msg_hide_threshold">當速度小於指定值時隱藏網速圖標（組織B，1024B=1KB）</string>
+    <string name="label_font_download_source">字體下載源</string>
 </resources>

@@ -46,8 +46,9 @@
 
         <item>BebasKai</item>
         <item>BebasNeue</item>
-        <item>FjallaOne</item>
         <item>RobotoCondensed</item>
+        <item>Roboto</item>
+        <item>FjallaOne</item>
 
         <item>ChakraPetch</item>
         <item>SquadaOne</item>
@@ -62,8 +63,9 @@
 
         <item>Bebas Kai</item>
         <item>Bebas Neue</item>
-        <item>Fjalla One</item>
         <item>Roboto Condensed</item>
+        <item>Roboto</item>
+        <item>Fjalla One</item>
 
         <item>Chakra Petch</item>
         <item>Squada One</item>
@@ -72,6 +74,16 @@
 
         <item>Press Start 2P</item>
         <item>VT323</item>
+    </string-array>
+
+    <string-array name="font_download_url">
+        <item>https://gitlab.com/hushenghao/fonts/-/raw/master/%s</item>
+        <item>https://github.com/hushenghao/fonts/raw/master/%s</item>
+    </string-array>
+
+    <string-array name="font_download_source">
+        <item>Gitlab</item>
+        <item>Github</item>
     </string-array>
 
     <string-array name="night_mode_toggle">

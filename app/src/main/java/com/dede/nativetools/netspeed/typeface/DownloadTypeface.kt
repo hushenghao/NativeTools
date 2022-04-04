@@ -5,7 +5,7 @@ import android.graphics.Typeface
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.work.*
-import com.dede.nativetools.util.Logic
+import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.util.closeFinally
 import com.dede.nativetools.util.isEmpty
 import com.google.firebase.ktx.Firebase
@@ -71,12 +71,13 @@ open class DownloadTypefaceImpl(context: Context, override val fontName: String)
 
     override val downloadUrl: String
         get() {
-            return if (Logic.isSimplifiedChinese(context)) {
-                //"https://gitee.com/dede_hu/fonts/raw/master/$fontName"
-                "https://gitlab.com/hushenghao/fonts/-/raw/master/$fontName"
-            } else {
-                "https://github.com/hushenghao/fonts/raw/master/$fontName"
-            }
+            return NetSpeedPreferences.downloadSource.format(fontName)
+//            return if (Logic.isSimplifiedChinese(context)) {
+//                //"https://gitee.com/dede_hu/fonts/raw/master/$fontName"
+//                "https://gitlab.com/hushenghao/fonts/-/raw/master/$fontName"
+//            } else {
+//                "https://github.com/hushenghao/fonts/raw/master/$fontName"
+//            }
         }
 }
 
