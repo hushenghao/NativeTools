@@ -49,15 +49,6 @@
         <item>OpenSans</item>
         <item>RobotoCondensed</item>
         <item>GoogleSans</item>
-        <item>FjallaOne</item>
-
-        <item>ChakraPetch</item>
-        <item>SquadaOne</item>
-        <item>PirataOne</item>
-        <item>Creepster</item>
-
-        <item>PressStart2P</item>
-        <item>VT323</item>
     </string-array>
     <string-array name="net_speed_font">
         <item>@string/summary_default</item>
@@ -67,15 +58,6 @@
         <item>Open Sans</item>
         <item>Roboto Condensed</item>
         <item>Google Sans</item>
-        <item>Fjalla One</item>
-
-        <item>Chakra Petch</item>
-        <item>Squada One</item>
-        <item>Pirata One</item>
-        <item>Creepster</item>
-
-        <item>Press Start 2P</item>
-        <item>VT323</item>
     </string-array>
 
     <string-array name="font_download_url">
