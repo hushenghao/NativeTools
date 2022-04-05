@@ -82,7 +82,6 @@
     <string name="label_net_speed_horizontal_scale">Zoom sur l’axe X</string>
     <string name="label_full_net_usage">Statistiques d’utilisation du web</string>
     <string name="label_today">Aujourd\'hui</string>
-    <string name="label_month">Mois</string>
     <string name="label_diagnosis">Diagnostic</string>
     <string name="label_usage_just_mobile">Afficher uniquement l’utilisation du trafic mobile</string>
     <string name="summary_threshold_error">Le seuil entré est incorrect</string>

@@ -24,7 +24,6 @@
     <string name="label_general">geral</string>
     <string name="label_home">Ficha técnica</string>
     <string name="label_ignore_battery_optimize">Ignorando a otimização da bateria</string>
-    <string name="label_month">Este mês</string>
     <string name="label_net_speed">Indicador de velocidade de internet</string>
     <string name="label_net_speed_advanced">Configurações avançadas para</string>
     <string name="label_net_speed_auto_start">Inicialização e auto arranque</string>

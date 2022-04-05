@@ -82,7 +82,6 @@
     <string name="label_net_speed_horizontal_scale">X 축 크기 조정</string>
     <string name="label_full_net_usage">인터넷 사용 통계</string>
     <string name="label_today">오늘</string>
-    <string name="label_month">지난</string>
     <string name="label_diagnosis">진단</string>
     <string name="label_usage_just_mobile">이동 데이터 사용량만 표시합니다</string>
     <string name="summary_threshold_error">입력한 문턱값이 올바르지 않습니다</string>

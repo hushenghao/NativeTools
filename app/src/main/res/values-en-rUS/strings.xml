@@ -80,7 +80,6 @@
     <string name="toast_download_font_succeeded">Font downloaded successfully</string>
     <string name="toast_download_font_failed">Font download failed</string>
     <string name="label_net_speed_horizontal_scale">X zoom</string>
-    <string name="label_month">Month</string>
     <string name="label_today">Today</string>
     <string name="label_full_net_usage">Network Usage statistics</string>
     <string name="label_diagnosis">Diagnosis</string>

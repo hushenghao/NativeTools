@@ -82,7 +82,6 @@
     <string name="label_net_speed_horizontal_scale">Икс-осевой зум</string>
     <string name="label_full_net_usage">Статистика использования сети</string>
     <string name="label_today">Today</string>
-    <string name="label_month">Month</string>
     <string name="label_diagnosis">диагноз</string>
     <string name="label_usage_just_mobile">Показывает только использование мобильных трафиков</string>
     <string name="summary_threshold_error">Входной порог неправильный</string>
