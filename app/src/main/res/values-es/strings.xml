@@ -94,4 +94,5 @@
     <string name="label_net_speed_silence_channel">Notificaciones silenciosas</string>
     <string name="label_net_speed_default_channel">Notificación de eventos</string>
     <string name="alert_msg_hide_threshold">Ocultar el icono de velocidad de internet cuando la velocidad es menor que el valor especificado (unidad B, 1024B=1KB)</string>
+    <string name="label_font_download_source">Fuente descargar fuente</string>
 </resources>

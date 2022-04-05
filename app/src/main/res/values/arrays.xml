@@ -46,32 +46,28 @@
 
         <item>BebasKai</item>
         <item>BebasNeue</item>
-        <item>FjallaOne</item>
+        <item>OpenSans</item>
         <item>RobotoCondensed</item>
-
-        <item>ChakraPetch</item>
-        <item>SquadaOne</item>
-        <item>PirataOne</item>
-        <item>Creepster</item>
-
-        <item>PressStart2P</item>
-        <item>VT323</item>
+        <item>GoogleSans</item>
     </string-array>
     <string-array name="net_speed_font">
         <item>@string/summary_default</item>
 
         <item>Bebas Kai</item>
         <item>Bebas Neue</item>
-        <item>Fjalla One</item>
+        <item>Open Sans</item>
         <item>Roboto Condensed</item>
+        <item>Google Sans</item>
+    </string-array>
 
-        <item>Chakra Petch</item>
-        <item>Squada One</item>
-        <item>Pirata One</item>
-        <item>Creepster</item>
+    <string-array name="font_download_url">
+        <item>https://gitlab.com/hushenghao/fonts/-/raw/master/%s</item>
+        <item>https://github.com/hushenghao/fonts/raw/master/%s</item>
+    </string-array>
 
-        <item>Press Start 2P</item>
-        <item>VT323</item>
+    <string-array name="font_download_source">
+        <item>Gitlab</item>
+        <item>Github</item>
     </string-array>
 
     <string-array name="night_mode_toggle">
