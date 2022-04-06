@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,9 +53,6 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         binding.recyclerView.itemAnimator = null
-        binding.tvStart.text =
-            NetFormatter.format(0L, NetFormatter.FLAG_NULL, NetFormatter.ACCURACY_SHORTER)
-                .splicing()
         Logic.requestOpsPermission(requireContext(), activityResultLauncherCompat, granted = {
             lifecycleScope.launchWhenStarted {
                 val manager = requireContext().requireSystemService<NetworkStatsManager>()
@@ -76,15 +74,6 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
                     )
                 )
                 val max = calculateMax(list)
-                binding.tvLabelYMax.text =
-                    NetFormatter.format(max, NetFormatter.FLAG_NULL, NetFormatter.ACCURACY_SHORTER)
-                        .splicing()
-                binding.tvLabelYCenter.text =
-                    NetFormatter.format(
-                        max / 2,
-                        NetFormatter.FLAG_NULL,
-                        NetFormatter.ACCURACY_SHORTER
-                    ).splicing()
                 for (netUsage in list) {
                     netUsage.calculateProgress(max)
                 }
@@ -92,6 +81,13 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
                     binding.tvUsageDetail.text = it.formatString(requireContext())
                 }
                 binding.recyclerView.scrollToPosition(list.size - 1)
+                val netUsageCoordinateDrawable = NetUsageCoordinateDrawable(requireContext(), max)
+                binding.recyclerView.background = netUsageCoordinateDrawable
+                binding.recyclerView.updatePadding(
+                    left = netUsageCoordinateDrawable.paddingLeft,
+                    top = netUsageCoordinateDrawable.paddingTop,
+                    right = netUsageCoordinateDrawable.paddingRight
+                )
             }
         })
     }
@@ -117,7 +113,7 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
         val mobileUpload: Long,
         val mobileDownload: Long,
 
-        var label: String
+        var label: String,
     ) {
         val currentMax: Long
             get() = max(max(wlanUpload, wlanDownload), max(mobileUpload, mobileDownload))
@@ -187,7 +183,7 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
 
     private class Adapter(
         val list: List<NetUsage>,
-        val onItemSelectedListener: (netUsage: NetUsage) -> Unit
+        val onItemSelectedListener: (netUsage: NetUsage) -> Unit,
     ) : RecyclerView.Adapter<Holder>() {
 
         private var selectedPosition = list.size - 2
@@ -273,7 +269,7 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
         manager: NetworkStatsManager,
         start: Long,
         end: Long,
-        label: String = "%tb".format(Date(start))
+        label: String = "%tb".format(Date(start)),
     ): NetUsage {
         @Suppress("DEPRECATION")
         return withContext(Dispatchers.IO) {

@@ -10,8 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:includeFontPadding="false"
-        android:paddingVertical="4dp"
+        android:paddingTop="4dp"
         android:textAppearance="?textAppearanceBodySmall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -27,13 +26,13 @@
         app:layout_constraintBottom_toBottomOf="@id/pb_wlan_usage"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pb_wlan_usage"
         tools:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/pb_wlan_usage"
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        android:layout_width="16dp"
+        android:layout_width="18dp"
         android:layout_height="0dp"
         android:layout_marginStart="12dp"
         android:max="100"
@@ -47,7 +46,7 @@
     <ProgressBar
         android:id="@+id/pb_mobile_usage"
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        android:layout_width="16dp"
+        android:layout_width="18dp"
         android:layout_height="0dp"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="12dp"
