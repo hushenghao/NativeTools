@@ -52,6 +52,8 @@
     <string name="label_usage_just_mobile">Mostrar apenas uso de tráfego móvel</string>
     <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Hoje: %s • Este mês: %s</string>
+    <string name="label_upload">Upload</string>
+    <string name="label_download">Download</string>
     <string name="settings">Ir para configurações</string>
     <string name="share_text" formatted="false">Encontrei um gadget fácil de usar \'%s\'Ir para download! %s</string>
     <string name="summary_default">Por omissão</string>

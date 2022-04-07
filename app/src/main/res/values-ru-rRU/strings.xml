@@ -3,6 +3,8 @@
     <string name="app_name">Указатель скорости сети</string>
     <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Today: %s • Month: %s</string>
+    <string name="label_upload">Upload</string>
+    <string name="label_download">Download</string>
     <string name="switch_on">откр</string>
     <string name="switch_off">закр</string>
     <string name="action_close">закр</string>

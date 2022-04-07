@@ -7,6 +7,8 @@
     <string name="dont_ask">Don\'t ask</string>
     <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Today: %s • Month: %s</string>
+    <string name="label_upload">Upload</string>
+    <string name="label_download">Download</string>
     <string name="switch_on">ON</string>
     <string name="switch_off">OFF</string>
     <string name="action_close">CLOSE</string>

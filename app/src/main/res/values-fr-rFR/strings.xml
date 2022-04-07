@@ -3,6 +3,8 @@
     <string name="app_name">Vitesse Net</string>
     <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Aujourd\'hui: %s • Mois: %s</string>
+    <string name="label_upload">Upload</string>
+    <string name="label_download">Download</string>
     <string name="switch_on">In</string>
     <string name="switch_off">Coupez</string>
     <string name="action_close">Approche</string>

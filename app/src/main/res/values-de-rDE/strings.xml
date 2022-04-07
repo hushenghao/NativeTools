@@ -3,6 +3,8 @@
     <string name="app_name">Anzeige der Net</string>
     <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Kröte: %s • Monat: %s</string>
+    <string name="label_upload">Upload</string>
+    <string name="label_download">Download</string>
     <string name="switch_on">geöffnet</string>
     <string name="switch_off">schließen</string>
     <string name="action_close">schließen</string>

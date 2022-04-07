@@ -7,6 +7,8 @@
     <string name="dont_ask">No más consejos</string>
     <string name="notify_net_speed_msg" formatted="false">Cargar: %s • Descargar: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Hoy: %s • Este mes: %s</string>
+    <string name="label_upload">Cargar</string>
+    <string name="label_download">Descargar</string>
     <string name="switch_on">ON</string>
     <string name="switch_off">OFF</string>
     <string name="action_close">Cerrar</string>

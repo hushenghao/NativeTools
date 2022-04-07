@@ -58,7 +58,7 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
                 val manager = requireContext().requireSystemService<NetworkStatsManager>()
                 val end = Calendar.getInstance()
                 val start = Calendar.getInstance().toZeroH()
-                start.set(Calendar.DAY_OF_MONTH, 1)
+                start.set(Calendar.DAY_OF_MONTH, 1)// 当月1号
                 start.add(Calendar.MONTH, -5)// 5个月前
                 val list = getMonthDateRanges(start, end).map {
                     loadNetUsage(manager, it.first.timeInMillis, it.second.timeInMillis)
@@ -114,6 +114,7 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
         val mobileDownload: Long,
 
         var label: String,
+        var fullLabel: String,
     ) {
         val currentMax: Long
             get() = max(max(wlanUpload, wlanDownload), max(mobileUpload, mobileDownload))
@@ -147,8 +148,17 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
 
         fun formatString(context: Context): String {
             val sb = StringBuilder()
-                .append(label)
+                .append(fullLabel)
                 .append(": ")
+                .appendLine()
+                .append("Total: \t")
+                .append(
+                    context.getString(
+                        R.string.notify_net_speed_msg,
+                        formatUsage(wlanUpload + mobileUpload),
+                        formatUsage(wlanDownload + mobileDownload)
+                    )
+                )
                 .appendLine()
                 .append("WLAN: \t")
                 .append(
@@ -165,15 +175,6 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
                         R.string.notify_net_speed_msg,
                         formatUsage(mobileUpload),
                         formatUsage(mobileDownload)
-                    )
-                )
-                .appendLine()
-                .append("Total: \t")
-                .append(
-                    context.getString(
-                        R.string.notify_net_speed_msg,
-                        formatUsage(wlanUpload + mobileUpload),
-                        formatUsage(wlanDownload + mobileDownload)
                     )
                 )
             return sb.toString()
@@ -250,7 +251,10 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
             val next = Calendar.getInstance()
             next.timeInMillis = current.timeInMillis
             next.add(Calendar.MONTH, 1)
-            result.add(Pair(current, next))
+
+            val monthEnd = Calendar.getInstance()
+            monthEnd.timeInMillis = next.timeInMillis - 1// 减去一毫秒，表示月末
+            result.add(Pair(current, monthEnd))
             current = next
         }
         return result
@@ -284,7 +288,8 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
                 wlanDownload = bucketWlan?.txBytes ?: 0L,
                 mobileUpload = bucketMobile?.rxBytes ?: 0L,
                 mobileDownload = bucketMobile?.txBytes ?: 0L,
-                label = label
+                label = label,
+                fullLabel = "%tF ~ %tF".format(Date(start), Date(end))
             )
         }
     }

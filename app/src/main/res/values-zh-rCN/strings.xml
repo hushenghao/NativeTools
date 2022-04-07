@@ -3,6 +3,8 @@
     <string name="app_name">网速指示器</string>
     <string name="notify_net_speed_msg" formatted="false">上传：%s • 下载：%s</string>
     <string name="notify_net_speed_sub" formatted="false">今日：%s • 本月：%s</string>
+    <string name="label_upload">上传</string>
+    <string name="label_download">下载</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
     <string name="action_close">关闭</string>
