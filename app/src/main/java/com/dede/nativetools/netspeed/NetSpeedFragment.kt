@@ -83,7 +83,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     override fun provideSummary(preference: EditTextPreference): CharSequence {
-        val bytes = preference.text.toLongOrNull()
+        val bytes = preference.text?.toLongOrNull()
         return if (bytes != null) {
             if (bytes > 0) {
                 val threshold = NetFormatter.format(

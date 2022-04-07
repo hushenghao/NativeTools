@@ -51,8 +51,8 @@ class SliderPreference(context: Context, attrs: AttributeSet?) : Preference(cont
         typedArray.recycle()
     }
 
-    override fun onGetDefaultValue(a: TypedArray?, index: Int): Any? {
-        return a?.getFloat(index, 0f)
+    override fun onGetDefaultValue(a: TypedArray, index: Int): Any {
+        return a.getFloat(index, 0f)
     }
 
     override fun onSetInitialValue(defaultValue: Any?) {
@@ -201,7 +201,7 @@ class SliderPreference(context: Context, attrs: AttributeSet?) : Preference(cont
         }
     }
 
-    override fun onSaveInstanceState(): Parcelable {
+    override fun onSaveInstanceState(): Parcelable? {
         val superState = super.onSaveInstanceState()
         if (isPersistent) {
             return superState
@@ -256,7 +256,7 @@ class SliderPreference(context: Context, attrs: AttributeSet?) : Preference(cont
             valueTo = source.readFloat()
         }
 
-        constructor(superState: Parcelable) : super(superState)
+        constructor(superState: Parcelable?) : super(superState)
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             super.writeToParcel(dest, flags)

@@ -84,6 +84,7 @@ android {
             versionNameSuffix = "-beta"
             firebaseAppDistribution {
                 groups = "beta"
+                releaseNotesFile = file("beta-distribution-nodes.txt").absolutePath
             }
         }
     }
@@ -172,11 +173,12 @@ tasks.register<Exec>("pgyer") {
         }
         val apkPath = tree.first().absolutePath
         println("Upload Apk: $apkPath")
+        val nodes = file("beta-distribution-nodes.txt").readText().trim()
 
         commandLine(
             "curl", "-F", "file=@$apkPath",
             "-F", "_api_key=$apiKey",
-            "-F", "buildUpdateDescription=Upload by gradle pgyer task",
+            "-F", "buildUpdateDescription=${nodes}",
             "https://www.pgyer.com/apiv2/app/upload"
         )
     }

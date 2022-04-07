@@ -48,8 +48,8 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)?.apply {
+    ): View {
+        return super.onCreateView(inflater, container, savedInstanceState).apply {
             binding =
                 LayoutNetSpeedAdvancedPreviewBinding.inflate(LayoutInflater.from(this.context))
             @SuppressLint("InlinedApi")

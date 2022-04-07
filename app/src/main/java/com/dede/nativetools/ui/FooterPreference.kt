@@ -16,7 +16,7 @@ class FooterPreference(context: Context, attrs: AttributeSet?) : Preference(cont
         layoutResource = R.layout.layout_footer_preference
     }
 
-    override fun onBindViewHolder(holder: PreferenceViewHolder?) {
+    override fun onBindViewHolder(holder: PreferenceViewHolder) {
     }
 }
 
