@@ -12,6 +12,9 @@ import android.widget.TextView
 import androidx.preference.EditTextPreference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
+/**
+ * 使用MaterialAlertDialog实现的EditTextPreference
+ */
 class MaterialEditTextPreference(context: Context, attrs: AttributeSet? = null) :
     EditTextPreference(context, attrs), DialogInterface.OnClickListener {
 

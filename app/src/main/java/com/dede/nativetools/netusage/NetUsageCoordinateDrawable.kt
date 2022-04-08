@@ -12,7 +12,9 @@ import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
-
+/**
+ * 网络使用柱状图坐标系Drawable
+ */
 class NetUsageCoordinateDrawable(val context: Context, max: Long) : Drawable() {
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)

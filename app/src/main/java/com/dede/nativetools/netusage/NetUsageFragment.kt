@@ -22,6 +22,9 @@ import com.dede.nativetools.util.ActivityResultLauncherCompat
 import com.dede.nativetools.util.Logic
 import com.dede.nativetools.util.UI
 
+/**
+ * 网络使用情况页面
+ */
 class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
 
     private val binding by viewBinding(FragmentNetUsageBinding::bind)

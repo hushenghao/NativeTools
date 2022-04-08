@@ -131,7 +131,7 @@ class NetUsageRepository {
     }
 
     /**
-     * 获取最近6个月中每个月时间范围
+     * 获取日期范围内每个月时间范围
      */
     private fun getMonthDateRanges(start: Calendar, end: Calendar): List<Pair<Calendar, Calendar>> {
         val result = mutableListOf<Pair<Calendar, Calendar>>()
@@ -140,10 +140,7 @@ class NetUsageRepository {
             val next = Calendar.getInstance()
             next.timeInMillis = current.timeInMillis
             next.add(Calendar.MONTH, 1)
-
-            val monthEnd = Calendar.getInstance()
-            monthEnd.timeInMillis = next.timeInMillis - 1// 减去一毫秒，表示月末
-            result.add(Pair(current, monthEnd))
+            result.add(Pair(current, next))
             current = next
         }
         return result
@@ -176,7 +173,7 @@ class NetUsageRepository {
                 mobileUpload = bucketMobile?.rxBytes ?: 0L,
                 mobileDownload = bucketMobile?.txBytes ?: 0L,
                 label = label,
-                fullLabel = "%tF ~ %tF".format(Date(start), Date(end))
+                fullLabel = "%tF ~ %tF".format(Date(start), Date(end - 1))// 减去最后一毫秒，让日期范围显示的更合理
             )
         }
     }
