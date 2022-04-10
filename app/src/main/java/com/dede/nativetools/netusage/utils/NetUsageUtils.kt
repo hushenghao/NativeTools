@@ -1,4 +1,4 @@
-package com.dede.nativetools.netspeed.utils
+package com.dede.nativetools.netusage.utils
 
 import android.app.usage.NetworkStats
 import android.app.usage.NetworkStatsManager
@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReference
  * @author hsh
  * @since 2021/8/6 10:35 上午
  */
-object NetworkUsageUtil {
+object NetUsageUtils {
 
     private class NetworkUsageJob<T : Comparable<T>>(data: T) : CompletionHandler {
         private val dataRef = AtomicReference<T>(data)

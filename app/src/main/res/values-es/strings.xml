@@ -7,6 +7,8 @@
     <string name="dont_ask">No más consejos</string>
     <string name="notify_net_speed_msg" formatted="false">Cargar: %s • Descargar: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Hoy: %s • Este mes: %s</string>
+    <string name="label_upload">Cargar</string>
+    <string name="label_download">Descargar</string>
     <string name="switch_on">ON</string>
     <string name="switch_off">OFF</string>
     <string name="action_close">Cerrar</string>
@@ -80,7 +82,6 @@
     <string name="toast_download_font_succeeded">Fuente descargada con éxito</string>
     <string name="toast_download_font_failed">Descargar fuente falló</string>
     <string name="label_net_speed_horizontal_scale">Zoom del eje X</string>
-    <string name="label_month">Este mes</string>
     <string name="label_today">Hoy</string>
     <string name="label_full_net_usage">Estadísticas de uso web</string>
     <string name="label_diagnosis">Diagnóstico</string>

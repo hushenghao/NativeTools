@@ -70,7 +70,7 @@
 
     <fragment
         android:id="@+id/netUsageFragment"
-        android:name="com.dede.nativetools.other.NetUsageFragment"
+        android:name="com.dede.nativetools.netusage.NetUsageFragment"
         android:label="@string/label_full_net_usage"
         tools:layout="@layout/fragment_net_usage" />
 

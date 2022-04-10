@@ -2,6 +2,8 @@ package com.dede.nativetools.netspeed.utils
 
 
 import java.text.DecimalFormat
+import kotlin.math.ceil
+import kotlin.math.pow
 
 
 /**
@@ -127,6 +129,23 @@ object NetFormatter {
             else -> "0.##"
         }
         return DecimalFormat(pattern).format(num)
+    }
+
+    /**
+     * 计算目标字节数最近的天花板整数字节
+     */
+    fun calculateCeilBytes(bytes: Long): Long {
+        var speed = bytes.toDouble()
+        var c = 0
+        while (speed >= THRESHOLD) {
+            speed /= UNIT_SIZE
+            c++
+        }
+        if (c == 0) {
+            return UNIT_SIZE.toLong()
+        }
+
+        return ceil(speed).toLong() * UNIT_SIZE.toDouble().pow(c.toDouble()).toLong()
     }
 
 }

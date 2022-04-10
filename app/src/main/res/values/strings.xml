@@ -1,5 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">网速指示器</string>
+    <string name="label_upload">上传</string>
+    <string name="label_download">下载</string>
     <string name="notify_net_speed_msg" formatted="false">上传：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g> • 下载：<xliff:g example="10.1KB/s" id="speed">%s</xliff:g></string>
     <string name="notify_net_speed_sub" formatted="false">今日：<xliff:g example="10.5GB" id="usage">%s</xliff:g> • 本月：<xliff:g example="10.5GB" id="usage">%s</xliff:g></string>
     <string name="tile_net_speed_label" translatable="false">↿%s ⇃%s</string>
@@ -103,7 +105,6 @@
     <string name="label_net_speed_horizontal_scale">X轴缩放</string>
     <string name="label_full_net_usage">网络使用统计</string>
     <string name="label_today">今日</string>
-    <string name="label_month">本月</string>
     <string name="action_license" translatable="false">License</string>
     <string name="action_homepage" translatable="false">Homepage</string>
     <string name="label_diagnosis">诊断</string>
