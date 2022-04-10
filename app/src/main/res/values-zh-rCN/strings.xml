@@ -90,7 +90,6 @@
     <string name="label_full_net_usage">网络使用统计</string>
     <string name="label_today">今日</string>
     <string name="label_diagnosis">诊断</string>
-    <string name="label_usage_just_mobile">只显示移动流量使用</string>
     <string name="label_net_speed_hide_threshold">隐藏阈值</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">当速度小于%s时隐藏状态栏网速图标</string>
     <string name="summary_threshold_error">输入的阈值不正确</string>
@@ -107,4 +106,10 @@
     <string name="label_net_speed_default_channel">活动通知</string>
     <string name="alert_msg_hide_threshold">当速度小于指定值时隐藏网速图标（单位B，1024B=1KB）</string>
     <string name="label_font_download_source">字体下载源</string>
+    <string name="label_imsi_config_tip">如果您使用多个SIM卡，可以单独配置每一张SIM卡的IMSI信息来显示详细的移动流量信息。IMSI信息可以尝试在拨号盘输入*#*#4636#*#*进行查看。</string>
+    <string name="label_sim_card_config">配置SIM卡信息</string>
+    <string name="alert_msg_add_imsi_config">输入您SIM卡的IMSI</string>
+    <string name="label_wifi">无线网络</string>
+    <string name="label_mobile">移动网络</string>
+    <string name="label_net_usage_config">网络使用情况配置</string>
 </resources>

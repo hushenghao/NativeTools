@@ -85,7 +85,6 @@
     <string name="label_full_net_usage">網絡使用統計</string>
     <string name="label_today">今日</string>
     <string name="label_diagnosis">診斷</string>
-    <string name="label_usage_just_mobile">只顯示移動流量使用</string>
     <string name="label_net_speed_hide_threshold">隱藏閾值</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">當速度小於%s時隱藏狀態列網速圖標</string>
     <string name="summary_threshold_error">輸入的閾值不正確</string>

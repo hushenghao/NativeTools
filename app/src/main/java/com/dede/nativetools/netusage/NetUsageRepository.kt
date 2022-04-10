@@ -5,7 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.utils.NetFormatter
-import com.dede.nativetools.netusage.utils.NetUsageUtils.queryNetworkUsageBucket
+import com.dede.nativetools.netusage.utils.NetUsageUtils.queryNetUsageBucket
 import com.dede.nativetools.util.requireSystemService
 import com.dede.nativetools.util.splicing
 import com.dede.nativetools.util.toZeroH
@@ -164,9 +164,9 @@ class NetUsageRepository {
         @Suppress("DEPRECATION")
         return withContext(Dispatchers.IO) {
             val bucketMobile =
-                manager.queryNetworkUsageBucket(ConnectivityManager.TYPE_MOBILE, start, end)
+                manager.queryNetUsageBucket(ConnectivityManager.TYPE_MOBILE, null, start, end)
             val bucketWlan =
-                manager.queryNetworkUsageBucket(ConnectivityManager.TYPE_WIFI, start, end)
+                manager.queryNetUsageBucket(ConnectivityManager.TYPE_WIFI, null, start, end)
             return@withContext NetUsage(
                 wlanUpload = bucketWlan?.rxBytes ?: 0L,
                 wlanDownload = bucketWlan?.txBytes ?: 0L,

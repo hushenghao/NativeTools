@@ -1,5 +1,6 @@
 package com.dede.nativetools.netusage
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -67,6 +68,10 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
                 )
             }
         })
+        @SuppressLint("SetTextI18n")
+        binding.tvMobile.text = "R: ${getString(R.string.label_mobile)}"
+        @SuppressLint("SetTextI18n")
+        binding.tvWlan.text = "L: ${getString(R.string.label_wifi)}"
     }
 
     private class Adapter(

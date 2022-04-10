@@ -85,7 +85,6 @@
     <string name="label_today">Hoy</string>
     <string name="label_full_net_usage">Estadísticas de uso web</string>
     <string name="label_diagnosis">Diagnóstico</string>
-    <string name="label_usage_just_mobile">Mostrar solo uso de tráfico móvil</string>
     <string name="summary_threshold_error">El umbral introducido no es correcto</string>
     <string name="label_net_speed_hide_threshold">Ocultar el umbral</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Ocultar la velocidad de la red de la columna de estado cuando la velocidad es inferior a %s</string>

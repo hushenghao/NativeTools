@@ -28,6 +28,7 @@ androidx-startup = "androidx.startup:startup-runtime:1.1.1"
 androidx-work-runtime-ktx = "androidx.work:work-runtime-ktx:2.7.1"
 androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.0.0"
 google-material = "com.google.android.material:material:1.5.0"
+androidx-security-crypto-ktx = "androidx.security:security-crypto-ktx:1.1.0-alpha03"
 
 free-reflection = "com.github.tiann:FreeReflection:3.1.0"
 viewbinding-property-delegate = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6"

@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.os.Parcelable
 import androidx.annotation.FloatRange
 import androidx.datastore.preferences.core.Preferences
+import com.dede.nativetools.NativeToolsApp
+import com.dede.nativetools.netusage.NetUsageConfigs
 import com.dede.nativetools.util.get
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
@@ -18,7 +20,8 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
     var notifyClickable: Boolean = true,
     var quickCloseable: Boolean = false,
     var usage: Boolean = false,
-    var justMobileUsage: Boolean = false,
+    var enableWifiUsage: Boolean = true,
+    var enableMobileUsage: Boolean = true,
     var hideNotification: Boolean = false,
     var hideLockNotification: Boolean = true,
     var textStyle: Int = NetSpeedPreferences.DEFAULT_TEXT_STYLE,
@@ -37,6 +40,7 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
     var textScale: Float = 1f,// 字体缩放
     @FloatRange(from = 0.2, to = 1.3)
     var horizontalScale: Float = 1f,// X轴缩放
+    var imsiSet: Set<String>? = null// 配置的IMSI
 ) : Parcelable {
 
     @IgnoredOnParcel
@@ -50,7 +54,8 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
         this.notifyClickable = configuration.notifyClickable
         this.quickCloseable = configuration.quickCloseable
         this.usage = configuration.usage
-        this.justMobileUsage = configuration.justMobileUsage
+        this.enableWifiUsage = configuration.enableWifiUsage
+        this.enableMobileUsage = configuration.enableMobileUsage
         this.hideNotification = configuration.hideNotification
         this.hideLockNotification = configuration.hideLockNotification
         this.textStyle = configuration.textStyle
@@ -63,6 +68,12 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
         this.relativeDistance = configuration.relativeDistance
         this.textScale = configuration.textScale
         this.horizontalScale = configuration.horizontalScale
+        this.imsiSet = configuration.imsiSet
+        return this
+    }
+
+    fun updateImsi(imsiSet: Set<String>?): NetSpeedConfiguration {
+        this.imsiSet = imsiSet
         return this
     }
 
@@ -137,9 +148,14 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
             defaultConfiguration.usage
         )
 
-        this.justMobileUsage = preferences.get(
-            NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE,
-            defaultConfiguration.justMobileUsage
+        this.enableWifiUsage = preferences.get(
+            NetUsageConfigs.KEY_NET_USAGE_WIFI,
+            defaultConfiguration.enableWifiUsage
+        )
+
+        this.enableMobileUsage = preferences.get(
+            NetUsageConfigs.KEY_NET_USAGE_MOBILE,
+            defaultConfiguration.enableMobileUsage
         )
 
         this.hideNotification = preferences.get(
@@ -151,6 +167,9 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION,
             defaultConfiguration.hideLockNotification
         )
+
+        // 获取已经启用的imsi
+        this.imsiSet = NetUsageConfigs(NativeToolsApp.getInstance()).getEnabledIMSI()
 
         return this
     }

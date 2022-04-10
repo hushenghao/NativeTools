@@ -85,7 +85,6 @@
     <string name="label_today">Today</string>
     <string name="label_full_net_usage">Network Usage statistics</string>
     <string name="label_diagnosis">Diagnosis</string>
-    <string name="label_usage_just_mobile">Only mobile traffic usage is displayed</string>
     <string name="label_net_speed_hide_threshold">Hide the threshold</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Hide the status of the network speed when the speed is less than %s</string>
     <string name="summary_threshold_error">The entered threshold is incorrect</string>

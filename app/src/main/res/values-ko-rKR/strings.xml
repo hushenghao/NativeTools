@@ -85,7 +85,6 @@
     <string name="label_full_net_usage">인터넷 사용 통계</string>
     <string name="label_today">오늘</string>
     <string name="label_diagnosis">진단</string>
-    <string name="label_usage_just_mobile">이동 데이터 사용량만 표시합니다</string>
     <string name="summary_threshold_error">입력한 문턱값이 올바르지 않습니다</string>
     <string name="label_net_speed_hide_threshold">임계값 숨기기</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">속도가%s보다 작으면 사육 속도를 숨긴다</string>
