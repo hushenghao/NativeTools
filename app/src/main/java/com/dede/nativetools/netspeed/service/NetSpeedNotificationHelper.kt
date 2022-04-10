@@ -18,7 +18,7 @@ import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
-import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
+import com.dede.nativetools.netusage.utils.NetUsageUtils
 import com.dede.nativetools.util.*
 
 /**
@@ -93,11 +93,11 @@ object NetSpeedNotificationHelper {
         val todayBytes: Long
         val monthBytes: Long
         if (configuration.justMobileUsage) {
-            todayBytes = NetworkUsageUtil.todayMobileUsageBytes(context)
-            monthBytes = NetworkUsageUtil.monthMobileUsageBytes(context)
+            todayBytes = NetUsageUtils.todayMobileUsageBytes(context)
+            monthBytes = NetUsageUtils.monthMobileUsageBytes(context)
         } else {
-            todayBytes = NetworkUsageUtil.todayNetworkUsageBytes(context)
-            monthBytes = NetworkUsageUtil.monthNetworkUsageBytes(context)
+            todayBytes = NetUsageUtils.todayNetworkUsageBytes(context)
+            monthBytes = NetUsageUtils.monthNetworkUsageBytes(context)
         }
         return context.getString(
             R.string.notify_net_speed_sub,

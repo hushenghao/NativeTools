@@ -5,7 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.utils.NetFormatter
-import com.dede.nativetools.netspeed.utils.NetworkUsageUtil.queryNetworkUsageBucket
+import com.dede.nativetools.netusage.utils.NetUsageUtils.queryNetworkUsageBucket
 import com.dede.nativetools.util.requireSystemService
 import com.dede.nativetools.util.splicing
 import com.dede.nativetools.util.toZeroH
