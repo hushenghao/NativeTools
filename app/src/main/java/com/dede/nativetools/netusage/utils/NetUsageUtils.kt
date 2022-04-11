@@ -28,7 +28,7 @@ object NetUsageUtils {
     const val TYPE_MOBILE = ConnectivityManager.TYPE_MOBILE
 
     const val RANGE_TYPE_TODAY = 0
-    const val RANGE_TYPE_MONTH = 0
+    const val RANGE_TYPE_MONTH = 1
 
     private class NetworkUsageJob<T : Comparable<T>>(data: T) : CompletionHandler {
         private val dataRef = AtomicReference<T>(data)
