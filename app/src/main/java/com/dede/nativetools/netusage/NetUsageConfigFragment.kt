@@ -118,8 +118,20 @@ class NetUsageConfigFragment : PreferenceFragmentCompat() {
     private fun createSimCardConfigPreference(
         index: Int,
         imsi: String,
-        isChecked: Boolean
+        isChecked: Boolean,
     ): SwitchPreferenceCompat {
+
+        fun String.privateIMSI(): String {
+            val size = this.length
+            if (size <= 4) return this
+
+            val arr = this.toCharArray()
+            for (i in 2 until size - 2) {
+                arr[i] = '*'
+            }
+            return String(arr)
+        }
+
         return CustomWidgetLayoutSwitchPreference(requireContext(), null).apply {
             this.widgetLayoutResource = R.layout.override_preference_widget_switch_compat
             this.bindCustomWidget = {
@@ -132,7 +144,7 @@ class NetUsageConfigFragment : PreferenceFragmentCompat() {
             this.isPersistent = false
             this.title = "SIM $index"
             this.key = imsi
-            this.summary = imsi
+            this.summary = imsi.privateIMSI()
             this.setIcon(R.drawable.ic_outline_sim_card)
             this.isChecked = isChecked
             onPreferenceChangeListener<Boolean> { _, newValue ->

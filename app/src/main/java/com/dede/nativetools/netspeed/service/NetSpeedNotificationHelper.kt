@@ -232,9 +232,17 @@ object NetSpeedNotificationHelper {
                 context.getString(R.string.notify_net_speed_msg, uploadSpeedStr, downloadSpeedStr)
             builder.setContentTitle(contentStr)
             if (configuration.usage) {
-                builder.setStyle(NotificationCompat.BigTextStyle())
                 val usageText = getUsageText(context, configuration)
-                builder.setContentText(usageText)
+                if (usageText != null && usageText.lines().size > 1) {
+                    // 多行文字
+                    val bigTextStyle = NotificationCompat.BigTextStyle()
+                        .setBigContentTitle(contentStr)
+                        .bigText(usageText)
+                    builder.setStyle(bigTextStyle)
+                        .setContentTitle(null)
+                } else {
+                    builder.setContentText(usageText)
+                }
             }
 
             if (configuration.quickCloseable) {
