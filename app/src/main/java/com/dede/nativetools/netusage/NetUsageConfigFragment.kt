@@ -83,11 +83,7 @@ class NetUsageConfigFragment : PreferenceFragmentCompat() {
         var index = 1
         for (imsi in netUsageConfigs.getAllIMSI()) {
             simCardCategory.addPreference(
-                createSimCardConfigPreference(
-                    index++,
-                    imsi,
-                    netUsageConfigs.isEnabled(imsi)
-                )
+                createSimCardConfigPreference(index++, imsi, netUsageConfigs.isEnabled(imsi))
             )
         }
     }
@@ -146,8 +142,9 @@ class NetUsageConfigFragment : PreferenceFragmentCompat() {
             this.key = imsi
             this.summary = imsi.privateIMSI()
             this.setIcon(R.drawable.ic_outline_sim_card)
+            this.setDefaultValue(isChecked)// 设置默认值，这时候还未onAttachedToHierarchy
             this.isChecked = isChecked
-            onPreferenceChangeListener<Boolean> { _, newValue ->
+            this.onPreferenceChangeListener<Boolean> { _, newValue ->
                 netUsageConfigs.setIMSIEnabled(imsi, newValue)
                 updateImsiConfig()
                 return@onPreferenceChangeListener true

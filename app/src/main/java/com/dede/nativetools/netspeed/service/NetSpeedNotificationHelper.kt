@@ -233,15 +233,14 @@ object NetSpeedNotificationHelper {
             builder.setContentTitle(contentStr)
             if (configuration.usage) {
                 val usageText = getUsageText(context, configuration)
+                builder.setContentText(usageText)
+                // big text
                 if (usageText != null && usageText.lines().size > 1) {
                     // 多行文字
                     val bigTextStyle = NotificationCompat.BigTextStyle()
                         .setBigContentTitle(contentStr)
                         .bigText(usageText)
                     builder.setStyle(bigTextStyle)
-                        .setContentTitle(null)
-                } else {
-                    builder.setContentText(usageText)
                 }
             }
 
