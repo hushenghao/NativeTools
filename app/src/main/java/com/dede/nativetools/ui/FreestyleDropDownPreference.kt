@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.preference.DropDownPreference
 import androidx.preference.PreferenceViewHolder
+import com.dede.nativetools.util.UI
 import com.dede.nativetools.util.declaredField
 import kotlin.math.roundToInt
 
@@ -81,6 +82,11 @@ class NightModeDropDownPreference(context: Context, attrs: AttributeSet?) :
 
     val pressedPoint = Point()
     private var popupWindow: PopupWindow? = null
+
+    init {
+        // 默认屏幕中心
+        pressedPoint.set(UI.displayMetrics().widthPixels / 2, UI.displayMetrics().heightPixels / 2)
+    }
 
     override fun onBindViewHolder(view: PreferenceViewHolder) {
         super.onBindViewHolder(view)
