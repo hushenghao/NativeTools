@@ -70,7 +70,8 @@ data class NetUsage(
                 )
             )
             .appendLine()
-            .append("WLAN: \t")
+            .append(context.getString(R.string.label_wifi))
+            .append(": \t")
             .append(
                 context.getString(
                     R.string.notify_net_speed_msg,
@@ -79,7 +80,8 @@ data class NetUsage(
                 )
             )
             .appendLine()
-            .append("Mobile: \t")
+            .append(context.getString(R.string.label_mobile))
+            .append(": \t")
             .append(
                 context.getString(
                     R.string.notify_net_speed_msg,

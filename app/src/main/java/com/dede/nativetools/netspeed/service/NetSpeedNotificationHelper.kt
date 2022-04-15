@@ -114,12 +114,14 @@ object NetSpeedNotificationHelper {
             return sb.toString()
         }
 
+        if (configuration.enableWifiUsage) {
+            sb.appendLine()
+        }
         // 移动流量
         var imsiSet: Set<String?>? = configuration.imsiSet
         if (imsiSet == null || imsiSet.isEmpty()) {
             imsiSet = setOf<String?>(null)
         }
-        sb.appendLine()
         val size = imsiSet.size
         var index = 1
         for (imsi in imsiSet) {
