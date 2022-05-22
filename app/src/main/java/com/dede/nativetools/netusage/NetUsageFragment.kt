@@ -1,11 +1,15 @@
 package com.dede.nativetools.netusage
 
+import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
@@ -67,6 +71,10 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
                 )
             }
         })
+        @SuppressLint("SetTextI18n")
+        binding.tvMobile.text = "R: ${getString(R.string.label_mobile)}"
+        @SuppressLint("SetTextI18n")
+        binding.tvWlan.text = "L: ${getString(R.string.label_wifi)}"
     }
 
     private class Adapter(
@@ -116,17 +124,43 @@ class NetUsageFragment : Fragment(R.layout.fragment_net_usage) {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(netUsage: NetUsage, isSelected: Boolean) {
-            // 通常情况下
-            // 下载的数据比上传的多，背景中progress显示在secondaryProgress下面
-            // 所以progress显示下载，secondaryProgress显示上传
             binding.pbWlanUsage.progress = netUsage.wlanDownloadProgress
             binding.pbWlanUsage.secondaryProgress = netUsage.wlanUploadProgress
+            sortProgressDrawableHierarchy(binding.pbWlanUsage)
 
             binding.pbMobileUsage.progress = netUsage.mobileDownloadProgress
             binding.pbMobileUsage.secondaryProgress = netUsage.mobileUploadProgress
+            sortProgressDrawableHierarchy(binding.pbMobileUsage)
 
             binding.tvLabel.text = netUsage.label
             binding.vSelectedIndicator.isVisible = isSelected
+        }
+
+        private fun sortProgressDrawableHierarchy(progressBar: ProgressBar) {
+            val drawable = progressBar.progressDrawable as LayerDrawable
+            val progressDrawable = drawable.findDrawableByLayerId(android.R.id.progress)
+            val secondProgressDrawable =
+                drawable.findDrawableByLayerId(android.R.id.secondaryProgress)
+            if (progressBar.progress > progressBar.secondaryProgress) {
+                drawable.setDrawableByIndex(0,
+                    android.R.id.progress,
+                    progressDrawable)
+                drawable.setDrawableByIndex(1,
+                    android.R.id.secondaryProgress,
+                    secondProgressDrawable)
+            } else {
+                drawable.setDrawableByIndex(0,
+                    android.R.id.secondaryProgress,
+                    secondProgressDrawable)
+                drawable.setDrawableByIndex(1,
+                    android.R.id.progress,
+                    progressDrawable)
+            }
+        }
+
+        private fun LayerDrawable.setDrawableByIndex(index: Int, id: Int, drawable: Drawable) {
+            this.setDrawable(index, drawable)
+            this.setId(index, id)
         }
     }
 

@@ -90,27 +90,69 @@ object NetSpeedNotificationHelper {
         if (!Logic.checkAppOps(context)) {
             return null
         }
-        val todayBytes: Long
-        val monthBytes: Long
-        if (configuration.justMobileUsage) {
-            todayBytes = NetUsageUtils.todayMobileUsageBytes(context)
-            monthBytes = NetUsageUtils.monthMobileUsageBytes(context)
-        } else {
-            todayBytes = NetUsageUtils.todayNetworkUsageBytes(context)
-            monthBytes = NetUsageUtils.monthNetworkUsageBytes(context)
+
+        var todayBytes: Long
+        var monthBytes: Long
+        val sb = StringBuilder()
+        if (configuration.enableWifiUsage) {
+            // wifi 流量
+            sb.append("WLAN • ")
+            todayBytes = NetUsageUtils.getNetUsageBytes(
+                context,
+                NetUsageUtils.TYPE_WIFI,
+                NetUsageUtils.RANGE_TYPE_TODAY
+            )
+            monthBytes = NetUsageUtils.getNetUsageBytes(
+                context,
+                NetUsageUtils.TYPE_WIFI,
+                NetUsageUtils.RANGE_TYPE_MONTH
+            )
+            sb.append(getUsageText(context, todayBytes, monthBytes))
         }
+
+        if (!configuration.enableMobileUsage) {
+            return sb.toString()
+        }
+
+        if (configuration.enableWifiUsage) {
+            sb.appendLine()
+        }
+        // 移动流量
+        var imsiSet: Set<String?>? = configuration.imsiSet
+        if (imsiSet == null || imsiSet.isEmpty()) {
+            imsiSet = setOf<String?>(null)
+        }
+        val size = imsiSet.size
+        var index = 1
+        for (imsi in imsiSet) {
+            todayBytes = NetUsageUtils.getNetUsageBytes(
+                context,
+                NetUsageUtils.TYPE_MOBILE, NetUsageUtils.RANGE_TYPE_TODAY, imsi
+            )
+            monthBytes = NetUsageUtils.getNetUsageBytes(
+                context,
+                NetUsageUtils.TYPE_MOBILE, NetUsageUtils.RANGE_TYPE_MONTH, imsi
+            )
+            sb.append("SIM")
+            if (size > 1) {
+                sb.append(index)
+            }
+            sb.append(" • ")
+                .append(getUsageText(context, todayBytes, monthBytes))
+            if (index++ < size) {
+                sb.appendLine()
+            }
+        }
+        return sb.toString()
+    }
+
+    private fun getUsageText(context: Context, todayBytes: Long, monthBytes: Long): String {
         return context.getString(
             R.string.notify_net_speed_sub,
-            NetFormatter.format(
-                todayBytes,
-                NetFormatter.FLAG_BYTE,
-                NetFormatter.ACCURACY_EXACT
-            ).splicing(),
-            NetFormatter.format(
-                monthBytes,
-                NetFormatter.FLAG_BYTE,
-                NetFormatter.ACCURACY_EXACT
-            ).splicing()
+            NetFormatter.format(todayBytes, NetFormatter.FLAG_NULL, NetFormatter.ACCURACY_EXACT)
+                .splicing(),
+            NetFormatter.format(monthBytes, NetFormatter.FLAG_NULL, NetFormatter.ACCURACY_EXACT)
+                .splicing()
         )
     }
 
@@ -194,6 +236,14 @@ object NetSpeedNotificationHelper {
             if (configuration.usage) {
                 val usageText = getUsageText(context, configuration)
                 builder.setContentText(usageText)
+                // big text
+                if (usageText != null && usageText.lines().size > 1) {
+                    // 多行文字
+                    val bigTextStyle = NotificationCompat.BigTextStyle()
+                        .setBigContentTitle(contentStr)
+                        .bigText(usageText)
+                    builder.setStyle(bigTextStyle)
+                }
             }
 
             if (configuration.quickCloseable) {

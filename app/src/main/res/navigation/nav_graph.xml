@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_netSpeed_to_netSpeedAdvanced"
             app:destination="@id/netSpeedAdvanced" />
+        <action
+            android:id="@+id/action_netSpeed_to_netUsageConfigFragment"
+            app:destination="@id/netUsageConfigFragment" />
     </fragment>
 
     <fragment
@@ -81,6 +84,11 @@
         tools:layout="@layout/fragment_diagnosis">
         <deepLink app:uri="https://dede.nativetools/diagnosis" />
     </fragment>
+
+    <fragment
+        android:id="@+id/netUsageConfigFragment"
+        android:name="com.dede.nativetools.netusage.NetUsageConfigFragment"
+        android:label="@string/label_net_usage_config" />
 
     <dialog
         android:id="@+id/dialogGuide"

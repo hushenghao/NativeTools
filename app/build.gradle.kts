@@ -117,6 +117,7 @@ dependencies {
     implementation(deps.androidx.startup)
     implementation(deps.androidx.work.runtime.ktx)
     implementation(deps.androidx.datastore.preferences)
+    implementation(deps.androidx.security.crypto.ktx)
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)

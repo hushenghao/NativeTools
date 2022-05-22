@@ -2,8 +2,10 @@ package com.dede.nativetools.netspeed
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -101,8 +103,17 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun initNotificationPreferenceGroup() {
-        usageSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_USAGE)
-        usageSwitchPreference.onPreferenceChangeListener = this
+        usageSwitchPreference =
+            requirePreference<CustomWidgetLayoutSwitchPreference>(NetSpeedPreferences.KEY_NET_SPEED_USAGE).also {
+                it.onPreferenceChangeListener = this
+                it.bindCustomWidget = { holder ->
+                    val imageView = holder.findViewById(R.id.iv_preference_help) as ImageView
+                    imageView.setImageResource(R.drawable.ic_round_settings)
+                    imageView.setOnClickListener {
+                        findNavController().navigate(R.id.action_netSpeed_to_netUsageConfigFragment)
+                    }
+                }
+            }
 
         requirePreference<CustomWidgetLayoutSwitchPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION).let {
             it.onPreferenceChangeListener = this
@@ -114,7 +125,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
         bindPreferenceChangeListener(
             this,
-            NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE,
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION
@@ -162,16 +172,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_USAGE -> {
                 configuration.usage = newValue as Boolean
                 checkOpsPermission()
-            }
-            NetSpeedPreferences.KEY_NET_SPEED_USAGE_JUST_MOBILE -> {
-                configuration.justMobileUsage = newValue as Boolean
-                event(FirebaseAnalytics.Event.SELECT_ITEM) {
-                    param(
-                        FirebaseAnalytics.Param.ITEM_NAME,
-                        configuration.justMobileUsage.toString()
-                    )
-                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "只显示移动流量使用")
-                }
             }
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE -> {
                 configuration.notifyClickable = newValue as Boolean

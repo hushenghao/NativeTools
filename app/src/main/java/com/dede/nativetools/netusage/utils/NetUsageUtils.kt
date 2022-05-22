@@ -21,6 +21,15 @@ import java.util.concurrent.atomic.AtomicReference
  */
 object NetUsageUtils {
 
+    @Suppress("DEPRECATION")
+    const val TYPE_WIFI = ConnectivityManager.TYPE_WIFI
+
+    @Suppress("DEPRECATION")
+    const val TYPE_MOBILE = ConnectivityManager.TYPE_MOBILE
+
+    const val RANGE_TYPE_TODAY = 0
+    const val RANGE_TYPE_MONTH = 1
+
     private class NetworkUsageJob<T : Comparable<T>>(data: T) : CompletionHandler {
         private val dataRef = AtomicReference<T>(data)
         val data: T get() = dataRef.get()
@@ -46,125 +55,104 @@ object NetUsageUtils {
         }
     }
 
-    private val monthNetworkUsageJob = NetworkUsageJob<Long>(0)
-    private val todayNetworkUsageJob = NetworkUsageJob<Long>(0)
+    private data class JobKey(val type: Int, val subscriberId: String?, val rangeType: Int)
 
-    /**
-     * 获取每月移动网络使用字节数
-     */
-    fun monthMobileUsageBytes(context: Context): Long {
-        val weakRefContext = WeakReference(context)
-        monthNetworkUsageJob.execute {
-            val ctx = weakRefContext.get() ?: return@execute 0
-            val start = Calendar.getInstance().toZeroH()
-            start.set(Calendar.DAY_OF_MONTH, 1)
-            getMobileUsageBytesInternal(ctx, start)
-        }
-        return monthNetworkUsageJob.data
+    private val jobsMap = HashMap<JobKey, NetworkUsageJob<Long>>()
+
+    private fun getJob(type: Int, subscriberId: String?, rangeType: Int): NetworkUsageJob<Long> {
+        val key = JobKey(type, subscriberId, rangeType)
+        return jobsMap.getOrPut(key) { NetworkUsageJob<Long>(0) }
     }
 
     /**
-     * 获取每天移动网络使用字节数
+     * 快速获取网络流量使用情况，可能数据不是最新的
+     *
+     * @param   context 上下文
+     * @param   type 网络类型
+     * @param   rangeType 时间范围类型
+     * @param   subscriberId 移动网络IMSI
      */
-    fun todayMobileUsageBytes(context: Context): Long {
+    fun getNetUsageBytes(
+        context: Context,
+        type: Int,
+        rangeType: Int,
+        subscriberId: String? = null
+    ): Long {
         val weakRefContext = WeakReference(context)
-        todayNetworkUsageJob.execute {
+        val job = getJob(type, subscriberId, rangeType)
+        job.execute {
             val ctx = weakRefContext.get() ?: return@execute 0
             val start = Calendar.getInstance().toZeroH()
-            getMobileUsageBytesInternal(ctx, start)
+            if (rangeType == RANGE_TYPE_MONTH) {
+                start.set(Calendar.DAY_OF_MONTH, 1)
+            }
+            getNetUsageBytesInternal(ctx, type, subscriberId, start)
         }
-        return todayNetworkUsageJob.data
+        return job.data
     }
 
-    /**
-     * 获取每月网络使用字节数
-     */
-    fun monthNetworkUsageBytes(context: Context): Long {
-        val weakRefContext = WeakReference(context)
-        monthNetworkUsageJob.execute {
-            val ctx = weakRefContext.get() ?: return@execute 0
-            val start = Calendar.getInstance().toZeroH()
-            start.set(Calendar.DAY_OF_MONTH, 1)
-            getNetworkUsageBytesInternal(ctx, start)
-        }
-        return monthNetworkUsageJob.data
-    }
-
-    /**
-     * 获取每天网络使用字节数
-     */
-    fun todayNetworkUsageBytes(context: Context): Long {
-        val weakRefContext = WeakReference(context)
-        todayNetworkUsageJob.execute {
-            val ctx = weakRefContext.get() ?: return@execute 0
-            val start = Calendar.getInstance().toZeroH()
-            getNetworkUsageBytesInternal(ctx, start)
-        }
-        return todayNetworkUsageJob.data
-    }
-
+    @WorkerThread
     fun networkUsageDiagnosis(context: Context): Long {
         if (!Logic.checkAppOps(context)) {
             return -1
         }
         val start = Calendar.getInstance().toZeroH()
+        start.set(Calendar.DAY_OF_MONTH, 1)
         return runBlocking {
-            getNetworkUsageBytesInternal(context, start)
+            val wifiUsage =
+                getNetUsageBytesInternal(context, TYPE_WIFI, null, start)
+            val mobileUsage =
+                getNetUsageBytesInternal(context, TYPE_MOBILE, null, start)
+            wifiUsage + mobileUsage
         }
     }
 
-    private suspend fun getMobileUsageBytesInternal(context: Context, start: Calendar): Long {
+    private suspend fun getNetUsageBytesInternal(
+        context: Context,
+        type: Int,
+        subscriberId: String?,
+        start: Calendar,
+    ): Long {
         val networkStatsManager = context.requireSystemService<NetworkStatsManager>()
         val startTime = start.timeInMillis
         val endTime = System.currentTimeMillis()
-        val mobileUsageBytes = withContext(Dispatchers.IO) {
-            networkStatsManager.queryNetworkUsageBytes(
-                @Suppress("DEPRECATION") ConnectivityManager.TYPE_MOBILE,
+        val usageBytes = withContext(Dispatchers.IO) {
+            networkStatsManager.queryNetUsageBytes(
+                type,
+                subscriberId,
                 startTime,
                 endTime
             )
         }
-        return mobileUsageBytes shr 12 shl 12// tolerance 4096
-    }
-
-    private suspend fun getNetworkUsageBytesInternal(context: Context, start: Calendar): Long {
-        val networkStatsManager = context.requireSystemService<NetworkStatsManager>()
-        val startTime = start.timeInMillis
-        val endTime = System.currentTimeMillis()
-        val wifiUsageBytes = withContext(Dispatchers.IO) {
-            networkStatsManager.queryNetworkUsageBytes(
-                @Suppress("DEPRECATION") ConnectivityManager.TYPE_WIFI,
-                startTime,
-                endTime
-            )
-        }
-        val mobileUsageBytes = withContext(Dispatchers.IO) {
-            networkStatsManager.queryNetworkUsageBytes(
-                @Suppress("DEPRECATION") ConnectivityManager.TYPE_MOBILE,
-                startTime,
-                endTime
-            )
-        }
-        return (wifiUsageBytes + mobileUsageBytes) shr 12 shl 12// tolerance 4096
+        return usageBytes shr 12 shl 12// tolerance 4096
     }
 
     @WorkerThread
-    private fun NetworkStatsManager.queryNetworkUsageBytes(
+    private fun NetworkStatsManager.queryNetUsageBytes(
         networkType: Int,
+        subscriberId: String?,
         startTime: Long,
         endTime: Long,
     ): Long {
-        val bucket = this.queryNetworkUsageBucket(networkType, startTime, endTime) ?: return 0L
+        val bucket =
+            this.queryNetUsageBucket(networkType, subscriberId, startTime, endTime) ?: return 0L
         return bucket.rxBytes + bucket.txBytes
     }
 
     @WorkerThread
-    fun NetworkStatsManager.queryNetworkUsageBucket(
+    fun NetworkStatsManager.queryNetUsageBucket(
         networkType: Int,
+        subscriberId: String?,
         startTime: Long,
         endTime: Long,
     ): NetworkStats.Bucket? {
-        return this.runCatching { querySummaryForDevice(networkType, null, startTime, endTime) }
-            .getOrNull()
+        return this.runCatching {
+            querySummaryForDevice(
+                networkType,
+                subscriberId,
+                startTime,
+                endTime
+            )
+        }.getOrNull()
     }
 }

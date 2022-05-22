@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.preference.EditTextPreference
+import com.dede.nativetools.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
@@ -19,6 +20,10 @@ class MaterialEditTextPreference(context: Context, attrs: AttributeSet? = null) 
     EditTextPreference(context, attrs), DialogInterface.OnClickListener {
 
     private lateinit var editText: EditText
+
+    init {
+        dialogLayoutResource = R.layout.override_preference_dialog_edittext
+    }
 
     override fun onClick() {
         val view = LayoutInflater.from(context).inflate(dialogLayoutResource, null)

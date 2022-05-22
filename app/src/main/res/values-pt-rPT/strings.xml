@@ -49,7 +49,6 @@
     <string name="label_other">Outros</string>
     <string name="label_privacy_agreement">Acordo de privacidade</string>
     <string name="label_today">Hoje</string>
-    <string name="label_usage_just_mobile">Mostrar apenas uso de tráfego móvel</string>
     <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Hoje: %s • Este mês: %s</string>
     <string name="label_upload">Upload</string>
@@ -96,4 +95,9 @@
     <string name="label_net_speed_default_channel">Notificação de atividades</string>
     <string name="alert_msg_hide_threshold">Ocultar o ícone de velocidade da internet quando a velocidade é menor que o valor especificado (unidade B, 1024B=1KB)</string>
     <string name="label_font_download_source">Fonte baixar source</string>
+    <string name="label_sim_card_config">Configurar informações do cartão SIM</string>
+    <string name="alert_msg_add_imsi_config">Insira o IMSI do seu cartão SIM</string>
+    <string name="label_imsi_config_tip">Se você usar vários cartões SIM, as informações IMSI de cada cartão SIM podem ser configuradas individualmente para exibir informações detalhadas sobre o tráfego móvel. As informações do IMSI podem ser vistas digitando *#*#4636#*#* no discagem.</string>
+    <string name="label_net_usage_config">Configuração do uso da rede</string>
+    <string name="label_mobile">A rede móvel</string>
 </resources>

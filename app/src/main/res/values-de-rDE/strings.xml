@@ -85,7 +85,6 @@
     <string name="label_full_net_usage">Statistik der internetnutzung</string>
     <string name="label_today">Kröte</string>
     <string name="label_diagnosis">Diagnose</string>
-    <string name="label_usage_just_mobile">Anzeige nur mit gleitender traffic</string>
     <string name="summary_threshold_error">Die schwelle stimmt nicht</string>
     <string name="label_net_speed_hide_threshold">Es wird eng</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Die geschwindigkeit auswendig geben, wenn die geschwindigkeit unter %s liegt</string>
@@ -96,4 +95,9 @@
     <string name="label_net_speed_default_channel">Meldung von Tätigkeiten</string>
     <string name="alert_msg_hide_threshold">Netzwerk-funktionen ausblenden, wenn die geschwindigkeit kleiner als der angegebene wert ist (kilometereinheit B, 1024B=1KB)</string>
     <string name="label_font_download_source">Die quelle runterladen</string>
+    <string name="label_mobile">Mobiles internet</string>
+    <string name="label_net_usage_config">Situation für die internetnutzung</string>
+    <string name="label_imsi_config_tip">Wenn sie sehr viele sim-karten benutzen, können die imsims für jede sim-karte einzeln festlegen, wann der nachrichten nachrichten geschickt werden Start sims kann probiert werden, indem sie *#*#4636#*#* auf einem wahltablett eingeben</string>
+    <string name="alert_msg_add_imsi_config">Geben sie ein IMSI auf ihre sim-karte ein</string>
+    <string name="label_sim_card_config">Legt die sim-daten fest</string>
 </resources>

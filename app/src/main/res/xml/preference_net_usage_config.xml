@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        app:defaultValue="true"
+        app:iconSpaceReserved="false"
+        app:key="key_net_usage_wifi"
+        app:title="@string/label_wifi" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="true"
+        app:disableDependentsState="false"
+        app:iconSpaceReserved="false"
+        app:key="key_net_usage_mobile"
+        app:title="@string/label_mobile" />
+
+    <PreferenceCategory
+        app:dependency="key_net_usage_mobile"
+        app:iconSpaceReserved="false"
+        app:key="key_imsi_config_group"
+        app:persistent="false"
+        app:title="@string/label_sim_card_config">
+
+    </PreferenceCategory>
+
+    <com.dede.nativetools.ui.MaterialEditTextPreference
+        app:allowDividerAbove="true"
+        app:dependency="key_net_usage_mobile"
+        app:dialogMessage="@string/alert_msg_add_imsi_config"
+        app:dialogTitle="@string/label_sim_card_config"
+        app:icon="@drawable/ic_outline_add"
+        app:key="key_add_imsi_config"
+        app:persistent="false"
+        app:title="添加" />
+
+    <Preference
+        app:dependency="key_net_usage_mobile"
+        app:layout="@layout/override_preference_tip_layout"
+        app:summary="@string/label_imsi_config_tip" />
+</PreferenceScreen>
