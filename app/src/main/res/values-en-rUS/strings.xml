@@ -95,4 +95,9 @@
     <string name="label_net_speed_default_channel">Event notification</string>
     <string name="alert_msg_hide_threshold">Hide the network speed icon when the speed is less than the specified value (unit B, 1024b = 1KB)</string>
     <string name="label_font_download_source">Font Download source</string>
+    <string name="label_net_usage_config">网络使用情况配置</string>
+    <string name="label_imsi_config_tip">If you use multiple SIM cards, you can configure the IMSI information for each SIM card separately to display detailed mobile traffic information. IMSI information can be viewed by entering *#*#4636#*#* in the dial.</string>
+    <string name="alert_msg_add_imsi_config">Enter the IMSI of your SIM card</string>
+    <string name="label_sim_card_config">Configure SIM card information</string>
+    <string name="label_mobile">Mobile</string>
 </resources>

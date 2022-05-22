@@ -95,4 +95,9 @@
     <string name="label_net_speed_default_channel">活動通知</string>
     <string name="alert_msg_hide_threshold">當速度小於指定值時隱藏網速圖標（組織B，1024B=1KB）</string>
     <string name="label_font_download_source">字體下載源</string>
+    <string name="label_sim_card_config">配寘SIM卡資訊</string>
+    <string name="alert_msg_add_imsi_config">輸入您SIM卡的IMSI</string>
+    <string name="label_imsi_config_tip">如果您使用多個SIM卡，可以單獨配寘每一張SIM卡的IMSI資訊來顯示詳細的移動流量資訊。 IMSI資訊可以嘗試在撥號盤輸入*#*#4636#*#*進行查看。</string>
+    <string name="label_net_usage_config">網絡使用情况配寘</string>
+    <string name="label_mobile">移動網絡</string>
 </resources>

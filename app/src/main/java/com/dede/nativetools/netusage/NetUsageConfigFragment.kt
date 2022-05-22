@@ -17,6 +17,9 @@ import com.dede.nativetools.util.*
 import kotlinx.coroutines.flow.firstOrNull
 import kotlin.text.isEmpty
 
+/**
+ * 配置SIM卡IMSI
+ */
 class NetUsageConfigFragment : PreferenceFragmentCompat() {
 
     private lateinit var simCardCategory: PreferenceCategory
@@ -137,7 +140,7 @@ class NetUsageConfigFragment : PreferenceFragmentCompat() {
                     removeSimCardConfigPreference(imsi)
                 }
             }
-            this.isPersistent = false
+            this.isPersistent = false// 不保存
             this.title = "SIM $index"
             this.key = imsi
             this.summary = imsi.privateIMSI()
