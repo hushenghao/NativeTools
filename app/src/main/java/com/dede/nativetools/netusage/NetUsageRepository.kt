@@ -170,10 +170,10 @@ class NetUsageRepository {
             val bucketWlan =
                 manager.queryNetUsageBucket(ConnectivityManager.TYPE_WIFI, null, start, end)
             return@withContext NetUsage(
-                wlanUpload = bucketWlan?.rxBytes ?: 0L,
-                wlanDownload = bucketWlan?.txBytes ?: 0L,
-                mobileUpload = bucketMobile?.rxBytes ?: 0L,
-                mobileDownload = bucketMobile?.txBytes ?: 0L,
+                wlanUpload = bucketWlan?.txBytes ?: 0L,
+                wlanDownload = bucketWlan?.rxBytes ?: 0L,
+                mobileUpload = bucketMobile?.txBytes ?: 0L,
+                mobileDownload = bucketMobile?.rxBytes ?: 0L,
                 label = label,
                 fullLabel = "%tF ~ %tF".format(Date(start), Date(end - 1))// 减去最后一毫秒，让日期范围显示的更合理
             )
