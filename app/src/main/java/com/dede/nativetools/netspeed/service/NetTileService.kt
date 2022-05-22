@@ -60,6 +60,7 @@ class NetTileService : TileService() {
     }
 
     private fun update(rxSpeed: Long, txSpeed: Long) {
+        val qsTile = qsTile ?: return
         val downloadSpeedStr =
             NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
