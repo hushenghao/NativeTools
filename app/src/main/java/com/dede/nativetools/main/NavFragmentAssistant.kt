@@ -48,7 +48,7 @@ class NavFragmentAssistant(private val fragmentManager: FragmentManager) :
         if (fragment is DialogFragment) {
             return
         }
-        val view = fragment.requireView()
+        val view = fragment.view ?: return
         materialFadeThrough.removeTarget(view)
     }
 

@@ -35,3 +35,7 @@
 -keepclassmembernames class androidx.appcompat.widget.ListPopupWindow {
     android.widget.PopupWindow mPopup;
 }
+
+-dontwarn com.google.errorprone.annotations.Immutable
+-keepnames class * extends kotlinx.coroutines.internal.MainDispatcherFactory
+-keepnames class * extends kotlinx.coroutines.CoroutineExceptionHandler

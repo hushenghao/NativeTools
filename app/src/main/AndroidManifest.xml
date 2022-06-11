@@ -64,9 +64,9 @@
         <activity
             android:name=".main.MainActivity"
             android:excludeFromRecents="true"
-            android:windowSoftInputMode="adjustPan"
             android:exported="true"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

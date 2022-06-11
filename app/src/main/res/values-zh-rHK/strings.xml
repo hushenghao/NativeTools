@@ -3,6 +3,8 @@
     <string name="app_name">網速指示器</string>
     <string name="notify_net_speed_msg" formatted="false">上傳：%s • 下載：%s</string>
     <string name="notify_net_speed_sub" formatted="false">今日：%s • 本月：%s</string>
+    <string name="label_upload">上傳</string>
+    <string name="label_download">下載</string>
     <string name="switch_on">打開</string>
     <string name="switch_off">關閉</string>
     <string name="action_close">關閉</string>
@@ -82,9 +84,7 @@
     <string name="label_net_speed_horizontal_scale">X軸縮放</string>
     <string name="label_full_net_usage">網絡使用統計</string>
     <string name="label_today">今日</string>
-    <string name="label_month">本月</string>
     <string name="label_diagnosis">診斷</string>
-    <string name="label_usage_just_mobile">只顯示移動流量使用</string>
     <string name="label_net_speed_hide_threshold">隱藏閾值</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">當速度小於%s時隱藏狀態列網速圖標</string>
     <string name="summary_threshold_error">輸入的閾值不正確</string>
@@ -94,4 +94,10 @@
     <string name="label_net_speed_silence_channel">隱藏通知</string>
     <string name="label_net_speed_default_channel">活動通知</string>
     <string name="alert_msg_hide_threshold">當速度小於指定值時隱藏網速圖標（組織B，1024B=1KB）</string>
+    <string name="label_font_download_source">字體下載源</string>
+    <string name="label_sim_card_config">配寘SIM卡資訊</string>
+    <string name="alert_msg_add_imsi_config">輸入您SIM卡的IMSI</string>
+    <string name="label_imsi_config_tip">如果您使用多個SIM卡，可以單獨配寘每一張SIM卡的IMSI資訊來顯示詳細的移動流量資訊。 IMSI資訊可以嘗試在撥號盤輸入*#*#4636#*#*進行查看。</string>
+    <string name="label_net_usage_config">網絡使用情况配寘</string>
+    <string name="label_mobile">移動網絡</string>
 </resources>

@@ -35,7 +35,6 @@
 
         <com.dede.nativetools.ui.MaterialEditTextPreference
             app:defaultValue="0"
-            app:dialogLayout="@layout/override_preference_dialog_edittext"
             app:dialogMessage="@string/alert_msg_hide_threshold"
             app:icon="@drawable/ic_baseline_remove_circle"
             app:key="net_speed_hide_threshold"
@@ -64,20 +63,14 @@
             app:summary="@string/summary_net_speed_hide_lock_notification"
             app:widgetLayout="@layout/override_preference_widget_switch_compat" />
 
-        <SwitchPreferenceCompat
+        <com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
             app:defaultValue="false"
             app:dependency="net_speed_hide_notification"
-            app:disableDependentsState="false"
             app:icon="@drawable/ic_outline_data_usage"
             app:key="net_speed_usage"
+            app:widgetLayout="@layout/override_preference_widget_switch_compat"
             app:summary="@string/summary_net_speed_usage"
             app:title="@string/label_net_speed_usage" />
-
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:dependency="net_speed_usage"
-            app:key="net_speed_usage_just_mobile"
-            app:title="@string/label_usage_just_mobile" />
 
         <SwitchPreferenceCompat
             android:key="net_speed_notify_clickable"

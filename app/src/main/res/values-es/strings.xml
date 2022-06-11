@@ -7,6 +7,8 @@
     <string name="dont_ask">No más consejos</string>
     <string name="notify_net_speed_msg" formatted="false">Cargar: %s • Descargar: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Hoy: %s • Este mes: %s</string>
+    <string name="label_upload">Cargar</string>
+    <string name="label_download">Descargar</string>
     <string name="switch_on">ON</string>
     <string name="switch_off">OFF</string>
     <string name="action_close">Cerrar</string>
@@ -80,11 +82,9 @@
     <string name="toast_download_font_succeeded">Fuente descargada con éxito</string>
     <string name="toast_download_font_failed">Descargar fuente falló</string>
     <string name="label_net_speed_horizontal_scale">Zoom del eje X</string>
-    <string name="label_month">Este mes</string>
     <string name="label_today">Hoy</string>
     <string name="label_full_net_usage">Estadísticas de uso web</string>
     <string name="label_diagnosis">Diagnóstico</string>
-    <string name="label_usage_just_mobile">Mostrar solo uso de tráfico móvil</string>
     <string name="summary_threshold_error">El umbral introducido no es correcto</string>
     <string name="label_net_speed_hide_threshold">Ocultar el umbral</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Ocultar la velocidad de la red de la columna de estado cuando la velocidad es inferior a %s</string>
@@ -94,4 +94,10 @@
     <string name="label_net_speed_silence_channel">Notificaciones silenciosas</string>
     <string name="label_net_speed_default_channel">Notificación de eventos</string>
     <string name="alert_msg_hide_threshold">Ocultar el icono de velocidad de internet cuando la velocidad es menor que el valor especificado (unidad B, 1024B=1KB)</string>
+    <string name="label_font_download_source">Fuente descargar fuente</string>
+    <string name="label_sim_card_config">Configuración de la información SIM</string>
+    <string name="alert_msg_add_imsi_config">Introduzca el IMSI de su tarjeta SIM</string>
+    <string name="label_imsi_config_tip">Si utiliza más de una tarjeta SIM, puede configurar individualmente la información IMSI de cada tarjeta SIM para mostrar información detallada sobre el tráfico móvil. La información del IMSI puede ser vista escribiendo *#*#4636#*#* en el dial de marcación.</string>
+    <string name="label_net_usage_config">Configuración del uso de la red</string>
+    <string name="label_mobile">La red móvil</string>
 </resources>

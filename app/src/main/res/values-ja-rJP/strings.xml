@@ -3,6 +3,8 @@
     <string name="app_name">网速指示器</string>
     <string name="notify_net_speed_msg" formatted="false">上載: %s • 下載: %s</string>
     <string name="notify_net_speed_sub" formatted="false">今日: %s • 今月: %s</string>
+    <string name="label_upload">上載</string>
+    <string name="label_download">下載</string>
     <string name="switch_on">开き</string>
     <string name="switch_off">閉鎖</string>
     <string name="action_close">閉鎖</string>
@@ -82,9 +84,7 @@
     <string name="label_net_speed_horizontal_scale">X軸スケーリング</string>
     <string name="label_full_net_usage">インターネット利用統計</string>
     <string name="label_today">今日</string>
-    <string name="label_month">今月</string>
     <string name="label_diagnosis">診断</string>
-    <string name="label_usage_just_mobile">移動量のみ表示しています</string>
     <string name="summary_threshold_error">入力のしきい値が正しくない</string>
     <string name="label_net_speed_hide_threshold">隠し閾値</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">速度が%s未満の場合隠蔽状態折戸速度</string>
@@ -94,4 +94,10 @@
     <string name="label_net_speed_silence_channel">無言の通知</string>
     <string name="label_net_speed_default_channel">イベントのお知らせ</string>
     <string name="alert_msg_hide_threshold">速度が指定された値未満の場合は、通信速度を隠すアイコン(単位B, 1024B=1KB)</string>
+    <string name="label_font_download_source">フォントダウンロード元</string>
+    <string name="label_sim_card_config">構成SIMカード情報</string>
+    <string name="alert_msg_add_imsi_config">SIMカードのIMSIを入力します</string>
+    <string name="label_imsi_config_tip">複数のSIMカードを使用している場合は、個々のSIMカードのIMSI情報を個別に構成して詳細なモバイルトラフィック情報を表示することができます。IMSI情報はダイヤルに*#*#4636#*#*と入力してみることができる。</string>
+    <string name="label_net_usage_config">ネットワーク利用状況構成</string>
+    <string name="label_mobile">モバイルネットワーク</string>
 </resources>

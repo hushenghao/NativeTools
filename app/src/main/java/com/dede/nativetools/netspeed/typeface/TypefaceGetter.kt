@@ -3,24 +3,15 @@ package com.dede.nativetools.netspeed.typeface
 import android.content.Context
 import android.graphics.Typeface
 import android.util.ArrayMap
+import com.dede.nativetools.R
 import com.dede.nativetools.util.globalContext
+import java.util.*
 
 interface TypefaceGetter {
 
     companion object {
 
         const val FONT_NORMAL = "Normal"
-        const val FONT_BEBAS_KAI = "BebasKai"
-        const val FONT_BEBAS_NEUE = "BebasNeue"
-        const val FONT_CREEPSTER = "Creepster"
-        const val FONT_FJALLA_ONE = "FjallaOne"
-        const val FONT_PIRATA_ONE = "PirataOne"
-        const val FONT_PRESS_START_2P = "PressStart2P"
-        const val FONT_CHAKRA_PETCH = "ChakraPetch"
-        const val FONT_SQUADA_ONE = "SquadaOne"
-        const val FONT_VT323 = "VT323"
-        const val FONT_ROBOTO_CONDENSED = "RobotoCondensed"
-
         const val FONT_DEBUG = "Debug"
 
         private val caches = ArrayMap<String, TypefaceGetter>()
@@ -31,19 +22,12 @@ interface TypefaceGetter {
                 return getter
             }
             val appContext = context.applicationContext
-            getter = when (key) {
-                FONT_NORMAL -> NormalTypeface()
-                FONT_BEBAS_KAI -> DownloadTypefaceImpl(appContext, "BebasKai.ttf")
-                FONT_BEBAS_NEUE -> DownloadTypefaceImpl(appContext, "BebasNeue.ttf")
-                FONT_CREEPSTER -> DownloadTypefaceImpl(appContext, "Creepster.ttf")
-                FONT_FJALLA_ONE -> DownloadTypefaceImpl(appContext, "FjallaOne.ttf")
-                FONT_PIRATA_ONE -> DownloadTypefaceImpl(appContext, "PirataOne.ttf")
-                FONT_PRESS_START_2P -> DownloadTypefaceImpl(appContext, "PressStart2P.ttf")
-                FONT_CHAKRA_PETCH -> DownloadTypefaceImpl(appContext, "ChakraPetch.ttf")
-                FONT_SQUADA_ONE -> DownloadTypefaceImpl(appContext, "SquadaOne.ttf")
-                FONT_VT323 -> DownloadTypefaceImpl(appContext, "VT323.ttf")
-                FONT_ROBOTO_CONDENSED-> DownloadTypefaceImpl(appContext, "RobotoCondensed.ttf")
-                FONT_DEBUG -> DebugTypeface(appContext)
+            val fonts = context.resources.getStringArray(R.array.net_speed_font_value)
+            val index = Arrays.binarySearch(fonts, key)
+            getter = when {
+                key == FONT_NORMAL -> NormalTypeface()
+                key == FONT_DEBUG -> DebugTypeface(appContext)
+                index != -1 -> DownloadTypefaceImpl(appContext, "$key.ttf")
                 else -> NormalTypeface()
             }
             caches[key] = getter

@@ -3,6 +3,8 @@
     <string name="app_name">네트워크 속도 표시기</string>
     <string name="notify_net_speed_msg" formatted="false">업로드: %s • 다운로드: %s</string>
     <string name="notify_net_speed_sub" formatted="false">오늘: %s • 지난: %s</string>
+    <string name="label_upload">업로드</string>
+    <string name="label_download">다운로드</string>
     <string name="switch_on">열어</string>
     <string name="switch_off">닫기</string>
     <string name="action_close">닫기</string>
@@ -82,9 +84,7 @@
     <string name="label_net_speed_horizontal_scale">X 축 크기 조정</string>
     <string name="label_full_net_usage">인터넷 사용 통계</string>
     <string name="label_today">오늘</string>
-    <string name="label_month">지난</string>
     <string name="label_diagnosis">진단</string>
-    <string name="label_usage_just_mobile">이동 데이터 사용량만 표시합니다</string>
     <string name="summary_threshold_error">입력한 문턱값이 올바르지 않습니다</string>
     <string name="label_net_speed_hide_threshold">임계값 숨기기</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">속도가%s보다 작으면 사육 속도를 숨긴다</string>
@@ -94,4 +94,10 @@
     <string name="label_net_speed_silence_channel">묵시적 통지</string>
     <string name="label_net_speed_default_channel">행사 알림</string>
     <string name="alert_msg_hide_threshold">속도가 지정된 값보다 작을 때 네트워크 속도 아이콘 숨기기 (단위 B, 1024B = 1KB)</string>
+    <string name="label_font_download_source">글꼴 다운로드 원본</string>
+    <string name="label_mobile">모바일 네트워크</string>
+    <string name="label_net_usage_config">네트워크 사용 상황 설정</string>
+    <string name="label_imsi_config_tip">여러 개의 sim 카드를 사용하면 각 sim 카드의 imsi 정보를 별도로 구성하여 자세한 이동통신 정보를 표시할 수 있다.*#*#4636#*#*를 입력한 다이얼을 통해 imsi 정보를 확인할 수 있다.</string>
+    <string name="alert_msg_add_imsi_config">SIM 카드의 imsi를 입력하십시오</string>
+    <string name="label_sim_card_config">SIM 카드 정보를 설정합니다</string>
 </resources>

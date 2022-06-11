@@ -3,6 +3,8 @@
     <string name="app_name">Указатель скорости сети</string>
     <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Today: %s • Month: %s</string>
+    <string name="label_upload">Upload</string>
+    <string name="label_download">Download</string>
     <string name="switch_on">откр</string>
     <string name="switch_off">закр</string>
     <string name="action_close">закр</string>
@@ -82,9 +84,7 @@
     <string name="label_net_speed_horizontal_scale">Икс-осевой зум</string>
     <string name="label_full_net_usage">Статистика использования сети</string>
     <string name="label_today">Today</string>
-    <string name="label_month">Month</string>
     <string name="label_diagnosis">диагноз</string>
-    <string name="label_usage_just_mobile">Показывает только использование мобильных трафиков</string>
     <string name="summary_threshold_error">Входной порог неправильный</string>
     <string name="label_net_speed_hide_threshold">Скрытый порог</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Скорость скрытой сетки, когда скорость меньше %s</string>
@@ -94,4 +94,10 @@
     <string name="label_net_speed_silence_channel">Тишина в эфире</string>
     <string name="label_net_speed_default_channel">Уведомление о деятельности</string>
     <string name="alert_msg_hide_threshold">Скрытая икона скорости меньше указанного значения (единица B, 1024B=1KB)</string>
+    <string name="label_font_download_source">Источник скачивания шрифта</string>
+    <string name="label_mobile">Мобильная сеть</string>
+    <string name="label_net_usage_config">Конфигурация ситуации в сети</string>
+    <string name="label_imsi_config_tip">Если вы используете несколько Сим-карт, вы можете настроить информацию IMSI на одну симку для отображения детальной информации о движении. Информация IMSI может быть использована для просмотра с помощью набора *#*#4636#*#*.</string>
+    <string name="alert_msg_add_imsi_config">Введите IMSI на SIM-карте</string>
+    <string name="label_sim_card_config">Конфигурация Сим-карт</string>
 </resources>

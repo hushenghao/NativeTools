@@ -3,6 +3,8 @@
     <string name="app_name">Vitesse Net</string>
     <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Aujourd\'hui: %s • Mois: %s</string>
+    <string name="label_upload">Upload</string>
+    <string name="label_download">Download</string>
     <string name="switch_on">In</string>
     <string name="switch_off">Coupez</string>
     <string name="action_close">Approche</string>
@@ -82,9 +84,7 @@
     <string name="label_net_speed_horizontal_scale">Zoom sur l’axe X</string>
     <string name="label_full_net_usage">Statistiques d’utilisation du web</string>
     <string name="label_today">Aujourd\'hui</string>
-    <string name="label_month">Mois</string>
     <string name="label_diagnosis">Diagnostic</string>
-    <string name="label_usage_just_mobile">Afficher uniquement l’utilisation du trafic mobile</string>
     <string name="summary_threshold_error">Le seuil entré est incorrect</string>
     <string name="label_net_speed_hide_threshold">Masquer le seuil</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Masquer la vitesse du réseau de la colonne d’état lorsque la vitesse est inférieure à %s</string>
@@ -94,4 +94,10 @@
     <string name="label_net_speed_silence_channel">Notifications en silence</string>
     <string name="label_net_speed_service">Service Vitesse Net</string>
     <string name="alert_msg_hide_threshold">Masquer l’icône de vitesse internet lorsque la vitesse est inférieure à la valeur spécifiée (unité B, 1024B= 1KB)</string>
+    <string name="label_font_download_source">Fonte télécharger source</string>
+    <string name="label_sim_card_config">Configurer les informations de la carte SIM</string>
+    <string name="alert_msg_add_imsi_config">Entrez l’imsi de votre carte SIM</string>
+    <string name="label_imsi_config_tip">Si vous utilisez plusieurs cartes SIM, les informations IMSI de chaque carte SIM peuvent être configurées individuellement pour afficher des informations détaillées sur le trafic mobile. Les informations IMSI peuvent être visualisées en tapant *#*#4636#*#* sur le cadran.</string>
+    <string name="label_net_usage_config">Configuration de l’utilisation du réseau</string>
+    <string name="label_mobile">Le réseau mobile</string>
 </resources>

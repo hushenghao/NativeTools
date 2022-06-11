@@ -48,7 +48,7 @@ object NavigationBars {
         navController: NavController,
         bottomNavigationView: BottomNavigationView? = null,
         navigationRailView: NavigationRailView? = null,
-        navigationView: NavigationView? = null
+        navigationView: NavigationView? = null,
     ) {
         bottomNavigationView.setup(navController)
         navigationRailView.setup(navController)
@@ -56,15 +56,15 @@ object NavigationBars {
     }
 }
 
-private fun View?.setup(
-    navController: NavController,
-) = when (this) {
-    null -> Unit
-    is NavigationBarView -> {
-        NavigationUI.setupWithNavController(this, navController)
+private fun View?.setup(navController: NavController) {
+    when (this) {
+        null -> return
+        is NavigationBarView -> {
+            NavigationUI.setupWithNavController(this, navController)
+        }
+        is NavigationView -> {
+            NavigationUI.setupWithNavController(this, navController)
+        }
+        else -> throw IllegalArgumentException("${this.javaClass} don`t impl")
     }
-    is NavigationView -> {
-        NavigationUI.setupWithNavController(this, navController)
-    }
-    else -> throw IllegalArgumentException("${this.javaClass} don`t impl")
 }

@@ -27,8 +27,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 30
-        versionCode = 55
-        versionName = "3.8.0"
+        versionCode = 59
+        versionName = "3.9.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(
@@ -84,6 +84,7 @@ android {
             versionNameSuffix = "-beta"
             firebaseAppDistribution {
                 groups = "beta"
+                releaseNotesFile = file("beta-distribution-nodes.txt").absolutePath
             }
         }
     }
@@ -116,6 +117,7 @@ dependencies {
     implementation(deps.androidx.startup)
     implementation(deps.androidx.work.runtime.ktx)
     implementation(deps.androidx.datastore.preferences)
+    implementation(deps.androidx.security.crypto.ktx)
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)
@@ -172,11 +174,12 @@ tasks.register<Exec>("pgyer") {
         }
         val apkPath = tree.first().absolutePath
         println("Upload Apk: $apkPath")
+        val nodes = file("beta-distribution-nodes.txt").readText().trim()
 
         commandLine(
             "curl", "-F", "file=@$apkPath",
             "-F", "_api_key=$apiKey",
-            "-F", "buildUpdateDescription=Upload by gradle pgyer task",
+            "-F", "buildUpdateDescription=${nodes}",
             "https://www.pgyer.com/apiv2/app/upload"
         )
     }

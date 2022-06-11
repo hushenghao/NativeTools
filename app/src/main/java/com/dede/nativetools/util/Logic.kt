@@ -16,7 +16,7 @@ import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
 import com.dede.nativetools.netspeed.stats.NetStats
-import com.dede.nativetools.netspeed.utils.NetworkUsageUtil
+import com.dede.nativetools.netusage.utils.NetUsageUtils
 import com.dede.nativetools.other.OtherPreferences
 import java.text.SimpleDateFormat
 import java.util.*
@@ -164,7 +164,7 @@ object Logic {
             .appendPart("TotalTxBytes", TrafficStats.getTotalTxBytes())
             .appendPart("TotalRxBytes", TrafficStats.getTotalRxBytes())
             .appendPart("AppOps", checkAppOps(app))
-            .appendPart("Today usage", NetworkUsageUtil.networkUsageDiagnosis(app))// work thread
+            .appendPart("Today usage", NetUsageUtils.networkUsageDiagnosis(app))// work thread
 
         return sb.toString()
     }
