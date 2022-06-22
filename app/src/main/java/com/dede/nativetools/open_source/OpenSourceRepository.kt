@@ -36,6 +36,13 @@ class OpenSourceRepository {
                 "https://www.apache.org/licenses/LICENSE-2.0.txt"
             ),
             OpenSource(
+                "Gradle",
+                "Google",
+                "Gradle is an open-source build automation tool that is designed to be flexible enough to build almost any type of software.",
+                "https://gradle.org/",
+                R.drawable.ic_logo_gradle,
+                "https://www.apache.org/licenses/LICENSE-2.0.txt"),
+            OpenSource(
                 "Material Design 3",
                 "Google",
                 "Make personal devices feel personal with Material Design 3, Google’s most expressive and adaptable design system yet. Coming first to Android 12.",
