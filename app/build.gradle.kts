@@ -20,9 +20,8 @@ plugins {
 }
 
 android {
-    compileSdk = 31
-//    compileSdkPreview = "Tiramisu"
-    buildToolsVersion = "32.0.0"
+    compileSdk = 32
+    buildToolsVersion = "33.0.0"
     defaultConfig {
         applicationId = "com.dede.nativetools"
         minSdk = 23
@@ -105,7 +104,6 @@ android {
 }
 
 dependencies {
-    implementation(deps.kotlin.stdlib)
     implementation(deps.androidx.appcompat)
     implementation(deps.androidx.core.ktx)
     implementation(deps.androidx.preference.ktx)
@@ -118,6 +116,7 @@ dependencies {
     implementation(deps.androidx.work.runtime.ktx)
     implementation(deps.androidx.datastore.preferences)
     implementation(deps.androidx.security.crypto.ktx)
+    implementation(deps.androidx.splashscreen)
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)

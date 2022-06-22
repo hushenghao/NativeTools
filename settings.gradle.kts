@@ -3,6 +3,14 @@ rootProject.name = "NativeTools"
 
 enableFeaturePreview("VERSION_CATALOGS")
 
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
 dependencyResolutionManagement {
     versionCatalogs {
         create("deps") {
@@ -16,6 +24,5 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
-        maven { setUrl("https://plugins.gradle.org/m2/") }
     }
 }

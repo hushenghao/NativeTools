@@ -78,7 +78,7 @@ class NetUsageCoordinateDrawable(val context: Context, max: Long) : Drawable() {
             NetFormatter.ACCURACY_SHORTER).splicing()
     }
 
-    override fun onBoundsChange(bounds: Rect?) {
+    override fun onBoundsChange(bounds: Rect) {
         invalidateSelf()
     }
 
