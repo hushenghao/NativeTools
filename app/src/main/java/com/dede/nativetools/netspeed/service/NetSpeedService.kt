@@ -114,6 +114,8 @@ class NetSpeedService : Service(), Runnable {
 
     override fun onCreate() {
         super.onCreate()
+        startForeground()
+
         val intentFilter = IntentFilter(
             Intent.ACTION_SCREEN_ON,// 打开屏幕
             Intent.ACTION_SCREEN_OFF,// 关闭屏幕
@@ -121,14 +123,11 @@ class NetSpeedService : Service(), Runnable {
         )
         registerReceiver(innerReceiver, intentFilter)
 
-        startForeground()
         resume()
     }
 
     private fun startForeground() {
-        val notify = track("创建通知") {
-            NetSpeedNotificationHelper.createNotification(this, configuration)
-        }
+        val notify = NetSpeedNotificationHelper.createNotification(this, configuration)
         startForeground(NOTIFY_ID, notify)
     }
 
@@ -147,7 +146,7 @@ class NetSpeedService : Service(), Runnable {
     }
 
     private fun updateConfiguration(configuration: NetSpeedConfiguration?) {
-        if (configuration ?: return == this.configuration) {
+        if (configuration == null || configuration == this.configuration) {
             return
         }
         this.configuration.updateFrom(configuration)

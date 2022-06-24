@@ -94,6 +94,30 @@ object NetSpeedNotificationHelper {
         var todayBytes: Long
         var monthBytes: Long
         val sb = StringBuilder()
+        if (!configuration.enableWifiUsage && !configuration.enableMobileUsage) {
+            // wifi和移动流量都关闭，显示全部
+            todayBytes = NetUsageUtils.getNetUsageBytes(
+                context,
+                NetUsageUtils.TYPE_WIFI,
+                NetUsageUtils.RANGE_TYPE_TODAY
+            ) + NetUsageUtils.getNetUsageBytes(
+                context,
+                NetUsageUtils.TYPE_MOBILE,
+                NetUsageUtils.RANGE_TYPE_TODAY
+            )
+            monthBytes = NetUsageUtils.getNetUsageBytes(
+                context,
+                NetUsageUtils.TYPE_WIFI,
+                NetUsageUtils.RANGE_TYPE_MONTH
+            ) + NetUsageUtils.getNetUsageBytes(
+                context,
+                NetUsageUtils.TYPE_MOBILE,
+                NetUsageUtils.RANGE_TYPE_MONTH
+            )
+            sb.append(getUsageText(context, todayBytes, monthBytes))
+            return sb.toString()
+        }
+
         if (configuration.enableWifiUsage) {
             // wifi 流量
             sb.append("WLAN • ")
@@ -214,7 +238,7 @@ object NetSpeedNotificationHelper {
             @Suppress("WrongConstant")
             builder.foregroundServiceBehavior = NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
             // https://developer.android.com/about/versions/12/behavior-changes-12#pending-intent-mutability
-            pendingFlag = PendingIntent.FLAG_MUTABLE
+            pendingFlag = pendingFlag or PendingIntent.FLAG_MUTABLE
         }
 
         if (configuration.hideNotification && !itSSAbove(context)) {
@@ -265,12 +289,7 @@ object NetSpeedNotificationHelper {
         return builder.build()
     }
 
-    private var notificationChannelCreated = false
-
     private fun createChannels(context: Context) {
-        if (notificationChannelCreated) {
-            return
-        }
         val manager = NotificationManagerCompat.from(context)
 
         val channelGroup = NotificationChannelGroupCompat.Builder(CHANNEL_GROUP_ID)
@@ -284,8 +303,6 @@ object NetSpeedNotificationHelper {
 
         val channelDefault = context.createChannel(false)
         manager.createNotificationChannel(channelDefault)
-
-        notificationChannelCreated = true
     }
 
     private fun Context.createChannel(isSilence: Boolean): NotificationChannelCompat {
