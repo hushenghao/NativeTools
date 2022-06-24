@@ -34,14 +34,14 @@ android {
             listOf(
                 "zh-rCN",
                 "zh-rHK",
-                "ja-rJP",
-                "en-rUS",
-                "ko-rKR",
-                "ru-rRU",
-                "de-rDE",
-                "fr-rFR",
+                "ja",
+                "en",
+                "ko",
+                "ru",
+                "de",
+                "fr",
                 "es",
-                "pt-rPT"
+                "pt"
             )
         )
 
