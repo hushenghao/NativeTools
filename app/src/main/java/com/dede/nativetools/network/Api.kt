@@ -23,11 +23,11 @@ interface Api {
     suspend fun downloadFont(@Path("fontName") fontName: String): InputStream
 
 //    @GET("http://10.103.0.157:8000/open_source_list.json")
-    @GET("apis/-/raw/develop/open_source_list.json")
+    @GET("NativeTools/-/raw/develop/apis/open_source_list.json")
     suspend fun getOpenSourceList(): List<OpenSource>
 
 //    @GET("http://10.103.0.157:8000/donate_list.json")
-    @GET("apis/-/raw/develop/donate_list.json")
+    @GET("NativeTools/-/raw/develop/apis/donate_list.json")
     suspend fun getDonateList(): List<DonateInfo>
 
 }
