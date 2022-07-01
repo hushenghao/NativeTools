@@ -6,11 +6,16 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.ViewTarget
+import com.bumptech.glide.request.transition.Transition
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ItemOpenSourceBinding
 import com.dede.nativetools.ui.AbsBottomSheetListFragment
@@ -33,7 +38,6 @@ class OpenSourceFragment : AbsBottomSheetListFragment<OpenSource, OpenSourceFrag
         viewModel.openSourceList.observe(this) {
             setData(it)
         }
-        // "^(META-INF/)?([^/]+)\\.(version|properties)$"
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
@@ -50,9 +54,31 @@ class OpenSourceFragment : AbsBottomSheetListFragment<OpenSource, OpenSourceFrag
         private val binding = ItemOpenSourceBinding.bind(view)
 
         fun bindViewData(openSource: OpenSource) {
-            val drawable =
-                itemView.context.requireDrawable<Drawable>(openSource.foregroundLogo, 18.dp)
-            binding.tvProjectName.setCompoundDrawablesRelative(start = drawable)
+            Glide.with(binding.root)
+                .load(openSource.logo?.toUri())
+                .override(18.dp)
+                .into(object :
+                    @Suppress("DEPRECATION") ViewTarget<TextView, Drawable>(binding.tvProjectName) {
+                    override fun onLoadFailed(errorDrawable: Drawable?) {
+                        view.setCompoundDrawablesRelative(start = errorDrawable)
+                    }
+
+                    override fun onLoadStarted(placeholder: Drawable?) {
+                        view.setCompoundDrawablesRelative(start = placeholder)
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                        view.setCompoundDrawablesRelative(start = placeholder)
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: Transition<in Drawable>?,
+                    ) {
+                        resource.setBounds(0, 0, 18.dp, 18.dp)
+                        view.setCompoundDrawablesRelative(start = resource)
+                    }
+                })
             binding.tvProjectName.text = openSource.name
             binding.tvAuthorName.text = openSource.author
             binding.tvProjectDesc.text = openSource.desc
@@ -61,7 +87,7 @@ class OpenSourceFragment : AbsBottomSheetListFragment<OpenSource, OpenSourceFrag
                 showMenu(it, openSource)
             }
             itemView.setOnClickListener {
-                val url = openSource.url
+                val url = openSource.website
                 if (url.isNotEmpty()) {
                     it.context.browse(url)
                 }
@@ -78,13 +104,13 @@ class OpenSourceFragment : AbsBottomSheetListFragment<OpenSource, OpenSourceFrag
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.action_copy -> {
-                        if (openSource.url.isNotEmpty()) {
-                            context.copy(openSource.url)
+                        if (openSource.website.isNotEmpty()) {
+                            context.copy(openSource.website)
                         }
                     }
                     R.id.action_homepage -> {
-                        if (openSource.url.isNotEmpty()) {
-                            context.browse(openSource.url)
+                        if (openSource.website.isNotEmpty()) {
+                            context.browse(openSource.website)
                         }
                     }
                     R.id.action_license -> {

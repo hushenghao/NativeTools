@@ -94,7 +94,6 @@
     <string name="label_net_speed_silence_channel">Notifications en silence</string>
     <string name="label_net_speed_service">Service Vitesse Net</string>
     <string name="alert_msg_hide_threshold">Masquer l’icône de vitesse internet lorsque la vitesse est inférieure à la valeur spécifiée (unité B, 1024B= 1KB)</string>
-    <string name="label_font_download_source">Fonte télécharger source</string>
     <string name="label_sim_card_config">Configurer les informations de la carte SIM</string>
     <string name="alert_msg_add_imsi_config">Entrez l’imsi de votre carte SIM</string>
     <string name="label_imsi_config_tip">Si vous utilisez plusieurs cartes SIM, les informations IMSI de chaque carte SIM peuvent être configurées individuellement pour afficher des informations détaillées sur le trafic mobile. Les informations IMSI peuvent être visualisées en tapant *#*#4636#*#* sur le cadran.</string>

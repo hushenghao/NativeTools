@@ -94,7 +94,6 @@
     <string name="label_net_speed_silence_channel">無言の通知</string>
     <string name="label_net_speed_default_channel">イベントのお知らせ</string>
     <string name="alert_msg_hide_threshold">速度が指定された値未満の場合は、通信速度を隠すアイコン(単位B, 1024B=1KB)</string>
-    <string name="label_font_download_source">フォントダウンロード元</string>
     <string name="label_sim_card_config">構成SIMカード情報</string>
     <string name="alert_msg_add_imsi_config">SIMカードのIMSIを入力します</string>
     <string name="label_imsi_config_tip">複数のSIMカードを使用している場合は、個々のSIMカードのIMSI情報を個別に構成して詳細なモバイルトラフィック情報を表示することができます。IMSI情報はダイヤルに*#*#4636#*#*と入力してみることができる。</string>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/ic_logo_kotlin_for_android,
+                @drawable/ic_logo_jetpack,
+                @drawable/ic_logo_gradle,
+                @drawable/ic_logo_material3,
+                @drawable/ic_logo_github,
+                @drawable/ic_logo_leak_canary,
+                @drawable/ic_logo_spotless,
+                @drawable/ic_logo_ryoichi_tsunekawa,
+                @drawable/ic_logo_zhongguose,
+                @drawable/ic_logo_googlefonts,
+                @drawable/ic_logo_firebase,
+" />
+
+    <!--
+        shrinkResources true 资源压缩开启时，如果未被引用到的资源会被压缩。
+        通过Resources.getIdentifier()使用的资源属于未被引用资源。
+        tools:keep 属性中指定要保留的资源，在 tools:discard 属性中指定要舍弃的资源。
+        两个属性都接受逗号分隔的资源名称列表。可以使用星号字符作为通配符。
+        https://developer.android.com/studio/build/shrink-code#shrink-resources
+    -->

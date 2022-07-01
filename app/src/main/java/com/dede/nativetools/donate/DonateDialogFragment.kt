@@ -14,6 +14,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ItemBottomSheetListBinding
 import com.dede.nativetools.ui.BottomSheetListFragment
@@ -43,7 +44,7 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
     override fun onBindViewHolder(
         binding: ItemBottomSheetListBinding,
         position: Int,
-        payment: Payment
+        payment: Payment,
     ) {
         binding.root.setOnClickListener {
             clickHandler.handleClick(payment)
@@ -77,6 +78,10 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
                 R.drawable.ic_logo_wxpay -> {
                     context.toast(R.string.toast_wx_payment_tip)
                     name = "微信"
+                }
+                R.drawable.ic_more_vert -> {
+                    host.findNavController().navigate(R.id.action_dialogDonate_to_dialogDonateList)
+                    return
                 }
             }
             event(FirebaseAnalytics.Event.SELECT_ITEM) {

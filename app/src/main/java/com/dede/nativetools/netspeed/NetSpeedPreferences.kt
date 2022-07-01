@@ -28,7 +28,6 @@ object NetSpeedPreferences {
 
     const val KEY_NET_SPEED_TEXT_STYLE = "net_speed_text_style"
     const val KEY_NET_SPEED_FONT = "net_speed_font"
-    private const val KEY_NET_SPEED_FONT_DOWNLOAD_SOURCE = "net_speed_font_download_source"
     const val KEY_NET_SPEED_VERTICAL_OFFSET = "net_speed_vertical_offset"
     const val KEY_NET_SPEED_HORIZONTAL_OFFSET = "net_speed_horizontal_offset"
     const val KEY_NET_SPEED_RELATIVE_RATIO = "net_speed_relative_ratio"
@@ -48,9 +47,6 @@ object NetSpeedPreferences {
     const val MODE_ALL = "1"
     const val MODE_UP = "2"
 
-    private const val DEFAULT_DOWNLOAD_SOURCE =
-        "https://gitlab.com/hushenghao/fonts/-/raw/master/%s.ttf"
-
     var privacyAgreed: Boolean
         get() = globalDataStore.get(booleanPreferencesKey(KEY_PRIVACY_AGREED), false)
         set(value) = globalDataStore.set(booleanPreferencesKey(KEY_PRIVACY_AGREED), value)
@@ -66,9 +62,4 @@ object NetSpeedPreferences {
         get() = globalDataStore.get(booleanPreferencesKey(KEY_NOTIFICATION_DONT_ASK), false)
         set(value) = globalDataStore.set(booleanPreferencesKey(KEY_NOTIFICATION_DONT_ASK), value)
 
-    val downloadSource: String
-        get() = globalDataStore.get(
-            stringPreferencesKey(KEY_NET_SPEED_FONT_DOWNLOAD_SOURCE),
-            DEFAULT_DOWNLOAD_SOURCE
-        )
 }

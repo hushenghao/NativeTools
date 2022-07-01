@@ -36,7 +36,16 @@
         android:id="@+id/dialogDonate"
         android:name="com.dede.nativetools.donate.DonateDialogFragment"
         android:label="@string/action_donate"
-        tools:layout="@layout/fragment_bottom_sheet_list" />
+        tools:layout="@layout/fragment_bottom_sheet_list" >
+        <action
+            android:id="@+id/action_dialogDonate_to_dialogDonateList"
+            app:destination="@id/dialogDonateList" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/dialogDonateList"
+        android:name="com.dede.nativetools.donate.DonateListFragment"
+        android:label="@string/label_donate_list" />
 
     <fragment
         android:id="@+id/other"

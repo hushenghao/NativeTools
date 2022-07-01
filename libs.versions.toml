@@ -28,7 +28,7 @@ androidx-splashscreen = "androidx.core:core-splashscreen:1.0.0-rc01"
 
 free-reflection = "com.github.tiann:FreeReflection:3.1.0"
 viewbinding-property-delegate = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6"
-
+squareup-retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
 squareup-leakcanary-startup = "com.squareup.leakcanary:leakcanary-android-startup:2.9.1"
 squareup-leakcanary-core = "com.squareup.leakcanary:leakcanary-android-core:2.9.1"
 

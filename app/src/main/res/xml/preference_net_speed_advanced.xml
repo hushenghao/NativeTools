@@ -88,14 +88,5 @@
             app:key="net_speed_horizontal_scale"
             app:title="@string/label_net_speed_horizontal_scale" />
 
-        <DropDownPreference
-            app:defaultValue="https://gitlab.com/hushenghao/fonts/-/raw/master/%s"
-            app:entries="@array/font_download_source"
-            app:entryValues="@array/font_download_url"
-            app:iconSpaceReserved="false"
-            app:key="net_speed_font_download_source"
-            app:title="@string/label_font_download_source"
-            app:useSimpleSummaryProvider="true" />
-
     </PreferenceCategory>
 </PreferenceScreen>

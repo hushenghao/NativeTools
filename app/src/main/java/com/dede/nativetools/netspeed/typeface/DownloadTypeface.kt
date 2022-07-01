@@ -5,18 +5,12 @@ import android.graphics.Typeface
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.work.*
-import com.dede.nativetools.netspeed.NetSpeedPreferences
-import com.dede.nativetools.util.closeFinally
+import com.dede.nativetools.network.Api
 import com.dede.nativetools.util.isEmpty
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.perf.FirebasePerformance
-import com.google.firebase.perf.ktx.performance
-import com.google.firebase.perf.ktx.trace
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.*
-import java.net.HttpURLConnection
-import java.net.URL
+import java.io.File
+import java.io.FileOutputStream
 
 abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
 
@@ -51,8 +45,6 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
         return typeface
     }
 
-    abstract val downloadUrl: String
-
     abstract val fontName: String
 
     override fun get(style: Int): Typeface {
@@ -67,34 +59,20 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
 }
 
 open class DownloadTypefaceImpl(context: Context, override val fontName: String) :
-    DownloadTypeface(context) {
-
-    override val downloadUrl: String
-        get() {
-            return NetSpeedPreferences.downloadSource.format(fontName)
-//            return if (Logic.isSimplifiedChinese(context)) {
-//                //"https://gitee.com/dede_hu/fonts/raw/master/$fontName"
-//                "https://gitlab.com/hushenghao/fonts/-/raw/master/$fontName"
-//            } else {
-//                "https://github.com/hushenghao/fonts/raw/master/$fontName"
-//            }
-        }
-}
+    DownloadTypeface(context)
 
 class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams) {
 
     companion object {
         const val EXTRA_FONT_KEY = "extra_font_key"
-        const val EXTRA_FONT_URL = "extra_font_url"
         const val EXTRA_FONT_NAME = "extra_font_name"
 
         fun downloadFont(context: Context, fontKey: String): LiveData<WorkInfo>? {
             val getter = DownloadTypeface.create(context, fontKey) ?: return null
             val data = workDataOf(
                 EXTRA_FONT_KEY to fontKey,
-                EXTRA_FONT_NAME to getter.fontName,
-                EXTRA_FONT_URL to getter.downloadUrl
+                EXTRA_FONT_NAME to getter.fontName
             )
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -113,14 +91,13 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
     override suspend fun doWork(): Result {
         val context = applicationContext
         val fontKey = inputData.getString(EXTRA_FONT_KEY)
-        val downloadUrl = inputData.getString(EXTRA_FONT_URL)
         val fontName = inputData.getString(EXTRA_FONT_NAME)
-        if (downloadUrl.isEmpty() || fontName.isEmpty()) {
+        if (fontName.isEmpty()) {
             // 没有下载参数配置
             return Result.failure()
         }
         return withContext(Dispatchers.IO) {
-            Log.i("DownloadFontWork", "download: $downloadUrl")
+            Log.i("DownloadFontWork", "download: $fontName")
             var result = DownloadTypeface.loadFont(context, fontName)
             if (result != null) {
                 // 已下载
@@ -128,11 +105,7 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
             }
             // 开始下载
             val fontFile = DownloadTypeface.getFontFile(context, fontName)
-            val dir = fontFile.parentFile
-            if (dir != null && !dir.exists()) {
-                dir.mkdirs()
-            }
-            download(downloadUrl, fontFile)
+            download(fontName, fontFile)
             // 检查下载结果
             result = DownloadTypeface.loadFont(context, fontName)
             return@withContext if (result != null)
@@ -145,33 +118,12 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
     /**
      * 下载网络字体
      */
-    private fun download(urlStr: String, output: File) {
-        val url = URL(urlStr)
-        Firebase.performance.newHttpMetric(url, FirebasePerformance.HttpMethod.GET)
-            .trace {
-                var connect: HttpURLConnection? = null
-                var outputStream: OutputStream? = null
-                var inputStream: InputStream? = null
-                try {
-                    connect = (url.openConnection() as? HttpURLConnection) ?: return
-                    connect.requestMethod = "GET"
-                    connect.connectTimeout = 10000
-                    connect.readTimeout = 10000
-                    connect.doOutput = false
-                    val responseCode = connect.responseCode
-                    setHttpResponseCode(responseCode)
-                    if (responseCode == 200) {
-                        inputStream = connect.inputStream
-                        outputStream = FileOutputStream(output)
-                        inputStream.copyTo(outputStream)
-                    }
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                } finally {
-                    outputStream?.closeFinally()
-                    inputStream?.closeFinally()
-                    connect?.disconnect()
-                }
+    private suspend fun download(fontName: String, output: File) {
+        val input = Api.downloadFont(fontName)
+        input.use {
+            FileOutputStream(output).use { output ->
+                input.copyTo(output)
             }
+        }
     }
 }

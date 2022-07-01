@@ -94,7 +94,6 @@
     <string name="label_net_speed_silence_channel">Тишина в эфире</string>
     <string name="label_net_speed_default_channel">Уведомление о деятельности</string>
     <string name="alert_msg_hide_threshold">Скрытая икона скорости меньше указанного значения (единица B, 1024B=1KB)</string>
-    <string name="label_font_download_source">Источник скачивания шрифта</string>
     <string name="label_mobile">Мобильная сеть</string>
     <string name="label_net_usage_config">Конфигурация ситуации в сети</string>
     <string name="label_imsi_config_tip">Если вы используете несколько Сим-карт, вы можете настроить информацию IMSI на одну симку для отображения детальной информации о движении. Информация IMSI может быть использована для просмотра с помощью набора *#*#4636#*#*.</string>
