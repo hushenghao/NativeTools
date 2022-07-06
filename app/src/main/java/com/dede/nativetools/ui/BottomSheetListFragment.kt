@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -12,7 +13,8 @@ import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentBottomSheetListBinding
 import com.dede.nativetools.databinding.ItemBottomSheetListBinding
 import com.dede.nativetools.main.WindowEdgeManager
-import com.dede.nativetools.main.applyBottomBarsInsets
+import com.dede.nativetools.network.isLoading
+import com.dede.nativetools.util.toast
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -69,11 +71,25 @@ abstract class AbsBottomSheetListFragment<T, H : RecyclerView.ViewHolder> :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        applyBottomBarsInsets(binding.recyclerView)
+//        applyBottomBarsInsets(binding.recyclerView)
     }
 
     open fun setData(list: List<T>) {
         binding.recyclerView.adapter = Adapter(list, this)
+        binding.progressCircular.isVisible = false
+    }
+
+    open fun setData(result: Result<List<T>>) {
+        if (result.isLoading) {
+            binding.progressCircular.isVisible = true
+            return
+        }
+        if (result.isFailure) {
+            toast(R.string.toast_network_error)
+            dismissAllowingStateLoss()
+            return
+        }
+        this.setData(result.getOrThrow())
     }
 
     abstract fun onCreateViewHolder(parent: ViewGroup): H
@@ -82,7 +98,7 @@ abstract class AbsBottomSheetListFragment<T, H : RecyclerView.ViewHolder> :
 
     private class Adapter<T, H : RecyclerView.ViewHolder>(
         val data: List<T>,
-        val fragment: AbsBottomSheetListFragment<T, H>
+        val fragment: AbsBottomSheetListFragment<T, H>,
     ) : RecyclerView.Adapter<H>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): H {

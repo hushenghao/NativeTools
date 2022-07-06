@@ -111,4 +111,5 @@
     <string name="label_mobile">移动网络</string>
     <string name="label_net_usage_config">网络使用情况配置</string>
     <string name="label_donate_list">捐助记录</string>
+    <string name="toast_network_error">网络加载失败</string>
 </resources>
