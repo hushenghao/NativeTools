@@ -32,16 +32,15 @@ interface Api {
 
 }
 
-private class LoadingException : Exception()
-
-private val loadingObj by lazy { LoadingException() }
+private val loadingObj by lazy { Any() }
 
 fun <T> Result.Companion.loading(): Result<T> {
-    return failure(loadingObj)
+    @Suppress("UNCHECKED_CAST")
+    return success(loadingObj) as Result<T>
 }
 
 val Result<*>.isLoading: Boolean
-    get() = this.exceptionOrNull() == loadingObj
+    get() = this.getOrNull() == loadingObj
 
 
 private val proxy by lazy {
