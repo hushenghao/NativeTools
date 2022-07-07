@@ -3,7 +3,10 @@ package com.dede.nativetools.network
 
 import com.dede.nativetools.donate.DonateInfo
 import com.dede.nativetools.open_source.OpenSource
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import java.io.InputStream
@@ -22,7 +25,7 @@ interface Api {
     @GET("fonts/-/raw/master/{fontName}")
     suspend fun downloadFont(@Path("fontName") fontName: String): InputStream
 
-    //@GET("http://10.103.0.157:8000/open_source_list.json")
+    //    @GET("http://10.103.0.164:8000/open_source_list.json")
     @GET("NativeTools/-/raw/develop/apis/open_source_list.json")
     suspend fun getOpenSourceList(): List<OpenSource>
 
@@ -44,9 +47,13 @@ val Result<*>.isLoading: Boolean
 
 
 private val proxy by lazy {
+    val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+
     val retrofit = Retrofit.Builder()
         .baseUrl("https://gitlab.com/hushenghao/")
-        .addConverterFactory(JsonConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addConverterFactory(StreamConverterFactory.create())
         .build()
     retrofit.create(Api::class.java)

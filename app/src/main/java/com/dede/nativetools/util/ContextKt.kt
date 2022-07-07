@@ -116,11 +116,11 @@ fun Context.color(@AttrRes attrId: Int, @ColorInt default: Int): Int {
 }
 
 fun Context.toast(text: String) {
-    Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    ToastCompat.wrapperToast(Toast.makeText(this, text, Toast.LENGTH_SHORT)).show()
 }
 
 fun Context.toast(@StringRes resId: Int) {
-    Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
+    ToastCompat.wrapperToast(Toast.makeText(this, resId, Toast.LENGTH_SHORT)).show()
 }
 
 fun Context.browse(url: String) {

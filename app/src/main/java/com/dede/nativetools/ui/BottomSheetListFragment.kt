@@ -69,13 +69,17 @@ abstract class AbsBottomSheetListFragment<T, H : RecyclerView.ViewHolder> :
         }
     }
 
+    private lateinit var adapter: Adapter<T, H>
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        applyBottomBarsInsets(binding.recyclerView)
+        adapter = Adapter(this)
+        binding.recyclerView.adapter = adapter
     }
 
     open fun setData(list: List<T>) {
-        binding.recyclerView.adapter = Adapter(list, this)
+        adapter.setData(list)
         binding.progressCircular.isVisible = false
     }
 
@@ -96,10 +100,17 @@ abstract class AbsBottomSheetListFragment<T, H : RecyclerView.ViewHolder> :
 
     abstract fun onBindViewHolder(holder: H, position: Int, t: T)
 
-    private class Adapter<T, H : RecyclerView.ViewHolder>(
-        val data: List<T>,
-        val fragment: AbsBottomSheetListFragment<T, H>,
-    ) : RecyclerView.Adapter<H>() {
+    private class Adapter<T, H : RecyclerView.ViewHolder>(val fragment: AbsBottomSheetListFragment<T, H>) :
+        RecyclerView.Adapter<H>() {
+
+        private val data: MutableList<T> = ArrayList()
+
+        fun setData(list: List<T>) {
+            data.clear()
+            notifyItemRangeRemoved(0, itemCount)
+            data.addAll(list)
+            notifyItemRangeInserted(0, itemCount)
+        }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): H {
             return fragment.onCreateViewHolder(parent)

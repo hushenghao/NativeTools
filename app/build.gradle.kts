@@ -12,7 +12,6 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-parcelize")
-    id("kotlinx-serialization")
     id("com.diffplug.spotless")
 
     id("com.google.gms.google-services")
@@ -122,9 +121,11 @@ dependencies {
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)
+    implementation(deps.bumptech.glide)
+    implementation(deps.squareup.okhttp)
     implementation(deps.squareup.retrofit)
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-    implementation("com.github.bumptech.glide:glide:4.11.0")
+    implementation(deps.squareup.retrofit.converter.moshi)
+    implementation(deps.squareup.moshi)
 
     implementation(platform(deps.firebase.bom))
     implementation(deps.bundles.firebase.ktx)

@@ -1,10 +1,8 @@
 package com.dede.nativetools.open_source
 
 import com.dede.nativetools.network.Api
-import kotlinx.serialization.Serializable
 import java.text.Collator
 
-@Serializable
 data class OpenSource(
     val name: String,
     val author: String?,

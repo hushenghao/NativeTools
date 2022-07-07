@@ -1,29 +1,27 @@
 package com.dede.nativetools.donate
 
 import com.dede.nativetools.network.Api
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.squareup.moshi.Json
 
 /**
  * Created by shhu on 2022/7/1 13:43.
  *
  * @since 2022/7/1
  */
-@Serializable
 data class DonateInfo(
-    @SerialName("order_id")
+    @Json(name = "order_id")
     val orderId: String? = null,
-    @SerialName("donate_price")
+    @Json(name = "donate_price")
     val donatePrice: String? = null,
-    @SerialName("donate_channel")
+    @Json(name = "donate_channel")
     val donateChannel: String? = null,
-    @SerialName("donate_user")
+    @Json(name = "donate_user")
     val donateUser: String? = null,
-    @SerialName("donate_timestamp")
+    @Json(name = "donate_timestamp")
     val donateTimestamp: Long = 0L,
-    @SerialName("donate_date")
+    @Json(name = "donate_date")
     val donateDate: String? = null,
-    @SerialName("donate_remark")
+    @Json(name = "donate_remark")
     val donateRemake: String? = null,
 )
 
