@@ -49,7 +49,6 @@
     <string name="share_text" formatted="false">发现了一个好用的小工具“%s”快去下载吧！%s</string>
     <string name="action_feedback">问题反馈</string>
     <string name="toast_copyed">已复制</string>
-    <string name="toast_wx_payment_tip">微信付款码请长按保存图片后扫描</string>
     <string name="label_net_speed_toggle">切换</string>
     <string name="alert_msg_hide_lock_notification">有时候通知无法隐藏可能是锁屏设置引起的。在设置中找到“隐藏锁屏通知”，选择“仅显示敏感内容”或“隐藏所有通知”。</string>
     <string name="label_general">通用</string>
@@ -110,6 +109,7 @@
     <string name="alert_msg_add_imsi_config">输入您SIM卡的IMSI</string>
     <string name="label_mobile">移动网络</string>
     <string name="label_net_usage_config">网络使用情况配置</string>
-    <string name="label_donate_list">捐助记录</string>
+    <string name="label_donate_list">捐赠记录</string>
     <string name="toast_network_error">网络加载失败</string>
+    <string name="toast_payment_tip">长按保存收款码</string>
 </resources>

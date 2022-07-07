@@ -44,7 +44,6 @@
     <string name="share_text" formatted="false">Ich habe ein einfach zu bedienendes Gadget \"%s\" gefunden. %s</string>
     <string name="action_feedback">Problem Feedback</string>
     <string name="toast_copyed">Kopiert</string>
-    <string name="toast_wx_payment_tip">WeChat Zahlungscode, bitte lange drücken, um das Bild zu speichern und zu scannen</string>
     <string name="label_net_speed_toggle">Schalter</string>
     <string name="alert_msg_hide_lock_notification">Manchmal kann die Meldung nicht ausgeblendet werden, was durch die Einstellung des Sperrbildschirms verursacht werden kann. Suchen Sie in Einstellungen \"Sperrbildschirm-Benachrichtigungen ausblenden\" und wählen Sie \"nur sensible Inhalte anzeigen\" oder \"alle Meldungen ausblenden\".</string>
     <string name="label_general">Währung</string>

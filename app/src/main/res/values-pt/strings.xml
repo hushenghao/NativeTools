@@ -82,7 +82,6 @@
     <string name="toast_download_font_succeeded">Baixar da fonte success</string>
     <string name="toast_open_battery_optimization">Encontre o \"Indicador de velocidade da internet\" e ative manualmente a otimização da bateria</string>
     <string name="toast_saved">Já foi salvo</string>
-    <string name="toast_wx_payment_tip">Para o código de pagamento wechat, por favor, pressione e segure a imagem para digitalizá-la</string>
     <string name="usage_states_title">Condições de uso autorização de acesso</string>
     <string name="usage_stats_msg">É necessário permitir o acesso ao uso de estatísticas de tráfego.</string>
     <string name="summary_threshold_error">O limiar introduzido não está correto</string>

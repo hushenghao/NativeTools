@@ -69,6 +69,7 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
                 }
                 R.drawable.ic_logo_alipay -> {
                     context.browse(R.string.url_alipay_payment_code)
+                    context.toast(R.string.toast_payment_tip)
                     name = "支付宝"
                 }
                 R.drawable.ic_logo_paypal -> {
@@ -76,7 +77,7 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
                     name = "PayPal"
                 }
                 R.drawable.ic_logo_wxpay -> {
-                    context.toast(R.string.toast_wx_payment_tip)
+                    context.toast(R.string.toast_payment_tip)
                     name = "微信"
                 }
                 R.drawable.ic_more_vert -> {
@@ -94,6 +95,8 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
             return when (payment.resId) {
                 R.drawable.ic_logo_wxpay ->
                     createOnLongClickSaveQrCodeListener(R.drawable.layer_wx_payment_code)
+                R.drawable.ic_logo_alipay ->
+                    createOnLongClickSaveQrCodeListener(R.drawable.layer_alipay_code)
                 else -> null
             }
         }

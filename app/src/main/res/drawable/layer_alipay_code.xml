@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="521px"
+        android:height="521px"
+        android:drawable="@drawable/img_qrcode_alipay" />
+    <item
+        android:width="100px"
+        android:height="100px"
+        android:drawable="@drawable/ic_logo_alipay"
+        android:gravity="center" />
+    <item
+        android:width="110px"
+        android:height="110px"
+        android:gravity="center">
+        <shape android:shape="rectangle">
+            <corners android:radius="16px" />
+            <stroke
+                android:width="8px"
+                android:color="@android:color/white" />
+        </shape>
+    </item>
+</layer-list>

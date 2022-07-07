@@ -44,7 +44,6 @@
     <string name="share_text" formatted="false">사용하기 좋은 작은 도구\"%s\"를 발견했으니, 가서 다운로드하세요! %s</string>
     <string name="action_feedback">문제 피드백</string>
     <string name="toast_copyed">복사됨</string>
-    <string name="toast_wx_payment_tip">위챗 결제코드 길게 눌러서 그림 저장하신 후 스캔해주세요</string>
     <string name="label_net_speed_toggle">켬/끔</string>
     <string name="alert_msg_hide_lock_notification">알림을 숨길 수 없는 경우 잠금 화면 설정 때문일 수 있습니다.설정에서 잠금화면 알림 숨기기를 찾고, 민감한 내용만 보이거나 모든 알림 숨기기를 선택합니다.</string>
     <string name="label_general">gm</string>

@@ -44,7 +44,6 @@
     <string name="share_text" formatted="false">便利なガジェット「%s」を見つけたらダウンロードしてください! %s</string>
     <string name="action_feedback">問題フィードバック</string>
     <string name="toast_copyed">複製済み</string>
-    <string name="toast_wx_payment_tip">WeChat決済コードは保存画像を押してスキャンしてください</string>
     <string name="label_net_speed_toggle">换</string>
     <string name="alert_msg_hide_lock_notification">通知が隠されない場合はロック画面の設定に起因する可能性があります。設定で「ロック画面の通知を隠す」を見つけ、「デリケートな内容のみを表示する」または「すべての通知を隠す」を選択します。</string>
     <string name="label_general">ユニバーサル設定</string>

@@ -64,7 +64,6 @@
     <string name="url_pgyer" translatable="false">https://www.pgyer.com/U9kJ</string>
     <string name="url_firebase_app_distribution" translatable="false">https://appdistribution.firebase.dev/i/fcdac68f4991245f</string>
     <string name="toast_copyed">已复制</string>
-    <string name="toast_wx_payment_tip">微信付款码请长按保存图片后扫描</string>
     <string name="label_net_speed_toggle">切换</string>
     <string name="alert_msg_hide_lock_notification">有时候通知无法隐藏可能是锁屏设置引起的。在设置中找到“隐藏锁屏通知”，选择“仅显示敏感内容”或“隐藏所有通知”。</string>
     <string name="label_general">通用</string>
@@ -128,8 +127,9 @@
     <string name="alert_msg_add_imsi_config">输入您SIM卡的IMSI</string>
     <string name="label_imsi_config_tip">如果您使用多个SIM卡，可以单独配置每一张SIM卡的IMSI信息来显示详细的移动流量信息。IMSI信息可以尝试在拨号盘输入*#*#4636#*#*进行查看。</string>
     <string name="label_net_usage_config">网络使用情况配置</string>
-    <string name="label_wifi">WLAN</string>
+    <string translatable="false" name="label_wifi">WLAN</string>
     <string name="label_mobile">Mobile</string>
-    <string name="label_donate_list">捐助记录</string>
+    <string name="label_donate_list">捐赠记录</string>
     <string name="toast_network_error">网络加载失败</string>
+    <string name="toast_payment_tip">长按保存收款码</string>
 </resources>

@@ -44,7 +44,6 @@
     <string name="share_text" formatted="false">J\'a i trouvé un bon gadget \"%s\" à télécharger! %s</string>
     <string name="action_feedback">Rétroaction sur les questions</string>
     <string name="toast_copyed">Copié</string>
-    <string name="toast_wx_payment_tip">S\'il vous plaît appuyez longtemps pour enregistrer l\'image et numériser le Code de paiement Wechat</string>
     <string name="label_net_speed_toggle">Basculer</string>
     <string name="alert_msg_hide_lock_notification">Parfois, les notifications ne peuvent pas être cachées en raison du réglage de l\'écran de verrouillage. Localisez masquer les notifications de verrouillage dans les paramètres et sélectionnez afficher uniquement le contenu sensible ou masquer toutes les notifications.</string>
     <string name="label_general">Généralités</string>
