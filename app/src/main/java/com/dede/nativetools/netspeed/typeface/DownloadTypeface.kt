@@ -10,7 +10,6 @@ import com.dede.nativetools.util.isEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.FileOutputStream
 
 abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
 
@@ -118,11 +117,20 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
     /**
      * 下载网络字体
      */
-    private suspend fun download(fontName: String, output: File) {
+    @Suppress("BlockingMethodInNonBlockingContext")
+    private suspend fun download(fontName: String, fontFile: File) {
+        val fontDir = fontFile.parentFile
+        if (fontDir != null && !fontDir.exists()) {
+            fontDir.mkdirs()
+        }
+        if (!fontFile.exists()) {
+            fontFile.createNewFile()
+        }
+
         val input = Api.downloadFont(fontName)
         input.use {
-            FileOutputStream(output).use { output ->
-                input.copyTo(output)
+            fontFile.outputStream().use { output ->
+                it.copyTo(output)
             }
         }
     }

@@ -23,7 +23,9 @@ class StreamConverterFactory private constructor() : Converter.Factory() {
         type: Type,
         annotations: Array<out Annotation>,
         retrofit: Retrofit,
-    ): Converter<ResponseBody, InputStream> {
+    ): Converter<ResponseBody, InputStream>? {
+        if (type != InputStream::class.java) return null
+
         return StreamResponseBodyConverter()
     }
 }

@@ -35,17 +35,6 @@ interface Api {
 
 }
 
-private val loadingObj by lazy { Any() }
-
-fun <T> Result.Companion.loading(): Result<T> {
-    @Suppress("UNCHECKED_CAST")
-    return success(loadingObj) as Result<T>
-}
-
-val Result<*>.isLoading: Boolean
-    get() = this.getOrNull() == loadingObj
-
-
 private val proxy by lazy {
     val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -53,8 +42,19 @@ private val proxy by lazy {
 
     val retrofit = Retrofit.Builder()
         .baseUrl("https://gitlab.com/hushenghao/")
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addConverterFactory(StreamConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
     retrofit.create(Api::class.java)
 }
+
+private val loadingObj by lazy { Any() }
+
+fun <T> Result.Companion.loading(): Result<T> {
+    @Suppress("UNCHECKED_CAST")
+    return success(loadingObj) as Result<T>
+}
+
+
+val Result<*>.isLoading: Boolean
+    get() = this.getOrNull() == loadingObj
