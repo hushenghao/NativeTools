@@ -64,8 +64,6 @@ abstract class AbsBottomSheetListFragment<T, H : RecyclerView.ViewHolder> :
             WindowEdgeManager(requireContext()).applyEdgeToEdge(this.window)
             val behavior = (this as BottomSheetDialog).behavior
             behavior.skipCollapsed = true
-            @Suppress("VisibleForTests", "RestrictedApi")
-            behavior.disableShapeAnimations()
         }
     }
 

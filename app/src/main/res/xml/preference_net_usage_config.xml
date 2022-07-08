@@ -2,13 +2,13 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreferenceCompat
-        app:defaultValue="true"
+        app:defaultValue="false"
         app:iconSpaceReserved="false"
         app:key="key_net_usage_wifi"
         app:title="@string/label_wifi" />
 
     <SwitchPreferenceCompat
-        app:defaultValue="true"
+        app:defaultValue="false"
         app:disableDependentsState="false"
         app:iconSpaceReserved="false"
         app:key="key_net_usage_mobile"
