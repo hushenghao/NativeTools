@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import java.security.GeneralSecurityException
 
 class NetUsageConfigs(context: Context) {
@@ -31,6 +33,7 @@ class NetUsageConfigs(context: Context) {
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
         } catch (e: GeneralSecurityException) {
+            Firebase.crashlytics.recordException(e)
             context.getSharedPreferences(PREF_NAME_NO_ENCRYPT, Context.MODE_PRIVATE)
         }
 
