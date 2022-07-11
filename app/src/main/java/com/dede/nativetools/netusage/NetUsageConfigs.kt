@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import java.security.GeneralSecurityException
 
 class NetUsageConfigs(context: Context) {
 
     companion object {
-        const val PREF_NAME = "sim_card_config"
+        private const val PREF_NAME = "sim_card_config"
+        private const val PREF_NAME_NO_ENCRYPT = "sim_card_config_no_encrypt"
 
         const val KEY_ADD_IMSI_CONFIG = "key_add_imsi_config"
         const val KEY_IMSI_CONFIG_GROUP = "key_imsi_config_group"
@@ -19,13 +21,19 @@ class NetUsageConfigs(context: Context) {
         private const val KEY_ALL_IMSI = "key_all_imsi"
     }
 
-    private val sharedPreferences: SharedPreferences = EncryptedSharedPreferences(
-        context,
-        PREF_NAME,
-        MasterKey(context),
-        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-    )
+    private val sharedPreferences: SharedPreferences =
+        try {
+            EncryptedSharedPreferences(
+                context,
+                PREF_NAME,
+                MasterKey(context),
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+        } catch (e: GeneralSecurityException) {
+            context.getSharedPreferences(PREF_NAME_NO_ENCRYPT, Context.MODE_PRIVATE)
+        }
+
 
     private val allIMSI: LinkedHashSet<String> = LinkedHashSet()
     private val enabledIMSI: LinkedHashSet<String> = LinkedHashSet()
