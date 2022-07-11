@@ -20,7 +20,6 @@
     <string name="label_about">Sobre</string>
     <string name="label_coffee">Pagar-me uma chávena de café?</string>
     <string name="label_diagnosis">O diagnóstico</string>
-    <string name="label_full_net_usage">Estatísticas de uso da web</string>
     <string name="label_general">geral</string>
     <string name="label_home">Ficha técnica</string>
     <string name="label_ignore_battery_optimize">Ignorando a otimização da bateria</string>
@@ -48,11 +47,8 @@
     <string name="label_open_source">Relacionado com open source</string>
     <string name="label_other">Outros</string>
     <string name="label_privacy_agreement">Acordo de privacidade</string>
-    <string name="label_today">Hoje</string>
     <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Hoje: %s • Este mês: %s</string>
-    <string name="label_upload">Upload</string>
-    <string name="label_download">Download</string>
     <string name="settings">Ir para configurações</string>
     <string name="share_text" formatted="false">Encontrei um gadget fácil de usar \'%s\'Ir para download! %s</string>
     <string name="summary_default">Por omissão</string>

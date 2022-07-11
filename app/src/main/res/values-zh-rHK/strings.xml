@@ -3,8 +3,6 @@
     <string name="app_name">網速指示器</string>
     <string name="notify_net_speed_msg" formatted="false">上傳：%s • 下載：%s</string>
     <string name="notify_net_speed_sub" formatted="false">今日：%s • 本月：%s</string>
-    <string name="label_upload">上傳</string>
-    <string name="label_download">下載</string>
     <string name="switch_on">打開</string>
     <string name="switch_off">關閉</string>
     <string name="action_close">關閉</string>
@@ -81,8 +79,6 @@
     <string name="toast_download_font_succeeded">字體下載成功</string>
     <string name="toast_download_font_failed">字體下載失敗</string>
     <string name="label_net_speed_horizontal_scale">X軸縮放</string>
-    <string name="label_full_net_usage">網絡使用統計</string>
-    <string name="label_today">今日</string>
     <string name="label_diagnosis">診斷</string>
     <string name="label_net_speed_hide_threshold">隱藏閾值</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">當速度小於%s時隱藏狀態列網速圖標</string>

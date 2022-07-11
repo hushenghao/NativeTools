@@ -3,8 +3,6 @@
     <string name="app_name">Anzeige der Net</string>
     <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Kröte: %s • Monat: %s</string>
-    <string name="label_upload">Upload</string>
-    <string name="label_download">Download</string>
     <string name="switch_on">geöffnet</string>
     <string name="switch_off">schließen</string>
     <string name="action_close">schließen</string>
@@ -81,8 +79,6 @@
     <string name="toast_download_font_succeeded">Download erfolgreich abgeschlossen</string>
     <string name="toast_download_font_failed">Der schriftdruck kann nicht heruntergeladen werden</string>
     <string name="label_net_speed_horizontal_scale">Die x-achse schrumpft</string>
-    <string name="label_full_net_usage">Statistik der internetnutzung</string>
-    <string name="label_today">Kröte</string>
     <string name="label_diagnosis">Diagnose</string>
     <string name="summary_threshold_error">Die schwelle stimmt nicht</string>
     <string name="label_net_speed_hide_threshold">Es wird eng</string>

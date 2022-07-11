@@ -65,9 +65,6 @@
             android:id="@+id/action_other_to_openSource"
             app:destination="@id/openSource" />
         <action
-            android:id="@+id/action_other_to_netUsage"
-            app:destination="@id/netUsageFragment" />
-        <action
             android:id="@+id/action_other_to_diagnosis"
             app:destination="@id/diagnosisFragment" />
         <action
@@ -79,12 +76,6 @@
         android:id="@+id/netSpeedAdvanced"
         android:name="com.dede.nativetools.netspeed.NetSpeedAdvancedFragment"
         android:label="@string/label_net_speed_advanced" />
-
-    <fragment
-        android:id="@+id/netUsageFragment"
-        android:name="com.dede.nativetools.netusage.NetUsageFragment"
-        android:label="@string/label_full_net_usage"
-        tools:layout="@layout/fragment_net_usage" />
 
     <fragment
         android:id="@+id/diagnosisFragment"

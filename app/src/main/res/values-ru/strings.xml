@@ -3,8 +3,6 @@
     <string name="app_name">Указатель скорости сети</string>
     <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Today: %s • Month: %s</string>
-    <string name="label_upload">Upload</string>
-    <string name="label_download">Download</string>
     <string name="switch_on">откр</string>
     <string name="switch_off">закр</string>
     <string name="action_close">закр</string>
@@ -81,8 +79,6 @@
     <string name="toast_download_font_succeeded">Загрузка шрифта завершена</string>
     <string name="toast_download_font_failed">Загрузка шрифта провалилась</string>
     <string name="label_net_speed_horizontal_scale">Икс-осевой зум</string>
-    <string name="label_full_net_usage">Статистика использования сети</string>
-    <string name="label_today">Today</string>
     <string name="label_diagnosis">диагноз</string>
     <string name="summary_threshold_error">Входной порог неправильный</string>
     <string name="label_net_speed_hide_threshold">Скрытый порог</string>

@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools"
-    tools:keep="@drawable/ic_logo_kotlin_for_android,
-                @drawable/ic_logo_jetpack,
-                @drawable/ic_logo_gradle,
-                @drawable/ic_logo_material3,
-                @drawable/ic_logo_github,
-                @drawable/ic_logo_leak_canary,
-                @drawable/ic_logo_spotless,
-                @drawable/ic_logo_ryoichi_tsunekawa,
-                @drawable/ic_logo_zhongguose,
-                @drawable/ic_logo_googlefonts,
-                @drawable/ic_logo_firebase,
+    tools:keep="@drawable/ic_logo_*
 " />
 
     <!--

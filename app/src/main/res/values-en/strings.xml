@@ -7,8 +7,6 @@
     <string name="dont_ask">Don\'t ask</string>
     <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
     <string name="notify_net_speed_sub" formatted="false">Today: %s • Month: %s</string>
-    <string name="label_upload">Upload</string>
-    <string name="label_download">Download</string>
     <string name="switch_on">ON</string>
     <string name="switch_off">OFF</string>
     <string name="action_close">CLOSE</string>
@@ -81,8 +79,6 @@
     <string name="toast_download_font_succeeded">Font downloaded successfully</string>
     <string name="toast_download_font_failed">Font download failed</string>
     <string name="label_net_speed_horizontal_scale">X zoom</string>
-    <string name="label_today">Today</string>
-    <string name="label_full_net_usage">Network Usage statistics</string>
     <string name="label_diagnosis">Diagnosis</string>
     <string name="label_net_speed_hide_threshold">Hide the threshold</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">Hide the status of the network speed when the speed is less than %s</string>
