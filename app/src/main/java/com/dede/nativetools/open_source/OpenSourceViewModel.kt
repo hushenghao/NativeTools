@@ -16,6 +16,7 @@ class OpenSourceViewModel : ViewModel() {
             try {
                 emit(Result.success(openSourceRepository.getOpenSourceList()))
             } catch (e: Exception) {
+                e.printStackTrace()
                 emit(Result.failure(e))
             }
         }

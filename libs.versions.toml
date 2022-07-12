@@ -2,7 +2,7 @@
 
 [libraries]
 tinify = "com.tinify:tinify:1.6.4"
-google-services = "com.google.gms:google-services:4.3.12"
+google-services = "com.google.gms:google-services:4.3.10"
 firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.1"
 firebase-perf-gradle = "com.google.firebase:perf-plugin:1.4.1"
 firebase-appdistribution-gradle = "com.google.firebase:firebase-appdistribution-gradle:2.1.3"

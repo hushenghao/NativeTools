@@ -1,8 +1,10 @@
 package com.dede.nativetools.open_source
 
+import androidx.annotation.Keep
 import com.dede.nativetools.network.Api
 import java.text.Collator
 
+@Keep
 data class OpenSource(
     val name: String,
     val author: String?,

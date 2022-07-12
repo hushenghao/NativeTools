@@ -1,5 +1,6 @@
 package com.dede.nativetools.donate
 
+import androidx.annotation.Keep
 import com.dede.nativetools.network.Api
 import com.squareup.moshi.Json
 
@@ -8,6 +9,7 @@ import com.squareup.moshi.Json
  *
  * @since 2022/7/1
  */
+@Keep
 data class DonateInfo(
     @Json(name = "order_id")
     val orderId: String? = null,

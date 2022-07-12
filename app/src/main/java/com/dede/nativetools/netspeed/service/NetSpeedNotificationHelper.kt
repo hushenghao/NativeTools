@@ -235,10 +235,10 @@ object NetSpeedNotificationHelper {
         var pendingFlag = PendingIntent.FLAG_UPDATE_CURRENT
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             // https://developer.android.com/about/versions/12/behavior-changes-all#foreground-service-notification-delay
-            @Suppress("WrongConstant")
+//            @Suppress("WrongConstant")
             builder.foregroundServiceBehavior = NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
             // https://developer.android.com/about/versions/12/behavior-changes-12#pending-intent-mutability
-            pendingFlag = pendingFlag or PendingIntent.FLAG_MUTABLE
+            pendingFlag = PendingIntent.FLAG_MUTABLE
         }
 
         if (configuration.hideNotification && !itSSAbove(context)) {
