@@ -31,6 +31,7 @@ interface NetStats {
                 return netStats!!
             }
             val allNetBytesClass = arrayOf(
+                AndroidTBP3NetStats::class.java,
                 Android31NetStats::class.java,
                 ReflectNetStats::class.java,
                 ExcludeLoNetStats::class.java,

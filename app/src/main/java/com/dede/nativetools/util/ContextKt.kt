@@ -115,8 +115,8 @@ fun Context.color(@AttrRes attrId: Int, @ColorInt default: Int): Int {
     return MaterialColors.getColor(this, attrId, default)
 }
 
-fun Context.toast(text: String) {
-    ToastCompat.wrapperToast(Toast.makeText(this, text, Toast.LENGTH_SHORT)).show()
+fun Context.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
+    ToastCompat.wrapperToast(Toast.makeText(this, text, duration)).show()
 }
 
 fun Context.toast(@StringRes resId: Int) {

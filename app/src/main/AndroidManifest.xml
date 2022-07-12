@@ -33,6 +33,10 @@
         </intent>
     </queries>
 
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="true" />
+
     <application
         android:name=".NativeToolsApp"
         android:allowBackup="false"
