@@ -71,4 +71,15 @@
         <item>1</item><!-- AppCompatDelegate.MODE_NIGHT_NO -->
     </string-array>
 
+    <string-array name="net_speed_min_unit">
+        <item>B/s</item>
+        <item>KB/s</item>
+        <item>MB/s</item>
+    </string-array>
+    <string-array name="net_speed_min_unit_value">
+        <item>-1</item><!-- NetFormatter.MIN_UNIT_BYTE -->
+        <item>0</item><!-- NetFormatter.MIN_UNIT_KB -->
+        <item>1</item><!-- NetFormatter.MIN_UNIT_MB-->
+    </string-array>
+
 </resources>

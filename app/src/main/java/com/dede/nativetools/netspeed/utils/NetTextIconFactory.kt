@@ -106,20 +106,24 @@ object NetTextIconFactory {
 
         // 降低精度以保证更大字体显示
         val accuracy: Int = NetFormatter.ACCURACY_EQUAL_WIDTH
+        val minUnit = configuration.minUnit
         val text1: String
         val text2: String
         when (configuration.mode) {
             NetSpeedPreferences.MODE_ALL -> {
-                text1 = NetFormatter.format(txByte, NetFormatter.FLAG_NULL, accuracy).splicing()
-                text2 = NetFormatter.format(rxByte, NetFormatter.FLAG_NULL, accuracy).splicing()
+                text1 = NetFormatter.format(txByte, NetFormatter.FLAG_NULL, accuracy, minUnit)
+                    .splicing()
+                text2 = NetFormatter.format(rxByte, NetFormatter.FLAG_NULL, accuracy, minUnit)
+                    .splicing()
             }
             NetSpeedPreferences.MODE_UP -> {
-                val upSplit = NetFormatter.format(txByte, NetFormatter.FLAG_FULL, accuracy)
+                val upSplit = NetFormatter.format(txByte, NetFormatter.FLAG_FULL, accuracy, minUnit)
                 text1 = upSplit.first
                 text2 = upSplit.second
             }
             else -> {
-                val downSplit = NetFormatter.format(rxByte, NetFormatter.FLAG_FULL, accuracy)
+                val downSplit =
+                    NetFormatter.format(rxByte, NetFormatter.FLAG_FULL, accuracy, minUnit)
                 text1 = downSplit.first
                 text2 = downSplit.second
             }

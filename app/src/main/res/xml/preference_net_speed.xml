@@ -41,6 +41,15 @@
             app:title="@string/label_net_speed_hide_threshold"
             tools:useSimpleSummaryProvider="true" />
 
+        <DropDownPreference
+            android:key="net_speed_min_unit"
+            app:defaultValue="-1"
+            app:entries="@array/net_speed_min_unit"
+            app:entryValues="@array/net_speed_min_unit_value"
+            app:icon="@drawable/ic_baseline_timer"
+            app:title="@string/label_net_speed_min_unit"
+            app:useSimpleSummaryProvider="true" />
+
         <com.dede.nativetools.ui.NavigatePreference
             app:eventName="高级设置"
             app:icon="@drawable/ic_outline_settings"
@@ -68,9 +77,9 @@
             app:dependency="net_speed_hide_notification"
             app:icon="@drawable/ic_outline_data_usage"
             app:key="net_speed_usage"
-            app:widgetLayout="@layout/override_preference_widget_switch_compat"
             app:summary="@string/summary_net_speed_usage"
-            app:title="@string/label_net_speed_usage" />
+            app:title="@string/label_net_speed_usage"
+            app:widgetLayout="@layout/override_preference_widget_switch_compat" />
 
         <SwitchPreferenceCompat
             android:key="net_speed_notify_clickable"

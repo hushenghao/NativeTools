@@ -189,6 +189,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                     param(FirebaseAnalytics.Param.CONTENT_TYPE, "隐藏通知")
                 }
             }
+            NetSpeedPreferences.KEY_NET_SPEED_MIN_UNIT -> {
+                configuration.minUnit = (newValue as String).toInt()
+            }
             else -> return true
         }
         controller.updateConfiguration(configuration)

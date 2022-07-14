@@ -128,4 +128,5 @@
     <string name="label_donate_list">捐赠记录</string>
     <string name="toast_network_error">网络加载失败</string>
     <string name="toast_payment_tip">长按保存收款码</string>
+    <string name="label_net_speed_min_unit">指示器最小单位</string>
 </resources>

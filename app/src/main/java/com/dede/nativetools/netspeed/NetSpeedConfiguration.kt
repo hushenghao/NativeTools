@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.annotation.FloatRange
 import androidx.datastore.preferences.core.Preferences
 import com.dede.nativetools.NativeToolsApp
+import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netusage.NetUsageConfigs
 import com.dede.nativetools.util.get
 import kotlinx.parcelize.IgnoredOnParcel
@@ -28,6 +29,8 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
     var font: String = NetSpeedPreferences.DEFAULT_FONT,
     var mode: String = NetSpeedPreferences.MODE_DOWN,
     var hideThreshold: Long = 0,
+    @NetFormatter.MinUnit
+    var minUnit: Int = NetFormatter.MIN_UNIT_BYTE,// 速度最小单位
     @FloatRange(from = -0.5, to = 0.5)
     var verticalOffset: Float = -0.05f,// Y轴偏移量
     @FloatRange(from = -0.5, to = 0.5)
@@ -40,7 +43,7 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
     var textScale: Float = 1f,// 字体缩放
     @FloatRange(from = 0.2, to = 1.3)
     var horizontalScale: Float = 1f,// X轴缩放
-    var imsiSet: Set<String>? = null// 配置的IMSI
+    var imsiSet: Set<String>? = null,// 配置的IMSI
 ) : Parcelable {
 
     @IgnoredOnParcel
@@ -62,6 +65,7 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
         this.font = configuration.font
         this.mode = configuration.mode
         this.hideThreshold = configuration.hideThreshold
+        this.minUnit = configuration.minUnit
         this.verticalOffset = configuration.verticalOffset
         this.horizontalOffset = configuration.horizontalOffset
         this.relativeRatio = configuration.relativeRatio
@@ -137,6 +141,10 @@ data class NetSpeedConfiguration @JvmOverloads constructor(
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD,
             defaultConfiguration.hideThreshold.toString()
         ).toLongOrNull() ?: defaultConfiguration.hideThreshold
+
+        this.minUnit = preferences.get(NetSpeedPreferences.KEY_NET_SPEED_MIN_UNIT,
+            defaultConfiguration.minUnit.toString())
+            .toIntOrNull() ?: defaultConfiguration.minUnit
 
         this.quickCloseable = preferences.get(
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,

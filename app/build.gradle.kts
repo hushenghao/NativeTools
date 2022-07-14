@@ -152,20 +152,6 @@ spotless {
     }
 }
 
-configurations.all {
-    exclude("androidx.viewpager2", "viewpager2")
-    exclude("androidx.viewpager", "viewpager")
-    exclude("androidx.slidingpanelayout", "slidingpanelayout")
-    exclude("androidx.swiperefreshlayout", "swiperefreshlayout")
-    exclude("androidx.dynamicanimation", "dynamicanimation")
-    exclude("androidx.localbroadcastmanager", "localbroadcastmanager")
-    exclude("androidx.documentfile", "documentfile")
-    exclude("androidx.print", "print")
-    exclude("androidx.cursoradapter", "cursoradapter")
-//    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
-//    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk7")
-}
-
 tasks.register<Exec>("pgyer") {
     val assemble = tasks.named("assembleBeta").get()
     dependsOn(assemble)

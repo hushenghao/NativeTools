@@ -25,6 +25,7 @@ object NetSpeedPreferences {
     const val KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION = "net_speed_locked_hide"
     const val KEY_NET_SPEED_HIDE_NOTIFICATION = "net_speed_hide_notification"
     const val KEY_NET_SPEED_HIDE_THRESHOLD = "net_speed_hide_threshold"
+    const val KEY_NET_SPEED_MIN_UNIT = "net_speed_min_unit"
 
     const val KEY_NET_SPEED_TEXT_STYLE = "net_speed_text_style"
     const val KEY_NET_SPEED_FONT = "net_speed_font"
