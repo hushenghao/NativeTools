@@ -1,6 +1,6 @@
 # 网速指示器
 
-<img height="80px" src="https://github.com/hushenghao/NativeTools/blob/master/app/src/main/ic_launcher-playstore.png"/>
+![icon](docs/images/ic_launcher.png)
 
 一个在系统状态栏显示当前网速的App，并在通知栏显示详细数据，主要针对原生ROM。
 
@@ -19,7 +19,7 @@
 
 ## 应用截图
 
-![screenshot](https://github.com/hushenghao/NativeTools/blob/master/docs/images/screenshot.png)
+![screenshot](docs/images/screenshot.png)
 
 ## 应用下载
 
@@ -27,7 +27,8 @@
 [<img height="50px" src="https://assets.che300.com/wiki/2021-07-22/16269394073576500.png"/>](https://play.google.com/store/apps/details?id=com.dede.nativetools)
 
 ## 联系我
-Email：dede.hu@qq.com
+Email：[dede.hu@qq.com](mailto:dede.hu@qq.com)
 
 ## 捐赠
-<img height="150px" src="https://github.com/hushenghao/NativeTools/blob/master/docs/images/qrcode_alipay.jpeg"/> <img height="150px" src="https://github.com/hushenghao/NativeTools/blob/master/docs/images/qrcode_wx.jpeg" />
+![alipay](docs/images/qrcode_alipay.jpeg)
+![wxpay](docs/images/qrcode_wx.jpeg)
