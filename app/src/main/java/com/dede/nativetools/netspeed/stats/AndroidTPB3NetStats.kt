@@ -19,7 +19,7 @@ import com.dede.nativetools.util.toast
  * todo Check again.
  * @since 2022/7/12
  */
-class AndroidTBP3NetStats : NetStats {
+class AndroidTPB3NetStats : NetStats {
 
     private val previewVer = "Tiramisu"
     private val regexBeta = "TPB\\d.\\d+.\\d+".toRegex()
@@ -32,8 +32,9 @@ class AndroidTBP3NetStats : NetStats {
             Log.i("AndroidTBP3NetStats",
                 "Android %s, Build Version: %s".format(androidVer, version))
             if (androidVer == previewVer// Developer Previews
-                || version.matches(regexBeta)// Beta Releases
+                || version.matches(regexBeta)// Beta Releases, like this 'TPB3.220513.017'
             ) {
+                // TrafficStats getRxBytes and getTxBytes broken in T beta 3
                 val span = SpannableStringBuilder("May not work on ")
                     .append("Android T Beta!\n", StyleSpan(Typeface.BOLD), SPAN_INCLUSIVE_EXCLUSIVE)
                     .append(issuesUrl, URLSpan(issuesUrl), SPAN_INCLUSIVE_EXCLUSIVE)// Can't click

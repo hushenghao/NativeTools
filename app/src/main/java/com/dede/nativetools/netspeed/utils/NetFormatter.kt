@@ -1,8 +1,11 @@
 package com.dede.nativetools.netspeed.utils
 
 
+import androidx.annotation.IntDef
 import java.text.DecimalFormat
 import kotlin.math.ceil
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 
 
@@ -12,6 +15,32 @@ import kotlin.math.pow
  * Created by hsh on 2017/5/15 015 下午 05:14.
  */
 object NetFormatter {
+
+    @IntDef(value = [
+        FLAG_NULL,
+        FLAG_FULL,
+        FLAG_BYTE,
+        FLAG_INFIX_SECOND
+    ], flag = true)
+    @Target(AnnotationTarget.VALUE_PARAMETER)
+    annotation class NetFlag
+
+    @IntDef(
+        ACCURACY_EXACT,
+        ACCURACY_SHORTER,
+        ACCURACY_EQUAL_WIDTH,
+        ACCURACY_EQUAL_WIDTH_EXACT
+    )
+    @Target(AnnotationTarget.VALUE_PARAMETER)
+    annotation class Accuracy
+
+    @IntDef(
+        MIN_UNIT_BYTE,
+        MIN_UNIT_KB,
+        MIN_UNIT_MB
+    )
+    @Target(AnnotationTarget.VALUE_PARAMETER)
+    annotation class MinUnit
 
     /**
      * 精确等宽格式
@@ -72,6 +101,21 @@ object NetFormatter {
      */
     const val FLAG_NULL = 0
 
+    /**
+     * 最小单位为B
+     */
+    const val MIN_UNIT_BYTE = -1
+
+    /**
+     * 最小单位为KB
+     */
+    const val MIN_UNIT_KB = 0
+
+    /**
+     * 最小单位为MB
+     */
+    const val MIN_UNIT_MB = 1
+
     private const val CHAR_BYTE = 'B'
     private const val CHARS_INFIX_SECOND = "/s"
 
@@ -83,16 +127,23 @@ object NetFormatter {
 
     private const val THRESHOLD = 900
 
-    fun format(bytes: Long, flags: Int, accuracy: Int): Pair<String, String> {
+    fun format(
+        bytes: Long,
+        @NetFlag flags: Int,
+        @Accuracy accuracy: Int,
+        @MinUnit minUnit: Int = MIN_UNIT_BYTE,
+    ): Pair<String, String> {
 
         fun hasFlag(flag: Int): Boolean = (flags and flag) > 0
 
+        val munit = min(max(MIN_UNIT_BYTE, minUnit), MIN_UNIT_MB)
+
         var speed = bytes.toDouble()
         var unit: Char = CHAR_BYTE
-        for (char in UNIT_CHARS) {
-            if (speed > THRESHOLD) {
+        for (i in UNIT_CHARS.indices) {
+            if (munit >= i || speed > THRESHOLD) {
                 speed /= UNIT_SIZE
-                unit = char
+                unit = UNIT_CHARS[i]
             } else {
                 break
             }
@@ -113,7 +164,7 @@ object NetFormatter {
         return format to sb.toString()
     }
 
-    private fun formatNumberInternal(num: Double, accuracy: Int): String {
+    private fun formatNumberInternal(num: Double, @Accuracy accuracy: Int): String {
         val pattern = when (accuracy) {
             ACCURACY_EQUAL_WIDTH_EXACT -> when {
                 num >= 100 -> "0" // 100.2 -> 100
