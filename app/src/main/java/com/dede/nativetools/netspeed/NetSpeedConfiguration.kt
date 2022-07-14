@@ -16,7 +16,7 @@ import kotlinx.parcelize.Parcelize
  * 网速指示器配置
  */
 @Parcelize
-data class NetSpeedConfiguration @JvmOverloads constructor(
+data class NetSpeedConfiguration constructor(
     var interval: Int = NetSpeedPreferences.DEFAULT_INTERVAL,
     var notifyClickable: Boolean = true,
     var quickCloseable: Boolean = false,

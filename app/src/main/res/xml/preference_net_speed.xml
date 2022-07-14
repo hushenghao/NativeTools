@@ -33,6 +33,16 @@
             app:title="@string/label_net_speed_interval"
             app:useSimpleSummaryProvider="true" />
 
+        <DropDownPreference
+            android:key="net_speed_min_unit"
+            app:defaultValue="-1"
+            app:entries="@array/net_speed_min_unit"
+            app:entryValues="@array/net_speed_min_unit_value"
+            app:icon="@drawable/ic_format_color_text"
+            app:title="@string/label_net_speed_min_unit"
+            app:useSimpleSummaryProvider="true" />
+
+
         <com.dede.nativetools.ui.MaterialEditTextPreference
             app:defaultValue="0"
             app:dialogMessage="@string/alert_msg_hide_threshold"
@@ -40,15 +50,6 @@
             app:key="net_speed_hide_threshold"
             app:title="@string/label_net_speed_hide_threshold"
             tools:useSimpleSummaryProvider="true" />
-
-        <DropDownPreference
-            android:key="net_speed_min_unit"
-            app:defaultValue="-1"
-            app:entries="@array/net_speed_min_unit"
-            app:entryValues="@array/net_speed_min_unit_value"
-            app:icon="@drawable/ic_baseline_timer"
-            app:title="@string/label_net_speed_min_unit"
-            app:useSimpleSummaryProvider="true" />
 
         <com.dede.nativetools.ui.NavigatePreference
             app:eventName="高级设置"

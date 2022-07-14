@@ -109,6 +109,7 @@ object NetTextIconFactory {
         val minUnit = configuration.minUnit
         val text1: String
         val text2: String
+        Log.i("TAG", "create: " + minUnit)
         when (configuration.mode) {
             NetSpeedPreferences.MODE_ALL -> {
                 text1 = NetFormatter.format(txByte, NetFormatter.FLAG_NULL, accuracy, minUnit)
@@ -195,7 +196,7 @@ object NetTextIconFactory {
         if (assistLine) {
             // 居中辅助线
             paint.style = Paint.Style.STROKE
-            paint.strokeWidth = 1.5f.dpf
+            paint.strokeWidth = 1f.dpf
             paint.pathEffect = pathEffect
             canvas.drawLine(wh, 0f, wh, hf, paint)
             canvas.drawLine(0f, hh, wf, hh, paint)

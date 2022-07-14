@@ -6,10 +6,7 @@ import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.preference.EditTextPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
+import androidx.preference.*
 import com.dede.nativetools.R
 import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
@@ -82,6 +79,8 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 it.summaryProvider = this
                 it.onPreferenceChangeListener = this
             }
+        requirePreference<DropDownPreference>(NetSpeedPreferences.KEY_NET_SPEED_MIN_UNIT)
+            .onPreferenceChangeListener = this
     }
 
     override fun provideSummary(preference: EditTextPreference): CharSequence {

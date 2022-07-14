@@ -80,7 +80,7 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
                     context.toast(R.string.toast_payment_tip)
                     name = "微信"
                 }
-                R.drawable.ic_more_vert -> {
+                R.drawable.ic_donate_history -> {
                     host.findNavController().navigate(R.id.action_dialogDonate_to_dialogDonateList)
                     return
                 }
