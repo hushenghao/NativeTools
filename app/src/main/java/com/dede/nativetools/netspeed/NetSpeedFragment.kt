@@ -198,7 +198,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     }
 
     private fun updateNotificationPreferenceVisible() {
-        if (!NetSpeedNotificationHelper.itSSAbove(requireContext())) {
+        if (!Logic.itSSAbove(requireContext())) {
             return
         }
         val keys = arrayOf(

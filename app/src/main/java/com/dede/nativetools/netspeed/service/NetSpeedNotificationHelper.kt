@@ -16,6 +16,7 @@ import androidx.core.graphics.drawable.IconCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
+import com.dede.nativetools.netspeed.notification.NotificationExtension
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.netusage.utils.NetUsageUtils
@@ -181,15 +182,6 @@ object NetSpeedNotificationHelper {
     }
 
     /**
-     * 系统版本>=S 且 targetVersion>=S 时，返回true
-     */
-    fun itSSAbove(context: Context): Boolean {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-                // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
-                context.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.S
-    }
-
-    /**
      * 创建网速通知
      *
      * @param context 上下文
@@ -240,7 +232,7 @@ object NetSpeedNotificationHelper {
             pendingFlag = pendingFlag or PendingIntent.FLAG_MUTABLE
         }
 
-        if (configuration.hideNotification && !itSSAbove(context)) {
+        if (configuration.hideNotification && !Logic.itSSAbove(context)) {
             // context.applicationInfo.targetSdkVersion < Build.VERSION_CODES.S
             // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
             val remoteViews = RemoteViews(context.packageName, R.layout.notification_empty_view)
@@ -285,7 +277,7 @@ object NetSpeedNotificationHelper {
             builder.setContentIntent(pendingIntent)
         }
 
-        return builder.build()
+        return NotificationExtension.build(builder)
     }
 
     private fun createChannels(context: Context) {

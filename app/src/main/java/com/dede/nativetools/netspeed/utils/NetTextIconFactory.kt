@@ -109,7 +109,6 @@ object NetTextIconFactory {
         val minUnit = configuration.minUnit
         val text1: String
         val text2: String
-        Log.i("TAG", "create: " + minUnit)
         when (configuration.mode) {
             NetSpeedPreferences.MODE_ALL -> {
                 text1 = NetFormatter.format(txByte, NetFormatter.FLAG_NULL, accuracy, minUnit)

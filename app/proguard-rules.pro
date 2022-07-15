@@ -35,6 +35,14 @@
 -keepclassmembernames class androidx.appcompat.widget.ListPopupWindow {
     android.widget.PopupWindow mPopup;
 }
+# NotificationExtension
+-keepclassmembernames class androidx.core.app.NotificationCompatBuilder {
+    private android.app.Notification$Builder mBuilder;
+
+   <init>(androidx.core.app.NotificationCompat$Builder);
+
+    public android.app.Notification build();
+}
 
 -dontwarn com.google.errorprone.annotations.Immutable
 -keepnames class * extends kotlinx.coroutines.internal.MainDispatcherFactory
