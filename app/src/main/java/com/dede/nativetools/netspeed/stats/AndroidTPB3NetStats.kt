@@ -12,18 +12,19 @@ import com.dede.nativetools.util.globalContext
 import com.dede.nativetools.util.toast
 
 /**
- * For Android T Beta Releases
+ * For Android T Beta 3 Releases
  *
  * TrafficStats getRxBytes and getTxBytes broken in T beta 3
  * https://issuetracker.google.com/issues/235454286
- * todo Check again.
+ * Fixed in T beta 4, TPB4.220624.004
+ *
  * @since 2022/7/12
  */
 class AndroidTPB3NetStats : NetStats {
 
-    private val previewVer = "Tiramisu"
-    private val regexBeta = "TPB\\d.\\d+.\\d+".toRegex()
+    private val regexBeta = "TPB(\\d).\\d+.\\d+".toRegex()
     private val issuesUrl = "https://issuetracker.google.com/issues/235454286"
+    private val fixedVer = 4
 
     override fun supported(): Boolean {
         if (Build.VERSION.SDK_INT == 33/*Build.VERSION_CODES.T*/) {
@@ -31,17 +32,27 @@ class AndroidTPB3NetStats : NetStats {
             val androidVer = Build.VERSION.RELEASE
             Log.i("AndroidTBP3NetStats",
                 "Android %s, Build Version: %s".format(androidVer, version))
-            if (androidVer == previewVer// Developer Previews
-                || version.matches(regexBeta)// Beta Releases, like this 'TPB3.220513.017'
-            ) {
-                // TrafficStats getRxBytes and getTxBytes broken in T beta 3
+            val ver = getTPBVersion()
+            if (ver < fixedVer) {
                 val span = SpannableStringBuilder("May not work on ")
-                    .append("Android T Beta!\n", StyleSpan(Typeface.BOLD), SPAN_INCLUSIVE_EXCLUSIVE)
-                    .append(issuesUrl, URLSpan(issuesUrl), SPAN_INCLUSIVE_EXCLUSIVE)// Can't click
+                    .append("Android T Beta $ver !\n",
+                        StyleSpan(Typeface.BOLD),
+                        SPAN_INCLUSIVE_EXCLUSIVE)
+                    .append(issuesUrl,
+                        URLSpan(issuesUrl),
+                        SPAN_INCLUSIVE_EXCLUSIVE)// Can't click
                 globalContext.toast(span, Toast.LENGTH_LONG)
             }
         }
         return false
+    }
+
+    private fun getTPBVersion(): Int {
+        // Beta Releases, like this 'TPB3.220513.017'
+        // TrafficStats getRxBytes and getTxBytes broken in T beta 3.
+        // Fixed in T beta 4, TPB4.220624.004
+        return regexBeta.matchEntire(Build.DISPLAY)?.groupValues
+            ?.getOrNull(1)?.toIntOrNull() ?: fixedVer
     }
 
     override fun getRxBytes(): Long {

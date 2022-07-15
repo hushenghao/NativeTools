@@ -143,7 +143,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 if (status) {
                     controller.startService(true)
                     miuiNotificationAlert()
-                    checkNotificationEnable()
+                    //checkNotificationEnable()
                 } else
                     controller.stopService()
             }
