@@ -28,7 +28,6 @@
     <string name="summary_ignore_battery_optimize">Добавьте оптимизированный белый список батареек, чтобы предотвратить нежизнеспособные услуги на ресепшене.</string>
     <string name="usage_states_title">Доступ к ситуации разрешен</string>
     <string name="usage_stats_msg">При использовании статистического трафика требуется разрешение доступа к ситуации использования.</string>
-    <string name="alert_title_notification_disable">Доступ к информации не открыт</string>
     <string name="alert_msg_notification_disable">Система оповещения не включена, и индикатор скорости сети не сможет нормально отображаться</string>
     <string name="settings">Устанавливай</string>
     <string name="help">помощ</string>

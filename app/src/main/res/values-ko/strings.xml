@@ -28,7 +28,6 @@
     <string name="summary_ignore_battery_optimize">배터리 최적화 화이트리스트를 추가하여 프런트 서비스가 보증되지 않는 것을 방지합니다</string>
     <string name="usage_states_title">상태 접근 인증</string>
     <string name="usage_stats_msg">데이터 사용량을 집계하기 위해 데이터 사용 권한이 필요합니다.</string>
-    <string name="alert_title_notification_disable">알림 권한이 열려 있지 않습니다</string>
     <string name="alert_msg_notification_disable">알림 권한이 켜져 있지 않습니다. 네트워크 속도 표시기를 표시할 수 없습니다</string>
     <string name="settings">설정하기</string>
     <string name="help">도움</string>

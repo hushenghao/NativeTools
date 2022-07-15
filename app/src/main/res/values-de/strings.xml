@@ -28,7 +28,6 @@
     <string name="summary_ignore_battery_optimize">Fügen Sie die weiße Liste der Batterieoptimierung hinzu, um zu verhindern, dass der Vordergrund-Service nicht am Leben bleibt (für einige Geräte)</string>
     <string name="usage_states_title">Berechtigung zur Nutzung</string>
     <string name="usage_stats_msg">Die nutzung der zugekürzten datenströme muss erlaubt sein.</string>
-    <string name="alert_title_notification_disable">Die Benachrichtigung ist nicht aktiviert</string>
     <string name="alert_msg_notification_disable">Ist die Anmeldeerlaubnis nicht aktiviert, wird die Netzwerkgeschwindigkeit nicht normal angezeigt</string>
     <string name="settings">Zu setzen</string>
     <string name="help">Hilfe</string>

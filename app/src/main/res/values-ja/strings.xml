@@ -28,7 +28,6 @@
     <string name="summary_ignore_battery_optimize">フロントサービスが作動しないことを防止するためにホワイトリストを最適化するバッテリーを追加(一部の機器向け)</string>
     <string name="usage_states_title">使用状況アクセス許可</string>
     <string name="usage_stats_msg">トラフィックの使用状況を集計するには、使用状況へのアクセスを許可する必要がある。</string>
-    <string name="alert_title_notification_disable">通知権限が開いていない</string>
     <string name="alert_msg_notification_disable">通知権限がオンになっていない場合、通信速度表示器が正常に表示されません。</string>
     <string name="settings">設置する</string>
     <string name="help">助けて</string>

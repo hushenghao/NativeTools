@@ -6,7 +6,10 @@ import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.preference.*
+import androidx.preference.EditTextPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
@@ -43,6 +46,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
             val status = NetSpeedPreferences.status
             if (status) {
+                miuiNotificationAlert()
                 checkNotificationEnable()
                 controller.startService(true)
             }
@@ -71,16 +75,16 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private fun initGeneralPreferenceGroup() {
         statusSwitchPreference = requirePreference(NetSpeedPreferences.KEY_NET_SPEED_STATUS)
         statusSwitchPreference.onPreferenceChangeListener = this
-        requirePreference<Preference>(NetSpeedPreferences.KEY_NET_SPEED_INTERVAL)
-            .onPreferenceChangeListener = this
 
         thresholdEditTextPreference =
             requirePreference<EditTextPreference>(NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD).also {
                 it.summaryProvider = this
                 it.onPreferenceChangeListener = this
             }
-        requirePreference<DropDownPreference>(NetSpeedPreferences.KEY_NET_SPEED_MIN_UNIT)
-            .onPreferenceChangeListener = this
+
+        bindPreferenceChangeListener(this,
+            NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
+            NetSpeedPreferences.KEY_NET_SPEED_MIN_UNIT)
     }
 
     override fun provideSummary(preference: EditTextPreference): CharSequence {
@@ -136,7 +140,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         when (preference.key) {
             NetSpeedPreferences.KEY_NET_SPEED_STATUS -> {
                 val status = newValue as Boolean
-                if (status) controller.startService(true) else controller.stopService()
+                if (status) {
+                    controller.startService(true)
+                    miuiNotificationAlert()
+                    checkNotificationEnable()
+                } else
+                    controller.stopService()
             }
             NetSpeedPreferences.KEY_NET_SPEED_INTERVAL -> {
                 configuration.interval = (newValue as String).toInt()
@@ -233,6 +242,19 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             return
         }
         context.showNotificationDisableDialog()
+    }
+
+    private fun miuiNotificationAlert() {
+        if (!Logic.isXiaomi() || NetSpeedPreferences.miuiAlerted) {
+            return
+        }
+        val context = requireContext()
+        context.alert(android.R.string.dialog_alert_title, R.string.alert_msg_miui_notification) {
+            positiveButton(R.string.i_know) {
+                NetSpeedPreferences.miuiAlerted = true
+            }
+            negativeButton(android.R.string.cancel)
+        }
     }
 
 }

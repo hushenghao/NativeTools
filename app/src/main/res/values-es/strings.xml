@@ -25,7 +25,6 @@
     <string name="summary_net_speed_notify_clickable">Haga clic en la notificación para abrir la pantalla de configuración de la aplicación</string>
     <string name="label_net_speed_notify_quick_closeable">Notificación cierre rápido</string>
     <string name="summary_net_speed_notify_quick_closeable">Añadir un botón de cierre a las notificaciones de velocidad de internet</string>
-    <string name="alert_title_notification_disable">Derechos de notificación no activados</string>
     <string name="alert_msg_notification_disable">Los permisos de notificación no están activados, el indicador de velocidad de internet no se mostrará correctamente</string>
     <string name="desc_net_speed_notify">El indicador de velocidad de internet debe mostrarse a través de notificaciones</string>
     <string name="label_about">Sobre</string>

@@ -9,7 +9,6 @@
     <string name="action_share">Partilhar</string>
     <string name="alert_msg_hide_lock_notification">Às vezes, a notificação não pode ser escondida. Isso pode ser causado pelas configurações da tela de bloqueio. Localize \"ocultar notificações de tela de bloqueio\" nas configurações e selecione \"mostrar apenas conteúdo sensível\" ou \"ocultar todas as notificações\".</string>
     <string name="alert_msg_notification_disable">As permissões de notificação não estão ativadas e o indicador de velocidade da internet não será exibido corretamente</string>
-    <string name="alert_title_notification_disable">Direitos de notificação não ativados</string>
     <string name="chooser_label_browse">Selecione um navegador para abrir</string>
     <string name="chooser_label_market">Selecione uma loja de aplicativos</string>
     <string name="desc_net_speed_notify">O indicador de velocidade da internet precisa ser exibido por notificação</string>

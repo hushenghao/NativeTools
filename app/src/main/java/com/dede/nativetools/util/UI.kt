@@ -194,7 +194,7 @@ fun Context.showHideLockNotificationDialog() {
 fun Context.showNotificationDisableDialog() {
     val context = this
     context.alert(
-        R.string.alert_title_notification_disable,
+        android.R.string.dialog_alert_title,
         R.string.alert_msg_notification_disable
     ) {
         positiveButton(R.string.settings) {
@@ -203,6 +203,6 @@ fun Context.showNotificationDisableDialog() {
         neutralButton(R.string.dont_ask) {
             NetSpeedPreferences.dontAskNotify = true
         }
-        negativeButton(android.R.string.cancel, null)
+        negativeButton(android.R.string.cancel)
     }
 }

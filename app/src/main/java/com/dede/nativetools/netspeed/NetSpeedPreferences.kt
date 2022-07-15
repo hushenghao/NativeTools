@@ -39,6 +39,7 @@ object NetSpeedPreferences {
     private const val KEY_NET_SPEED_AUTO_START = "net_speed_auto_start"
     private const val KEY_NOTIFICATION_DONT_ASK = "notification_dont_ask"
     private const val KEY_PRIVACY_AGREED = "privacy_agreed"
+    private const val KEY_MIUI_ALERTED = "miui_alerted"
 
     const val DEFAULT_INTERVAL = 1000
     const val DEFAULT_TEXT_STYLE = Typeface.BOLD
@@ -63,4 +64,7 @@ object NetSpeedPreferences {
         get() = globalDataStore.get(booleanPreferencesKey(KEY_NOTIFICATION_DONT_ASK), false)
         set(value) = globalDataStore.set(booleanPreferencesKey(KEY_NOTIFICATION_DONT_ASK), value)
 
+    var miuiAlerted: Boolean
+        get() = globalDataStore.get(booleanPreferencesKey(KEY_MIUI_ALERTED), false)
+        set(value) = globalDataStore.set(booleanPreferencesKey(KEY_MIUI_ALERTED), value)
 }

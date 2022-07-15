@@ -5,7 +5,9 @@ import androidx.core.app.NotificationCompat
 import com.dede.nativetools.util.*
 
 /**
- * Meizu Device
+ * Meizu Device Notification Ext
+ *
+ * [Meizu Open Platform](http://open-wiki.flyme.cn/doc-wiki/index#id?76)
  *
  * package android.app;
  *

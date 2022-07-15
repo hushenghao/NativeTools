@@ -32,7 +32,6 @@
 
     <string name="usage_states_title">使用情况访问授权</string>
     <string name="usage_stats_msg">统计流量使用情况时需要允许使用情况访问权限。</string>
-    <string name="alert_title_notification_disable">通知权限未开启</string>
     <string name="alert_msg_notification_disable">通知权限未开启，网速指示器将无法正常显示</string>
     <string name="settings">去设置</string>
     <string name="help">帮助</string>
@@ -129,4 +128,5 @@
     <string name="toast_network_error">网络加载失败</string>
     <string name="toast_payment_tip">长按保存收款码</string>
     <string name="label_net_speed_min_unit">指示器最小单位</string>
+    <string name="alert_msg_miui_notification">MIUI系统需要到设置中开启“有通知时显示图标”选项才能正常显示状态网速。</string>
 </resources>
