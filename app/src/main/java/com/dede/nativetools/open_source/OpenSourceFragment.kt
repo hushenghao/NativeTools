@@ -1,12 +1,10 @@
 package com.dede.nativetools.open_source
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.net.toUri
 import androidx.core.view.isGone
@@ -14,12 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.ViewTarget
-import com.bumptech.glide.request.transition.Transition
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ItemOpenSourceBinding
 import com.dede.nativetools.ui.AbsBottomSheetListFragment
 import com.dede.nativetools.ui.GridItemDecoration
+import com.dede.nativetools.ui.TextViewStartDrawableTarget
 import com.dede.nativetools.util.*
 
 /**
@@ -57,28 +54,7 @@ class OpenSourceFragment : AbsBottomSheetListFragment<OpenSource, OpenSourceFrag
             Glide.with(binding.root)
                 .load(openSource.logo?.toUri())
                 .override(18.dp)
-                .into(object :
-                    @Suppress("DEPRECATION") ViewTarget<TextView, Drawable>(binding.tvProjectName) {
-                    override fun onLoadFailed(errorDrawable: Drawable?) {
-                        view.setCompoundDrawablesRelative(start = errorDrawable)
-                    }
-
-                    override fun onLoadStarted(placeholder: Drawable?) {
-                        view.setCompoundDrawablesRelative(start = placeholder)
-                    }
-
-                    override fun onLoadCleared(placeholder: Drawable?) {
-                        view.setCompoundDrawablesRelative(start = placeholder)
-                    }
-
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: Transition<in Drawable>?,
-                    ) {
-                        resource.setBounds(0, 0, 18.dp, 18.dp)
-                        view.setCompoundDrawablesRelative(start = resource)
-                    }
-                })
+                .into(TextViewStartDrawableTarget(binding.tvProjectName, 18f))
             binding.tvProjectName.text = openSource.name
             binding.tvAuthorName.text = openSource.author
             binding.tvProjectDesc.text = openSource.desc

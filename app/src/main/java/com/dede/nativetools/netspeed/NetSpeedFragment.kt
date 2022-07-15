@@ -253,7 +253,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             positiveButton(R.string.i_know) {
                 NetSpeedPreferences.miuiAlerted = true
             }
-            negativeButton(android.R.string.cancel)
         }
     }
 

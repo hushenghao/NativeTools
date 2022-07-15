@@ -66,20 +66,20 @@
         app:title="@string/label_notification">
 
         <com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
-            android:key="net_speed_locked_hide"
-            android:title="@string/label_net_speed_hide_lock_notification"
-            app:defaultValue="true"
-            app:icon="@drawable/ic_outline_phonelink_lock"
-            app:summary="@string/summary_net_speed_hide_lock_notification"
-            app:widgetLayout="@layout/override_preference_widget_switch_compat" />
-
-        <com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
             app:defaultValue="false"
             app:dependency="net_speed_hide_notification"
             app:icon="@drawable/ic_outline_data_usage"
             app:key="net_speed_usage"
             app:summary="@string/summary_net_speed_usage"
             app:title="@string/label_net_speed_usage"
+            app:widgetLayout="@layout/override_preference_widget_switch_compat" />
+
+        <com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
+            android:key="net_speed_locked_hide"
+            android:title="@string/label_net_speed_hide_lock_notification"
+            app:defaultValue="true"
+            app:icon="@drawable/ic_outline_phonelink_lock"
+            app:summary="@string/summary_net_speed_hide_lock_notification"
             app:widgetLayout="@layout/override_preference_widget_switch_compat" />
 
         <SwitchPreferenceCompat
