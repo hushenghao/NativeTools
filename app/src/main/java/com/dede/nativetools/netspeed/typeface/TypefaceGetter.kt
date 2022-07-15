@@ -5,7 +5,6 @@ import android.graphics.Typeface
 import android.util.ArrayMap
 import com.dede.nativetools.R
 import com.dede.nativetools.util.globalContext
-import java.util.*
 
 interface TypefaceGetter {
 
@@ -16,19 +15,28 @@ interface TypefaceGetter {
 
         private val caches = ArrayMap<String, TypefaceGetter>()
 
+        private lateinit var fontList: List<String>
+
         fun create(context: Context, key: String): TypefaceGetter {
             var getter = caches[key]
             if (getter != null) {
                 return getter
             }
             val appContext = context.applicationContext
-            val fonts = context.resources.getStringArray(R.array.net_speed_font_value)
-            val index = Arrays.binarySearch(fonts, key)
-            getter = when {
-                key == FONT_NORMAL -> NormalTypeface()
-                key == FONT_DEBUG -> DebugTypeface(appContext)
-                index != -1 -> DownloadTypefaceImpl(appContext, "$key.ttf")
-                else -> NormalTypeface()
+            getter = when (key) {
+                FONT_NORMAL -> NormalTypeface()
+                FONT_DEBUG -> DebugTypeface(appContext)
+                else -> {
+                    if (!::fontList.isInitialized) {
+                        val fontArr = context.resources.getStringArray(R.array.net_speed_font_value)
+                        fontList = fontArr.toList()
+                    }
+                    if (fontList.contains(key)) {
+                        DownloadTypefaceImpl(appContext, "$key.ttf")
+                    } else {
+                        throw IllegalStateException("Unknown font name: $key")
+                    }
+                }
             }
             caches[key] = getter
             return getter
