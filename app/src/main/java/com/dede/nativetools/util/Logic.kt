@@ -19,6 +19,7 @@ import com.dede.nativetools.netspeed.stats.NetStats
 import com.dede.nativetools.netusage.utils.NetUsageUtils
 import com.dede.nativetools.other.OtherPreferences
 import com.google.android.material.internal.ManufacturerUtils
+import com.google.firebase.analytics.FirebaseAnalytics
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -61,6 +62,14 @@ fun Context.getVersionSummary(): String {
 
 object Logic {
 
+    fun shareApp(context: Context) {
+        val appName = context.getString(R.string.app_name)
+        val url = if (isSimplifiedChinese(context))
+            context.getString(R.string.url_cool_apk) else context.getString(R.string.url_play_store)
+        context.share(context.getString(R.string.share_text, appName, url))
+        event(FirebaseAnalytics.Event.SHARE)
+    }
+
     fun isXiaomi(): Boolean {
         return Build.MANUFACTURER.lowercase(Locale.ENGLISH) == "xiaomi"
     }
@@ -69,7 +78,7 @@ object Logic {
         return ManufacturerUtils.isMeizuDevice()
     }
 
-    fun isSimplifiedChinese(context: Context): Boolean {
+    private fun isSimplifiedChinese(context: Context): Boolean {
         val local = getLocale(context)
         return local.language == Locale.SIMPLIFIED_CHINESE.language &&
                 local.country == Locale.SIMPLIFIED_CHINESE.country

@@ -39,11 +39,11 @@ fun installShortcuts() {
     val context = globalContext
     val shortcuts = arrayListOf(
         context.createShortcutInfo(
-            "shortcut_diagnosis",
-            Intent(Intent.ACTION_VIEW, Uri.parse("https://dede.nativetools/diagnosis"))
+            "shortcut_share",
+            Intent(Intent.ACTION_VIEW, MainActivity.EXTRA_ACTION to MainActivity.ACTION_SHARE)
                 .setClass(context, MainActivity::class.java),
-            R.drawable.ic_outline_pest_control,
-            R.string.label_diagnosis
+            R.drawable.ic_action_share,
+            R.string.action_share
         ),
         context.createShortcutInfo(
             "shortcut_about",
@@ -54,7 +54,7 @@ fun installShortcuts() {
         ),
         context.createShortcutInfo(
             "shortcut_toggle",
-            Intent(Intent.ACTION_VIEW, MainActivity.EXTRA_TOGGLE to true)
+            Intent(Intent.ACTION_VIEW, MainActivity.EXTRA_ACTION to MainActivity.ACTION_TOGGLE)
                 .setClass(context, MainActivity::class.java),
             R.drawable.ic_outline_toggle_on,
             R.string.label_net_speed_toggle

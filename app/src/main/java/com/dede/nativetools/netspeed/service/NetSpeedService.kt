@@ -74,10 +74,12 @@ class NetSpeedService : Service(), Runnable {
         // 显示透明图标通知
         configuration.showBlankNotification = true
         val notify =
-            NetSpeedNotificationHelper.createNotification(this,
+            NetSpeedNotificationHelper.createNotification(
+                this,
                 configuration,
                 netSpeedCompute.rxSpeed,
-                netSpeedCompute.txSpeed)
+                netSpeedCompute.txSpeed
+            )
         notificationManager.notify(NOTIFY_ID, notify)
     }
 
@@ -160,7 +162,8 @@ class NetSpeedService : Service(), Runnable {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val configuration = intent?.extra<NetSpeedConfiguration>(EXTRA_CONFIGURATION)
+        @Suppress("DEPRECATION")
+        val configuration = intent?.getParcelableExtra<NetSpeedConfiguration>(EXTRA_CONFIGURATION)
         updateConfiguration(configuration)
         // https://developer.android.google.cn/guide/components/services#CreatingAService
         // https://developer.android.google.cn/reference/android/app/Service#START_REDELIVER_INTENT

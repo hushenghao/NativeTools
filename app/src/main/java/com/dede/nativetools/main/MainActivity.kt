@@ -40,7 +40,10 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     NavigatePreference.OnNavigateHandler {
 
     companion object {
-        const val EXTRA_TOGGLE = "extra_toggle"
+        const val EXTRA_ACTION = "extra_action"
+
+        const val ACTION_TOGGLE = 1
+        const val ACTION_SHARE = 2
     }
 
     private val binding by viewBinding {
@@ -53,13 +56,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val isToggle = intent.extra(EXTRA_TOGGLE, false)
-        event(FirebaseAnalytics.Event.APP_OPEN) {
-            param(FirebaseAnalytics.Param.METHOD, if (isToggle) "toggle" else "normal")
-        }
-        if (isToggle) {
-            NetSpeedService.toggle(this)
-            finish()
+        if (handleAction(intent)) {
             return
         }
 
@@ -154,8 +151,28 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * 处理Action入参，需要中断后面逻辑执行时返回true，其他返回false
+     */
+    private fun handleAction(intent: Intent?): Boolean {
+        when (intent?.getIntExtra(EXTRA_ACTION, 0)) {
+            ACTION_TOGGLE -> {
+                NetSpeedService.toggle(this)
+                finish()
+                return true
+            }
+            ACTION_SHARE -> {
+                Logic.shareApp(this)
+            }
+        }
+        return false
+    }
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        if (handleAction(intent)) {
+            return
+        }
         handleDeepLink(intent)
     }
 
