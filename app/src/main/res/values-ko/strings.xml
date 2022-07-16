@@ -98,4 +98,6 @@
     <string name="toast_payment_tip">수금번호를 길게 누르다</string>
     <string name="toast_network_error">네트워크 로드 실패</string>
     <string name="label_donate_list">기부 기록</string>
+    <string name="summary_get_beta">앱의 내부 테스트 버전을 가져옵니다</string>
+    <string name="summary_share_app">앱을 친구에게 추천하기</string>
 </resources>

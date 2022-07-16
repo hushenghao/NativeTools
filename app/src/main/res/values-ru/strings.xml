@@ -98,4 +98,6 @@
     <string name="toast_payment_tip">Длинный код по сохранению</string>
     <string name="toast_network_error">Загрузка сети не удалась</string>
     <string name="label_donate_list">Донорские записи</string>
+    <string name="summary_get_beta">Найди внутреннюю версию приложения</string>
+    <string name="summary_share_app">Рекомендуй приложение другу</string>
 </resources>

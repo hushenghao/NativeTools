@@ -98,4 +98,6 @@
     <string name="toast_payment_tip">Die spielart zum speichern Von forderungen festlegen</string>
     <string name="toast_network_error">Netz geladen, kein erfolg.</string>
     <string name="label_donate_list">Die spendenaufzeichnungen</string>
+    <string name="summary_get_beta">Holt die parametrische version der anwendung</string>
+    <string name="summary_share_app">Empfehlen sie die anwendung beim freund</string>
 </resources>

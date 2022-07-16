@@ -98,4 +98,6 @@
     <string name="toast_payment_tip">Press long to save the payment code</string>
     <string name="toast_network_error">Network loading failure</string>
     <string name="label_donate_list">Donation record</string>
+    <string name="summary_get_beta">Get the beta version of the application</string>
+    <string name="summary_share_app">Recommend apps to friends</string>
 </resources>

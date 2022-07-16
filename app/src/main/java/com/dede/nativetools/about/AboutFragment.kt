@@ -7,8 +7,7 @@ import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
-import android.view.HapticFeedbackConstants
-import android.view.View
+import android.view.*
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.annotation.RequiresApi
@@ -19,6 +18,7 @@ import androidx.core.view.isInvisible
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
@@ -76,6 +76,11 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) colorIdsS else colorIdNormal
 
     private val outlineProvider = ViewOvalOutlineProvider(true)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -173,6 +178,29 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 addListener(onStart = feedbackCallback, onRepeat = feedbackCallback)
             }
             start()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_about, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_open_source -> {
+                findNavController().navigate(R.id.action_about_to_openSource)
+                true
+            }
+            R.id.action_feedback -> {
+                requireContext().emailTo(R.string.email)
+                true
+            }
+            R.id.action_diagnosis -> {
+                findNavController().navigate(R.id.action_about_to_diagnosisFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

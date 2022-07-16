@@ -89,13 +89,6 @@ class OtherFragment : PreferenceFragmentCompat() {
                 requireContext().share(getString(R.string.share_text, appName, url))
                 event(FirebaseAnalytics.Event.SHARE)
             }
-        requirePreference<Preference>(OtherPreferences.KEY_FEEDBACK)
-            .onPreferenceClickListener {
-                requireContext().emailTo(R.string.email)
-                event(FirebaseAnalytics.Event.SELECT_ITEM) {
-                    param(FirebaseAnalytics.Param.ITEM_NAME, "反馈")
-                }
-            }
     }
 
     private fun checkIgnoreBatteryOptimize() {

@@ -4,7 +4,6 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:initialExpandedChildrenCount="7"
         app:key="key_other"
         app:title="@string/label_other">
 
@@ -35,7 +34,7 @@
         <com.dede.nativetools.ui.NavigatePreference
             app:allowDividerAbove="true"
             app:eventName="捐赠"
-            app:icon="@drawable/ic_outline_coffee"
+            app:icon="@drawable/ic_volunteer_activism"
             app:navigateId="@id/action_other_to_dialogDonate"
             app:summary="@string/label_coffee"
             app:title="@string/action_donate" />
@@ -46,41 +45,19 @@
             app:persistent="false"
             app:title="@string/action_rate" />
 
-        <com.dede.nativetools.ui.NavigatePreference
-            app:eventName="@string/action_beta"
-            app:icon="@drawable/ic_outline_pest_control"
-            app:navigateId="@id/action_other_to_dialogBeta"
-            app:title="@string/action_beta" />
-
-        <com.dede.nativetools.ui.NavigatePreference
-            app:eventName="@string/github"
-            app:icon="@drawable/ic_github_cat"
-            app:navigateUrl="@string/url_github"
-            app:title="@string/github" />
-
-        <com.dede.nativetools.ui.NavigatePreference
-            app:eventName="开源相关"
-            app:icon="@drawable/ic_open_source_line"
-            app:navigateId="@id/action_other_to_openSource"
-            app:title="@string/label_open_source" />
-
         <Preference
             app:icon="@drawable/ic_action_share"
             app:key="share"
             app:persistent="false"
+            app:summary="@string/summary_share_app"
             app:title="@string/action_share" />
 
         <com.dede.nativetools.ui.NavigatePreference
-            app:eventName="诊断"
-            app:icon="@drawable/ic_outline_pest_control"
-            app:navigateId="@id/action_other_to_diagnosis"
-            app:title="@string/label_diagnosis" />
-
-        <Preference
-            app:icon="@drawable/ic_outline_feedback"
-            app:key="feedback"
-            app:persistent="false"
-            app:title="@string/action_feedback" />
+            app:eventName="@string/action_beta"
+            app:icon="@drawable/ic_android_13_hero"
+            app:navigateId="@id/action_other_to_dialogBeta"
+            app:summary="@string/summary_get_beta"
+            app:title="@string/action_beta" />
 
     </PreferenceCategory>
 </PreferenceScreen>

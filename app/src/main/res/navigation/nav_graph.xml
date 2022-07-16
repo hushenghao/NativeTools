@@ -24,6 +24,12 @@
         android:label="@string/label_about"
         tools:layout="@layout/fragment_about">
         <deepLink app:uri="https://dede.nativetools/about" />
+        <action
+            android:id="@+id/action_about_to_openSource"
+            app:destination="@id/openSource" />
+        <action
+            android:id="@+id/action_about_to_diagnosisFragment"
+            app:destination="@id/diagnosisFragment" />
     </fragment>
 
     <dialog
@@ -61,12 +67,6 @@
         <action
             android:id="@+id/action_other_to_dialogDonate"
             app:destination="@id/dialogDonate" />
-        <action
-            android:id="@+id/action_other_to_openSource"
-            app:destination="@id/openSource" />
-        <action
-            android:id="@+id/action_other_to_diagnosis"
-            app:destination="@id/diagnosisFragment" />
         <action
             android:id="@+id/action_other_to_dialogBeta"
             app:destination="@id/dialogBeta" />

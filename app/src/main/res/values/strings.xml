@@ -129,4 +129,6 @@
     <string name="toast_payment_tip">长按保存收款码</string>
     <string name="label_net_speed_min_unit">最小显示单位</string>
     <string name="alert_msg_miui_notification">MIUI系统需要到设置中开启“有通知时显示图标”选项，并将通知显示改为“原生样式”，才能正常显示状态网速。如果不生效可以尝试重启设备或更换主题。</string>
+    <string name="summary_share_app">将应用推荐给朋友</string>
+    <string name="summary_get_beta">获取应用的内测版本</string>
 </resources>

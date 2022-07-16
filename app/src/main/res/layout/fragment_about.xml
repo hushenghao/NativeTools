@@ -58,13 +58,13 @@
 
     <com.dede.nativetools.ui.LogoImageView
         android:id="@+id/iv_github"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginBottom="4dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/github"
         android:padding="2dp"
-        android:src="@drawable/ic_logo_github"
+        android:src="@drawable/ic_github_cat"
         android:tooltipText="@string/github"
         app:layout_constraintBottom_toTopOf="@id/tv_privacy_agreement"
         app:layout_constraintLeft_toLeftOf="parent"
