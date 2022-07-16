@@ -93,4 +93,9 @@
     <string name="label_imsi_config_tip">Wenn sie sehr viele sim-karten benutzen, können die imsims für jede sim-karte einzeln festlegen, wann der nachrichten nachrichten geschickt werden Start sims kann probiert werden, indem sie *#*#4636#*#* auf einem wahltablett eingeben</string>
     <string name="alert_msg_add_imsi_config">Geben sie ein IMSI auf ihre sim-karte ein</string>
     <string name="label_sim_card_config">Legt die sim-daten fest</string>
+    <string name="alert_msg_miui_notification">Die aktivitäten Von MIUI lagen darin, die option \"im kontext der mitteilung anzeigen\" einzuschalten und die anzeige Von informationen in einem alternativen muster statt in einem original anzusehen, um die bisherigen aktivitäten im netz ordnungsgemäß anzuzeigen. Sollte er nicht funktionieren, kann man versuchen, die anlage neu aufzusetzen Oder den betreter zu wechseln.</string>
+    <string name="label_net_speed_min_unit">Kleinere einheiten</string>
+    <string name="toast_payment_tip">Die spielart zum speichern Von forderungen festlegen</string>
+    <string name="toast_network_error">Netz geladen, kein erfolg.</string>
+    <string name="label_donate_list">Die spendenaufzeichnungen</string>
 </resources>

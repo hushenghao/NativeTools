@@ -93,4 +93,9 @@
     <string name="alert_msg_add_imsi_config">Enter the IMSI of your SIM card</string>
     <string name="label_sim_card_config">Configure SIM card information</string>
     <string name="label_mobile">Mobile</string>
+    <string name="alert_msg_miui_notification">MIUI system needs to turn on the option of \"display icon when there is notification\" in the Settings and change the notification display to \"native style\" to display the normal network speed. If it does not take effect, restart the device or change the theme.</string>
+    <string name="label_net_speed_min_unit">Minimum display unit</string>
+    <string name="toast_payment_tip">Press long to save the payment code</string>
+    <string name="toast_network_error">Network loading failure</string>
+    <string name="label_donate_list">Donation record</string>
 </resources>

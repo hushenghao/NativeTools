@@ -93,4 +93,9 @@
     <string name="label_imsi_config_tip">複数のSIMカードを使用している場合は、個々のSIMカードのIMSI情報を個別に構成して詳細なモバイルトラフィック情報を表示することができます。IMSI情報はダイヤルに*#*#4636#*#*と入力してみることができる。</string>
     <string name="label_net_usage_config">ネットワーク利用状況構成</string>
     <string name="label_mobile">モバイルネットワーク</string>
+    <string name="label_donate_list">寄付の記録</string>
+    <string name="toast_network_error">ネットワークのロード失敗</string>
+    <string name="toast_payment_tip">保存コードを長押しする</string>
+    <string name="label_net_speed_min_unit">最小表示単位</string>
+    <string name="alert_msg_miui_notification">MIUIシステムは、設定で「通知があったらアイコンを表示する」をオンにし、通知表示を「オリジナル仕様」に変更することで、正常な通信速度が表示される。有効にならない場合はデバイスの再起動やテーマの変更を試みることができます。</string>
 </resources>

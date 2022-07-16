@@ -93,4 +93,9 @@
     <string name="label_imsi_config_tip">Если вы используете несколько Сим-карт, вы можете настроить информацию IMSI на одну симку для отображения детальной информации о движении. Информация IMSI может быть использована для просмотра с помощью набора *#*#4636#*#*.</string>
     <string name="alert_msg_add_imsi_config">Введите IMSI на SIM-карте</string>
     <string name="label_sim_card_config">Конфигурация Сим-карт</string>
+    <string name="alert_msg_miui_notification">Система MIUI должна включать в настройки опцию \"отображать иконку при уведомлении\", а также изменить представление на \"оригинальный стиль\", чтобы нормально показать скорость сети в режиме. В случае невступления в силу можно попытаться перезапустить устройство или сменить тему.</string>
+    <string name="label_net_speed_min_unit">Наименьшая единица индикации</string>
+    <string name="toast_payment_tip">Длинный код по сохранению</string>
+    <string name="toast_network_error">Загрузка сети не удалась</string>
+    <string name="label_donate_list">Донорские записи</string>
 </resources>

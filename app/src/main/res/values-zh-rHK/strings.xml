@@ -93,4 +93,9 @@
     <string name="label_imsi_config_tip">如果您使用多個SIM卡，可以單獨配寘每一張SIM卡的IMSI資訊來顯示詳細的移動流量資訊。 IMSI資訊可以嘗試在撥號盤輸入*#*#4636#*#*進行查看。</string>
     <string name="label_net_usage_config">網絡使用情况配寘</string>
     <string name="label_mobile">移動網絡</string>
+    <string name="label_donate_list">捐贈記錄</string>
+    <string name="toast_network_error">網絡加載失敗</string>
+    <string name="toast_payment_tip">長按保存收款碼</string>
+    <string name="label_net_speed_min_unit">最小顯示組織</string>
+    <string name="alert_msg_miui_notification">MIUI系統需要到設定中開啟“有通知時顯示圖標”選項，並將通知顯示改為“原生樣式”，才能正常顯示狀態網速。 如果不生效可以嘗試重啓設備或更換主題。</string>
 </resources>

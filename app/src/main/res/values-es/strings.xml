@@ -93,4 +93,9 @@
     <string name="label_imsi_config_tip">Si utiliza más de una tarjeta SIM, puede configurar individualmente la información IMSI de cada tarjeta SIM para mostrar información detallada sobre el tráfico móvil. La información del IMSI puede ser vista escribiendo *#*#4636#*#* en el dial de marcación.</string>
     <string name="label_net_usage_config">Configuración del uso de la red</string>
     <string name="label_mobile">La red móvil</string>
+    <string name="label_donate_list">Registro de donaciones</string>
+    <string name="toast_network_error">Falla al cargar la red</string>
+    <string name="toast_payment_tip">Presione largo para guardar el código de recogida</string>
+    <string name="label_net_speed_min_unit">Unidad mínima de visualización</string>
+    <string name="alert_msg_miui_notification">El sistema MIUI necesita ir a la configuración para activar la opción \"mostrar icono cuando hay notificación\" y cambiar la pantalla de la notificación a \"estilo nativo\" para mostrar correctamente la velocidad de internet de estado. Intente reiniciar el dispositivo o cambiar el tema si no funciona.</string>
 </resources>
