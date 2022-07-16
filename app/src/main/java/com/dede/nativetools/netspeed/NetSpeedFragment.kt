@@ -146,13 +146,15 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             checkNotificationEnable()
         }
 
-        if (checkPermissions(Manifest.permission.POST_NOTIFICATIONS)) {
-            startServiceInternal()
-        } else {
-            permissionLauncherCompat.launch(Manifest.permission.POST_NOTIFICATIONS) {
-                startServiceInternal()
-            }
-        }
+        startServiceInternal()
+
+//        if (checkPermissions(Manifest.permission.POST_NOTIFICATIONS)) {
+//            startServiceInternal()
+//        } else {
+//            permissionLauncherCompat.launch(Manifest.permission.POST_NOTIFICATIONS) {
+//                startServiceInternal()
+//            }
+//        }
     }
 
     override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
