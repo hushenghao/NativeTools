@@ -1,6 +1,7 @@
 package com.dede.nativetools.netspeed
 
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -82,9 +83,11 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 it.onPreferenceChangeListener = this
             }
 
-        bindPreferenceChangeListener(this,
+        bindPreferenceChangeListener(
+            this,
             NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
-            NetSpeedPreferences.KEY_NET_SPEED_MIN_UNIT)
+            NetSpeedPreferences.KEY_NET_SPEED_MIN_UNIT
+        )
     }
 
     override fun provideSummary(preference: EditTextPreference): CharSequence {
@@ -250,7 +253,12 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
         val context = requireContext()
         context.alert(android.R.string.dialog_alert_title, R.string.alert_msg_miui_notification) {
-            positiveButton(R.string.i_know) {
+            positiveButton(R.string.settings) {
+                val intent = android.content.Intent(Settings.ACTION_SETTINGS)
+                intent.newTask().launchActivity(context)
+                NetSpeedPreferences.miuiAlerted = true
+            }
+            neutralButton(R.string.i_know) {
                 NetSpeedPreferences.miuiAlerted = true
             }
         }

@@ -14,9 +14,16 @@ import com.dede.nativetools.util.Logic
 object NotificationExtension {
 
     fun build(builder: NotificationCompat.Builder): Notification {
+        if (Logic.isXiaomi()) {
+            return MIUINotificationBuilder(builder).build()
+        }
         if (Logic.isMeizu()) {
-            return MeizuNotificationBuilderExt(builder).build()
+            return MeizuNotificationBuilder(builder).build()
         }
         return builder.build()
+    }
+
+    interface Builder {
+        fun build(): Notification
     }
 }

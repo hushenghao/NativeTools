@@ -29,7 +29,8 @@ import com.dede.nativetools.util.*
  *    setSubTitle(java.lang.CharSequence)
  * }
  */
-class MeizuNotificationBuilderExt(private val builder: NotificationCompat.Builder) {
+class MeizuNotificationBuilder(private val builder: NotificationCompat.Builder) :
+    NotificationExtension.Builder {
 
     // androidx.core.app.NotificationCompatBuilder
     private var compatBuilder: Any? = null
@@ -48,7 +49,7 @@ class MeizuNotificationBuilderExt(private val builder: NotificationCompat.Builde
         }
     }
 
-    private fun setInternalApp(int: Int): MeizuNotificationBuilderExt {
+    private fun setInternalApp(int: Int): MeizuNotificationBuilder {
         val flymeBuilder = flymeBuilder ?: return this
         val method =
             flymeBuilder.javaClass.declaredMethod("setInternalApp", Int::class.java)
@@ -56,7 +57,7 @@ class MeizuNotificationBuilderExt(private val builder: NotificationCompat.Builde
         return this
     }
 
-    fun build(): Notification {
+    override fun build(): Notification {
         val compatBuilder = this.compatBuilder
         if (compatBuilder != null) {
             try {
