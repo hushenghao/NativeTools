@@ -171,7 +171,8 @@ class NetSpeedService : Service(), Runnable {
     override fun onDestroy() {
         lifecycleJob.cancel()
         netSpeedCompute.destroy()
-        stopForeground(true)
+//        stopForeground(true)
+        stopForeground(STOP_FOREGROUND_REMOVE)
         notificationManager.cancel(NOTIFY_ID)
         unregisterReceiver(innerReceiver)
         super.onDestroy()
