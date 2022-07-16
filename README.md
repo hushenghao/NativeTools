@@ -23,12 +23,12 @@
 
 ## 应用下载
 
-[<img height="50px" src="https://static.coolapk.com/static/web/v8/images/header-logo.png"/>](https://www.coolapk.com/apk/com.dede.nativetools)
-[<img height="50px" src="https://assets.che300.com/wiki/2021-07-22/16269394073576500.png"/>](https://play.google.com/store/apps/details?id=com.dede.nativetools)
+[<img height="56px" src="https://static.coolapk.com/static/web/v8/images/header-logo.png"/>](https://www.coolapk.com/apk/com.dede.nativetools)
+[<img height="56px" src="https://assets.che300.com/wiki/2021-07-22/16269394073576500.png"/>](https://play.google.com/store/apps/details?id=com.dede.nativetools)
 
 ## 联系我
 Email：[dede.hu@qq.com](mailto:dede.hu@qq.com)
 
 ## 捐赠
 ![alipay](docs/images/qrcode_alipay.jpeg)
-![wxpay](docs/images/qrcode_wx.jpeg)
+![wxpay](docs/images/qrcode_wxpay.jpeg)
