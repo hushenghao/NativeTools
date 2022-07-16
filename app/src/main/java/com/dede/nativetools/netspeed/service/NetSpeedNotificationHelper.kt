@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
-import android.widget.RemoteViews
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationChannelGroupCompat
 import androidx.core.app.NotificationCompat
@@ -232,40 +231,33 @@ object NetSpeedNotificationHelper {
             pendingFlag = pendingFlag or PendingIntent.FLAG_MUTABLE
         }
 
-        if (configuration.hideNotification && !Logic.itSSAbove(context)) {
-            // context.applicationInfo.targetSdkVersion < Build.VERSION_CODES.S
-            // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
-            val remoteViews = RemoteViews(context.packageName, R.layout.notification_empty_view)
-            builder.setCustomContentView(remoteViews)
-        } else {
-            val downloadSpeedStr: String =
-                NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
-                    .splicing()
-            val uploadSpeedStr: String =
-                NetFormatter.format(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
-                    .splicing()
+        val downloadSpeedStr: String =
+            NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+                .splicing()
+        val uploadSpeedStr: String =
+            NetFormatter.format(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+                .splicing()
+        val contentStr =
+            context.getString(R.string.notify_net_speed_msg, uploadSpeedStr, downloadSpeedStr)
+        builder.setContentTitle(contentStr)
 
-            val contentStr =
-                context.getString(R.string.notify_net_speed_msg, uploadSpeedStr, downloadSpeedStr)
-            builder.setContentTitle(contentStr)
-            if (configuration.usage) {
-                val usageText = getUsageText(context, configuration)
-                builder.setContentText(usageText)
-                // big text
-                if (usageText != null && usageText.lines().size > 1) {
-                    // 多行文字
-                    val bigTextStyle = NotificationCompat.BigTextStyle()
-                        .setBigContentTitle(contentStr)
-                        .bigText(usageText)
-                    builder.setStyle(bigTextStyle)
-                }
+        if (configuration.usage) {
+            val usageText = getUsageText(context, configuration)
+            builder.setContentText(usageText)
+            // big text
+            if (usageText != null && usageText.lines().size > 1) {
+                // 多行文字
+                val bigTextStyle = NotificationCompat.BigTextStyle()
+                    .setBigContentTitle(contentStr)
+                    .bigText(usageText)
+                builder.setStyle(bigTextStyle)
             }
+        }
 
-            if (configuration.quickCloseable) {
-                val closePending = Intent(NetSpeedService.ACTION_CLOSE)
-                    .toPendingBroadcast(context, pendingFlag)
-                builder.addAction(closePending.toNotificationCompatAction(R.string.action_close))
-            }
+        if (configuration.quickCloseable) {
+            val closePending = Intent(NetSpeedService.ACTION_CLOSE)
+                .toPendingBroadcast(context, pendingFlag)
+            builder.addAction(closePending.toNotificationCompatAction(R.string.action_close))
         }
 
         if (configuration.notifyClickable) {

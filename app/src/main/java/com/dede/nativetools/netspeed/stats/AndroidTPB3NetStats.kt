@@ -27,7 +27,7 @@ class AndroidTPB3NetStats : NetStats {
     private val fixedVer = 4
 
     override fun supported(): Boolean {
-        if (Build.VERSION.SDK_INT == 33/*Build.VERSION_CODES.T*/) {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
             val version = Build.DISPLAY
             val androidVer = Build.VERSION.RELEASE
             Log.i("AndroidTBP3NetStats",

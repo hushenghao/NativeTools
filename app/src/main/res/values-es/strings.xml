@@ -43,8 +43,6 @@
     <string name="label_general">General</string>
     <string name="label_notification">La notificación</string>
     <string name="label_other">Otros</string>
-    <string name="label_net_speed_hide_notification">Ocultar notificaciones de barra de notificaciones</string>
-    <string name="summary_net_speed_hide_notification">Ocultar notificaciones reemplazando el estilo de notificación predeterminado (puede que no sea compatible con todos los dispositivos)</string>
     <string name="i_know">Lo tengo</string>
     <string name="tip_easter_egg">Los huevos</string>
     <string name="action_feedback">Comentarios sobre problemas</string>
@@ -73,7 +71,6 @@
     <string name="label_net_speed_x_offset">Desplazamiento del eje X</string>
     <string name="summary_mode_download">Sólo para descargar</string>
     <string name="summary_mode_all">Subir y descargar</string>
-    <string name="summary_mode_upload">Solo subir</string>
     <string name="toast_download_font">Start fuente descargar</string>
     <string name="toast_download_font_succeeded">Fuente descargada con éxito</string>
     <string name="toast_download_font_failed">Descargar fuente falló</string>

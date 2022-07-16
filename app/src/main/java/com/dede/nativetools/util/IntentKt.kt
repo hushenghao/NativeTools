@@ -48,7 +48,7 @@ inline fun <reified T : Any> Intent.extra(name: String, default: T): T {
         tClass == Boolean::class -> this.getBooleanExtra(name, default as Boolean) as T
         tClass == String::class -> (this.getStringExtra(name) as? T) ?: default
         Parcelable::class.java.isAssignableFrom(tClass.java) ->
-            this.getParcelableExtra(name, T::class.java) ?: default
+            (@Suppress("DEPRECATION") this.getParcelableExtra(name) as? T) ?: default
         else -> {
             throw IllegalArgumentException("IntentKt: get $tClass don`t impl")
         }
@@ -60,7 +60,7 @@ inline fun <reified T : Any> Intent.extra(name: String): T? {
     return when {
         tClass == String::class.java -> this.getStringExtra(name) as? T
         Parcelable::class.java.isAssignableFrom(tClass) ->
-            this.getParcelableExtra(name, T::class.java)
+            @Suppress("DEPRECATION") this.getParcelableExtra(name) as? T
         else -> {
             throw IllegalArgumentException("IntentKt: get $tClass don`t impl")
         }

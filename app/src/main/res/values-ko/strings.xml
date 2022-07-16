@@ -46,8 +46,6 @@
     <string name="label_general">gm</string>
     <string name="label_notification">통지</string>
     <string name="label_other">기타</string>
-    <string name="label_net_speed_hide_notification">알림 표시줄 알림 숨기기</string>
-    <string name="summary_net_speed_hide_notification">기본 알림 스타일을 바꾸어 알림 숨기기 (모든 장치는 지원되지 않습니다)</string>
     <string name="i_know">알겠어요</string>
     <string name="tip_easter_egg">에그</string>
     <string name="action_rate">호평을하다.</string>
@@ -73,7 +71,6 @@
     <string name="label_net_speed_x_offset">X 축 오프셋</string>
     <string name="summary_mode_download">다운로드만</string>
     <string name="summary_mode_all">업로드 및 다운로드</string>
-    <string name="summary_mode_upload">업로드만</string>
     <string name="toast_download_font">글꼴 다운로드 시작</string>
     <string name="toast_download_font_succeeded">글꼴 다운로드 성공</string>
     <string name="toast_download_font_failed">글꼴 다운로드 실패</string>

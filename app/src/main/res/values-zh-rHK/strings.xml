@@ -43,8 +43,6 @@
     <string name="toast_copyed">已複製</string>
     <string name="label_net_speed_toggle">切換</string>
     <string name="alert_msg_hide_lock_notification">有時候通知無法隱藏可能是鎖屏設定引起的。 在設定中找到“隱藏鎖屏通知”，選擇“僅顯示敏感內容”或“隱藏所有通知”。</string>
-    <string name="label_net_speed_hide_notification">隱藏通知欄通知</string>
-    <string name="summary_net_speed_hide_notification">通過替換默認通知樣式來隱藏通知（可能不支持所有設備）</string>
     <string name="action_rate">給個好評</string>
     <string name="action_donate">捐贈</string>
     <string name="label_coffee">請我喝一杯咖啡？</string>
@@ -73,7 +71,6 @@
     <string name="label_net_speed_x_offset">X軸偏移</string>
     <string name="summary_mode_download">僅下載</string>
     <string name="summary_mode_all">上傳和下載</string>
-    <string name="summary_mode_upload">僅上傳</string>
     <string name="toast_download_font">開始字體下載</string>
     <string name="toast_download_font_succeeded">字體下載成功</string>
     <string name="toast_download_font_failed">字體下載失敗</string>

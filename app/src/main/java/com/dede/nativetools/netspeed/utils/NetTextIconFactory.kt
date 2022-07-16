@@ -116,11 +116,6 @@ object NetTextIconFactory {
                 text2 = NetFormatter.format(rxByte, NetFormatter.FLAG_NULL, accuracy, minUnit)
                     .splicing()
             }
-            NetSpeedPreferences.MODE_UP -> {
-                val upSplit = NetFormatter.format(txByte, NetFormatter.FLAG_FULL, accuracy, minUnit)
-                text1 = upSplit.first
-                text2 = upSplit.second
-            }
             else -> {
                 val downSplit =
                     NetFormatter.format(rxByte, NetFormatter.FLAG_FULL, accuracy, minUnit)

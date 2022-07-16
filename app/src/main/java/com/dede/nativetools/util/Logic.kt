@@ -69,15 +69,6 @@ object Logic {
         return ManufacturerUtils.isMeizuDevice()
     }
 
-    /**
-     * 系统版本>=S 且 targetVersion>=S 时，返回true
-     */
-    fun itSSAbove(context: Context): Boolean {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-                // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
-                context.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.S
-    }
-
     fun isSimplifiedChinese(context: Context): Boolean {
         val local = getLocale(context)
         return local.language == Locale.SIMPLIFIED_CHINESE.language &&

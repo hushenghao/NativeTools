@@ -23,7 +23,6 @@ data class NetSpeedConfiguration constructor(
     var usage: Boolean = false,
     var enableWifiUsage: Boolean = false,
     var enableMobileUsage: Boolean = false,
-    var hideNotification: Boolean = false,
     var hideLockNotification: Boolean = true,
     var textStyle: Int = NetSpeedPreferences.DEFAULT_TEXT_STYLE,
     var font: String = NetSpeedPreferences.DEFAULT_FONT,
@@ -59,7 +58,6 @@ data class NetSpeedConfiguration constructor(
         this.usage = configuration.usage
         this.enableWifiUsage = configuration.enableWifiUsage
         this.enableMobileUsage = configuration.enableMobileUsage
-        this.hideNotification = configuration.hideNotification
         this.hideLockNotification = configuration.hideLockNotification
         this.textStyle = configuration.textStyle
         this.font = configuration.font
@@ -164,11 +162,6 @@ data class NetSpeedConfiguration constructor(
         this.enableMobileUsage = preferences.get(
             NetUsageConfigs.KEY_NET_USAGE_MOBILE,
             defaultConfiguration.enableMobileUsage
-        )
-
-        this.hideNotification = preferences.get(
-            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION,
-            defaultConfiguration.hideNotification
         )
 
         this.hideLockNotification = preferences.get(

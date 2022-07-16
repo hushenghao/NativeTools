@@ -46,8 +46,6 @@
     <string name="label_general">Währung</string>
     <string name="label_notification">Hinweis</string>
     <string name="label_other">Andere</string>
-    <string name="label_net_speed_hide_notification">Verbergen Sie Benachrichtigungen</string>
-    <string name="summary_net_speed_hide_notification">Verbergen Sie Benachrichtigungen durch Ersetzen der Standardnotifizierungsart (alle Geräte können nicht unterstützt werden)</string>
     <string name="i_know">Ich hab\'s</string>
     <string name="tip_easter_egg">Buntes Ei</string>
     <string name="action_rate">Gib mir einen guten Kommentar</string>
@@ -73,7 +71,6 @@
     <string name="label_net_speed_x_offset">Liegt unter x-achse</string>
     <string name="summary_mode_download">Down</string>
     <string name="summary_mode_all">Up and Down</string>
-    <string name="summary_mode_upload">Up</string>
     <string name="toast_download_font">Zeichendownload beginnen</string>
     <string name="toast_download_font_succeeded">Download erfolgreich abgeschlossen</string>
     <string name="toast_download_font_failed">Der schriftdruck kann nicht heruntergeladen werden</string>

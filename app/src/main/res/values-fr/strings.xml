@@ -46,8 +46,6 @@
     <string name="label_general">Généralités</string>
     <string name="label_notification">Notification</string>
     <string name="label_other">Autres</string>
-    <string name="label_net_speed_hide_notification">Masquer les notifications de la barre de notification</string>
-    <string name="summary_net_speed_hide_notification">Masquer les notifications en remplaçant le style de notification par défaut (tous les appareils peuvent ne pas être pris en charge)</string>
     <string name="i_know">Je le vois</string>
     <string name="tip_easter_egg">Oeufs de couleur</string>
     <string name="action_rate">Donne - moi une bonne note.</string>
@@ -73,7 +71,6 @@
     <string name="label_net_speed_x_offset">Décalage de l’axe X</string>
     <string name="summary_mode_download">Down</string>
     <string name="summary_mode_all">Up and Down</string>
-    <string name="summary_mode_upload">Up</string>
     <string name="toast_download_font">Start font télécharger</string>
     <string name="toast_download_font_succeeded">Fontes téléchargées avec succès</string>
     <string name="toast_download_font_failed">Fail télécharger la police</string>

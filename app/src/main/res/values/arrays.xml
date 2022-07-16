@@ -20,12 +20,10 @@
     <string-array name="net_speed_mode">
         <item>@string/summary_mode_download</item>
         <item>@string/summary_mode_all</item>
-        <item>@string/summary_mode_upload</item>
     </string-array>
     <string-array name="net_speed_mode_value">
         <item>0</item>
         <item>1</item>
-        <item>2</item>
     </string-array>
 
     <string-array name="net_speed_text_style_value">

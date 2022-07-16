@@ -89,7 +89,6 @@ class NetSpeedService : Service(), Runnable {
 
         val speed = when (configuration.mode) {
             NetSpeedPreferences.MODE_ALL -> max(rxSpeed, txSpeed)
-            NetSpeedPreferences.MODE_UP -> txSpeed
             else -> rxSpeed
         }
         if (speed < configuration.hideThreshold) {

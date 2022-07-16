@@ -4,7 +4,7 @@
 
 一个在系统状态栏显示当前网速的App，并在通知栏显示详细数据，主要针对原生ROM。
 
-自用网速指示器，支持6.0及以上系统，兼容Android 12，支持中英文。
+自用网速指示器，支持6.0及以上系统，兼容Android 13，支持中英文。
 
 * 支持通知栏Tile（7.0+）
 * 支持今日和当月流量使用显示
@@ -16,6 +16,8 @@
 如果你有什么好的想法请提交 [**Issues**](https://github.com/hushenghao/NativeTools/issues) 或 [**Pull requests**](https://github.com/hushenghao/NativeTools/pulls)
 
 [无法隐藏锁屏通知？](https://github.com/hushenghao/NativeTools/wiki/Hide-lock-screen-notification)
+
+[为什么删除了隐藏通知功能？](https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications)
 
 ## 应用截图
 

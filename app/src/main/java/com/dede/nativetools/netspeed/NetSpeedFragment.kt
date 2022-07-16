@@ -1,5 +1,6 @@
 package com.dede.nativetools.netspeed
 
+import android.Manifest
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
@@ -39,6 +40,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private val activityResultLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
 
+    private val permissionLauncherCompat =
+        ActivityResultLauncherCompat(this, ActivityResultContracts.RequestPermission())
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launchWhenCreated {
@@ -47,9 +51,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
             val status = NetSpeedPreferences.status
             if (status) {
-                miuiNotificationAlert()
-                checkNotificationEnable()
-                controller.startService(true)
+                startService()
             }
             statusSwitchPreference.isChecked = status
         }
@@ -133,10 +135,24 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             this,
             NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
-            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION
         )
+    }
 
-        updateNotificationPreferenceVisible()
+    private fun startService() {
+
+        fun startServiceInternal() {
+            controller.startService(true)
+            miuiNotificationAlert()
+            checkNotificationEnable()
+        }
+
+        if (checkPermissions(Manifest.permission.POST_NOTIFICATIONS)) {
+            startServiceInternal()
+        } else {
+            permissionLauncherCompat.launch(Manifest.permission.POST_NOTIFICATIONS) {
+                startServiceInternal()
+            }
+        }
     }
 
     override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
@@ -144,9 +160,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_STATUS -> {
                 val status = newValue as Boolean
                 if (status) {
-                    controller.startService(true)
-                    miuiNotificationAlert()
-                    //checkNotificationEnable()
+                    startService()
                 } else
                     controller.stopService()
             }
@@ -190,16 +204,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE -> {
                 configuration.quickCloseable = newValue as Boolean
             }
-            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION -> {
-                configuration.hideNotification = newValue as Boolean
-                event(FirebaseAnalytics.Event.SELECT_ITEM) {
-                    param(
-                        FirebaseAnalytics.Param.ITEM_NAME,
-                        configuration.hideNotification.toString()
-                    )
-                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "隐藏通知")
-                }
-            }
             NetSpeedPreferences.KEY_NET_SPEED_MIN_UNIT -> {
                 configuration.minUnit = (newValue as String).toInt()
             }
@@ -207,21 +211,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         }
         controller.updateConfiguration(configuration)
         return true
-    }
-
-    private fun updateNotificationPreferenceVisible() {
-        if (!Logic.itSSAbove(requireContext())) {
-            return
-        }
-        val keys = arrayOf(
-            NetSpeedPreferences.KEY_NET_SPEED_HIDE_NOTIFICATION,
-            NetSpeedPreferences.KEY_NET_SPEED_USAGE,
-            NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
-            NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE
-        )
-        for (key in keys) {
-            requirePreference<Preference>(key).isVisible = false
-        }
     }
 
     override fun onDestroyView() {

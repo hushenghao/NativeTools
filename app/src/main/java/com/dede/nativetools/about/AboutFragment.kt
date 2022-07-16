@@ -172,7 +172,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                     // BZZZTT!!1!
                     binding.ivLogo.performHapticFeedback(
                         HapticFeedbackConstants.CONTEXT_CLICK,
-                        HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                        HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
                     )
                 }
                 addListener(onStart = feedbackCallback, onRepeat = feedbackCallback)

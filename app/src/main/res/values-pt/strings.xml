@@ -27,7 +27,6 @@
     <string name="label_net_speed_auto_start">Inicialização e auto arranque</string>
     <string name="label_net_speed_font">O tipo de letra</string>
     <string name="label_net_speed_hide_lock_notification">Ocultar notificações de tela de bloqueio</string>
-    <string name="label_net_speed_hide_notification">Ocultar notificações na barra de notificação</string>
     <string name="label_net_speed_horizontal_scale">Zoom no eixo X</string>
     <string name="label_net_speed_interval">Intervalo de atualização</string>
     <string name="label_net_speed_mode">Modo de exibição</string>
@@ -54,12 +53,10 @@
     <string name="summary_ignore_battery_optimize">Adicionada lista branca de otimização de bateria para evitar que o serviço de frente não possa ser mantido (para alguns dispositivos)</string>
     <string name="summary_mode_all">Upload e download</string>
     <string name="summary_mode_download">Apenas para download</string>
-    <string name="summary_mode_upload">Apenas para upload</string>
     <string name="summary_net_speed">Exibe a velocidade atual da internet na barra de status</string>
     <string name="summary_net_speed_advanced">Personalizar o estilo de exibição</string>
     <string name="summary_net_speed_auto_start">Siga o sistema para ativar o serviço front-end</string>
     <string name="summary_net_speed_hide_lock_notification">A notificação é oculta por padrão quando a tela de bloqueio, se não for válida, você só precisa definir a notificação de tela de bloqueio oculta</string>
-    <string name="summary_net_speed_hide_notification">Ocultar notificações, substituindo o estilo de notificação padrão (pode não ser compatível com todos os dispositivos)</string>
     <string name="summary_net_speed_notify_clickable">Toque na notificação para abrir a tela de configurações do aplicativo</string>
     <string name="summary_net_speed_notify_quick_closeable">Adicione um botão de desligamento às notificações de velocidade da internet</string>
     <string name="summary_net_speed_usage">As notificações mostram a soma de dados móveis e uso de tráfego WLAN</string>

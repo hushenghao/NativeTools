@@ -46,8 +46,6 @@
     <string name="label_general">универсальн</string>
     <string name="label_notification">сообщ</string>
     <string name="label_other">друг</string>
-    <string name="label_net_speed_hide_notification">Скрытое уведомление</string>
-    <string name="summary_net_speed_hide_notification">Скрытое уведомление путем замены шаблона уведомления по умолчанию (вероятно, не поддерживаемого всеми устройствами)</string>
     <string name="i_know">Понятно</string>
     <string name="tip_easter_egg">яйц</string>
     <string name="action_rate">Дай хороший отзыв</string>
@@ -73,7 +71,6 @@
     <string name="label_net_speed_x_offset">Смещение оси X</string>
     <string name="summary_mode_download">Down</string>
     <string name="summary_mode_all">Up and Down</string>
-    <string name="summary_mode_upload">Up</string>
     <string name="toast_download_font">Начинай загрузку шрифта</string>
     <string name="toast_download_font_succeeded">Загрузка шрифта завершена</string>
     <string name="toast_download_font_failed">Загрузка шрифта провалилась</string>
