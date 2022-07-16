@@ -2,6 +2,9 @@ package com.dede.nativetools.diagnosis
 
 import android.content.Intent
 import android.os.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
@@ -11,10 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentDiagnosisBinding
-import com.dede.nativetools.util.HandlerCallback
-import com.dede.nativetools.util.LifecycleHandler
-import com.dede.nativetools.util.Logic
-import com.dede.nativetools.util.bindService
+import com.dede.nativetools.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -59,6 +59,11 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
     })
     private val responseMessenger = Messenger(handler)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.progressCircular.isVisible = true
@@ -77,7 +82,8 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
             }, onFailed = {
                 // 绑定失败时在主进程收集诊断信息
                 collectionNow()
-            }, lifecycleOwner = this)
+            }, lifecycleOwner = this
+        )
     }
 
     private fun collectionNow() {
@@ -94,4 +100,27 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
         binding.progressCircular.isGone = true
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_diagnosis, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val result = binding.tvDiagnosisMsg.text.toString()
+        return when (item.itemId) {
+            R.id.action_copy -> {
+                if (result.isNotEmpty()) {
+                    requireContext().copy(result)
+                }
+                true
+            }
+            R.id.action_share -> {
+                if (result.isNotEmpty()) {
+                    requireContext().share(result)
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }
