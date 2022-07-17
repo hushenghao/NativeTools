@@ -12,10 +12,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.core.view.LayoutInflaterCompat
-import androidx.core.view.doOnAttach
-import androidx.core.view.isGone
-import androidx.core.view.updatePadding
+import androidx.core.view.*
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -87,12 +84,18 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         applyBarsInsets(
             root = binding.root,
             // top status bar, android:fitsSystemWindows="true"
-            left = binding.toolbar,         // navigation bar, Insert padding only in the toolbar
-            right = binding.motionLayout,   // navigation bar
+            end = binding.motionLayout,   // navigation bar
             // Some devices have navigation bars on the side, when landscape.
         ) {
             val insets = it.stableInsets()
-            binding.navigationView.updatePadding(left = insets.left)
+            // navigation bar, Insert padding only in the toolbar
+            binding.toolbar.updatePaddingRelative(
+                start = insets.start(binding.toolbar),
+                end = insets.end(binding.root)
+            )
+            binding.navigationView.updatePaddingRelative(
+                start = insets.start(binding.navigationView)
+            )
         }
 
         NavFragmentAssistant(supportFragmentManager)

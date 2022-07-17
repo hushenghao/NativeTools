@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.annotation.IntDef
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.ViewCompat
 import androidx.core.widget.TextViewCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedPreferences
@@ -47,6 +48,10 @@ fun TextView.setCompoundDrawablesRelative(
     bottom: Drawable? = null,
 ) {
     TextViewCompat.setCompoundDrawablesRelative(this, start, top, end, bottom)
+}
+
+fun View.isRTL(): Boolean {
+    return ViewCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_RTL
 }
 
 object UI {

@@ -5,6 +5,8 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import androidx.browser.customtabs.*
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.perf.metrics.AddTrace
 
 /**
@@ -83,6 +85,10 @@ object ChromeTabsBrowser {
             builder.setSession(session)
         }
         val customTabsIntent = builder.build()
-        customTabsIntent.launchUrl(context, uri)
+        try {
+            customTabsIntent.launchUrl(context, uri)
+        } catch (e: Exception) {
+            Firebase.crashlytics.recordException(e)
+        }
     }
 }

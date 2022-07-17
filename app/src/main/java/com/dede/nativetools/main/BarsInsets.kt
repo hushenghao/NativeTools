@@ -4,15 +4,24 @@ import android.view.View
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
+import androidx.core.view.updatePaddingRelative
 import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
 import com.dede.nativetools.ui.EdgeItemDecoration
+import com.dede.nativetools.util.isRTL
 
 typealias OnWindowInsetsListener = (insets: WindowInsetsCompat) -> Unit
 
 fun WindowInsetsCompat.stableInsets(): Insets =
     this.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
+
+fun Insets.start(view: View): Int {
+    return if (view.isRTL()) right else left
+}
+
+fun Insets.end(view: View): Int {
+    return if (view.isRTL()) left else right
+}
 
 fun View.onWindowInsetsApply(listener: OnWindowInsetsListener) {
     ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets: WindowInsetsCompat ->
@@ -38,21 +47,21 @@ fun applyBottomBarsInsets(recyclerView: RecyclerView) {
 
 fun applyBarsInsets(
     root: View,
-    left: View? = null,
+    start: View? = null,
     top: View? = null,
-    right: View? = null,
+    end: View? = null,
     bottom: View? = null,
     listener: OnWindowInsetsListener? = null,
 ) {
-    if (left == null && top == null && right == null && bottom == null && listener == null) {
+    if (start == null && top == null && end == null && bottom == null && listener == null) {
         return
     }
     root.onWindowInsetsApply {
         val insets = it.stableInsets()
-        left?.updatePadding(left = insets.left)
-        top?.updatePadding(top = insets.top)
-        right?.updatePadding(right = insets.right)
-        bottom?.updatePadding(bottom = insets.bottom)
+        start?.updatePaddingRelative(start = insets.start(start))
+        top?.updatePaddingRelative(top = insets.top)
+        end?.updatePaddingRelative(end = insets.end(end))
+        bottom?.updatePaddingRelative(bottom = insets.bottom)
         root.requestLayout()
         listener?.invoke(it)
     }
