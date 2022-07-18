@@ -14,7 +14,6 @@ import com.dede.nativetools.databinding.FragmentBottomSheetListBinding
 import com.dede.nativetools.databinding.ItemBottomSheetListBinding
 import com.dede.nativetools.main.WindowEdgeManager
 import com.dede.nativetools.network.isLoading
-import com.dede.nativetools.util.UI
 import com.dede.nativetools.util.toast
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -89,14 +88,6 @@ abstract class AbsBottomSheetListFragment<T, H : RecyclerView.ViewHolder> :
         binding.progressCircular.isVisible = false
 
         binding.recyclerView.post {
-            if (!UI.isWideSize()) {
-                val expandedOffset =
-                    resources.getDimensionPixelSize(R.dimen.bottom_sheet_expended_offset)
-                if (behavior.expandedOffset < expandedOffset) {
-                    behavior.isFitToContents = false
-                    behavior.expandedOffset = expandedOffset
-                }
-            }
             behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         }
     }

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="tag_recycler_view" type="id" />
-    <dimen name="bottom_sheet_expended_offset">80dp</dimen>
 </resources>
