@@ -14,7 +14,9 @@ import com.dede.nativetools.databinding.FragmentBottomSheetListBinding
 import com.dede.nativetools.databinding.ItemBottomSheetListBinding
 import com.dede.nativetools.main.WindowEdgeManager
 import com.dede.nativetools.network.isLoading
+import com.dede.nativetools.util.UI
 import com.dede.nativetools.util.toast
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -64,6 +66,8 @@ abstract class AbsBottomSheetListFragment<T, H : RecyclerView.ViewHolder> :
             WindowEdgeManager(requireContext()).applyEdgeToEdge(this.window)
             val behavior = (this as BottomSheetDialog).behavior
             behavior.skipCollapsed = true
+            behavior.halfExpandedRatio = 0.75f
+            behavior.disableShapeAnimations()
         }
     }
 
@@ -71,14 +75,30 @@ abstract class AbsBottomSheetListFragment<T, H : RecyclerView.ViewHolder> :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        applyBottomBarsInsets(binding.recyclerView)
         adapter = Adapter(this)
         binding.recyclerView.adapter = adapter
     }
 
     open fun setData(list: List<T>) {
+        val behavior = (requireDialog() as BottomSheetDialog).behavior
+        if (requireView().height > 0) {
+            behavior.peekHeight = requireView().height
+        }
+
         adapter.setData(list)
         binding.progressCircular.isVisible = false
+
+        binding.recyclerView.post {
+            if (!UI.isWideSize()) {
+                val expandedOffset =
+                    resources.getDimensionPixelSize(R.dimen.bottom_sheet_expended_offset)
+                if (behavior.expandedOffset < expandedOffset) {
+                    behavior.isFitToContents = false
+                    behavior.expandedOffset = expandedOffset
+                }
+            }
+            behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        }
     }
 
     open fun setData(result: Result<List<T>>) {
