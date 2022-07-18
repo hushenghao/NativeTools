@@ -17,13 +17,6 @@
             app:defaultValue="false"
             app:icon="@drawable/ic_launcher_icon" />
 
-        <SwitchPreferenceCompat
-            android:key="net_speed_auto_start"
-            android:title="@string/label_net_speed_auto_start"
-            app:defaultValue="false"
-            app:icon="@drawable/ic_outline_restart_alt"
-            app:summary="@string/summary_net_speed_auto_start" />
-
         <DropDownPreference
             android:key="net_speed_interval"
             app:defaultValue="1000"

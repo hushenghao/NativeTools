@@ -8,6 +8,13 @@
         app:title="@string/label_other">
 
         <SwitchPreferenceCompat
+            app:key="net_speed_auto_start"
+            app:title="@string/label_net_speed_auto_start"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_outline_restart_alt"
+            app:summary="@string/summary_net_speed_auto_start" />
+
+        <SwitchPreferenceCompat
             app:icon="@drawable/ic_baseline_remove_circle"
             app:key="ignore_battery_optimize"
             app:persistent="false"
