@@ -4,6 +4,7 @@ import android.app.Notification
 import androidx.core.app.NotificationCompat
 import com.dede.nativetools.util.declaredMethod
 import com.dede.nativetools.util.field
+import com.dede.nativetools.util.getNullable
 
 /**
  * MIUI
@@ -17,14 +18,13 @@ class MIUINotificationBuilder(private val builder: NotificationCompat.Builder) :
             val miuiNotificationClass = Class.forName("android.app.MiuiNotification")
 
             val field = Notification::class.java.field("extraNotification")
-            var miuiNotification = field.get(notification)
+            var miuiNotification = field.getNullable<Any>(notification)
             if (miuiNotification == null) {
                 miuiNotification = miuiNotificationClass.newInstance()
                 field.set(notification, miuiNotification)
             }
-            val method =
-                miuiNotificationClass.declaredMethod("setCustomizedIcon", Boolean::class.java)
-            method.invoke(miuiNotification, true)
+            miuiNotificationClass.declaredMethod("setCustomizedIcon", Boolean::class.java)
+                .invoke(miuiNotification, true)
         } catch (e: Exception) {
         }
         return notification

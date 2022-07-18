@@ -1,5 +1,5 @@
-include("app")
 rootProject.name = "NativeTools"
+include(":app")
 
 enableFeaturePreview("VERSION_CATALOGS")
 

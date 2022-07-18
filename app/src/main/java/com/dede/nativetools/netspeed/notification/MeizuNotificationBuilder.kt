@@ -2,7 +2,9 @@ package com.dede.nativetools.netspeed.notification
 
 import android.app.Notification
 import androidx.core.app.NotificationCompat
-import com.dede.nativetools.util.*
+import com.dede.nativetools.util.declaredMethod
+import com.dede.nativetools.util.field
+import com.dede.nativetools.util.getNullable
 
 /**
  * Meizu Device Notification Ext
@@ -32,58 +34,25 @@ import com.dede.nativetools.util.*
 class MeizuNotificationBuilder(private val builder: NotificationCompat.Builder) :
     NotificationExtension.Builder {
 
-    // androidx.core.app.NotificationCompatBuilder
-    private var compatBuilder: Any? = null
-
-    // android.app.NotificationBuilderExt
-    private var flymeBuilder: Any? = null
-
-    init {
-        try {
-            val compatBuilder = createNotificationCompatBuilder(builder)
-            this.compatBuilder = compatBuilder
-            val nativeBuilder: Notification.Builder = getNotificationBuilder(compatBuilder)
-            val flymeField = Notification.Builder::class.java.field("mFlymeNotificationBuilder")
-            this.flymeBuilder = flymeField.get(nativeBuilder)
-        } catch (e: Exception) {
-        }
-    }
-
-    private fun setInternalApp(int: Int): MeizuNotificationBuilder {
-        val flymeBuilder = flymeBuilder ?: return this
-        val method =
-            flymeBuilder.javaClass.declaredMethod("setInternalApp", Int::class.java)
-        method.invoke(flymeBuilder, int)
+    private fun setInternalApp(flymeBuilder: Any?, int: Int): MeizuNotificationBuilder {
+        if (flymeBuilder == null) return this
+        flymeBuilder.javaClass.declaredMethod("setInternalApp", Int::class.java)
+            .invoke(flymeBuilder, int)
         return this
     }
 
     override fun build(): Notification {
-        val compatBuilder = this.compatBuilder
-        if (compatBuilder != null) {
-            try {
-                return setInternalApp(1).build(compatBuilder)
-            } catch (e: Exception) {
-            }
+        try {
+            val builderWrapper = NotificationCompatBuilderWrapper(builder)
+            val notificationBuilder: Notification.Builder = builderWrapper.notificationBuilder
+            val flymeBuilder: Any? = Notification.Builder::class.java
+                .field("mFlymeNotificationBuilder")
+                .getNullable(notificationBuilder)
+            setInternalApp(flymeBuilder, 1)
+            return builderWrapper.build()
+        } catch (e: Exception) {
         }
         return builder.build()
     }
 
-    private fun build(builder: Any /* NotificationCompatBuilder */): Notification {
-        val clazz = Class.forName("androidx.core.app.NotificationCompatBuilder")
-        val build = clazz.method("build")
-        return build.invoke(builder) as Notification
-    }
-
-    private fun createNotificationCompatBuilder(builder: NotificationCompat.Builder): Any /* NotificationCompatBuilder */ {
-        val clazz = Class.forName("androidx.core.app.NotificationCompatBuilder")
-        val constructor =
-            clazz.declaredConstructor(NotificationCompat.Builder::class.java)
-        return constructor.newInstance(builder)
-    }
-
-    private fun getNotificationBuilder(builder: Any /* NotificationCompatBuilder */): Notification.Builder {
-        val clazz = Class.forName("androidx.core.app.NotificationCompatBuilder")
-        val field = clazz.declaredField("mBuilder")
-        return field.get(builder) as Notification.Builder
-    }
 }
