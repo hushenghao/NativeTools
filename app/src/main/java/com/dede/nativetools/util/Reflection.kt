@@ -52,11 +52,12 @@ inline fun <T> Field.getNullable(obj: Any?): T? {
     return this.get(obj) as? T
 }
 
+@Suppress("UNCHECKED_CAST")
 @Throws(NoSuchMethodException::class, SecurityException::class)
-fun <T> Class<T>.declaredConstructor(vararg parameterTypes: Class<*>): Constructor<T> {
+fun <T> Class<*>.declaredConstructor(vararg parameterTypes: Class<*>): Constructor<T> {
     return this.getDeclaredConstructor(*parameterTypes).apply {
         isAccessible = true
-    }
+    } as Constructor<T>
 }
 
 inline fun <reified T : Annotation> Any.annotation(): T? {

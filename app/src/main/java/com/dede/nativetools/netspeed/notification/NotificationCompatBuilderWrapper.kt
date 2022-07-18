@@ -1,8 +1,12 @@
 package com.dede.nativetools.netspeed.notification
 
+import android.annotation.SuppressLint
 import android.app.Notification
+import androidx.core.app.NotificationBuilderWithBuilderAccessor
 import androidx.core.app.NotificationCompat
-import com.dede.nativetools.util.*
+import com.dede.nativetools.util.declaredConstructor
+import com.dede.nativetools.util.invokeWithReturn
+import com.dede.nativetools.util.method
 import java.lang.reflect.InvocationTargetException
 
 /**
@@ -10,7 +14,7 @@ import java.lang.reflect.InvocationTargetException
  *
  * @since 2022/7/18
  */
-
+@SuppressLint("RestrictedApi")
 class NotificationCompatBuilderWrapper
 @Throws(
     ClassNotFoundException::class,
@@ -19,25 +23,16 @@ class NotificationCompatBuilderWrapper
     IllegalArgumentException::class,
     IllegalAccessException::class,
     InvocationTargetException::class)
-constructor(private val builder: NotificationCompat.Builder) {
-
-    /**
-     * 系统通知构建器
-     */
-    var notificationBuilder: Notification.Builder
-        private set
+constructor(private val builder: NotificationCompat.Builder) : NotificationExtension.Builder,
+    NotificationBuilderWithBuilderAccessor {
 
     // androidx.core.app.NotificationCompatBuilder
-    private var content: Any
+    private val obj: NotificationBuilderWithBuilderAccessor =
+        createNotificationCompatBuilder(builder)
 
-    init {
-        this.content = createNotificationCompatBuilder(builder)
-        this.notificationBuilder = getNotificationBuilder(content)
-    }
-
-    fun build(): Notification {
+    override fun build(): Notification {
         try {
-            return build(content)
+            return build(obj)
         } catch (e: Exception) {
         }
         return builder.build()
@@ -49,15 +44,17 @@ constructor(private val builder: NotificationCompat.Builder) {
             .invokeWithReturn(builder)
     }
 
-    private fun getNotificationBuilder(builder: Any /* NotificationCompatBuilder */): Notification.Builder {
+    /* NotificationCompatBuilder */
+    private fun createNotificationCompatBuilder(builder: NotificationCompat.Builder): NotificationBuilderWithBuilderAccessor {
         return Class.forName("androidx.core.app.NotificationCompatBuilder")
-            .declaredField("mBuilder")
-            .getNotnull(builder)
+            .declaredConstructor<NotificationBuilderWithBuilderAccessor>(NotificationCompat.Builder::class.java)
+            .newInstance(builder)
     }
 
-    private fun createNotificationCompatBuilder(builder: NotificationCompat.Builder): Any /* NotificationCompatBuilder */ {
-        return Class.forName("androidx.core.app.NotificationCompatBuilder")
-            .declaredConstructor(NotificationCompat.Builder::class.java)
-            .newInstance(builder)
+    /**
+     * 系统通知构建器
+     */
+    override fun getBuilder(): Notification.Builder {
+        return this.obj.builder
     }
 }

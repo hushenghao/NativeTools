@@ -37,11 +37,10 @@ class MeizuNotificationBuilder(private val builder: NotificationCompat.Builder) 
     override fun build(): Notification {
         try {
             val builderWrapper = NotificationCompatBuilderWrapper(builder)
-            val notificationBuilder: Notification.Builder = builderWrapper.notificationBuilder
 
             Notification.Builder::class.java
                 .field("mFlymeNotificationBuilder")
-                .getNotnull<NotificationBuilderExt>(notificationBuilder)
+                .getNotnull<NotificationBuilderExt>(builderWrapper.builder)
                 .setInternalApp(1)
             return builderWrapper.build()
         } catch (e: Exception) {
