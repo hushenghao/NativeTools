@@ -105,6 +105,7 @@ android {
 }
 
 dependencies {
+    compileOnly(project(":systemApi"))
     implementation(deps.androidx.appcompat)
     implementation(deps.androidx.core.ktx)
     implementation(deps.androidx.preference.ktx)
@@ -169,7 +170,7 @@ tasks.register<Exec>("pgyer") {
         commandLine(
             "curl", "-F", "file=@$apkPath",
             "-F", "_api_key=$apiKey",
-            "-F", "buildUpdateDescription=${nodes}",
+            "-F", "buildUpdateDescription=$nodes",
             "https://www.pgyer.com/apiv2/app/upload"
         )
     }
