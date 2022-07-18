@@ -10,16 +10,12 @@ import java.lang.reflect.Method
 
 @Throws(NoSuchMethodException::class, SecurityException::class)
 fun <T> Class<T>.method(name: String, vararg parameterTypes: Class<*>): Method {
-    return this.getMethod(name, *parameterTypes).apply {
-        isAccessible = true
-    }
+    return this.getMethod(name, *parameterTypes).apply { isAccessible = true }
 }
 
 @Throws(NoSuchMethodException::class, SecurityException::class)
 fun <T> Class<T>.declaredMethod(name: String, vararg parameterTypes: Class<*>): Method {
-    return this.getDeclaredMethod(name, *parameterTypes).apply {
-        isAccessible = true
-    }
+    return this.getDeclaredMethod(name, *parameterTypes).apply { isAccessible = true }
 }
 
 @Throws(IllegalAccessException::class,
@@ -49,15 +45,14 @@ inline fun <T> Field.getNotnull(obj: Any?): T {
 @Throws(IllegalArgumentException::class, IllegalAccessException::class)
 @Suppress("UNCHECKED_CAST")
 inline fun <T> Field.getNullable(obj: Any?): T? {
-    return this.get(obj) as? T
+    return (this.get(obj) ?: return null) as T
 }
 
 @Suppress("UNCHECKED_CAST")
 @Throws(NoSuchMethodException::class, SecurityException::class)
 fun <T> Class<*>.declaredConstructor(vararg parameterTypes: Class<*>): Constructor<T> {
-    return this.getDeclaredConstructor(*parameterTypes).apply {
-        isAccessible = true
-    } as Constructor<T>
+    return this.getDeclaredConstructor(*parameterTypes)
+        .apply { isAccessible = true } as Constructor<T>
 }
 
 inline fun <reified T : Annotation> Any.annotation(): T? {
