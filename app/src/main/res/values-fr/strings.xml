@@ -66,8 +66,6 @@
     <string name="summary_default">Par défaut</string>
     <string name="summary_text_style_normal">Normale</string>
     <string name="summary_text_style_bold">En caractères gras</string>
-    <string name="summary_text_style_italic">En italique</string>
-    <string name="summary_text_style_bold_italic">Grossier et italique</string>
     <string name="label_net_speed_x_offset">Décalage de l’axe X</string>
     <string name="summary_mode_download">Down</string>
     <string name="summary_mode_all">Up and Down</string>

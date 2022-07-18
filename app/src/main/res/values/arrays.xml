@@ -29,14 +29,10 @@
     <string-array name="net_speed_text_style_value">
         <item>0</item>
         <item>1</item>
-        <item>2</item>
-        <item>3</item>
     </string-array>
     <string-array name="net_speed_text_style">
         <item>@string/summary_text_style_normal</item>
         <item>@string/summary_text_style_bold</item>
-        <item>@string/summary_text_style_italic</item>
-        <item>@string/summary_text_style_bold_italic</item>
     </string-array>
 
     <string-array name="net_speed_font_value">

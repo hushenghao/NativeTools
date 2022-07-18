@@ -66,8 +66,6 @@
     <string name="summary_default">Default</string>
     <string name="summary_text_style_normal">General</string>
     <string name="summary_text_style_bold">Bold</string>
-    <string name="summary_text_style_italic">Italics</string>
-    <string name="summary_text_style_bold_italic">Bold Italic</string>
     <string name="label_net_speed_x_offset">The X axis offset</string>
     <string name="summary_mode_download">Down</string>
     <string name="summary_mode_all">Up and Down</string>

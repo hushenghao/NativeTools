@@ -66,8 +66,6 @@
     <string name="summary_default">Por omisión</string>
     <string name="summary_text_style_normal">General</string>
     <string name="summary_text_style_bold">En negrita</string>
-    <string name="summary_text_style_italic">Cursiva</string>
-    <string name="summary_text_style_bold_italic">Cursiva gruesa</string>
     <string name="label_net_speed_x_offset">Desplazamiento del eje X</string>
     <string name="summary_mode_download">Sólo para descargar</string>
     <string name="summary_mode_all">Subir y descargar</string>

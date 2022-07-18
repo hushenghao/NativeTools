@@ -173,9 +173,9 @@ object NetSpeedNotificationHelper {
     private fun getUsageText(context: Context, todayBytes: Long, monthBytes: Long): String {
         return context.getString(
             R.string.notify_net_speed_sub,
-            NetFormatter.format(todayBytes, NetFormatter.FLAG_NULL, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.format(todayBytes, NetFormatter.FLAG_BYTE, NetFormatter.ACCURACY_EXACT)
                 .splicing(),
-            NetFormatter.format(monthBytes, NetFormatter.FLAG_NULL, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.format(monthBytes, NetFormatter.FLAG_BYTE, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         )
     }

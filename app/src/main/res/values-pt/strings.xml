@@ -62,8 +62,6 @@
     <string name="summary_net_speed_usage">As notificações mostram a soma de dados móveis e uso de tráfego WLAN</string>
     <string name="summary_night_mode_follow_system">Siga o sistema</string>
     <string name="summary_text_style_bold">Bold</string>
-    <string name="summary_text_style_bold_italic">Bold Italic</string>
-    <string name="summary_text_style_italic">Italics</string>
     <string name="summary_text_style_normal">geral</string>
     <string name="switch_off">OFF</string>
     <string name="switch_on">ON</string>

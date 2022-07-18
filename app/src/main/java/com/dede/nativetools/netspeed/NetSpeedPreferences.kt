@@ -46,7 +46,6 @@ object NetSpeedPreferences {
 
     const val MODE_DOWN = "0"
     const val MODE_ALL = "1"
-    const val MODE_UP = "2"
 
     var privacyAgreed: Boolean
         get() = globalDataStore.get(booleanPreferencesKey(KEY_PRIVACY_AGREED), false)

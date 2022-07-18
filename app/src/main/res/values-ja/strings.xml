@@ -66,8 +66,6 @@
     <string name="summary_default">黙認</string>
     <string name="summary_text_style_normal">一般</string>
     <string name="summary_text_style_bold">粗体</string>
-    <string name="summary_text_style_italic">イタリック</string>
-    <string name="summary_text_style_bold_italic">太斜体</string>
     <string name="label_net_speed_x_offset">X軸オフセット</string>
     <string name="summary_mode_download">ダウンロードのみ</string>
     <string name="summary_mode_all">アップロードとダウンロード</string>

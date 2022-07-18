@@ -51,12 +51,12 @@ interface TypefaceGetter {
                 Typeface.BOLD -> {
                     Typeface.create(typeface, Typeface.BOLD)
                 }
-                Typeface.ITALIC -> {
-                    Typeface.create(typeface, Typeface.ITALIC)
-                }
-                Typeface.BOLD_ITALIC -> {
-                    Typeface.create(typeface, Typeface.BOLD_ITALIC)
-                }
+//                Typeface.ITALIC -> {
+//                    Typeface.create(typeface, Typeface.ITALIC)
+//                }
+//                Typeface.BOLD_ITALIC -> {
+//                    Typeface.create(typeface, Typeface.BOLD_ITALIC)
+//                }
                 else -> {
                     typeface
                 }
