@@ -3,6 +3,7 @@ package com.dede.nativetools.netspeed.notification
 import android.app.Notification
 import android.app.NotificationBuilderExt
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompatBuilderAccessor
 import com.dede.nativetools.util.field
 import com.dede.nativetools.util.getNotnull
 
@@ -35,17 +36,15 @@ class MeizuNotificationBuilder(private val builder: NotificationCompat.Builder) 
     NotificationExtension.Builder {
 
     override fun build(): Notification {
+        val accessor = NotificationCompatBuilderAccessor(builder)
         try {
-            val builderWrapper = NotificationCompatBuilderWrapper(builder)
-
             Notification.Builder::class.java
                 .field("mFlymeNotificationBuilder")
-                .getNotnull<NotificationBuilderExt>(builderWrapper.builder)
+                .getNotnull<NotificationBuilderExt>(accessor.builder)
                 .setInternalApp(1)
-            return builderWrapper.build()
         } catch (e: Exception) {
         }
-        return builder.build()
+        return accessor.build()
     }
 
 }
