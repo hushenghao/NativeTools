@@ -187,11 +187,13 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
                 val hideThresholdStr = hideThreshold.toString()
                 if (hideThresholdStr != newValue) {
-                    thresholdEditTextPreference.text = hideThresholdStr
-                    return false
+                    // Check input text, make sure it's all numbers.
+                    // post set value, the value is saved only after method onPreferenceChange is called.
+                    uiHandler.post {
+                        thresholdEditTextPreference.text = hideThresholdStr
+                    }
                 }
             }
-
             NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION -> {
                 configuration.hideLockNotification = newValue as Boolean
             }

@@ -117,7 +117,7 @@
     <string name="alert_msg_add_imsi_config">输入您SIM卡的IMSI</string>
     <string name="label_imsi_config_tip">如果您使用多个SIM卡，可以单独配置每一张SIM卡的IMSI信息来显示详细的移动流量信息。IMSI信息可以尝试在拨号盘输入*#*#4636#*#*进行查看。</string>
     <string name="label_net_usage_config">网络使用情况配置</string>
-    <string translatable="false" name="label_wifi">WLAN</string>
+    <string name="label_wifi" translatable="false">WLAN</string>
     <string name="label_mobile">Mobile</string>
     <string name="label_donate_list">捐赠记录</string>
     <string name="toast_network_error">网络加载失败</string>
@@ -126,4 +126,5 @@
     <string name="alert_msg_miui_notification">MIUI系统需要到设置中开启“有通知时显示图标”选项，并将通知显示改为“原生样式”，才能正常显示状态网速。如果不生效可以尝试重启设备或更换主题。</string>
     <string name="summary_share_app">将应用推荐给朋友</string>
     <string name="summary_get_beta">获取应用的内测版本</string>
+    <string name="label_add" tools:ignore="MissingTranslation">Add</string>
 </resources>

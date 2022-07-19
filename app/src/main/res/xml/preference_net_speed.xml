@@ -37,6 +37,7 @@
 
 
         <com.dede.nativetools.ui.MaterialEditTextPreference
+            android:inputType="number"
             app:defaultValue="0"
             app:dialogMessage="@string/alert_msg_hide_threshold"
             app:icon="@drawable/ic_baseline_remove_circle"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
@@ -24,6 +25,7 @@
     </PreferenceCategory>
 
     <com.dede.nativetools.ui.MaterialEditTextPreference
+        android:inputType="text"
         app:allowDividerAbove="true"
         app:dependency="key_net_usage_mobile"
         app:dialogMessage="@string/alert_msg_add_imsi_config"
@@ -31,7 +33,7 @@
         app:icon="@drawable/ic_outline_add"
         app:key="key_add_imsi_config"
         app:persistent="false"
-        app:title="添加" />
+        app:title="@string/label_add" />
 
     <Preference
         app:dependency="key_net_usage_mobile"

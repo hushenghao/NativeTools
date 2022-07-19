@@ -2,6 +2,7 @@ package com.dede.nativetools.ui
 
 import android.content.Context
 import android.content.DialogInterface
+import android.text.InputType
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.preference.EditTextPreference
 import com.dede.nativetools.R
+import com.dede.nativetools.util.isNotEmpty
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
@@ -21,8 +23,15 @@ class MaterialEditTextPreference(context: Context, attrs: AttributeSet? = null) 
 
     private lateinit var editText: EditText
 
+    private var inputType: Int = InputType.TYPE_NULL
+
     init {
         dialogLayoutResource = R.layout.override_preference_dialog_edittext
+        val typedArray =
+            context.obtainStyledAttributes(attrs, R.styleable.MaterialEditTextPreference)
+        inputType =
+            typedArray.getInt(R.styleable.MaterialEditTextPreference_android_inputType, inputType)
+        typedArray.recycle()
     }
 
     override fun onClick() {
@@ -50,6 +59,7 @@ class MaterialEditTextPreference(context: Context, attrs: AttributeSet? = null) 
         }
 
         editText = view.findViewById(android.R.id.edit)
+        editText.inputType = inputType
 
         editText.requestFocus()
         editText.setText(text)
@@ -60,8 +70,19 @@ class MaterialEditTextPreference(context: Context, attrs: AttributeSet? = null) 
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
     }
 
+    private var defaultValue: String? = null
+
+    override fun onSetInitialValue(defaultValue: Any?) {
+        super.onSetInitialValue(defaultValue)
+        this.defaultValue = defaultValue as? String
+    }
+
     override fun onClick(dialog: DialogInterface?, which: Int) {
-        val value = editText.text.toString()
+        val defaultValue = this.defaultValue
+        var value = editText.text.toString()
+        if (value.isEmpty() && defaultValue.isNotEmpty()) {
+            value = defaultValue
+        }
         if (callChangeListener(value)) {
             text = value
         }

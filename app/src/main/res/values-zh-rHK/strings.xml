@@ -95,4 +95,5 @@
     <string name="alert_msg_miui_notification">MIUI系統需要到設定中開啟“有通知時顯示圖標”選項，並將通知顯示改為“原生樣式”，才能正常顯示狀態網速。 如果不生效可以嘗試重啓設備或更換主題。</string>
     <string name="summary_share_app">將應用推薦給朋友</string>
     <string name="summary_get_beta">獲取應用的內測版本</string>
+    <string name="label_add">添加</string>
 </resources>
