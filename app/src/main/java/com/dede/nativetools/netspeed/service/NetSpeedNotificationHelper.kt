@@ -204,11 +204,11 @@ object NetSpeedNotificationHelper {
                 .setSmallIcon(createBlankIcon(configuration))
         } else {
             NotificationCompat.Builder(context, CHANNEL_ID_DEFAULT)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setSmallIcon(createIconCompat(configuration, rxSpeed, txSpeed))
         }
 
-        builder.setOnlyAlertOnce(false)
+        builder.setOnlyAlertOnce(true)
             .setOngoing(true)
             .setLocalOnly(true)
             .setShowWhen(false)
@@ -297,7 +297,7 @@ object NetSpeedNotificationHelper {
         } else {
             NotificationChannelCompat.Builder(
                 CHANNEL_ID_DEFAULT,
-                NotificationManagerCompat.IMPORTANCE_DEFAULT
+                NotificationManagerCompat.IMPORTANCE_MAX
             ).setName(this.getString(R.string.label_net_speed_default_channel))
         }
         return builder.setDescription(this.getString(R.string.desc_net_speed_notify))
