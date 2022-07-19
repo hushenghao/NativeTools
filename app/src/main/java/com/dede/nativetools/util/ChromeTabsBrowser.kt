@@ -2,6 +2,7 @@ package com.dede.nativetools.util
 
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.browser.customtabs.*
@@ -74,9 +75,8 @@ object ChromeTabsBrowser {
 
     @AddTrace(name = "CustomTabs.launch")
     fun launchUrl(context: Context, uri: Uri) {
-        val isNightMode = isNightMode()
-        val colorScheme =
-            if (isNightMode) CustomTabsIntent.COLOR_SCHEME_DARK else CustomTabsIntent.COLOR_SCHEME_LIGHT
+        val colorScheme = if (isNightMode())
+            CustomTabsIntent.COLOR_SCHEME_DARK else CustomTabsIntent.COLOR_SCHEME_LIGHT
         val builder = CustomTabsIntent.Builder()
             .setColorScheme(colorScheme)
             .setShareState(CustomTabsIntent.SHARE_STATE_ON)
@@ -85,6 +85,8 @@ object ChromeTabsBrowser {
             builder.setSession(session)
         }
         val customTabsIntent = builder.build()
+        customTabsIntent.intent.putExtra(Intent.EXTRA_REFERRER,
+            Uri.parse("android-app://${context.packageName}"))
         try {
             customTabsIntent.launchUrl(context, uri)
         } catch (e: Exception) {

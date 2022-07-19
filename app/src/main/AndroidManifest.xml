@@ -22,27 +22,22 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
-<!--    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />-->
+    <!--<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />-->
 
     <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
         tools:node="remove" />
 
-    <queries>
-        <intent>
-            <action android:name="android.settings.USAGE_ACCESS_SETTINGS" />
-            <data android:scheme="package" />
-        </intent>
-    </queries>
-
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="true" />
 
-<!--android:localeConfig="@xml/locales_config"-->
+    <!--android:localeConfig="@xml/locales_config"-->
     <application
         android:name=".NativeToolsApp"
-        android:allowBackup="false"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:persistent="true"
@@ -50,7 +45,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="UnusedAttribute">
+        tools:targetApi="s">
 
         <!--https://firebase.google.com/docs/analytics/configure-data-collection?platform=android#disable_data_collection-->
         <meta-data
@@ -88,15 +83,12 @@
             </intent-filter>
         </activity>
 
-        <!-- https://developer.android.com/about/versions/12/behavior-changes-12#exported -->
         <service
             android:name=".netspeed.service.NetSpeedService"
-            android:exported="false"
             android:label="@string/label_net_speed_service"
             android:process=":netspeed" />
         <service
             android:name=".diagnosis.DiagnosisFragment$Service"
-            android:exported="false"
             android:label="@string/label_diagnosis"
             android:process=":netspeed" />
 
