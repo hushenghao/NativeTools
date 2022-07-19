@@ -42,7 +42,7 @@ class MeizuNotificationBuilder(private val builder: NotificationCompat.Builder) 
                 .field("mFlymeNotificationBuilder")
                 .getNotnull<NotificationBuilderExt>(accessor.builder)
                 .setInternalApp(1)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
         }
         return accessor.build()
     }

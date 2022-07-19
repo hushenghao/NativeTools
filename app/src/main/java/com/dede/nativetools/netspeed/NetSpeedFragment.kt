@@ -1,6 +1,5 @@
 package com.dede.nativetools.netspeed
 
-import android.Manifest
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View

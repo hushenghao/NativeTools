@@ -18,7 +18,7 @@ class MIUINotificationBuilder(private val builder: NotificationCompat.Builder) :
             Notification::class.java.field("extraNotification")
                 .getNotnull<MiuiNotification>(notification)
                 .setCustomizedIcon(true)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
         }
         return notification
     }
