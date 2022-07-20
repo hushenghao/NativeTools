@@ -95,4 +95,6 @@
     <string name="alert_msg_miui_notification">MIUIシステムは、設定で「通知があったらアイコンを表示する」をオンにし、通知表示を「オリジナル仕様」に変更することで、正常な通信速度が表示される。有効にならない場合はデバイスの再起動やテーマの変更を試みることができます。</string>
     <string name="summary_share_app">アプリを友だちに推薦する</string>
     <string name="summary_get_beta">アプリケーションのプライベートバージョンを取得する</string>
+    <string name="label_add">添加</string>
+    <string name="label_power_save_mode">省電力モード</string>
 </resources>

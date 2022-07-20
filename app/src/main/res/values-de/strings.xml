@@ -95,4 +95,6 @@
     <string name="label_donate_list">Die spendenaufzeichnungen</string>
     <string name="summary_get_beta">Holt die parametrische version der anwendung</string>
     <string name="summary_share_app">Empfehlen sie die anwendung beim freund</string>
+    <string name="label_add">Hinzufügen</string>
+    <string name="label_power_save_mode">Strom sparen</string>
 </resources>

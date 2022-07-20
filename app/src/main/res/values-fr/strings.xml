@@ -95,4 +95,6 @@
     <string name="alert_msg_miui_notification">Le système MIUI doit aller dans les paramètres pour activer l’option \"afficher l’icône en cas de notification\" et changer l’affichage de la notification en \"style natif\" pour afficher correctement l’état de la vitesse internet. Si cela ne fonctionne pas, vous pouvez essayer de redémarrer l’appareil ou de changer de thème.</string>
     <string name="summary_share_app">Recommander l’application à un ami</string>
     <string name="summary_get_beta">Obtenez la version beta de l’application</string>
+    <string name="label_power_save_mode">Mode d’économie d’énergie</string>
+    <string name="label_add">L’addition de</string>
 </resources>

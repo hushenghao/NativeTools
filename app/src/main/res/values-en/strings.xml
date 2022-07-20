@@ -95,4 +95,6 @@
     <string name="label_donate_list">Donation record</string>
     <string name="summary_get_beta">Get the beta version of the application</string>
     <string name="summary_share_app">Recommend apps to friends</string>
+    <string name="label_power_save_mode">Power saving mode</string>
+    <string name="label_add">Add</string>
 </resources>

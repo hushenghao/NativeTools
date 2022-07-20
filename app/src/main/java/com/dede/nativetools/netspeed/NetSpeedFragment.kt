@@ -1,16 +1,18 @@
 package com.dede.nativetools.netspeed
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
+import android.os.PowerManager
 import android.provider.Settings
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.preference.EditTextPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
+import androidx.preference.*
 import com.dede.nativetools.R
 import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
@@ -35,12 +37,20 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
     private lateinit var usageSwitchPreference: SwitchPreferenceCompat
     private lateinit var statusSwitchPreference: SwitchPreferenceCompat
     private lateinit var thresholdEditTextPreference: EditTextPreference
+    private lateinit var intervalPreference: DropDownPreference
 
     private val activityResultLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.StartActivityForResult())
 
     private val permissionLauncherCompat =
         ActivityResultLauncherCompat(this, ActivityResultContracts.RequestPermission())
+
+    private val powerManager by later { requireContext().requireSystemService<PowerManager>() }
+    private var powerSaveModeChangedReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intervalPreference.isEnabled = !powerManager.isPowerSaveMode
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,6 +75,9 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         if (UI.isWideSize()) {
             applyBottomBarsInsets(listView)
         }
+
+        val intentFilter = IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED)
+        requireContext().registerReceiver(powerSaveModeChangedReceiver, intentFilter)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -84,11 +97,20 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
                 it.onPreferenceChangeListener = this
             }
 
-        bindPreferenceChangeListener(
-            this,
-            NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
-            NetSpeedPreferences.KEY_NET_SPEED_MIN_UNIT
-        )
+        bindPreferenceChangeListener(this, NetSpeedPreferences.KEY_NET_SPEED_MIN_UNIT)
+
+        intervalPreference =
+            requirePreference<DropDownPreference>(NetSpeedPreferences.KEY_NET_SPEED_INTERVAL).also {
+                it.setSummaryProvider { _ ->
+                    if (powerManager.isPowerSaveMode) {
+                        getString(R.string.label_power_save_mode)
+                    } else {
+                        ListPreference.SimpleSummaryProvider.getInstance().provideSummary(it)
+                    }
+                }
+                it.isEnabled = !powerManager.isPowerSaveMode
+                it.onPreferenceChangeListener = this
+            }
     }
 
     override fun provideSummary(preference: EditTextPreference): CharSequence {
@@ -218,6 +240,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onDestroyView() {
         controller.unbindService()
+        requireContext().unregisterReceiver(powerSaveModeChangedReceiver)
         super.onDestroyView()
     }
 

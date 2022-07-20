@@ -24,7 +24,7 @@
             app:entryValues="@array/net_speed_interval_value"
             app:icon="@drawable/ic_baseline_timer"
             app:title="@string/label_net_speed_interval"
-            app:useSimpleSummaryProvider="true" />
+            tools:useSimpleSummaryProvider="true" />
 
         <DropDownPreference
             android:key="net_speed_min_unit"

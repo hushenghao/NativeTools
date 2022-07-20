@@ -95,4 +95,6 @@
     <string name="label_donate_list">기부 기록</string>
     <string name="summary_get_beta">앱의 내부 테스트 버전을 가져옵니다</string>
     <string name="summary_share_app">앱을 친구에게 추천하기</string>
+    <string name="label_add">추가</string>
+    <string name="label_power_save_mode">절전모드</string>
 </resources>

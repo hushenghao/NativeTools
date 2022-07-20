@@ -95,4 +95,6 @@
     <string name="label_donate_list">Донорские записи</string>
     <string name="summary_get_beta">Найди внутреннюю версию приложения</string>
     <string name="summary_share_app">Рекомендуй приложение другу</string>
+    <string name="label_add">добавля</string>
+    <string name="label_power_save_mode">Экономный режим</string>
 </resources>

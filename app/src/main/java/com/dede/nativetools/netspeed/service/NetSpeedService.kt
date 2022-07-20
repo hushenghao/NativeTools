@@ -35,6 +35,7 @@ class NetSpeedService : Service(), Runnable {
     companion object {
         private const val NOTIFY_ID = 10
         private const val DELAY_BLANK_NOTIFICATION_ICON = 3000L
+        const val INTERVAL_POWER_SAVE_MODE = 5000L
 
         const val ACTION_CLOSE = "com.dede.nativetools.CLOSE"
 
@@ -115,9 +116,11 @@ class NetSpeedService : Service(), Runnable {
 
     override fun onCreate() {
         super.onCreate()
+        configuration.isPowerSaveMode = powerManager.isPowerSaveMode
         startForeground()
 
         val intentFilter = IntentFilter(
+            PowerManager.ACTION_POWER_SAVE_MODE_CHANGED,// 省电模式变更
             Intent.ACTION_SCREEN_ON,// 打开屏幕
             Intent.ACTION_SCREEN_OFF,// 关闭屏幕
             ACTION_CLOSE// 关闭
@@ -151,7 +154,14 @@ class NetSpeedService : Service(), Runnable {
             return
         }
         this.configuration.updateFrom(configuration)
-            .also { netSpeedCompute.interval = it.interval }
+            .also {
+                if (it.isPowerSaveMode) {
+                    // 省电模式下延长刷新间隔
+                    netSpeedCompute.interval = INTERVAL_POWER_SAVE_MODE.toInt()
+                } else {
+                    netSpeedCompute.interval = it.interval
+                }
+            }
         val notification = NetSpeedNotificationHelper.createNotification(
             this,
             this.configuration,
@@ -173,7 +183,6 @@ class NetSpeedService : Service(), Runnable {
     override fun onDestroy() {
         lifecycleJob.cancel()
         netSpeedCompute.destroy()
-//        stopForeground(true)
         stopForeground(STOP_FOREGROUND_REMOVE)
         notificationManager.cancel(NOTIFY_ID)
         unregisterReceiver(innerReceiver)
@@ -187,6 +196,10 @@ class NetSpeedService : Service(), Runnable {
 
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action ?: return) {
+                PowerManager.ACTION_POWER_SAVE_MODE_CHANGED -> {
+                    val copy = configuration.copy(isPowerSaveMode = powerManager.isPowerSaveMode)
+                    updateConfiguration(copy)
+                }
                 ACTION_CLOSE -> {
                     stopSelf()
                 }

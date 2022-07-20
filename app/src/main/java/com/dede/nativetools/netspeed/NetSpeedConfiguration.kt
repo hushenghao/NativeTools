@@ -43,6 +43,9 @@ data class NetSpeedConfiguration constructor(
     @FloatRange(from = 0.2, to = 1.3)
     var horizontalScale: Float = 1f,// X轴缩放
     var imsiSet: Set<String>? = null,// 配置的IMSI
+
+    @IgnoredOnParcel
+    var isPowerSaveMode: Boolean = false// 省电模式
 ) : Parcelable {
 
     @IgnoredOnParcel
@@ -71,6 +74,8 @@ data class NetSpeedConfiguration constructor(
         this.textScale = configuration.textScale
         this.horizontalScale = configuration.horizontalScale
         this.imsiSet = configuration.imsiSet
+
+        this.isPowerSaveMode = configuration.isPowerSaveMode
         return this
     }
 

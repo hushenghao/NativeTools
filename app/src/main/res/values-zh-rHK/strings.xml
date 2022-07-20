@@ -96,4 +96,5 @@
     <string name="summary_share_app">將應用推薦給朋友</string>
     <string name="summary_get_beta">獲取應用的內測版本</string>
     <string name="label_add">添加</string>
+    <string name="label_power_save_mode">省電模式</string>
 </resources>
