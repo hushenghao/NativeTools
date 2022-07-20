@@ -56,29 +56,12 @@ object NetTextIconFactory {
         Log.i("NetTextIconFactory", "status_bar_icon_size: $iconSize")
     }
 
-    private fun createBitmapInternal(size: Int, cache: Bitmap?): Bitmap {
-        if (cache == null) {
-            return Bitmap.createBitmap(size, size, DEFAULT_CONFIG)
-        }
-
-        if (size > cache.width || size > cache.height) {
-            cache.recycle()
-            return Bitmap.createBitmap(size, size, DEFAULT_CONFIG)
-        }
-
-        if (cache.config != DEFAULT_CONFIG || cache.width != size || cache.height != size) {
-            cache.reconfigure(size, size, DEFAULT_CONFIG)
-        }
-
-        // Bitmaps in the pool contain random data that in some cases must be cleared for an image
-        // to be rendered correctly. we shouldn't force all consumers to independently erase the
-        // contents individually, so we do so here.
-        cache.eraseColor(Color.TRANSPARENT)
-        return cache
+    private fun createBitmapInternal(size: Int): Bitmap {
+        return BitmapPoolAccessor.get(size, size, DEFAULT_CONFIG)
     }
 
-    fun createBlank(configuration: NetSpeedConfiguration, size: Int = iconSize): Bitmap {
-        return createBitmapInternal(size, configuration.cachedBitmap)
+    fun createBlank(): Bitmap {
+        return createBitmapInternal(iconSize)
     }
 
     /**
@@ -124,15 +107,7 @@ object NetTextIconFactory {
             }
         }
 
-        return createIconInternal(
-            text1,
-            text2,
-            size,
-            configuration,
-            assistLine
-        ).apply {
-            configuration.cachedBitmap = this
-        }
+        return createIconInternal(text1, text2, size, configuration, assistLine)
     }
 
     private val pathEffect = DashPathEffect(floatArrayOf(2.dpf, 2.dpf), 0f)
@@ -158,7 +133,7 @@ object NetTextIconFactory {
         val relativeDistance: Float = configuration.relativeDistance
         val textScale: Float = configuration.textScale
 
-        val bitmap = createBitmapInternal(size, configuration.cachedBitmap)
+        val bitmap = createBitmapInternal(size)
         val canvas = Canvas(bitmap)
         paint.typeface = TypefaceGetter.getOrDefault(configuration.font, configuration.textStyle)
         resetPaint()
@@ -198,6 +173,7 @@ object NetTextIconFactory {
             paint.pathEffect = null
             canvas.drawRect(0f, 0f, wf, hf, paint)
         }
+        canvas.setBitmap(null)
         return bitmap
     }
 

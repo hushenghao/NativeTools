@@ -74,14 +74,10 @@ class NetSpeedService : Service(), Runnable {
     override fun run() {
         // 显示透明图标通知
         configuration.showBlankNotification = true
-        val notify =
-            NetSpeedNotificationHelper.createNotification(
-                this,
-                configuration,
-                netSpeedCompute.rxSpeed,
-                netSpeedCompute.txSpeed
-            )
-        notificationManager.notify(NOTIFY_ID, notify)
+        NetSpeedNotificationHelper.notification(this,
+            configuration,
+            netSpeedCompute.rxSpeed,
+            netSpeedCompute.txSpeed)
     }
 
     private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
@@ -103,9 +99,7 @@ class NetSpeedService : Service(), Runnable {
             uiHandler.removeCallbacks(showBlankNotificationRunnable)
             configuration.showBlankNotification = false
         }
-        val notify =
-            NetSpeedNotificationHelper.createNotification(this, configuration, rxSpeed, txSpeed)
-        notificationManager.notify(NOTIFY_ID, notify)
+        NetSpeedNotificationHelper.notification(this, configuration, rxSpeed, txSpeed)
     }
 
     private val configuration = NetSpeedConfiguration()
@@ -117,7 +111,7 @@ class NetSpeedService : Service(), Runnable {
     override fun onCreate() {
         super.onCreate()
         configuration.isPowerSaveMode = powerManager.isPowerSaveMode
-        startForeground()
+        NetSpeedNotificationHelper.startForeground(this, configuration)
 
         val intentFilter = IntentFilter(
             PowerManager.ACTION_POWER_SAVE_MODE_CHANGED,// 省电模式变更
@@ -128,11 +122,6 @@ class NetSpeedService : Service(), Runnable {
         registerReceiver(innerReceiver, intentFilter)
 
         resume()
-    }
-
-    private fun startForeground() {
-        val notify = NetSpeedNotificationHelper.createNotification(this, configuration)
-        startForeground(NOTIFY_ID, notify)
     }
 
     /**
@@ -162,13 +151,12 @@ class NetSpeedService : Service(), Runnable {
                     netSpeedCompute.interval = it.interval
                 }
             }
-        val notification = NetSpeedNotificationHelper.createNotification(
+        NetSpeedNotificationHelper.notification(
             this,
             this.configuration,
             this.netSpeedCompute.rxSpeed,
             this.netSpeedCompute.txSpeed
         )
-        notificationManager.notify(NOTIFY_ID, notification)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

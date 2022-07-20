@@ -1,6 +1,5 @@
 package com.dede.nativetools.netspeed
 
-import android.graphics.Bitmap
 import android.os.Parcelable
 import androidx.annotation.FloatRange
 import androidx.datastore.preferences.core.Preferences
@@ -47,9 +46,6 @@ data class NetSpeedConfiguration constructor(
     @IgnoredOnParcel
     var isPowerSaveMode: Boolean = false// 省电模式
 ) : Parcelable {
-
-    @IgnoredOnParcel
-    var cachedBitmap: Bitmap? = null
 
     @IgnoredOnParcel
     var showBlankNotification: Boolean = false

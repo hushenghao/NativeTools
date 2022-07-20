@@ -3,6 +3,7 @@ package com.dede.nativetools.netspeed.service
 import android.app.KeyguardManager
 import android.app.Notification
 import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -25,6 +26,8 @@ import com.dede.nativetools.util.*
  * 网速通知
  */
 object NetSpeedNotificationHelper {
+
+    private const val NOTIFICATION_ID = 10
 
     private const val CHANNEL_GROUP_ID = "net_speed_channel_group"
 
@@ -180,35 +183,68 @@ object NetSpeedNotificationHelper {
         )
     }
 
+    fun notification(
+        context: Context,
+        configuration: NetSpeedConfiguration,
+        rxSpeed: Long,
+        txSpeed: Long,
+    ) {
+        val smileIcon = createSmileIcon(configuration, rxSpeed, txSpeed)
+        val notification = createNotification(context, configuration, smileIcon, rxSpeed, txSpeed)
+        NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, notification)
+        BitmapPoolAccessor.recycle(smileIcon.bitmap)
+    }
+
+    fun startForeground(context: Service, configuration: NetSpeedConfiguration) {
+        val smileIcon = createSmileIcon(configuration, 0, 0)
+        val notification = createNotification(context, configuration, smileIcon, 0, 0)
+        context.startForeground(NOTIFICATION_ID, notification)
+        BitmapPoolAccessor.recycle(smileIcon.bitmap)
+    }
+
+    private fun createSmileIcon(
+        configuration: NetSpeedConfiguration,
+        rxSpeed: Long,
+        txSpeed: Long,
+    ): IconCompat {
+        val bitmap = if (configuration.showBlankNotification) {
+            NetTextIconFactory.createBlank()
+        } else {
+            NetTextIconFactory.create(rxSpeed, txSpeed, configuration)
+        }
+        return IconCompat.createWithBitmap(bitmap)
+    }
+
     /**
      * 创建网速通知
      *
      * @param context 上下文
      * @param configuration 配置
+     * @param smileIcon 小图标
      * @param rxSpeed 下行网速
      * @param txSpeed 上行网速
      */
-    fun createNotification(
+    private fun createNotification(
         context: Context,
         configuration: NetSpeedConfiguration,
+        smileIcon: IconCompat,
         rxSpeed: Long = 0L,
         txSpeed: Long = 0L,
     ): Notification {
+        val silence = configuration.showBlankNotification
+        createChannels(context, silence)
 
-        createChannels(context)
-
-        val builder = if (configuration.showBlankNotification) {
+        val builder = if (silence) {
             // 显示透明图标，并降低通知优先级
             NotificationCompat.Builder(context, CHANNEL_ID_SILENCE)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setSmallIcon(createBlankIcon(configuration))
         } else {
             NotificationCompat.Builder(context, CHANNEL_ID_DEFAULT)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setSmallIcon(createIconCompat(configuration, rxSpeed, txSpeed))
         }
 
-        builder.setOnlyAlertOnce(true)
+        builder.setSmallIcon(smileIcon)
+            .setOnlyAlertOnce(true)
             .setOngoing(true)
             .setLocalOnly(true)
             .setShowWhen(false)
@@ -272,7 +308,7 @@ object NetSpeedNotificationHelper {
         return NotificationExtension.build(builder)
     }
 
-    private fun createChannels(context: Context) {
+    private fun createChannels(context: Context, silence: Boolean) {
         val manager = NotificationManagerCompat.from(context)
 
         val channelGroup = NotificationChannelGroupCompat.Builder(CHANNEL_GROUP_ID)
@@ -281,15 +317,12 @@ object NetSpeedNotificationHelper {
             .build()
         manager.createNotificationChannelGroup(channelGroup)
 
-        val channelSilence = context.createChannel(true)
-        manager.createNotificationChannel(channelSilence)
-
-        val channelDefault = context.createChannel(false)
-        manager.createNotificationChannel(channelDefault)
+        val channel = context.createChannel(silence)
+        manager.createNotificationChannel(channel)
     }
 
-    private fun Context.createChannel(isSilence: Boolean): NotificationChannelCompat {
-        val builder = if (isSilence) {
+    private fun Context.createChannel(silence: Boolean): NotificationChannelCompat {
+        val builder = if (silence) {
             NotificationChannelCompat.Builder(
                 CHANNEL_ID_SILENCE,
                 NotificationManagerCompat.IMPORTANCE_LOW
@@ -307,20 +340,6 @@ object NetSpeedNotificationHelper {
             .setLightsEnabled(false)
             .setSound(null, null)
             .build()
-    }
-
-    private fun createIconCompat(
-        configuration: NetSpeedConfiguration,
-        rxSpeed: Long,
-        txSpeed: Long,
-    ): IconCompat {
-        val bitmap = NetTextIconFactory.create(rxSpeed, txSpeed, configuration)
-        return IconCompat.createWithBitmap(bitmap)
-    }
-
-    private fun createBlankIcon(configuration: NetSpeedConfiguration): IconCompat {
-        val bitmap = NetTextIconFactory.createBlank(configuration)
-        return IconCompat.createWithBitmap(bitmap)
     }
 
 }
