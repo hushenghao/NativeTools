@@ -27,7 +27,7 @@ import com.dede.nativetools.util.*
  */
 object NetSpeedNotificationHelper {
 
-    private const val NOTIFICATION_ID = 10
+    const val NOTIFICATION_ID = 10
 
     private const val CHANNEL_GROUP_ID = "net_speed_channel_group"
 

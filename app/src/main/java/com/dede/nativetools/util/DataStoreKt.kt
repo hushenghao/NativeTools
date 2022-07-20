@@ -3,11 +3,9 @@ package com.dede.nativetools.util
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
-import androidx.datastore.preferences.SharedPreferencesMigration
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.preference.PreferenceDataStore
-import androidx.preference.PreferenceManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -18,11 +16,6 @@ private val dataStoreScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     name = "settings",
     corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-    produceMigrations = {
-        listOf(SharedPreferencesMigration(produceSharedPreferences = {
-            PreferenceManager.getDefaultSharedPreferences(globalContext)
-        }))
-    },
     scope = dataStoreScope
 )
 

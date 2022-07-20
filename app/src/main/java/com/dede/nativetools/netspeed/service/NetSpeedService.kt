@@ -3,7 +3,6 @@ package com.dede.nativetools.netspeed.service
 
 import android.app.NotificationManager
 import android.app.Service
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
@@ -33,7 +32,6 @@ class NetSpeedService : Service(), Runnable {
     }
 
     companion object {
-        private const val NOTIFY_ID = 10
         private const val DELAY_BLANK_NOTIFICATION_ICON = 3000L
         const val INTERVAL_POWER_SAVE_MODE = 5000L
 
@@ -104,6 +102,13 @@ class NetSpeedService : Service(), Runnable {
 
     private val configuration = NetSpeedConfiguration()
 
+    private val broadcastHelper = BroadcastHelper(
+        PowerManager.ACTION_POWER_SAVE_MODE_CHANGED,// 省电模式变更
+        Intent.ACTION_SCREEN_ON,// 打开屏幕
+        Intent.ACTION_SCREEN_OFF,// 关闭屏幕
+        ACTION_CLOSE// 关闭
+    )
+
     override fun onBind(intent: Intent): IBinder {
         return NetSpeedBinder(this)
     }
@@ -113,13 +118,25 @@ class NetSpeedService : Service(), Runnable {
         configuration.isPowerSaveMode = powerManager.isPowerSaveMode
         NetSpeedNotificationHelper.startForeground(this, configuration)
 
-        val intentFilter = IntentFilter(
-            PowerManager.ACTION_POWER_SAVE_MODE_CHANGED,// 省电模式变更
-            Intent.ACTION_SCREEN_ON,// 打开屏幕
-            Intent.ACTION_SCREEN_OFF,// 关闭屏幕
-            ACTION_CLOSE// 关闭
-        )
-        registerReceiver(innerReceiver, intentFilter)
+        broadcastHelper.register(this) { action: String?, _ ->
+            when (action ?: return@register) {
+                PowerManager.ACTION_POWER_SAVE_MODE_CHANGED -> {
+                    val copy = configuration.copy(isPowerSaveMode = powerManager.isPowerSaveMode)
+                    updateConfiguration(copy)
+                }
+                ACTION_CLOSE -> {
+                    stopSelf()
+                }
+                Intent.ACTION_SCREEN_ON -> {
+                    track("网速服务广播亮屏恢复") {
+                        resume()// 直接更新指示器
+                    }
+                }
+                Intent.ACTION_SCREEN_OFF -> {
+                    pause()// 关闭屏幕时显示，只保留服务保活
+                }
+            }
+        }
 
         resume()
     }
@@ -172,34 +189,9 @@ class NetSpeedService : Service(), Runnable {
         lifecycleJob.cancel()
         netSpeedCompute.destroy()
         stopForeground(STOP_FOREGROUND_REMOVE)
-        notificationManager.cancel(NOTIFY_ID)
-        unregisterReceiver(innerReceiver)
+        notificationManager.cancel(NetSpeedNotificationHelper.NOTIFICATION_ID)
+        broadcastHelper.unregister(this)
         super.onDestroy()
     }
 
-    /**
-     * 接收解锁、熄屏、亮屏广播
-     */
-    private val innerReceiver = object : BroadcastReceiver() {
-
-        override fun onReceive(context: Context?, intent: Intent?) {
-            when (intent?.action ?: return) {
-                PowerManager.ACTION_POWER_SAVE_MODE_CHANGED -> {
-                    val copy = configuration.copy(isPowerSaveMode = powerManager.isPowerSaveMode)
-                    updateConfiguration(copy)
-                }
-                ACTION_CLOSE -> {
-                    stopSelf()
-                }
-                Intent.ACTION_SCREEN_ON -> {
-                    track("网速服务广播亮屏恢复") {
-                        resume()// 直接更新指示器
-                    }
-                }
-                Intent.ACTION_SCREEN_OFF -> {
-                    pause()// 关闭屏幕时显示，只保留服务保活
-                }
-            }
-        }
-    }
 }

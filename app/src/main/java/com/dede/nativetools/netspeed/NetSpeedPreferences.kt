@@ -2,7 +2,6 @@ package com.dede.nativetools.netspeed
 
 import android.graphics.Typeface
 import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
 import com.dede.nativetools.netspeed.typeface.TypefaceGetter
 import com.dede.nativetools.util.get
 import com.dede.nativetools.util.globalDataStore

@@ -1,9 +1,5 @@
 package com.dede.nativetools.netspeed
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
@@ -16,6 +12,7 @@ import androidx.preference.*
 import com.dede.nativetools.R
 import com.dede.nativetools.main.applyBottomBarsInsets
 import com.dede.nativetools.netspeed.service.NetSpeedNotificationHelper
+import com.dede.nativetools.netspeed.service.NetSpeedService
 import com.dede.nativetools.netspeed.service.NetSpeedServiceController
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
@@ -46,10 +43,14 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
         ActivityResultLauncherCompat(this, ActivityResultContracts.RequestPermission())
 
     private val powerManager by later { requireContext().requireSystemService<PowerManager>() }
-    private var powerSaveModeChangedReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            intervalPreference.isEnabled = !powerManager.isPowerSaveMode
-        }
+    private val broadcastHelper = BroadcastHelper(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED,
+        NetSpeedService.ACTION_CLOSE)
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        preferenceManager.preferenceDataStore = DataStorePreference(requireContext())
+        addPreferencesFromResource(R.xml.preference_net_speed)
+        initGeneralPreferenceGroup()
+        initNotificationPreferenceGroup()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,9 +66,6 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             statusSwitchPreference.isChecked = status
         }
 
-        controller.onCloseCallback = {
-            statusSwitchPreference.isChecked = false
-        }
         if (!Logic.checkAppOps(requireContext())) {
             usageSwitchPreference.isChecked = false
         }
@@ -76,15 +74,16 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
             applyBottomBarsInsets(listView)
         }
 
-        val intentFilter = IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED)
-        requireContext().registerReceiver(powerSaveModeChangedReceiver, intentFilter)
-    }
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        preferenceManager.preferenceDataStore = DataStorePreference(requireContext())
-        addPreferencesFromResource(R.xml.preference_net_speed)
-        initGeneralPreferenceGroup()
-        initNotificationPreferenceGroup()
+        broadcastHelper.register(requireContext()) { action, _ ->
+            when (action) {
+                PowerManager.ACTION_POWER_SAVE_MODE_CHANGED -> {
+                    intervalPreference.isEnabled = !powerManager.isPowerSaveMode
+                }
+                NetSpeedService.ACTION_CLOSE -> {
+                    statusSwitchPreference.isChecked = false
+                }
+            }
+        }
     }
 
     private fun initGeneralPreferenceGroup() {
@@ -240,7 +239,7 @@ class NetSpeedFragment : PreferenceFragmentCompat(),
 
     override fun onDestroyView() {
         controller.unbindService()
-        requireContext().unregisterReceiver(powerSaveModeChangedReceiver)
+        broadcastHelper.unregister(requireContext())
         super.onDestroyView()
     }
 

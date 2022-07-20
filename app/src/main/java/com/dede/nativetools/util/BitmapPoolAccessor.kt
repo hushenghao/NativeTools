@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import com.bumptech.glide.Glide
 
 /**
- * Created by shhu on 2022/7/20 11:49.
+ * Bitmap Pool
  *
  * @since 2022/7/20
  */

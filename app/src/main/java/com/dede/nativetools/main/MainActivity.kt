@@ -12,7 +12,10 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.core.view.*
+import androidx.core.view.LayoutInflaterCompat
+import androidx.core.view.doOnAttach
+import androidx.core.view.isGone
+import androidx.core.view.updatePaddingRelative
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -50,6 +53,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     private val topLevelDestinationIds = intArrayOf(R.id.netSpeed, R.id.other)
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val viewModel by viewModels<MainViewModel>()
+
+    private val broadcastHelper = BroadcastHelper(NetSpeedService.ACTION_CLOSE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,6 +135,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         if (!NetSpeedPreferences.privacyAgreed) {
             navController.navigate(R.id.dialogGuide)
         }
+
+        broadcastHelper.register(this) { _, _ ->
+            // Single process implementation of DataStore. This is NOT multi-process safe.
+            NetSpeedPreferences.status = false
+        }
     }
 
     override fun onDestinationChanged(
@@ -207,6 +217,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         val cloneInflater = layoutInflater.cloneInContext(this)
         LayoutInflaterCompat.setFactory2(cloneInflater, MotionLayoutFactory())
         return cloneInflater
+    }
+
+    override fun onDestroy() {
+        broadcastHelper.unregister(this)
+        super.onDestroy()
     }
 
     private class MotionLayoutFactory : LayoutInflater.Factory2 {
