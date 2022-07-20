@@ -56,6 +56,9 @@ inline fun Intent.launchActivity(context: Context) = context.launchActivity(this
 fun Intent.toPendingBroadcast(context: Context, flags: Int): PendingIntent =
     PendingIntent.getBroadcast(context, 0, this, flags)
 
+fun Intent.toPendingActivity(context: Context, flags: Int): PendingIntent =
+    PendingIntent.getActivity(context, 0, this, flags)
+
 fun PendingIntent.toNotificationCompatAction(@StringRes titleId: Int): NotificationCompat.Action =
     NotificationCompat.Action.Builder(null, globalContext.getString(titleId), this).build()
 
@@ -67,6 +70,8 @@ fun IntentFilter(vararg actions: String): IntentFilter {
     return intentFilter
 }
 
+// https://developer.android.google.cn/training/package-visibility/automatic
+// adb shell dumpsys package queries
 fun Intent.queryImplicitActivity(context: Context): Boolean {
     return this.resolveActivityInfo(
         context.packageManager,

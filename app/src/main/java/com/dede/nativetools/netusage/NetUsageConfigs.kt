@@ -6,13 +6,11 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
-import java.security.GeneralSecurityException
 
 class NetUsageConfigs(context: Context) {
 
     companion object {
         private const val PREF_NAME = "sim_card_config"
-        private const val PREF_NAME_NO_ENCRYPT = "sim_card_config_no_encrypt"
 
         const val KEY_ADD_IMSI_CONFIG = "key_add_imsi_config"
         const val KEY_IMSI_CONFIG_GROUP = "key_imsi_config_group"
@@ -32,9 +30,9 @@ class NetUsageConfigs(context: Context) {
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
-        } catch (e: GeneralSecurityException) {
+        } catch (e: Throwable) {
             Firebase.crashlytics.recordException(e)
-            context.getSharedPreferences(PREF_NAME_NO_ENCRYPT, Context.MODE_PRIVATE)
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         }
 
 

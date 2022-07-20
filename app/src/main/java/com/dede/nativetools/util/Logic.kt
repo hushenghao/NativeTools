@@ -132,6 +132,9 @@ object Logic {
                 val intent = Intent(
                     Settings.ACTION_USAGE_ACCESS_SETTINGS, "package:${context.packageName}"
                 )
+                // https://developer.android.google.cn/training/package-visibility/automatic
+                // adb shell dumpsys package queries
+                // 由于settings自动可见，不需要声明<queries>
                 if (!intent.queryImplicitActivity(context)) {
                     intent.data = null
                 }

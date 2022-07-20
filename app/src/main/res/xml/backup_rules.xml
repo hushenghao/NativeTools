@@ -9,4 +9,8 @@
     <include
         domain="file"
         path="datastore/settings.preferences_pb" />
+    <include
+        domain="file"
+        path="fonts/"
+        requireFlags="deviceToDeviceTransfer" />
 </full-backup-content>

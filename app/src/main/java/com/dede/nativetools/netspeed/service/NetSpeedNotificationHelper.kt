@@ -13,8 +13,8 @@ import androidx.core.app.NotificationChannelGroupCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.graphics.drawable.IconCompat
-import androidx.navigation.NavDeepLinkBuilder
 import com.dede.nativetools.R
+import com.dede.nativetools.main.MainActivity
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.notification.NotificationExtension
 import com.dede.nativetools.netspeed.utils.NetFormatter
@@ -298,10 +298,9 @@ object NetSpeedNotificationHelper {
 
         if (configuration.notifyClickable) {
             // 默认启动应用首页
-            val pendingIntent = NavDeepLinkBuilder(context)
-                .setGraph(R.navigation.nav_graph)
-                .setDestination(R.id.netSpeed)
-                .createPendingIntent()
+            val pendingIntent = Intent(context, MainActivity::class.java)
+                .newTask()
+                .toPendingActivity(context, pendingFlag)
             builder.setContentIntent(pendingIntent)
         }
 
