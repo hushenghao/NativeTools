@@ -95,7 +95,8 @@ class NetSpeedAdvancedFragment :
             this,
             NetSpeedPreferences.KEY_NET_SPEED_FONT,
             NetSpeedPreferences.KEY_NET_SPEED_TEXT_STYLE,
-            NetSpeedPreferences.KEY_NET_SPEED_MODE)
+            NetSpeedPreferences.KEY_NET_SPEED_MODE
+        )
 
         requirePreference<SliderPreference>(NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET)
             .initialize(this, labelFormatterPercent)

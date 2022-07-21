@@ -25,7 +25,8 @@ class FontDropDownPreference(context: Context, attrs: AttributeSet?) :
         if (!getter.canApply()) {
             textView.compoundDrawablePadding = 6.dp
             textView.setCompoundDrawablesRelative(
-                end = context.requireDrawable(R.drawable.ic_outline_file_download))
+                end = context.requireDrawable(R.drawable.ic_outline_file_download)
+            )
             return
         }
         textView.setCompoundDrawablesRelative()

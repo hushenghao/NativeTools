@@ -28,7 +28,8 @@ class NetUsageConfigs(context: Context) {
                 PREF_NAME,
                 MasterKey(context),
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
         } catch (e: Throwable) {
             Firebase.crashlytics.recordException(e)
             context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)

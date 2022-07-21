@@ -60,7 +60,8 @@ constructor(
     override fun onStart(owner: LifecycleOwner) {
         if (activityResultLauncher == null) {
             throw IllegalStateException(
-                "ActivityResultLauncherCompat must initialize before they are STARTED.")
+                "ActivityResultLauncherCompat must initialize before they are STARTED."
+            )
         }
     }
 

@@ -18,8 +18,10 @@ internal class NetFormatterTest {
                     512,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EXACT,
-                    NetFormatter.MIN_UNIT_BYTE)
-                .splicing())
+                    NetFormatter.MIN_UNIT_BYTE
+                )
+                .splicing()
+        )
 
         Assert.assertEquals(
             "10KB/s",
@@ -27,8 +29,10 @@ internal class NetFormatterTest {
                     10 * 1024,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EXACT,
-                    NetFormatter.MIN_UNIT_BYTE)
-                .splicing())
+                    NetFormatter.MIN_UNIT_BYTE
+                )
+                .splicing()
+        )
 
         Assert.assertEquals(
             "0.1KB/s",
@@ -36,8 +40,10 @@ internal class NetFormatterTest {
                     102,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EXACT,
-                    NetFormatter.MIN_UNIT_KB)
-                .splicing())
+                    NetFormatter.MIN_UNIT_KB
+                )
+                .splicing()
+        )
 
         Assert.assertEquals(
             "0.5KB/s",
@@ -45,8 +51,10 @@ internal class NetFormatterTest {
                     512,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EXACT,
-                    NetFormatter.MIN_UNIT_KB)
-                .splicing())
+                    NetFormatter.MIN_UNIT_KB
+                )
+                .splicing()
+        )
 
         Assert.assertEquals(
             "10KB/s",
@@ -54,8 +62,10 @@ internal class NetFormatterTest {
                     10 * 1024,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EXACT,
-                    NetFormatter.MIN_UNIT_KB)
-                .splicing())
+                    NetFormatter.MIN_UNIT_KB
+                )
+                .splicing()
+        )
 
         Assert.assertEquals(
             "0MB/s",
@@ -63,8 +73,10 @@ internal class NetFormatterTest {
                     512,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EXACT,
-                    NetFormatter.MIN_UNIT_MB)
-                .splicing())
+                    NetFormatter.MIN_UNIT_MB
+                )
+                .splicing()
+        )
 
         Assert.assertEquals(
             "0.01MB/s",
@@ -72,8 +84,10 @@ internal class NetFormatterTest {
                     10 * 1024,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EXACT,
-                    NetFormatter.MIN_UNIT_MB)
-                .splicing())
+                    NetFormatter.MIN_UNIT_MB
+                )
+                .splicing()
+        )
 
         Assert.assertEquals(
             "10MB/s",
@@ -81,8 +95,10 @@ internal class NetFormatterTest {
                     10 * 1024 * 1024,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EXACT,
-                    NetFormatter.MIN_UNIT_MB)
-                .splicing())
+                    NetFormatter.MIN_UNIT_MB
+                )
+                .splicing()
+        )
 
         Assert.assertEquals(
             "10GB/s",
@@ -90,7 +106,9 @@ internal class NetFormatterTest {
                     10L * 1024 * 1024 * 1024,
                     NetFormatter.FLAG_FULL,
                     NetFormatter.ACCURACY_EXACT,
-                    NetFormatter.MIN_UNIT_MB)
-                .splicing())
+                    NetFormatter.MIN_UNIT_MB
+                )
+                .splicing()
+        )
     }
 }

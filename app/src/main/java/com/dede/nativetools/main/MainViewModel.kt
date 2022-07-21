@@ -31,7 +31,8 @@ class MainViewModel : ViewModel() {
             point.y,
             20.dpf,
             // 勾股定理，这次真的跟它有关系
-            hypot(decorView.width.toFloat(), decorView.height.toFloat()))
+            hypot(decorView.width.toFloat(), decorView.height.toFloat())
+        )
     }
 
     fun getCircularRevealAndClean(): CircularReveal? {

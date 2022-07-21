@@ -75,7 +75,8 @@ constructor(
             preferences
                 .get(
                     NetSpeedPreferences.KEY_NET_SPEED_TEXT_STYLE,
-                    defaultConfiguration.textStyle.toString())
+                    defaultConfiguration.textStyle.toString()
+                )
                 .toIntOrNull()
                 ?: defaultConfiguration.textStyle
 
@@ -85,37 +86,45 @@ constructor(
         this.verticalOffset =
             preferences.get(
                 NetSpeedPreferences.KEY_NET_SPEED_VERTICAL_OFFSET,
-                defaultConfiguration.verticalOffset)
+                defaultConfiguration.verticalOffset
+            )
 
         this.horizontalOffset =
             preferences.get(
                 NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_OFFSET,
-                defaultConfiguration.horizontalOffset)
+                defaultConfiguration.horizontalOffset
+            )
 
         this.horizontalScale =
             preferences.get(
                 NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE,
-                defaultConfiguration.horizontalScale)
+                defaultConfiguration.horizontalScale
+            )
 
         this.relativeRatio =
             preferences.get(
                 NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO,
-                defaultConfiguration.relativeRatio)
+                defaultConfiguration.relativeRatio
+            )
 
         this.relativeDistance =
             preferences.get(
                 NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE,
-                defaultConfiguration.relativeDistance)
+                defaultConfiguration.relativeDistance
+            )
 
         this.textScale =
             preferences.get(
-                NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE, defaultConfiguration.textScale)
+                NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE,
+                defaultConfiguration.textScale
+            )
 
         this.interval =
             preferences
                 .get(
                     NetSpeedPreferences.KEY_NET_SPEED_INTERVAL,
-                    defaultConfiguration.interval.toString())
+                    defaultConfiguration.interval.toString()
+                )
                 .toIntOrNull()
                 ?: defaultConfiguration.interval
 
@@ -125,13 +134,15 @@ constructor(
         this.notifyClickable =
             preferences.get(
                 NetSpeedPreferences.KEY_NET_SPEED_NOTIFY_CLICKABLE,
-                defaultConfiguration.notifyClickable)
+                defaultConfiguration.notifyClickable
+            )
 
         this.hideThreshold =
             preferences
                 .get(
                     NetSpeedPreferences.KEY_NET_SPEED_HIDE_THRESHOLD,
-                    defaultConfiguration.hideThreshold.toString())
+                    defaultConfiguration.hideThreshold.toString()
+                )
                 .toLongOrNull()
                 ?: defaultConfiguration.hideThreshold
 
@@ -139,30 +150,37 @@ constructor(
             preferences
                 .get(
                     NetSpeedPreferences.KEY_NET_SPEED_MIN_UNIT,
-                    defaultConfiguration.minUnit.toString())
+                    defaultConfiguration.minUnit.toString()
+                )
                 .toIntOrNull()
                 ?: defaultConfiguration.minUnit
 
         this.quickCloseable =
             preferences.get(
                 NetSpeedPreferences.KEY_NET_SPEED_QUICK_CLOSEABLE,
-                defaultConfiguration.quickCloseable)
+                defaultConfiguration.quickCloseable
+            )
 
         this.usage =
             preferences.get(NetSpeedPreferences.KEY_NET_SPEED_USAGE, defaultConfiguration.usage)
 
         this.enableWifiUsage =
             preferences.get(
-                NetUsageConfigs.KEY_NET_USAGE_WIFI, defaultConfiguration.enableWifiUsage)
+                NetUsageConfigs.KEY_NET_USAGE_WIFI,
+                defaultConfiguration.enableWifiUsage
+            )
 
         this.enableMobileUsage =
             preferences.get(
-                NetUsageConfigs.KEY_NET_USAGE_MOBILE, defaultConfiguration.enableMobileUsage)
+                NetUsageConfigs.KEY_NET_USAGE_MOBILE,
+                defaultConfiguration.enableMobileUsage
+            )
 
         this.hideLockNotification =
             preferences.get(
                 NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION,
-                defaultConfiguration.hideLockNotification)
+                defaultConfiguration.hideLockNotification
+            )
 
         // 获取已经启用的imsi
         this.imsiSet = NetUsageConfigs(NativeToolsApp.getInstance()).getEnabledIMSI()

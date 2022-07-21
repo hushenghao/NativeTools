@@ -17,7 +17,8 @@ private val Context.dataStore: DataStore<Preferences> by
     preferencesDataStore(
         name = "settings",
         corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-        scope = dataStoreScope)
+        scope = dataStoreScope
+    )
 
 val globalDataStore: DataStore<Preferences>
     get() = globalContext.dataStore

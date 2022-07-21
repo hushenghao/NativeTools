@@ -116,7 +116,8 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
                 val permissions =
                     arrayOf(
                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
                 if (host.checkPermissions(*permissions)) {
                     save()
                     return@OnLongClickListener true

@@ -75,7 +75,8 @@ class MainActivity :
                         circularReveal.centerX,
                         circularReveal.centerY,
                         circularReveal.startRadius,
-                        circularReveal.endRadius)
+                        circularReveal.endRadius
+                    )
                     .apply {
                         duration = 1000
                         start()
@@ -95,9 +96,12 @@ class MainActivity :
             val insets = it.stableInsets()
             // navigation bar, Insert padding only in the toolbar
             binding.toolbar.updatePaddingRelative(
-                start = insets.start(binding.toolbar), end = insets.end(binding.root))
+                start = insets.start(binding.toolbar),
+                end = insets.end(binding.root)
+            )
             binding.navigationView.updatePaddingRelative(
-                start = insets.start(binding.navigationView))
+                start = insets.start(binding.navigationView)
+            )
         }
 
         NavFragmentAssistant(supportFragmentManager).setupWithNavFragment(R.id.nav_host_fragment)
@@ -123,7 +127,8 @@ class MainActivity :
             navController = navController,
             bottomNavigationView = binding.bottomNavigationView,
             navigationRailView = binding.navigationRailView,
-            navigationView = binding.navigationView)
+            navigationView = binding.navigationView
+        )
 
         handleDeepLink(intent)
 

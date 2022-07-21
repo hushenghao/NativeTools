@@ -69,7 +69,11 @@ class NetSpeedService : Service(), Runnable {
         // 显示透明图标通知
         configuration.showBlankNotification = true
         NetSpeedNotificationHelper.notification(
-            this, configuration, netSpeedCompute.rxSpeed, netSpeedCompute.txSpeed)
+            this,
+            configuration,
+            netSpeedCompute.rxSpeed,
+            netSpeedCompute.txSpeed
+        )
     }
 
     private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
@@ -103,7 +107,7 @@ class NetSpeedService : Service(), Runnable {
             Intent.ACTION_SCREEN_ON, // 打开屏幕
             Intent.ACTION_SCREEN_OFF, // 关闭屏幕
             ACTION_CLOSE // 关闭
-            )
+        )
 
     override fun onBind(intent: Intent): IBinder {
         return NetSpeedBinder(this)
@@ -160,7 +164,11 @@ class NetSpeedService : Service(), Runnable {
             }
         }
         NetSpeedNotificationHelper.notification(
-            this, this.configuration, this.netSpeedCompute.rxSpeed, this.netSpeedCompute.txSpeed)
+            this,
+            this.configuration,
+            this.netSpeedCompute.rxSpeed,
+            this.netSpeedCompute.txSpeed
+        )
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

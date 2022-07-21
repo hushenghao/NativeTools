@@ -73,7 +73,10 @@ object ChromeTabsBrowser {
         this.mayLaunchUrls = mayLaunchUrls
         val appContext = context.applicationContext
         return CustomTabsClient.bindCustomTabsService(
-            appContext, CUSTOM_TAB_PACKAGE_NAME, customTabsServiceConnection)
+            appContext,
+            CUSTOM_TAB_PACKAGE_NAME,
+            customTabsServiceConnection
+        )
     }
 
     @AddTrace(name = "CustomTabs.launch")
@@ -91,7 +94,9 @@ object ChromeTabsBrowser {
         }
         val customTabsIntent = builder.build()
         customTabsIntent.intent.putExtra(
-            Intent.EXTRA_REFERRER, Uri.parse("android-app://${context.packageName}"))
+            Intent.EXTRA_REFERRER,
+            Uri.parse("android-app://${context.packageName}")
+        )
         try {
             customTabsIntent.launchUrl(context, uri)
         } catch (e: Exception) {

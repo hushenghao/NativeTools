@@ -30,7 +30,9 @@ class AndroidTPB3NetStats : NetStats {
             val version = Build.DISPLAY
             val androidVer = Build.VERSION.RELEASE
             Log.i(
-                "AndroidTBP3NetStats", "Android %s, Build Version: %s".format(androidVer, version))
+                "AndroidTBP3NetStats",
+                "Android %s, Build Version: %s".format(androidVer, version)
+            )
             val ver = getTPBVersion()
             if (ver < fixedVer) {
                 val span =
@@ -38,9 +40,13 @@ class AndroidTPB3NetStats : NetStats {
                         .append(
                             "Android T Beta $ver !\n",
                             StyleSpan(Typeface.BOLD),
-                            SPAN_INCLUSIVE_EXCLUSIVE)
+                            SPAN_INCLUSIVE_EXCLUSIVE
+                        )
                         .append(
-                            issuesUrl, URLSpan(issuesUrl), SPAN_INCLUSIVE_EXCLUSIVE) // Can't click
+                            issuesUrl,
+                            URLSpan(issuesUrl),
+                            SPAN_INCLUSIVE_EXCLUSIVE
+                        ) // Can't click
                 globalContext.toast(span, Toast.LENGTH_LONG)
             }
         }

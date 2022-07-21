@@ -171,7 +171,8 @@ fun Context.showHideLockNotificationDialog() {
     val context = this@showHideLockNotificationDialog
     context.alert(
         R.string.label_net_speed_hide_lock_notification,
-        R.string.alert_msg_hide_lock_notification) {
+        R.string.alert_msg_hide_lock_notification
+    ) {
         positiveButton(R.string.settings) {
             NetSpeedNotificationHelper.goLockHideNotificationSetting(context)
         }

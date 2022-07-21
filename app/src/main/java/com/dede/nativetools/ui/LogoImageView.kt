@@ -127,7 +127,8 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
                     this.y += dy
                     performHapticFeedback(
                         HapticFeedbackConstants.CLOCK_TICK,
-                        HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING)
+                        HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
+                    )
                     return true
                 }
             }

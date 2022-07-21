@@ -26,12 +26,16 @@ class ReflectNetStats : NetStats {
 
     override fun getRxBytes(): Long {
         return NetStats.addIfSupported(
-            TrafficStats.getMobileRxBytes(), getRxBytes(NetStats.WLAN_IFACE))
+            TrafficStats.getMobileRxBytes(),
+            getRxBytes(NetStats.WLAN_IFACE)
+        )
     }
 
     override fun getTxBytes(): Long {
         return NetStats.addIfSupported(
-            TrafficStats.getMobileTxBytes(), getTxBytes(NetStats.WLAN_IFACE))
+            TrafficStats.getMobileTxBytes(),
+            getTxBytes(NetStats.WLAN_IFACE)
+        )
     }
 
     private fun getRxBytes(iface: String): Long {

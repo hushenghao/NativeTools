@@ -32,7 +32,8 @@ class GuideDialogFragment : DialogFragment() {
                     R.string.alert_msg_guide,
                     getString(R.string.app_name),
                     privacyAgreement,
-                    privacyAgreement)
+                    privacyAgreement
+                )
             val span = SpannableString(string)
             var indexOf = span.lastIndexOf(privacyAgreement)
             applySpan(span, indexOf, indexOf + privacyAgreement.length)
@@ -70,7 +71,8 @@ class GuideDialogFragment : DialogFragment() {
             },
             start,
             end,
-            SpannableString.SPAN_INCLUSIVE_EXCLUSIVE)
+            SpannableString.SPAN_INCLUSIVE_EXCLUSIVE
+        )
         span.setSpan(StyleSpan(Typeface.BOLD), start, end, SpannableString.SPAN_INCLUSIVE_EXCLUSIVE)
     }
 }

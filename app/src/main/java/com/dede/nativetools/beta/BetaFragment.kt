@@ -29,8 +29,10 @@ class BetaFragment : BottomSheetListFragment<BetaFragment.Beta>() {
                 Beta(
                     R.drawable.ic_logo_firebase,
                     R.string.label_firebase,
-                    R.string.url_firebase_app_distribution),
-            ))
+                    R.string.url_firebase_app_distribution
+                ),
+            )
+        )
     }
 
     @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")

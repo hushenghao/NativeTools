@@ -131,7 +131,8 @@ class NetSpeedFragment :
     private fun initNotificationPreferenceGroup() {
         usageSwitchPreference =
             requirePreference<CustomWidgetLayoutSwitchPreference>(
-                    NetSpeedPreferences.KEY_NET_SPEED_USAGE)
+                    NetSpeedPreferences.KEY_NET_SPEED_USAGE
+                )
                 .also {
                     it.onPreferenceChangeListener = this
                     it.bindCustomWidget = { holder ->
@@ -145,7 +146,8 @@ class NetSpeedFragment :
                 }
 
         requirePreference<CustomWidgetLayoutSwitchPreference>(
-                NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION)
+                NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION
+            )
             .let {
                 it.onPreferenceChangeListener = this
                 it.bindCustomWidget = { holder ->
@@ -248,7 +250,8 @@ class NetSpeedFragment :
         Logic.requestOpsPermission(
             requireContext(),
             activityResultLauncherCompat,
-            { usageSwitchPreference.isChecked = true }) { usageSwitchPreference.isChecked = false }
+            { usageSwitchPreference.isChecked = true }
+        ) { usageSwitchPreference.isChecked = false }
     }
 
     private fun checkNotificationEnable() {

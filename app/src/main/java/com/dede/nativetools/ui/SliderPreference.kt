@@ -165,7 +165,8 @@ class SliderPreference(context: Context, attrs: AttributeSet?) :
         if (fromUser) {
             slider.performHapticFeedback(
                 HapticFeedbackConstants.CLOCK_TICK,
-                HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING)
+                HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
+            )
         }
         val format = formatValue(value)
         updateLabelValue(format)

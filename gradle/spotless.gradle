@@ -9,10 +9,10 @@ spotless {
     }
     kotlin {
         target("src/*/java/**/*.kt")
-        ktfmt().dropboxStyle()
+        ktfmt().kotlinlangStyle()
     }
     kotlinGradle {
         target("*.gradle.kts")
-        ktfmt().dropboxStyle()
+        ktfmt().kotlinlangStyle()
     }
 }

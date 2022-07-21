@@ -81,7 +81,8 @@ class NetUsageConfigFragment : PreferenceFragmentCompat() {
         var index = 1
         for (imsi in netUsageConfigs.getAllIMSI()) {
             simCardCategory.addPreference(
-                createSimCardConfigPreference(index++, imsi, netUsageConfigs.isEnabled(imsi)))
+                createSimCardConfigPreference(index++, imsi, netUsageConfigs.isEnabled(imsi))
+            )
         }
     }
 

@@ -20,7 +20,8 @@ fun <T> Class<T>.declaredMethod(name: String, vararg parameterTypes: Class<*>): 
 @Throws(
     IllegalAccessException::class,
     IllegalArgumentException::class,
-    InvocationTargetException::class)
+    InvocationTargetException::class
+)
 @Suppress("UNCHECKED_CAST")
 inline fun <T> Method.invokeWithReturn(obj: Any?, vararg parameters: Any?): T {
     return this.invoke(obj, *parameters) as T

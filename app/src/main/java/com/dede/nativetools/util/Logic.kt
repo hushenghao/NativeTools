@@ -104,11 +104,17 @@ object Logic {
         val result =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 appOpsManager.unsafeCheckOpNoThrow(
-                    AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
+                    AppOpsManager.OPSTR_GET_USAGE_STATS,
+                    Process.myUid(),
+                    context.packageName
+                )
             } else {
                 @Suppress("DEPRECATION")
                 appOpsManager.checkOpNoThrow(
-                    AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
+                    AppOpsManager.OPSTR_GET_USAGE_STATS,
+                    Process.myUid(),
+                    context.packageName
+                )
             }
         return result == AppOpsManager.MODE_ALLOWED
     }
@@ -161,7 +167,9 @@ object Logic {
                 .appendPart("Screen height", UI.displayMetrics().heightPixels)
                 .appendPart("Density dpi", UI.displayMetrics().densityDpi)
                 .appendPart(
-                    "SmallestScreenWidthDp", UI.resources.configuration.smallestScreenWidthDp)
+                    "SmallestScreenWidthDp",
+                    UI.resources.configuration.smallestScreenWidthDp
+                )
 
         sb.appendLine()
             .appendPart("Package name", app.packageName)

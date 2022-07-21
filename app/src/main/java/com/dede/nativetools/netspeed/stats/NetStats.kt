@@ -37,7 +37,8 @@ interface NetStats {
                     Android31NetStats::class.java,
                     ReflectNetStats::class.java,
                     ExcludeLoNetStats::class.java,
-                    NormalNetStats::class.java)
+                    NormalNetStats::class.java
+                )
             for (clazz in allNetBytesClass) {
                 val instance = create(clazz)
                 if (instance == null || !instance.supported()) continue

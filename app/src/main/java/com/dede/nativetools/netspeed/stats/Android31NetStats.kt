@@ -18,12 +18,16 @@ class Android31NetStats : NetStats {
     @RequiresApi(Build.VERSION_CODES.S)
     override fun getRxBytes(): Long {
         return NetStats.addIfSupported(
-            TrafficStats.getMobileRxBytes(), TrafficStats.getRxBytes(NetStats.WLAN_IFACE))
+            TrafficStats.getMobileRxBytes(),
+            TrafficStats.getRxBytes(NetStats.WLAN_IFACE)
+        )
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun getTxBytes(): Long {
         return NetStats.addIfSupported(
-            TrafficStats.getMobileTxBytes(), TrafficStats.getTxBytes(NetStats.WLAN_IFACE))
+            TrafficStats.getMobileTxBytes(),
+            TrafficStats.getTxBytes(NetStats.WLAN_IFACE)
+        )
     }
 }

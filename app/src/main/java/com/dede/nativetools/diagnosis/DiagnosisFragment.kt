@@ -56,7 +56,8 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
             handlerMessage = {
                 val data = data.getString("data")
                 setData(data)
-            })
+            }
+        )
     private val responseMessenger = Messenger(handler)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,7 +86,8 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
                     // 绑定失败时在主进程收集诊断信息
                     collectionNow()
                 },
-                lifecycleOwner = this)
+                lifecycleOwner = this
+            )
     }
 
     private fun collectionNow() {

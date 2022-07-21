@@ -44,7 +44,8 @@ object NetSpeedNotificationHelper {
                 Intent(
                     Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
                     Settings.EXTRA_APP_PACKAGE to context.packageName,
-                    Settings.EXTRA_CHANNEL_ID to CHANNEL_ID_DEFAULT)
+                    Settings.EXTRA_CHANNEL_ID to CHANNEL_ID_DEFAULT
+                )
             } else {
                 // Settings.ACTION_NOTIFICATION_SETTINGS
                 Intent("android.settings.NOTIFICATION_SETTINGS")
@@ -59,7 +60,8 @@ object NetSpeedNotificationHelper {
                 Intent(
                     Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
                     Settings.EXTRA_APP_PACKAGE to packageName,
-                    Settings.EXTRA_CHANNEL_ID to CHANNEL_ID_DEFAULT)
+                    Settings.EXTRA_CHANNEL_ID to CHANNEL_ID_DEFAULT
+                )
             } else {
                 Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:$packageName")
             }
@@ -95,14 +97,26 @@ object NetSpeedNotificationHelper {
             // wifi和移动流量都关闭，显示全部
             todayBytes =
                 NetUsageUtils.getNetUsageBytes(
-                    context, NetUsageUtils.TYPE_WIFI, NetUsageUtils.RANGE_TYPE_TODAY) +
+                    context,
+                    NetUsageUtils.TYPE_WIFI,
+                    NetUsageUtils.RANGE_TYPE_TODAY
+                ) +
                     NetUsageUtils.getNetUsageBytes(
-                        context, NetUsageUtils.TYPE_MOBILE, NetUsageUtils.RANGE_TYPE_TODAY)
+                        context,
+                        NetUsageUtils.TYPE_MOBILE,
+                        NetUsageUtils.RANGE_TYPE_TODAY
+                    )
             monthBytes =
                 NetUsageUtils.getNetUsageBytes(
-                    context, NetUsageUtils.TYPE_WIFI, NetUsageUtils.RANGE_TYPE_MONTH) +
+                    context,
+                    NetUsageUtils.TYPE_WIFI,
+                    NetUsageUtils.RANGE_TYPE_MONTH
+                ) +
                     NetUsageUtils.getNetUsageBytes(
-                        context, NetUsageUtils.TYPE_MOBILE, NetUsageUtils.RANGE_TYPE_MONTH)
+                        context,
+                        NetUsageUtils.TYPE_MOBILE,
+                        NetUsageUtils.RANGE_TYPE_MONTH
+                    )
             sb.append(getUsageText(context, todayBytes, monthBytes))
             return sb.toString()
         }
@@ -112,10 +126,16 @@ object NetSpeedNotificationHelper {
             sb.append("WLAN • ")
             todayBytes =
                 NetUsageUtils.getNetUsageBytes(
-                    context, NetUsageUtils.TYPE_WIFI, NetUsageUtils.RANGE_TYPE_TODAY)
+                    context,
+                    NetUsageUtils.TYPE_WIFI,
+                    NetUsageUtils.RANGE_TYPE_TODAY
+                )
             monthBytes =
                 NetUsageUtils.getNetUsageBytes(
-                    context, NetUsageUtils.TYPE_WIFI, NetUsageUtils.RANGE_TYPE_MONTH)
+                    context,
+                    NetUsageUtils.TYPE_WIFI,
+                    NetUsageUtils.RANGE_TYPE_MONTH
+                )
             sb.append(getUsageText(context, todayBytes, monthBytes))
         }
 
@@ -136,10 +156,18 @@ object NetSpeedNotificationHelper {
         for (imsi in imsiSet) {
             todayBytes =
                 NetUsageUtils.getNetUsageBytes(
-                    context, NetUsageUtils.TYPE_MOBILE, NetUsageUtils.RANGE_TYPE_TODAY, imsi)
+                    context,
+                    NetUsageUtils.TYPE_MOBILE,
+                    NetUsageUtils.RANGE_TYPE_TODAY,
+                    imsi
+                )
             monthBytes =
                 NetUsageUtils.getNetUsageBytes(
-                    context, NetUsageUtils.TYPE_MOBILE, NetUsageUtils.RANGE_TYPE_MONTH, imsi)
+                    context,
+                    NetUsageUtils.TYPE_MOBILE,
+                    NetUsageUtils.RANGE_TYPE_MONTH,
+                    imsi
+                )
             sb.append("SIM")
             if (size > 1) {
                 sb.append(index)
@@ -158,7 +186,8 @@ object NetSpeedNotificationHelper {
             NetFormatter.format(todayBytes, NetFormatter.FLAG_BYTE, NetFormatter.ACCURACY_EXACT)
                 .splicing(),
             NetFormatter.format(monthBytes, NetFormatter.FLAG_BYTE, NetFormatter.ACCURACY_EXACT)
-                .splicing())
+                .splicing()
+        )
     }
 
     fun notification(
@@ -308,11 +337,15 @@ object NetSpeedNotificationHelper {
         val builder =
             if (silence) {
                 NotificationChannelCompat.Builder(
-                        CHANNEL_ID_SILENCE, NotificationManagerCompat.IMPORTANCE_LOW)
+                        CHANNEL_ID_SILENCE,
+                        NotificationManagerCompat.IMPORTANCE_LOW
+                    )
                     .setName(this.getString(R.string.label_net_speed_silence_channel))
             } else {
                 NotificationChannelCompat.Builder(
-                        CHANNEL_ID_DEFAULT, NotificationManagerCompat.IMPORTANCE_MAX)
+                        CHANNEL_ID_DEFAULT,
+                        NotificationManagerCompat.IMPORTANCE_MAX
+                    )
                     .setName(this.getString(R.string.label_net_speed_default_channel))
             }
         return builder

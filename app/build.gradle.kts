@@ -33,7 +33,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(
-            listOf("zh-rCN", "zh-rHK", "ja", "en", "ko", "ru", "de", "fr", "es", "pt"))
+            listOf("zh-rCN", "zh-rHK", "ja", "en", "ko", "ru", "de", "fr", "es", "pt")
+        )
 
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797
@@ -63,7 +64,9 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = config
         }
         create("beta") {
@@ -141,7 +144,8 @@ tasks.register<Exec>("pgyer") {
             "_api_key=$apiKey",
             "-F",
             "buildUpdateDescription=$nodes",
-            "https://www.pgyer.com/apiv2/app/upload")
+            "https://www.pgyer.com/apiv2/app/upload"
+        )
     }
     val output = ByteArrayOutputStream().apply { standardOutput = this }
     doLast {

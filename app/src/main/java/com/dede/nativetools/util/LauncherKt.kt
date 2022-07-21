@@ -30,7 +30,9 @@ private fun createShortcutIcon(context: Context, resId: Int): IconCompat {
                     },
                     InsetDrawable(context.requireDrawable(resId), 4.dp).apply {
                         setTint(Color.WHITE)
-                    }))
+                    }
+                )
+            )
             .toBitmap(24.dp, 24.dp)
     return IconCompat.createWithBitmap(bitmap)
 }
@@ -44,19 +46,23 @@ fun installShortcuts() {
                 Intent(Intent.ACTION_VIEW, MainActivity.EXTRA_ACTION to MainActivity.ACTION_SHARE)
                     .setClass(context, MainActivity::class.java),
                 R.drawable.ic_action_share,
-                R.string.action_share),
+                R.string.action_share
+            ),
             context.createShortcutInfo(
                 "shortcut_about",
                 Intent(Intent.ACTION_VIEW, Uri.parse("https://dede.nativetools/about"))
                     .setClass(context, MainActivity::class.java),
                 R.drawable.ic_outline_info,
-                R.string.label_about),
+                R.string.label_about
+            ),
             context.createShortcutInfo(
                 "shortcut_toggle",
                 Intent(Intent.ACTION_VIEW, MainActivity.EXTRA_ACTION to MainActivity.ACTION_TOGGLE)
                     .setClass(context, MainActivity::class.java),
                 R.drawable.ic_outline_toggle_on,
-                R.string.label_net_speed_toggle))
+                R.string.label_net_speed_toggle
+            )
+        )
     mainScope.launch(Dispatchers.IO) {
         // ANR ???
         ShortcutManagerCompat.setDynamicShortcuts(context, shortcuts)

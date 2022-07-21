@@ -235,10 +235,13 @@ private fun ContentResolver.queryMediaImage28(imagePath: String): Uri? {
         this.query(
             collection,
             arrayOf(
-                MediaStore.Images.Media._ID, @Suppress("DEPRECATION") MediaStore.Images.Media.DATA),
+                MediaStore.Images.Media._ID,
+                @Suppress("DEPRECATION") MediaStore.Images.Media.DATA
+            ),
             "${@Suppress("DEPRECATION") MediaStore.Images.Media.DATA} == ?",
             arrayOf(imagePath),
-            null)
+            null
+        )
     query?.use {
         while (it.moveToNext()) {
             val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
