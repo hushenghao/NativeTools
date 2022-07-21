@@ -8,6 +8,7 @@ spotless {
         googleJavaFormat()
     }
     kotlin {
+        toggleOffOn()
         target("src/*/java/**/*.kt")
         ktfmt().kotlinlangStyle()
     }

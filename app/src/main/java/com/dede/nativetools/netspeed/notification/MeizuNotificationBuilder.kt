@@ -14,14 +14,16 @@ import com.dede.nativetools.util.getNotnull
  *
  * package android.app;
  *
+ * ``` java
  * class Notification$Builder {
- * ```
- *    public NotificationBuilderExt mFlymeNotificationBuilder;
- * ```
- * }
  *
- * class NotificationBuilderExt {
+ *    public NotificationBuilderExt mFlymeNotificationBuilder;
+ * }
  * ```
+ *
+ * ```
+ * class NotificationBuilderExt {
+ *
  *    setCircleProgressBar(boolean)
  *    setCircleProgressBarColor(int)
  *    setCircleProgressRimColor(int)
@@ -33,8 +35,8 @@ import com.dede.nativetools.util.getNotnull
  *    setRightIcon(int)
  *    setSimSlot(int)
  *    setSubTitle(java.lang.CharSequence)
- * ```
  * }
+ * ```
  */
 class MeizuNotificationBuilder(private val builder: NotificationCompat.Builder) :
     NotificationExtension.Builder {

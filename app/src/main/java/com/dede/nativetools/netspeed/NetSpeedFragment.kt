@@ -1,5 +1,6 @@
 package com.dede.nativetools.netspeed
 
+import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
@@ -131,8 +132,8 @@ class NetSpeedFragment :
     private fun initNotificationPreferenceGroup() {
         usageSwitchPreference =
             requirePreference<CustomWidgetLayoutSwitchPreference>(
-                    NetSpeedPreferences.KEY_NET_SPEED_USAGE
-                )
+                NetSpeedPreferences.KEY_NET_SPEED_USAGE
+            )
                 .also {
                     it.onPreferenceChangeListener = this
                     it.bindCustomWidget = { holder ->
@@ -146,8 +147,8 @@ class NetSpeedFragment :
                 }
 
         requirePreference<CustomWidgetLayoutSwitchPreference>(
-                NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION
-            )
+            NetSpeedPreferences.KEY_NET_SPEED_HIDE_LOCK_NOTIFICATION
+        )
             .let {
                 it.onPreferenceChangeListener = this
                 it.bindCustomWidget = { holder ->
@@ -165,21 +166,23 @@ class NetSpeedFragment :
 
     private fun startService() {
 
-        fun startServiceInternal() {
+        fun startServiceInternal(check: Boolean = true) {
             controller.startService(true)
             miuiNotificationAlert()
-            checkNotificationEnable()
+            if (check) {
+                checkNotificationEnable()
+            }
         }
 
-        startServiceInternal()
-
-        //        if (checkPermissions(Manifest.permission.POST_NOTIFICATIONS)) {
-        //            startServiceInternal()
-        //        } else {
-        //            permissionLauncherCompat.launch(Manifest.permission.POST_NOTIFICATIONS) {
-        //                startServiceInternal()
-        //            }
-        //        }
+        if (Build.VERSION.SDK_INT < 33/*Build.VERSION_CODES.T*/) {
+            startServiceInternal()
+        } else if (checkPermissions("android.permission.POST_NOTIFICATIONS")) {
+            startServiceInternal()
+        } else {
+            permissionLauncherCompat.launch("android.permission.POST_NOTIFICATIONS") {
+                startServiceInternal(!it)
+            }
+        }
     }
 
     override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {

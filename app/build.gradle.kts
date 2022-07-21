@@ -22,12 +22,12 @@ plugins {
 apply(from = "../gradle/spotless.gradle")
 
 android {
-    compileSdk = 32
-    buildToolsVersion = "32.1.0-rc1"
+    compileSdk = 33
+    buildToolsVersion = "33.0.0"
     defaultConfig {
         applicationId = "com.dede.nativetools"
         minSdk = 23
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 62
         versionName = "4.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
