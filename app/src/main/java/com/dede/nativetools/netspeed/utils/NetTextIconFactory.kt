@@ -11,11 +11,7 @@ import com.dede.nativetools.util.*
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-
-/**
- * Created by hsh on 2017/5/11 011 下午 05:17.
- * 通知栏网速图标工厂
- */
+/** Created by hsh on 2017/5/11 011 下午 05:17. 通知栏网速图标工厂 */
 object NetTextIconFactory {
 
     private val DEFAULT_CONFIG = Bitmap.Config.ALPHA_8
@@ -25,32 +21,35 @@ object NetTextIconFactory {
     // 888M 931135488L
     private const val DEBUG_MODE_BYTES = (2 shl 19) * 888L
 
-    private val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-        //isFakeBoldText = true
-        textAlign = Paint.Align.CENTER
-        color = Color.WHITE
-        style = Paint.Style.FILL
-    }
+    private val paint =
+        TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+            // isFakeBoldText = true
+            textAlign = Paint.Align.CENTER
+            color = Color.WHITE
+            style = Paint.Style.FILL
+        }
 
     private val iconSize: Int
 
     init {
         val resources = UI.resources
         val dpi = resources.displayMetrics.densityDpi
-        val default = when {
-            dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
-            dpi <= DisplayMetrics.DENSITY_HIGH -> 36 // hdpi
-            dpi <= DisplayMetrics.DENSITY_XHIGH -> 48 // xhdpi
-            dpi <= DisplayMetrics.DENSITY_XXHIGH -> 72 // xxhdpi
-            dpi <= DisplayMetrics.DENSITY_XXXHIGH -> 96 // xxxhdpi
-            else -> 96
-        }
+        val default =
+            when {
+                dpi <= DisplayMetrics.DENSITY_MEDIUM -> 24 // mdpi
+                dpi <= DisplayMetrics.DENSITY_HIGH -> 36 // hdpi
+                dpi <= DisplayMetrics.DENSITY_XHIGH -> 48 // xhdpi
+                dpi <= DisplayMetrics.DENSITY_XXHIGH -> 72 // xxhdpi
+                dpi <= DisplayMetrics.DENSITY_XXXHIGH -> 96 // xxxhdpi
+                else -> 96
+            }
 
         // android.R.dimen.status_bar_icon_size
         val id = resources.getIdentifier("status_bar_icon_size", "dimen", "android")
-        val statusBarIconSize = id.runCatching(resources::getDimensionPixelSize)
-            .onFailure(Throwable::printStackTrace)
-            .getOrDefault(default)
+        val statusBarIconSize =
+            id.runCatching(resources::getDimensionPixelSize)
+                .onFailure(Throwable::printStackTrace)
+                .getOrDefault(default)
 
         iconSize = max(statusBarIconSize, default)
         Log.i("NetTextIconFactory", "status_bar_icon_size: $iconSize")
@@ -94,10 +93,12 @@ object NetTextIconFactory {
         val text2: String
         when (configuration.mode) {
             NetSpeedPreferences.MODE_ALL -> {
-                text1 = NetFormatter.format(txByte, NetFormatter.FLAG_NULL, accuracy, minUnit)
-                    .splicing()
-                text2 = NetFormatter.format(rxByte, NetFormatter.FLAG_NULL, accuracy, minUnit)
-                    .splicing()
+                text1 =
+                    NetFormatter.format(txByte, NetFormatter.FLAG_NULL, accuracy, minUnit)
+                        .splicing()
+                text2 =
+                    NetFormatter.format(rxByte, NetFormatter.FLAG_NULL, accuracy, minUnit)
+                        .splicing()
             }
             else -> {
                 val downSplit =
@@ -145,21 +146,21 @@ object NetTextIconFactory {
         canvas.save()
         canvas.scale(configuration.horizontalScale, 1f, wh, hh)
 
-        paint.textSize = w * relativeRatio * textScale// 缩放
+        paint.textSize = w * relativeRatio * textScale // 缩放
         var textY = relativeRatio * hf - distance + yOffset
         val textX = wh + xOffset
         canvas.drawText(text1, textX, textY, paint)
-        //if (assistLine) {
+        // if (assistLine) {
         //    drawTextRound(text1, textX, textY, canvas)
-        //}
+        // }
 
-        paint.textSize = w * (1 - relativeRatio) * textScale// 缩放
+        paint.textSize = w * (1 - relativeRatio) * textScale // 缩放
         paint.getTextBounds(text2, 0, text2.length, rect)
         textY = hf * relativeRatio + rect.height() + distance + yOffset
         canvas.drawText(text2, textX, textY, paint)
-        //if (assistLine) {
+        // if (assistLine) {
         //    drawTextRound(text2, textX, textY, canvas)
-        //}
+        // }
         canvas.restore()
 
         if (assistLine) {
@@ -191,7 +192,7 @@ object NetTextIconFactory {
         paint.strokeWidth = 0.5f.dpf
         paint.pathEffect = pathEffect
         // 画笔字体对齐为方式为center
-        val offsetX = textX - rect.width() / 2f - rect.left / 2f// 字体左边会有边距
+        val offsetX = textX - rect.width() / 2f - rect.left / 2f // 字体左边会有边距
         rect.offset(offsetX.roundToInt(), textY.roundToInt())
         canvas.drawRect(rect, paint)
 
@@ -199,9 +200,7 @@ object NetTextIconFactory {
     }
 
     private fun createLauncherForeground() {
-        val bitmap =
-            createIconInternal("18.8", "KB/s", 512, NetSpeedConfiguration())
+        val bitmap = createIconInternal("18.8", "KB/s", 512, NetSpeedConfiguration())
         bitmap.saveToAlbum(globalContext, "ic_launcher_foreground.png", "Net Monitor")
     }
-
 }

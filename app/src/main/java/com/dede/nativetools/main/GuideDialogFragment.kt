@@ -27,10 +27,12 @@ class GuideDialogFragment : DialogFragment() {
         return requireContext().alert(R.string.label_privacy_agreement) {
             show = false
             val privacyAgreement = getString(R.string.label_privacy_agreement)
-            val string = getString(R.string.alert_msg_guide,
-                getString(R.string.app_name),
-                privacyAgreement,
-                privacyAgreement)
+            val string =
+                getString(
+                    R.string.alert_msg_guide,
+                    getString(R.string.app_name),
+                    privacyAgreement,
+                    privacyAgreement)
             val span = SpannableString(string)
             var indexOf = span.lastIndexOf(privacyAgreement)
             applySpan(span, indexOf, indexOf + privacyAgreement.length)
@@ -38,9 +40,7 @@ class GuideDialogFragment : DialogFragment() {
             applySpan(span, indexOf, indexOf + privacyAgreement.length)
 
             setMessage(span)
-            negativeButton(android.R.string.cancel) {
-                requireActivity().finish()
-            }
+            negativeButton(android.R.string.cancel) { requireActivity().finish() }
             positiveButton(android.R.string.ok) {
                 Firebase.analytics.setAnalyticsCollectionEnabled(true)
                 NetSpeedPreferences.privacyAgreed = true
@@ -55,26 +55,22 @@ class GuideDialogFragment : DialogFragment() {
     }
 
     private fun applySpan(span: SpannableString, start: Int, end: Int) {
-        span.setSpan(object : ClickableSpan() {
-            override fun updateDrawState(ds: TextPaint) {
-                ds.color = requireContext().color(
-                    com.google.android.material.R.attr.colorPrimary,
-                    Color.BLUE)
-                ds.isUnderlineText = true
-            }
+        span.setSpan(
+            object : ClickableSpan() {
+                override fun updateDrawState(ds: TextPaint) {
+                    ds.color =
+                        requireContext()
+                            .color(com.google.android.material.R.attr.colorPrimary, Color.BLUE)
+                    ds.isUnderlineText = true
+                }
 
-            override fun onClick(widget: View) {
-                requireContext().browse(R.string.url_privacy_agreement)
-            }
-        },
+                override fun onClick(widget: View) {
+                    requireContext().browse(R.string.url_privacy_agreement)
+                }
+            },
             start,
             end,
             SpannableString.SPAN_INCLUSIVE_EXCLUSIVE)
-        span.setSpan(StyleSpan(Typeface.BOLD),
-            start,
-            end,
-            SpannableString.SPAN_INCLUSIVE_EXCLUSIVE)
-
+        span.setSpan(StyleSpan(Typeface.BOLD), start, end, SpannableString.SPAN_INCLUSIVE_EXCLUSIVE)
     }
-
 }

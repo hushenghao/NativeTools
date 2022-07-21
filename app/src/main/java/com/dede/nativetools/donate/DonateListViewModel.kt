@@ -15,12 +15,13 @@ class DonateListViewModel : ViewModel() {
 
     private val repository = DonateListRepository()
 
-    val donateList: LiveData<Result<List<DonateInfo>>> = liveData(viewModelScope.coroutineContext) {
-        emit(Result.loading())
-        try {
-            emit(Result.success(repository.getDonateList()))
-        } catch (e: Exception) {
-            emit(Result.failure(e))
+    val donateList: LiveData<Result<List<DonateInfo>>> =
+        liveData(viewModelScope.coroutineContext) {
+            emit(Result.loading())
+            try {
+                emit(Result.success(repository.getDonateList()))
+            } catch (e: Exception) {
+                emit(Result.failure(e))
+            }
         }
-    }
 }

@@ -20,9 +20,7 @@ class OpenSourceRepository {
     suspend fun getOpenSourceList(): List<OpenSource> {
         val collator = Collator.getInstance()
         val list = Api.getOpenSourceList().toMutableList()
-        list.sortWith { c1, c2 ->
-            collator.compare(c1.name, c2.name)
-        }
+        list.sortWith { c1, c2 -> collator.compare(c1.name, c2.name) }
         return list
     }
 }

@@ -24,9 +24,7 @@ import android.view.Window
 import androidx.core.graphics.ColorUtils
 import com.google.android.material.color.MaterialColors
 
-/**
- * Helper that saves the current window preferences for the Catalog.
- */
+/** Helper that saves the current window preferences for the Catalog. */
 class WindowEdgeManager(private val context: Context) {
 
     fun applyEdgeToEdge(window: Window?) {
@@ -34,21 +32,23 @@ class WindowEdgeManager(private val context: Context) {
 
         val statusBarColor = getStatusBarColor()
         val navbarColor = getNavBarColor()
-        val lightBackground = MaterialColors.isColorLight(
-            MaterialColors.getColor(
-                context, android.R.attr.colorBackground, Color.BLACK
-            )
-        )
+        val lightBackground =
+            MaterialColors.isColorLight(
+                MaterialColors.getColor(context, android.R.attr.colorBackground, Color.BLACK))
         val lightStatusBar = MaterialColors.isColorLight(statusBarColor)
         val showDarkStatusBarIcons =
             lightStatusBar || statusBarColor == Color.TRANSPARENT && lightBackground
         val lightNavbar = MaterialColors.isColorLight(navbarColor)
         val showDarkNavbarIcons = lightNavbar || navbarColor == Color.TRANSPARENT && lightBackground
         val decorView = window.decorView
-        val currentStatusBar = if (showDarkStatusBarIcons)
-            @Suppress("DEPRECATION") View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR else 0
-        val currentNavBar = if (showDarkNavbarIcons && VERSION.SDK_INT >= VERSION_CODES.O)
-            @Suppress("DEPRECATION") View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR else 0
+        val currentStatusBar =
+            if (showDarkStatusBarIcons)
+                @Suppress("DEPRECATION") View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            else 0
+        val currentNavBar =
+            if (showDarkNavbarIcons && VERSION.SDK_INT >= VERSION_CODES.O)
+                @Suppress("DEPRECATION") View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            else 0
         window.navigationBarColor = navbarColor
         window.statusBarColor = statusBarColor
         val systemUiVisibility = (EDGE_TO_EDGE_FLAGS or currentStatusBar or currentNavBar)

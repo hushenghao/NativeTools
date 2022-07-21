@@ -22,8 +22,7 @@ class NavigatePreference(context: Context, attrs: AttributeSet) : Preference(con
     private val eventName: String?
 
     init {
-        val typedArray =
-            context.obtainStyledAttributes(attrs, R.styleable.NavigatePreference)
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.NavigatePreference)
         navigateId = typedArray.getResourceId(R.styleable.NavigatePreference_navigateId, -1)
         navigateUrl = typedArray.getString(R.styleable.NavigatePreference_navigateUrl)
         eventName = typedArray.getString(R.styleable.NavigatePreference_eventName)
@@ -52,11 +51,12 @@ class NavigatePreference(context: Context, attrs: AttributeSet) : Preference(con
             if (!ctx.isRestricted) {
                 return ctx
             }
-            ctx = if (ctx is ContextWrapper) {
-                ctx.baseContext
-            } else {
-                null
-            }
+            ctx =
+                if (ctx is ContextWrapper) {
+                    ctx.baseContext
+                } else {
+                    null
+                }
         }
         return null
     }

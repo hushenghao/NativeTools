@@ -23,9 +23,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-/**
- * 捐赠页
- */
+/** 捐赠页 */
 class DonateDialogFragment : BottomSheetListFragment<Payment>() {
 
     private val viewModel by viewModels<DonateViewModel>()
@@ -33,9 +31,7 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.paymentList.observe(this) {
-            setData(it)
-        }
+        viewModel.paymentList.observe(this) { setData(it) }
         binding.tvTitle.isGone = true
         binding.tvMessage.isGone = true
     }
@@ -46,9 +42,7 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
         position: Int,
         payment: Payment,
     ) {
-        binding.root.setOnClickListener {
-            clickHandler.handleClick(payment)
-        }
+        binding.root.setOnClickListener { clickHandler.handleClick(payment) }
         binding.root.setOnLongClickListener(clickHandler.createOnLongClickListener(payment))
         binding.ivLogo.setImageResource(payment.resId)
         binding.tvTitle.setText(payment.textId)
@@ -101,7 +95,9 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
             }
         }
 
-        private fun createOnLongClickSaveQrCodeListener(@DrawableRes resId: Int): View.OnLongClickListener {
+        private fun createOnLongClickSaveQrCodeListener(
+            @DrawableRes resId: Int
+        ): View.OnLongClickListener {
 
             fun save() {
                 host.lifecycleScope.launchWhenStarted {
@@ -117,10 +113,10 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
                     save()
                     return@OnLongClickListener true
                 }
-                val permissions = arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
+                val permissions =
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 if (host.checkPermissions(*permissions)) {
                     save()
                     return@OnLongClickListener true
@@ -137,7 +133,8 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
 
         private suspend fun saveToAlbum(context: Context, @DrawableRes resId: Int): Uri? =
             withContext(Dispatchers.IO) {
-                context.requireDrawable<Drawable>(resId)
+                context
+                    .requireDrawable<Drawable>(resId)
                     .toBitmap()
                     .saveToAlbum(context, "QrCode_${resId}.jpeg", "Net Monitor")
             }

@@ -16,8 +16,7 @@ class FooterPreference(context: Context, attrs: AttributeSet?) : Preference(cont
         layoutResource = R.layout.layout_footer_preference
     }
 
-    override fun onBindViewHolder(holder: PreferenceViewHolder) {
-    }
+    override fun onBindViewHolder(holder: PreferenceViewHolder) {}
 }
 
 class AndroidView(context: Context, attrs: AttributeSet?) : AppCompatImageView(context, attrs) {
@@ -31,11 +30,10 @@ class AndroidView(context: Context, attrs: AttributeSet?) : AppCompatImageView(c
     }
 
     private val animator: ObjectAnimator =
-        ObjectAnimator.ofFloat(this, "translationY", height.toFloat(), 0f)
-            .apply {
-                interpolator = OvershootInterpolator(1.6f)
-                duration = ANIMATOR_DURATION
-            }
+        ObjectAnimator.ofFloat(this, "translationY", height.toFloat(), 0f).apply {
+            interpolator = OvershootInterpolator(1.6f)
+            duration = ANIMATOR_DURATION
+        }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()

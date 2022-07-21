@@ -17,7 +17,8 @@ import androidx.lifecycle.LifecycleOwner
  * @author hsh
  * @since 2021/11/9 3:19 下午
  */
-class ActivityResultLauncherCompat<I, O> constructor(
+class ActivityResultLauncherCompat<I, O>
+constructor(
     private val caller: ActivityResultCaller,
     private val contract: ActivityResultContract<I, O>,
     private val registry: ActivityResultRegistry?,
@@ -33,27 +34,33 @@ class ActivityResultLauncherCompat<I, O> constructor(
         lifecycleOwner: LifecycleOwner
     ) : this(caller, contract, null, lifecycleOwner)
 
-    constructor(fragment: Fragment, contract: ActivityResultContract<I, O>) :
-            this(fragment, contract, fragment)
+    constructor(
+        fragment: Fragment,
+        contract: ActivityResultContract<I, O>
+    ) : this(fragment, contract, fragment)
 
-    constructor(activity: FragmentActivity, contract: ActivityResultContract<I, O>) :
-            this(activity, contract, activity)
+    constructor(
+        activity: FragmentActivity,
+        contract: ActivityResultContract<I, O>
+    ) : this(activity, contract, activity)
 
     init {
         lifecycleOwner.lifecycle.addObserver(this)
     }
 
     override fun onCreate(owner: LifecycleOwner) {
-        activityResultLauncher = if (registry == null) {
-            caller.registerForActivityResult(contract, this)
-        } else {
-            caller.registerForActivityResult(contract, registry, this)
-        }
+        activityResultLauncher =
+            if (registry == null) {
+                caller.registerForActivityResult(contract, this)
+            } else {
+                caller.registerForActivityResult(contract, registry, this)
+            }
     }
 
     override fun onStart(owner: LifecycleOwner) {
         if (activityResultLauncher == null) {
-            throw IllegalStateException("ActivityResultLauncherCompat must initialize before they are STARTED.")
+            throw IllegalStateException(
+                "ActivityResultLauncherCompat must initialize before they are STARTED.")
         }
     }
 
@@ -73,5 +80,4 @@ class ActivityResultLauncherCompat<I, O> constructor(
         activityResultCallback = callback
         activityResultLauncher?.launch(input, options)
     }
-
 }

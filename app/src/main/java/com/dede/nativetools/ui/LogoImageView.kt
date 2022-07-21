@@ -21,14 +21,11 @@ import com.dede.nativetools.util.YProperty
 import kotlin.math.abs
 import kotlin.math.max
 
-/**
- * Egg LogoImageView
- */
-class LogoImageView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : AppCompatImageView(context, attrs, defStyleAttr) {
+/** Egg LogoImageView */
+class LogoImageView
+@JvmOverloads
+constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    AppCompatImageView(context, attrs, defStyleAttr) {
 
     companion object {
         private const val TAG = "LogoImageView"
@@ -69,11 +66,7 @@ class LogoImageView @JvmOverloads constructor(
             val view = followViews[i]
             view.isInvisible = true
             val elevation =
-                elevationEvaluator.evaluate(
-                    (i + 1f) / size,
-                    maxElevation - 1,
-                    maxElevation - 2
-                )
+                elevationEvaluator.evaluate((i + 1f) / size, maxElevation - 1, maxElevation - 2)
             ViewCompat.setElevation(view, elevation)
         }
     }
@@ -85,7 +78,8 @@ class LogoImageView @JvmOverloads constructor(
             isSoundEffectsEnabled = value
         }
     var dragEnable = true
-    private val hasFollowView: Boolean get() = followViews?.isNotEmpty() ?: false
+    private val hasFollowView: Boolean
+        get() = followViews?.isNotEmpty() ?: false
 
     private var savedElevation: Float = 0f
     private var maxElevation: Float = 0f
@@ -115,7 +109,7 @@ class LogoImageView @JvmOverloads constructor(
                 downPoint.set(event.rawX, event.rawY)
                 cleanUpAnimator()
                 moved = false
-                //super.onTouchEvent(event)
+                // super.onTouchEvent(event)
                 ViewCompat.setElevation(this, maxElevation)
                 isPressed = true
                 return true
@@ -133,12 +127,12 @@ class LogoImageView @JvmOverloads constructor(
                     this.y += dy
                     performHapticFeedback(
                         HapticFeedbackConstants.CLOCK_TICK,
-                        HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
-                    )
+                        HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING)
                     return true
                 }
             }
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+            MotionEvent.ACTION_UP,
+            MotionEvent.ACTION_CANCEL -> {
                 if (moved) {
                     upPoint.set(this.x, this.y)
                     startUpAnimator(upPoint, layoutPoint)
@@ -158,10 +152,11 @@ class LogoImageView @JvmOverloads constructor(
         if (!hasFollowView) return
         val followViews = this.followViews ?: return
 
-        val items = followViews.map {
-            it.isVisible = true
-            createAnimator(it, property, start, end)
-        }
+        val items =
+            followViews.map {
+                it.isVisible = true
+                createAnimator(it, property, start, end)
+            }
         AnimatorSet().apply {
             playSequentially(items)
             interpolator = LINEAR_INTERPOLATOR
@@ -195,7 +190,8 @@ class LogoImageView @JvmOverloads constructor(
         super.setY(y)
     }
 
-    private val inUpAnimator: Boolean get() = (getTag(TAG_ID) as? Animator)?.isRunning ?: false
+    private val inUpAnimator: Boolean
+        get() = (getTag(TAG_ID) as? Animator)?.isRunning ?: false
 
     private val upAnimatorEndDelayCallback = Runnable {
         this.followViews?.forEach { it.isInvisible = true }
@@ -206,12 +202,13 @@ class LogoImageView @JvmOverloads constructor(
     private fun startUpAnimator(start: PointF, end: PointF) {
         val xOfFloat = createAnimator(this, xProperty, start.x, end.x)
         val yOfFloat = createAnimator(this, yProperty, start.y, end.y)
-        val animator = AnimatorSet().apply {
-            playTogether(xOfFloat, yOfFloat)
-            duration = RESUME_ANIMATOR_DURATION
-            interpolator = OvershootInterpolator(1.6f)
-            start()
-        }
+        val animator =
+            AnimatorSet().apply {
+                playTogether(xOfFloat, yOfFloat)
+                duration = RESUME_ANIMATOR_DURATION
+                interpolator = OvershootInterpolator(1.6f)
+                start()
+            }
         val followViews = this.followViews
         if (followViews != null && hasFollowView) {
             animator.doOnEnd {
@@ -225,5 +222,4 @@ class LogoImageView @JvmOverloads constructor(
         cleanUpAnimator()
         super.onDetachedFromWindow()
     }
-
 }

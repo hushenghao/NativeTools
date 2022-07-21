@@ -1,6 +1,5 @@
 package com.dede.nativetools.netspeed.service
 
-
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
@@ -13,9 +12,8 @@ import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.utils.NetSpeedCompute
 import com.dede.nativetools.util.*
-import kotlinx.coroutines.*
 import kotlin.math.max
-
+import kotlinx.coroutines.*
 
 class NetSpeedService : Service(), Runnable {
 
@@ -25,9 +23,7 @@ class NetSpeedService : Service(), Runnable {
 
         override fun updateConfiguration(configuration: NetSpeedConfiguration?) {
             if (configuration == null) return
-            coroutineScope.launch {
-                service.updateConfiguration(configuration)
-            }
+            coroutineScope.launch { service.updateConfiguration(configuration) }
         }
     }
 
@@ -72,10 +68,8 @@ class NetSpeedService : Service(), Runnable {
     override fun run() {
         // 显示透明图标通知
         configuration.showBlankNotification = true
-        NetSpeedNotificationHelper.notification(this,
-            configuration,
-            netSpeedCompute.rxSpeed,
-            netSpeedCompute.txSpeed)
+        NetSpeedNotificationHelper.notification(
+            this, configuration, netSpeedCompute.rxSpeed, netSpeedCompute.txSpeed)
     }
 
     private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
@@ -84,10 +78,11 @@ class NetSpeedService : Service(), Runnable {
             return@NetSpeedCompute
         }
 
-        val speed = when (configuration.mode) {
-            NetSpeedPreferences.MODE_ALL -> max(rxSpeed, txSpeed)
-            else -> rxSpeed
-        }
+        val speed =
+            when (configuration.mode) {
+                NetSpeedPreferences.MODE_ALL -> max(rxSpeed, txSpeed)
+                else -> rxSpeed
+            }
         if (speed < configuration.hideThreshold) {
             if (!HandlerCompat.hasCallbacks(uiHandler, showBlankNotificationRunnable)) {
                 // 延迟3s再显示透明图标，防止通知图标频繁变动
@@ -102,12 +97,13 @@ class NetSpeedService : Service(), Runnable {
 
     private val configuration = NetSpeedConfiguration()
 
-    private val broadcastHelper = BroadcastHelper(
-        PowerManager.ACTION_POWER_SAVE_MODE_CHANGED,// 省电模式变更
-        Intent.ACTION_SCREEN_ON,// 打开屏幕
-        Intent.ACTION_SCREEN_OFF,// 关闭屏幕
-        ACTION_CLOSE// 关闭
-    )
+    private val broadcastHelper =
+        BroadcastHelper(
+            PowerManager.ACTION_POWER_SAVE_MODE_CHANGED, // 省电模式变更
+            Intent.ACTION_SCREEN_ON, // 打开屏幕
+            Intent.ACTION_SCREEN_OFF, // 关闭屏幕
+            ACTION_CLOSE // 关闭
+            )
 
     override fun onBind(intent: Intent): IBinder {
         return NetSpeedBinder(this)
@@ -129,11 +125,11 @@ class NetSpeedService : Service(), Runnable {
                 }
                 Intent.ACTION_SCREEN_ON -> {
                     track("网速服务广播亮屏恢复") {
-                        resume()// 直接更新指示器
+                        resume() // 直接更新指示器
                     }
                 }
                 Intent.ACTION_SCREEN_OFF -> {
-                    pause()// 关闭屏幕时显示，只保留服务保活
+                    pause() // 关闭屏幕时显示，只保留服务保活
                 }
             }
         }
@@ -141,16 +137,12 @@ class NetSpeedService : Service(), Runnable {
         resume()
     }
 
-    /**
-     * 恢复指示器
-     */
+    /** 恢复指示器 */
     private fun resume() {
         netSpeedCompute.start()
     }
 
-    /**
-     * 暂停指示器
-     */
+    /** 暂停指示器 */
     private fun pause() {
         netSpeedCompute.stop()
     }
@@ -159,21 +151,16 @@ class NetSpeedService : Service(), Runnable {
         if (configuration == null || configuration == this.configuration) {
             return
         }
-        this.configuration.updateFrom(configuration)
-            .also {
-                if (it.isPowerSaveMode) {
-                    // 省电模式下延长刷新间隔
-                    netSpeedCompute.interval = INTERVAL_POWER_SAVE_MODE.toInt()
-                } else {
-                    netSpeedCompute.interval = it.interval
-                }
+        this.configuration.updateFrom(configuration).also {
+            if (it.isPowerSaveMode) {
+                // 省电模式下延长刷新间隔
+                netSpeedCompute.interval = INTERVAL_POWER_SAVE_MODE.toInt()
+            } else {
+                netSpeedCompute.interval = it.interval
             }
+        }
         NetSpeedNotificationHelper.notification(
-            this,
-            this.configuration,
-            this.netSpeedCompute.rxSpeed,
-            this.netSpeedCompute.txSpeed
-        )
+            this, this.configuration, this.netSpeedCompute.rxSpeed, this.netSpeedCompute.txSpeed)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -182,7 +169,7 @@ class NetSpeedService : Service(), Runnable {
         updateConfiguration(configuration)
         // https://developer.android.google.cn/guide/components/services#CreatingAService
         // https://developer.android.google.cn/reference/android/app/Service#START_REDELIVER_INTENT
-        return START_REDELIVER_INTENT// 重建时再次传递Intent
+        return START_REDELIVER_INTENT // 重建时再次传递Intent
     }
 
     override fun onDestroy() {
@@ -193,5 +180,4 @@ class NetSpeedService : Service(), Runnable {
         broadcastHelper.unregister(this)
         super.onDestroy()
     }
-
 }

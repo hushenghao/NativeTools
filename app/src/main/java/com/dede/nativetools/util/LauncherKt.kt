@@ -21,45 +21,42 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 private fun createShortcutIcon(context: Context, resId: Int): IconCompat {
-    val bitmap = LayerDrawable(
-        arrayOf(
-            GradientDrawable().apply {
-                setColor(context.color(R.color.ic_launcher_background))
-                shape = GradientDrawable.OVAL
-            },
-            InsetDrawable(context.requireDrawable(resId), 4.dp).apply {
-                setTint(Color.WHITE)
-            }
-        )
-    ).toBitmap(24.dp, 24.dp)
+    val bitmap =
+        LayerDrawable(
+                arrayOf(
+                    GradientDrawable().apply {
+                        setColor(context.color(R.color.ic_launcher_background))
+                        shape = GradientDrawable.OVAL
+                    },
+                    InsetDrawable(context.requireDrawable(resId), 4.dp).apply {
+                        setTint(Color.WHITE)
+                    }))
+            .toBitmap(24.dp, 24.dp)
     return IconCompat.createWithBitmap(bitmap)
 }
 
 fun installShortcuts() {
     val context = globalContext
-    val shortcuts = arrayListOf(
-        context.createShortcutInfo(
-            "shortcut_share",
-            Intent(Intent.ACTION_VIEW, MainActivity.EXTRA_ACTION to MainActivity.ACTION_SHARE)
-                .setClass(context, MainActivity::class.java),
-            R.drawable.ic_action_share,
-            R.string.action_share
-        ),
-        context.createShortcutInfo(
-            "shortcut_about",
-            Intent(Intent.ACTION_VIEW, Uri.parse("https://dede.nativetools/about"))
-                .setClass(context, MainActivity::class.java),
-            R.drawable.ic_outline_info,
-            R.string.label_about
-        ),
-        context.createShortcutInfo(
-            "shortcut_toggle",
-            Intent(Intent.ACTION_VIEW, MainActivity.EXTRA_ACTION to MainActivity.ACTION_TOGGLE)
-                .setClass(context, MainActivity::class.java),
-            R.drawable.ic_outline_toggle_on,
-            R.string.label_net_speed_toggle
-        )
-    )
+    val shortcuts =
+        arrayListOf(
+            context.createShortcutInfo(
+                "shortcut_share",
+                Intent(Intent.ACTION_VIEW, MainActivity.EXTRA_ACTION to MainActivity.ACTION_SHARE)
+                    .setClass(context, MainActivity::class.java),
+                R.drawable.ic_action_share,
+                R.string.action_share),
+            context.createShortcutInfo(
+                "shortcut_about",
+                Intent(Intent.ACTION_VIEW, Uri.parse("https://dede.nativetools/about"))
+                    .setClass(context, MainActivity::class.java),
+                R.drawable.ic_outline_info,
+                R.string.label_about),
+            context.createShortcutInfo(
+                "shortcut_toggle",
+                Intent(Intent.ACTION_VIEW, MainActivity.EXTRA_ACTION to MainActivity.ACTION_TOGGLE)
+                    .setClass(context, MainActivity::class.java),
+                R.drawable.ic_outline_toggle_on,
+                R.string.label_net_speed_toggle))
     mainScope.launch(Dispatchers.IO) {
         // ANR ???
         ShortcutManagerCompat.setDynamicShortcuts(context, shortcuts)
@@ -79,4 +76,3 @@ private fun Context.createShortcutInfo(
         .setLongLabel(this.getString(label))
         .build()
 }
-

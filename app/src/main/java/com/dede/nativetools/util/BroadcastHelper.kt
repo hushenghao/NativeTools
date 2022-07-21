@@ -18,11 +18,12 @@ class BroadcastHelper(private vararg val actions: String) {
     fun register(context: Context, onReceiver: OnReceiver) {
         unregister(context)
 
-        val broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                onReceiver.invoke(intent?.action, intent)
+        val broadcastReceiver =
+            object : BroadcastReceiver() {
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    onReceiver.invoke(intent?.action, intent)
+                }
             }
-        }
         val intentFilter = IntentFilter(*actions)
         context.registerReceiver(broadcastReceiver, intentFilter)
         this.broadcastReceiver = broadcastReceiver

@@ -6,8 +6,8 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dede.nativetools.util.dpf
-import kotlinx.parcelize.Parcelize
 import kotlin.math.hypot
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CircularReveal(
@@ -31,8 +31,7 @@ class MainViewModel : ViewModel() {
             point.y,
             20.dpf,
             // 勾股定理，这次真的跟它有关系
-            hypot(decorView.width.toFloat(), decorView.height.toFloat())
-        )
+            hypot(decorView.width.toFloat(), decorView.height.toFloat()))
     }
 
     fun getCircularRevealAndClean(): CircularReveal? {
@@ -40,5 +39,4 @@ class MainViewModel : ViewModel() {
         circularReveal.value = null
         return value
     }
-
 }

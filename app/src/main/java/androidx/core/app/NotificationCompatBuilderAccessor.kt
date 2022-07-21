@@ -3,9 +3,7 @@ package androidx.core.app
 import android.annotation.SuppressLint
 import android.app.Notification
 
-/**
- * [NotificationCompatBuilder] Accessor
- */
+/** [NotificationCompatBuilder] Accessor */
 @SuppressLint("RestrictedApi")
 class NotificationCompatBuilderAccessor(builder: NotificationCompat.Builder) :
     NotificationBuilderWithBuilderAccessor {

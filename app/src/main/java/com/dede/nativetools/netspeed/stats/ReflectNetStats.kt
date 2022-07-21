@@ -15,27 +15,23 @@ class ReflectNetStats : NetStats {
         try {
             methodGetRxBytes = TrafficStats::class.java.method("getRxBytes", String::class.java)
             methodGetTxBytes = TrafficStats::class.java.method("getTxBytes", String::class.java)
-        } catch (e: Exception) {
-        }
+        } catch (e: Exception) {}
     }
 
     override fun supported(): Boolean {
-        return methodGetRxBytes != null && methodGetTxBytes != null
-                && getRxBytes(NetStats.WLAN_IFACE).isSupported
+        return methodGetRxBytes != null &&
+            methodGetTxBytes != null &&
+            getRxBytes(NetStats.WLAN_IFACE).isSupported
     }
 
     override fun getRxBytes(): Long {
         return NetStats.addIfSupported(
-            TrafficStats.getMobileRxBytes(),
-            getRxBytes(NetStats.WLAN_IFACE)
-        )
+            TrafficStats.getMobileRxBytes(), getRxBytes(NetStats.WLAN_IFACE))
     }
 
     override fun getTxBytes(): Long {
         return NetStats.addIfSupported(
-            TrafficStats.getMobileTxBytes(),
-            getTxBytes(NetStats.WLAN_IFACE)
-        )
+            TrafficStats.getMobileTxBytes(), getTxBytes(NetStats.WLAN_IFACE))
     }
 
     private fun getRxBytes(iface: String): Long {

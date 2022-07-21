@@ -1,12 +1,12 @@
-import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.util.Date
 import java.util.Properties
+import org.json.JSONObject
 
-val keystoreProperties = Properties().apply {
-    rootProject.file("key.properties")
-        .takeIf { it.exists() }?.inputStream()?.use(this::load)
-}
+val keystoreProperties =
+    Properties().apply {
+        rootProject.file("key.properties").takeIf { it.exists() }?.inputStream()?.use(this::load)
+    }
 
 plugins {
     id("com.android.application")
@@ -18,6 +18,7 @@ plugins {
     id("com.google.firebase.firebase-perf")
     id("com.google.firebase.appdistribution")
 }
+
 apply(from = "../gradle/spotless.gradle")
 
 android {
@@ -32,19 +33,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(
-            listOf(
-                "zh-rCN",
-                "zh-rHK",
-                "ja",
-                "en",
-                "ko",
-                "ru",
-                "de",
-                "fr",
-                "es",
-                "pt"
-            )
-        )
+            listOf("zh-rCN", "zh-rHK", "ja", "en", "ko", "ru", "de", "fr", "es", "pt"))
 
         // rename output file name
         // https://stackoverflow.com/a/52508858/10008797
@@ -74,9 +63,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = config
         }
         create("beta") {
@@ -89,9 +76,7 @@ android {
         }
     }
 
-    viewBinding {
-        isEnabled = true
-    }
+    viewBinding { isEnabled = true }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -140,33 +125,30 @@ tasks.register<Exec>("pgyer") {
     val assemble = tasks.named("assembleBeta").get()
     dependsOn(assemble)
 
-    val tree = fileTree("build") {
-        include("outputs/apk/beta/*.apk", "intermediates/apk/beta/*.apk")
-    }
+    val tree =
+        fileTree("build") { include("outputs/apk/beta/*.apk", "intermediates/apk/beta/*.apk") }
     doFirst {
-        val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
-            "pgyer.api_key not found"
-        }
+        val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) { "pgyer.api_key not found" }
         val apkPath = tree.first().absolutePath
         println("Upload Apk: $apkPath")
         val nodes = file("beta-distribution-nodes.txt").readText().trim()
 
         commandLine(
-            "curl", "-F", "file=@$apkPath",
-            "-F", "_api_key=$apiKey",
-            "-F", "buildUpdateDescription=$nodes",
-            "https://www.pgyer.com/apiv2/app/upload"
-        )
+            "curl",
+            "-F",
+            "file=@$apkPath",
+            "-F",
+            "_api_key=$apiKey",
+            "-F",
+            "buildUpdateDescription=$nodes",
+            "https://www.pgyer.com/apiv2/app/upload")
     }
-    val output = ByteArrayOutputStream().apply {
-        standardOutput = this
-    }
+    val output = ByteArrayOutputStream().apply { standardOutput = this }
     doLast {
         val result = output.toString()
         val obj = JSONObject(result)
         if (obj.getInt("code") == 0) {
-            val path = obj.getJSONObject("data")
-                .getString("buildShortcutUrl")
+            val path = obj.getJSONObject("data").getString("buildShortcutUrl")
             println("Upload succeeded: https://www.pgyer.com/$path")
         } else {
             val message = obj.getString("message")

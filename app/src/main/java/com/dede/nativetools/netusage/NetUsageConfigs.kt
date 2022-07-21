@@ -28,24 +28,18 @@ class NetUsageConfigs(context: Context) {
                 PREF_NAME,
                 MasterKey(context),
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            )
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
         } catch (e: Throwable) {
             Firebase.crashlytics.recordException(e)
             context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         }
 
-
     private val allIMSI: LinkedHashSet<String> = LinkedHashSet()
     private val enabledIMSI: LinkedHashSet<String> = LinkedHashSet()
 
     init {
-        sharedPreferences.getStringSet(KEY_ALL_IMSI, null)?.let {
-            allIMSI.addAll(it)
-        }
-        sharedPreferences.getStringSet(KEY_ENABLED_IMSI, null)?.let {
-            enabledIMSI.addAll(it)
-        }
+        sharedPreferences.getStringSet(KEY_ALL_IMSI, null)?.let { allIMSI.addAll(it) }
+        sharedPreferences.getStringSet(KEY_ENABLED_IMSI, null)?.let { enabledIMSI.addAll(it) }
     }
 
     fun getEnabledIMSI(): Set<String> {
@@ -83,10 +77,10 @@ class NetUsageConfigs(context: Context) {
     }
 
     private fun save() {
-        sharedPreferences.edit()
+        sharedPreferences
+            .edit()
             .putStringSet(KEY_ALL_IMSI, allIMSI)
             .putStringSet(KEY_ENABLED_IMSI, enabledIMSI)
             .apply()
     }
-
 }

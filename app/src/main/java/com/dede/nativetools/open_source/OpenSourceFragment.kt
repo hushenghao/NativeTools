@@ -19,9 +19,7 @@ import com.dede.nativetools.ui.GridItemDecoration
 import com.dede.nativetools.ui.TextViewStartDrawableTarget
 import com.dede.nativetools.util.*
 
-/**
- * 开源相关
- */
+/** 开源相关 */
 class OpenSourceFragment : AbsBottomSheetListFragment<OpenSource, OpenSourceFragment.ViewHolder>() {
 
     private val viewModel by viewModels<OpenSourceViewModel>()
@@ -32,14 +30,12 @@ class OpenSourceFragment : AbsBottomSheetListFragment<OpenSource, OpenSourceFrag
         binding.tvTitle.isGone = true
         binding.recyclerView.addItemDecoration(GridItemDecoration(12.dp))
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.openSourceList.observe(this) {
-            setData(it)
-        }
+        viewModel.openSourceList.observe(this) { setData(it) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_open_source, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_open_source, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -59,9 +55,7 @@ class OpenSourceFragment : AbsBottomSheetListFragment<OpenSource, OpenSourceFrag
             binding.tvAuthorName.text = openSource.author
             binding.tvProjectDesc.text = openSource.desc
 
-            binding.ivMenu.setOnClickListener {
-                showMenu(it, openSource)
-            }
+            binding.ivMenu.setOnClickListener { showMenu(it, openSource) }
             itemView.setOnClickListener {
                 val url = openSource.website
                 if (url.isNotEmpty()) {

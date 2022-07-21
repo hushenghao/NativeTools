@@ -9,9 +9,7 @@ import kotlin.properties.Delegates
 
 typealias OnTickNetSpeed = (Long, Long) -> Unit
 
-/**
- * 网速计算
- */
+/** 网速计算 */
 class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
 
     private var rxBytes: Long = 0L
@@ -26,23 +24,25 @@ class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
         }
     private val netStats: NetStats = NetStats.getInstance()
 
-    var interval: Int by Delegates.observable(NetSpeedPreferences.DEFAULT_INTERVAL) { _, old, new ->
-        if (old != new) {
-            refresh()
-            handlerTicker.interval = new.toLong()
+    var interval: Int by
+        Delegates.observable(NetSpeedPreferences.DEFAULT_INTERVAL) { _, old, new ->
+            if (old != new) {
+                refresh()
+                handlerTicker.interval = new.toLong()
+            }
         }
-    }
 
     private fun env(n: Long, o: Long, interval: Int): Long {
         return max((1000.0 / interval * (n - o)).roundToLong(), 0L)
     }
 
-    private val handlerTicker: HandlerTicker = HandlerTicker(interval.toLong()) {
-        synchronized(this) {
-            refresh()
-            onTick?.invoke(rxSpeed, txSpeed)
+    private val handlerTicker: HandlerTicker =
+        HandlerTicker(interval.toLong()) {
+            synchronized(this) {
+                refresh()
+                onTick?.invoke(rxSpeed, txSpeed)
+            }
         }
-    }
 
     var rxSpeed: Long = 0L
         private set
@@ -66,5 +66,4 @@ class NetSpeedCompute(private var onTick: OnTickNetSpeed? = null) {
     fun destroy() {
         handlerTicker.destroy()
     }
-
 }

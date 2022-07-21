@@ -11,9 +11,10 @@ interface NetStats {
         const val UNSUPPORTED = TrafficStats.UNSUPPORTED.toLong()
 
         const val WLAN_IFACE = "wlan0"
-        //const val MOBILE_IFACE = "rmnet_data0"
+        // const val MOBILE_IFACE = "rmnet_data0"
 
-        val Long.isSupported: Boolean get() = this != UNSUPPORTED
+        val Long.isSupported: Boolean
+            get() = this != UNSUPPORTED
 
         fun addIfSupported(vararg stats: Long): Long {
             var allStat: Long = 0
@@ -30,17 +31,16 @@ interface NetStats {
             if (netStats != null) {
                 return netStats!!
             }
-            val allNetBytesClass = arrayOf(
-                AndroidTPB3NetStats::class.java,
-                Android31NetStats::class.java,
-                ReflectNetStats::class.java,
-                ExcludeLoNetStats::class.java,
-                NormalNetStats::class.java
-            )
+            val allNetBytesClass =
+                arrayOf(
+                    AndroidTPB3NetStats::class.java,
+                    Android31NetStats::class.java,
+                    ReflectNetStats::class.java,
+                    ExcludeLoNetStats::class.java,
+                    NormalNetStats::class.java)
             for (clazz in allNetBytesClass) {
                 val instance = create(clazz)
-                if (instance == null || !instance.supported())
-                    continue
+                if (instance == null || !instance.supported()) continue
 
                 netStats = instance
                 break
@@ -59,22 +59,15 @@ interface NetStats {
         }
     }
 
-    /**
-     * NetStats是否支持
-     */
+    /** NetStats是否支持 */
     fun supported(): Boolean
 
-    /**
-     * 下载的字节
-     */
+    /** 下载的字节 */
     fun getRxBytes(): Long
 
-    /**
-     * 长传的字节
-     */
+    /** 长传的字节 */
     fun getTxBytes(): Long
 
     val name: String
         get() = this.javaClass.simpleName
-
 }

@@ -42,9 +42,10 @@ class NativeToolsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val options = DynamicColorsOptions.Builder()
-            .setThemeOverlay(R.style.ThemeOverlay_Material3_DynamicColors_DayNight)
-            .build()
+        val options =
+            DynamicColorsOptions.Builder()
+                .setThemeOverlay(R.style.ThemeOverlay_Material3_DynamicColors_DayNight)
+                .build()
         DynamicColors.applyToActivitiesIfAvailable(this, options)
         if (isMainProcess()) {
             installShortcuts()
@@ -69,5 +70,4 @@ class NativeToolsApp : Application() {
         super.onConfigurationChanged(newConfig)
         installShortcuts()
     }
-
 }
