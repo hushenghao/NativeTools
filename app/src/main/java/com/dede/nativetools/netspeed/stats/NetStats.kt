@@ -50,9 +50,12 @@ interface NetStats {
         }
 
         private fun create(clazz: Class<out NetStats>): NetStats? {
-            return clazz.runCatching { newInstance() }
-                .onFailure(Throwable::printStackTrace)
-                .getOrElse { NormalNetStats() }
+            return try {
+                clazz.newInstance()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                NormalNetStats()
+            }
         }
     }
 

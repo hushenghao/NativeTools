@@ -2,6 +2,7 @@ package com.dede.nativetools.netspeed.stats
 
 import android.net.TrafficStats
 import com.dede.nativetools.netspeed.stats.NetStats.Companion.isSupported
+import com.dede.nativetools.util.invokeWithReturn
 import com.dede.nativetools.util.method
 import java.lang.reflect.Method
 
@@ -24,14 +25,11 @@ class ExcludeLoNetStats : NetStats {
     private var methodGetLoopbackTxBytes: Method? = null
 
     init {
-        methodGetLoopbackRxBytes = TrafficStats::class.java
-            .runCatching { method("getLoopbackRxBytes") }
-            .onFailure(Throwable::printStackTrace)
-            .getOrNull()
-        methodGetLoopbackTxBytes = TrafficStats::class.java
-            .runCatching { method("getLoopbackTxBytes") }
-            .onFailure(Throwable::printStackTrace)
-            .getOrNull()
+        try {
+            methodGetLoopbackRxBytes = TrafficStats::class.java.method("getLoopbackRxBytes")
+            methodGetLoopbackTxBytes = TrafficStats::class.java.method("getLoopbackTxBytes")
+        } catch (e: Exception) {
+        }
     }
 
     private fun getLoopbackRxBytes(): Long {
@@ -44,8 +42,11 @@ class ExcludeLoNetStats : NetStats {
 
     private fun getLoopbackBytes(method: Method?): Long {
         if (method == null) return NetStats.UNSUPPORTED
-        return method.runCatching { invoke(null) as Long }
-            .getOrDefault(NetStats.UNSUPPORTED)
+        return try {
+            method.invokeWithReturn(null)
+        } catch (e: Exception) {
+            NetStats.UNSUPPORTED
+        }
     }
 
 }
