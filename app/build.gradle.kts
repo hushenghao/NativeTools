@@ -12,13 +12,13 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
-    id("com.diffplug.spotless")
 
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
     id("com.google.firebase.appdistribution")
 }
+apply(from = "../gradle/spotless.gradle")
 
 android {
     compileSdk = 32
@@ -27,7 +27,7 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 32
-        versionCode = 61
+        versionCode = 62
         versionName = "4.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -134,22 +134,6 @@ dependencies {
 
     testImplementation(deps.junit)
     androidTestImplementation(deps.bundles.androidx.test)
-}
-
-spotless {
-    java {
-        googleJavaFormat()
-    }
-    kotlin {
-        ktfmt()
-        ktlint()
-        diktat()
-        prettier()
-    }
-    kotlinGradle {
-        target("*.gradle.kts")
-        ktlint()
-    }
 }
 
 tasks.register<Exec>("pgyer") {

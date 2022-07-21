@@ -1,8 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.diffplug.spotless")
 }
+apply(from = "../gradle/spotless.gradle")
 
 android {
     compileSdk = 32
@@ -38,22 +38,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-}
-
-spotless {
-    java {
-        googleJavaFormat()
-    }
-    kotlin {
-        ktfmt()
-        ktlint()
-        diktat()
-        prettier()
-    }
-    kotlinGradle {
-        target("*.gradle.kts")
-        ktlint()
     }
 }
 
