@@ -15,7 +15,6 @@ import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.ui.MaterialEditTextPreference
 import com.dede.nativetools.util.*
 import kotlinx.coroutines.flow.firstOrNull
-import kotlin.text.isEmpty
 
 /**
  * 配置SIM卡IMSI
@@ -33,28 +32,26 @@ class NetUsageConfigFragment : PreferenceFragmentCompat() {
         preferenceManager.preferenceDataStore = DataStorePreference(requireContext())
         addPreferencesFromResource(R.xml.preference_net_usage_config)
 
-        requirePreference<SwitchPreferenceCompat>(NetUsageConfigs.KEY_NET_USAGE_WIFI).let {
-            it.onPreferenceChangeListener<Boolean> { _, newValue ->
+        requirePreference<SwitchPreferenceCompat>(NetUsageConfigs.KEY_NET_USAGE_WIFI)
+            .onPreferenceChangeListener<Boolean> { _, newValue ->
                 configuration.enableWifiUsage = newValue
                 controller.updateConfiguration(configuration)
                 true
             }
-        }
-        requirePreference<SwitchPreferenceCompat>(NetUsageConfigs.KEY_NET_USAGE_MOBILE).let {
-            it.onPreferenceChangeListener<Boolean> { _, newValue ->
+        requirePreference<SwitchPreferenceCompat>(NetUsageConfigs.KEY_NET_USAGE_MOBILE)
+            .onPreferenceChangeListener<Boolean> { _, newValue ->
                 configuration.enableMobileUsage = newValue
                 controller.updateConfiguration(configuration)
                 true
             }
-        }
 
         simCardCategory = requirePreference(NetUsageConfigs.KEY_IMSI_CONFIG_GROUP)
-        addSimCardConfigPreference =
-            requirePreference(NetUsageConfigs.KEY_ADD_IMSI_CONFIG)
+        addSimCardConfigPreference = requirePreference(NetUsageConfigs.KEY_ADD_IMSI_CONFIG)
         addSimCardConfigPreference.onPreferenceChangeListener<String> { _, newValue ->
-            if (newValue.isEmpty()) return@onPreferenceChangeListener true
-            addSimCardConfigPreference(newValue)
-            return@onPreferenceChangeListener true
+            if (newValue.isNotEmpty()) {
+                addSimCardConfigPreference(newValue)
+            }
+            return@onPreferenceChangeListener false
         }
 
         if (NetSpeedPreferences.status) {
