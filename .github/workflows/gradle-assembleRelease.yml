@@ -38,9 +38,11 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew assembleRelease
-      
+    
     - name: upload build output
-    - uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with:
          name: Upload APK
          path: ${{ github.workspace }}/app/build/outputs/apk/release
+
+
