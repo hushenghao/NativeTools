@@ -14,6 +14,7 @@ plugins {
     id("kotlin-parcelize")
 
     id("com.google.gms.google-services")
+    id("com.google.android.gms.oss-licenses-plugin")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
     id("com.google.firebase.appdistribution")
@@ -107,6 +108,7 @@ dependencies {
     implementation(deps.androidx.datastore.preferences)
     implementation(deps.androidx.security.crypto.ktx)
 
+    implementation(deps.play.services.oss.licenses)
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)
     implementation(deps.bumptech.glide)

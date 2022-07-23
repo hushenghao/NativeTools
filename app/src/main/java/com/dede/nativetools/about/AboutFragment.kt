@@ -200,6 +200,10 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 findNavController().navigate(R.id.action_about_to_diagnosisFragment)
                 true
             }
+            R.id.action_play_license -> {
+                findNavController().navigate(R.id.playLicenses)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

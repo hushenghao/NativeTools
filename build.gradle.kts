@@ -15,6 +15,7 @@ plugins {
 buildscript {
     dependencies {
         classpath(deps.google.services)
+        classpath(deps.google.oss.license)
         classpath(deps.bundles.firebase.gradle)
         classpath(deps.tinify)
     }

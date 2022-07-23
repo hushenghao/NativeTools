@@ -60,14 +60,13 @@
         <meta-data
             android:name="google_analytics_default_allow_ad_personalization_signals"
             android:value="false" />
-        <!--disable default init-->
-        <provider
-            android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="${applicationId}.firebaseinitprovider"
-            android:directBootAware="true"
-            android:exported="false"
-            android:initOrder="100"
-            tools:node="remove" />
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".main.MainActivity"

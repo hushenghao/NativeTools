@@ -42,6 +42,8 @@
 
 -keep class com.dede.nativetools.network.Api {*;}
 
+-keep class com.google.firebase.FirebaseApp { *; }
+
 # OkHttp
 -dontwarn org.conscrypt.**
 -dontwarn org.bouncycastle.**

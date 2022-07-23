@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
         android:id="@+id/action_feedback"
@@ -19,5 +20,11 @@
         android:icon="@drawable/ic_open_source_line"
         android:title="@string/label_open_source"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_play_license"
+        android:title="OSS Licenses"
+        app:showAsAction="never"
+        tools:ignore="HardcodedText" />
 
 </menu>

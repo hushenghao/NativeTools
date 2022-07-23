@@ -38,6 +38,10 @@
         android:label="@string/label_open_source"
         tools:layout="@layout/fragment_open_source" />
 
+    <activity
+        android:id="@+id/playLicenses"
+        android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
+
     <dialog
         android:id="@+id/dialogDonate"
         android:name="com.dede.nativetools.donate.DonateDialogFragment"

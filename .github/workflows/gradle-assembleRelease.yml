@@ -35,7 +35,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assembleRelease
     
-    - name: upload build output
+    - name: Upload build output
       uses: actions/upload-artifact@v2
       with:
          name: Upload APK
