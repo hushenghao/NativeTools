@@ -42,6 +42,8 @@ class NativeToolsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        initFirebase()
+
         val options =
             DynamicColorsOptions.Builder()
                 .setThemeOverlay(R.style.ThemeOverlay_Material3_DynamicColors_DayNight)
@@ -51,8 +53,6 @@ class NativeToolsApp : Application() {
             installShortcuts()
             setNightMode(OtherPreferences.nightMode)
         }
-
-        initFirebase()
     }
 
     private fun initFirebase() {
