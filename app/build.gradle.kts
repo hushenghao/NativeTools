@@ -108,7 +108,6 @@ dependencies {
     implementation(deps.androidx.datastore.preferences)
     implementation(deps.androidx.security.crypto.ktx)
 
-    implementation(deps.play.services.oss.licenses)
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)
     implementation(deps.bumptech.glide)
@@ -117,6 +116,7 @@ dependencies {
     implementation(deps.squareup.retrofit.converter.moshi)
     implementation(deps.squareup.moshi)
 
+    implementation(deps.play.services.oss.licenses)
     implementation(platform(deps.firebase.bom))
     implementation(deps.bundles.firebase.ktx)
 

@@ -42,26 +42,23 @@ class NativeToolsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val mainProcess = isMainProcess()
-        initFirebase(mainProcess)
+        initFirebase()
         val options =
             DynamicColorsOptions.Builder()
                 .setThemeOverlay(R.style.ThemeOverlay_Material3_DynamicColors_DayNight)
                 .build()
         DynamicColors.applyToActivitiesIfAvailable(this, options)
-        if (mainProcess) {
+        if (isMainProcess()) {
             installShortcuts()
             setNightMode(OtherPreferences.nightMode)
         }
     }
 
-    private fun initFirebase(mainProcess: Boolean) {
-        if (!mainProcess) {
-            if (FirebaseApp.initializeApp(this) == null) {
-                Log.i(TAG, "FirebaseApp initialization unsuccessful")
-            } else {
-                Log.i(TAG, "FirebaseApp initialization successful")
-            }
+    private fun initFirebase() {
+        if (FirebaseApp.initializeApp(this) == null) {
+            Log.i(TAG, "FirebaseApp initialization unsuccessful")
+        } else {
+            Log.i(TAG, "FirebaseApp initialization successful")
         }
         if (NetSpeedPreferences.privacyAgreed) {
             Firebase.analytics.setAnalyticsCollectionEnabled(true)
