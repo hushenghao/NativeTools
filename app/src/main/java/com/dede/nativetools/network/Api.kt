@@ -1,7 +1,6 @@
 package com.dede.nativetools.network
 
 import com.dede.nativetools.donate.DonateInfo
-import com.dede.nativetools.open_source.OpenSource
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.InputStream
@@ -23,10 +22,6 @@ interface Api {
 
     @GET("fonts/-/raw/master/{fontName}")
     suspend fun downloadFont(@Path("fontName") fontName: String): InputStream
-
-    //    @GET("http://10.103.0.164:8000/open_source_list.json")
-    @GET("NativeTools/-/raw/develop/apis/open_source_list.json")
-    suspend fun getOpenSourceList(): List<OpenSource>
 
     // @GET("http://10.103.0.157:8000/donate_list.json")
     @GET("NativeTools/-/raw/develop/apis/donate_list.json")

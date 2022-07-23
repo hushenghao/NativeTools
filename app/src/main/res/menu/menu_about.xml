@@ -21,10 +21,4 @@
         android:title="@string/label_open_source"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/action_play_license"
-        android:title="OSS Licenses"
-        app:showAsAction="never"
-        tools:ignore="HardcodedText" />
-
 </menu>

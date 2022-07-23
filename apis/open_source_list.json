@@ -1,5 +1,6 @@
 [
   {
+    "_Deprecated": "replace with play services oss licenses plugin",
     "name": "Kotlin",
     "author": "JetBrains",
     "desc": "Write better Android apps faster with Kotlin.",
