@@ -184,6 +184,9 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_about, menu)
+        if (!requireContext().isGooglePlayServicesAvailable()) {
+            menu.removeItem(R.id.action_open_source)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
