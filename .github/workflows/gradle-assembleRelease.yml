@@ -33,12 +33,12 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew assembleRelease
+      run: ./gradlew assembleRelease bundleRelease
     
-    - name: upload build output
+    - name: Upload build output
       uses: actions/upload-artifact@v2
       with:
-         name: Upload APK
-         path: ${{ github.workspace }}/app/build/outputs/apk/release/*.apk
-
-
+         name: Upload output
+         path: |
+          ${{ github.workspace }}/app/build/outputs/apk/release/*.apk
+          ${{ github.workspace }}/app/build/outputs/bundle/release/*.aab
