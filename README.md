@@ -2,6 +2,13 @@
 
 ![icon](docs/images/ic_launcher.png)
 
+![GitHub top language](https://img.shields.io/github/languages/top/hushenghao/NativeTools)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/hushenghao/NativeTools)
+![GitHub](https://img.shields.io/github/license/hushenghao/NativeTools)
+[![gradle-assembleRelease](https://img.shields.io/github/workflow/status/hushenghao/NativeTools/gradle-assembleRelease)](https://github.com/hushenghao/NativeTools/actions/workflows/gradle-assembleRelease.yml)
+![GitHub release (release name instead of tag name)](https://img.shields.io/github/v/release/hushenghao/NativeTools?include_prereleases)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/hushenghao/NativeTools)
+
 一个在系统状态栏显示当前网速的App，并在通知栏显示详细数据，主要针对原生ROM。
 
 自用网速指示器，支持6.0及以上系统，兼容Android 13，支持中英文。
