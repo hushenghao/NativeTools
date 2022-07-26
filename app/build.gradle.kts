@@ -29,7 +29,7 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 33
-        versionCode = 62
+        versionCode = 63
         versionName = "4.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
