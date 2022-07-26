@@ -1,4 +1,4 @@
-name: gralde-assembleRelease
+name: gradle-assembleRelease
 
 on:
   push:
