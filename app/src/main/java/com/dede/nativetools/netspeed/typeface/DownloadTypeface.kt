@@ -7,9 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.work.*
 import com.dede.nativetools.network.Api
 import com.dede.nativetools.util.isEmpty
+import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.File
 
 abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
 
@@ -25,8 +25,7 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
 
         fun loadFont(context: Context, fontName: String): Typeface? {
             val fontFile = getFontFile(context, fontName)
-            return fontFile.runCatching(Typeface::createFromFile)
-                .getOrNull()
+            return fontFile.runCatching(Typeface::createFromFile).getOrNull()
         }
     }
 
@@ -47,8 +46,8 @@ abstract class DownloadTypeface(val context: Context) : TypefaceGetter {
     abstract val fontName: String
 
     override fun get(style: Int): Typeface {
-        val typeface = loadFont()
-            ?: return TypefaceGetter.getOrDefault(TypefaceGetter.FONT_NORMAL, style)
+        val typeface =
+            loadFont() ?: return TypefaceGetter.getOrDefault(TypefaceGetter.FONT_NORMAL, style)
         return applyStyle(typeface, style)
     }
 
@@ -69,20 +68,16 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
 
         fun downloadFont(context: Context, fontKey: String): LiveData<WorkInfo>? {
             val getter = DownloadTypeface.create(context, fontKey) ?: return null
-            val data = workDataOf(
-                EXTRA_FONT_KEY to fontKey,
-                EXTRA_FONT_NAME to getter.fontName
-            )
-            val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-            val work = OneTimeWorkRequestBuilder<DownloadFontWork>()
-                .setInputData(data)
-                .setConstraints(constraints)
-                .build()
+            val data = workDataOf(EXTRA_FONT_KEY to fontKey, EXTRA_FONT_NAME to getter.fontName)
+            val constraints =
+                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+            val work =
+                OneTimeWorkRequestBuilder<DownloadFontWork>()
+                    .setInputData(data)
+                    .setConstraints(constraints)
+                    .build()
             val workManager = WorkManager.getInstance(context)
-            workManager.beginWith(work)
-                .enqueue()
+            workManager.beginWith(work).enqueue()
             return workManager.getWorkInfoByIdLiveData(work.id)
         }
     }
@@ -109,14 +104,11 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
             result = DownloadTypeface.loadFont(context, fontName)
             return@withContext if (result != null)
                 Result.success(workDataOf(EXTRA_FONT_KEY to fontKey))
-            else
-                Result.failure()
+            else Result.failure()
         }
     }
 
-    /**
-     * 下载网络字体
-     */
+    /** 下载网络字体 */
     @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun download(fontName: String, fontFile: File) {
         val fontDir = fontFile.parentFile
@@ -128,10 +120,6 @@ class DownloadFontWork(context: Context, workerParams: WorkerParameters) :
         }
 
         val input = Api.downloadFont(fontName)
-        input.use {
-            fontFile.outputStream().use { output ->
-                it.copyTo(output)
-            }
-        }
+        input.use { fontFile.outputStream().use { output -> it.copyTo(output) } }
     }
 }

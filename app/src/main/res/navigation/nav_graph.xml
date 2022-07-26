@@ -32,11 +32,9 @@
             app:destination="@id/diagnosisFragment" />
     </fragment>
 
-    <dialog
+    <activity
         android:id="@+id/openSource"
-        android:name="com.dede.nativetools.open_source.OpenSourceFragment"
-        android:label="@string/label_open_source"
-        tools:layout="@layout/fragment_open_source" />
+        android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
 
     <dialog
         android:id="@+id/dialogDonate"

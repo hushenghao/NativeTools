@@ -37,6 +37,6 @@
 
     <Preference
         app:dependency="key_net_usage_mobile"
-        app:layout="@layout/override_preference_tip_layout"
+        app:iconSpaceReserved="false"
         app:summary="@string/label_imsi_config_tip" />
 </PreferenceScreen>

@@ -10,7 +10,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 
-
 fun LifecycleOwner.lifecycleAnimator(
     target: View,
     property: Property<View, Float>,
@@ -29,9 +28,7 @@ fun LifecycleOwner.lifecycleAnimator(
         }
     }
     lifecycle.addObserver(observer)
-    animator.addListener(onEnd = {
-        lifecycle.removeObserver(observer)
-    })
+    animator.addListener(onEnd = { lifecycle.removeObserver(observer) })
     block.invoke(animator)
 }
 
@@ -44,7 +41,6 @@ class XProperty : Property<View, Float>(Float::class.java, "x") {
         return view.x
     }
 }
-
 
 class YProperty : Property<View, Float>(Float::class.java, "y") {
     override fun set(view: View, value: Float) {

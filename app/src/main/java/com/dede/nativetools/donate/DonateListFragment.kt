@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ItemDonateListInfoBinding
-import com.dede.nativetools.network.isLoading
 import com.dede.nativetools.ui.AbsBottomSheetListFragment
 import com.dede.nativetools.ui.GridItemDecoration
 import com.dede.nativetools.util.dp
@@ -34,14 +33,13 @@ class DonateListFragment : AbsBottomSheetListFragment<DonateInfo, DonateListFrag
         binding.tvTitle.setText(R.string.label_donate_list)
         binding.recyclerView.addItemDecoration(GridItemDecoration(12.dp))
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.donateList.observe(this) {
-            setData(it)
-        }
+        viewModel.donateList.observe(this) { setData(it) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_donate_list_info, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_donate_list_info, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -67,7 +65,5 @@ class DonateListFragment : AbsBottomSheetListFragment<DonateInfo, DonateListFrag
                 bind.tvDonateRemake.isVisible = true
             }
         }
-
     }
 }
-

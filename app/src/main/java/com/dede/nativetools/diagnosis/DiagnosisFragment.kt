@@ -18,9 +18,7 @@ import com.dede.nativetools.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-/**
- * 诊断页
- */
+/** 诊断页 */
 class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
 
     // 诊断服务，进程 netspeed
@@ -29,13 +27,11 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
         private lateinit var messenger: Messenger
 
         override fun onHandleMessage(msg: Message) {
-            val rMsg = Message.obtain().apply {
-                data = bundleOf("data" to Logic.collectionDiagnosis())
-            }
+            val rMsg =
+                Message.obtain().apply { data = bundleOf("data" to Logic.collectionDiagnosis()) }
             try {
                 msg.replyTo.send(rMsg)
-            } catch (ignore: RemoteException) {
-            }
+            } catch (ignore: RemoteException) {}
         }
 
         override fun onCreate() {
@@ -53,10 +49,15 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
 
     private val binding by viewBinding(FragmentDiagnosisBinding::bind)
 
-    private val handler = LifecycleHandler(Looper.getMainLooper(), this, handlerMessage = {
-        val data = data.getString("data")
-        setData(data)
-    })
+    private val handler =
+        LifecycleHandler(
+            Looper.getMainLooper(),
+            this,
+            handlerMessage = {
+                val data = data.getString("data")
+                setData(data)
+            }
+        )
     private val responseMessenger = Messenger(handler)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,30 +68,31 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.progressCircular.isVisible = true
-        requireContext().bindService(
-            intent = Intent(requireContext(), Service::class.java),
-            onConnected = {
-                // 绑定成功
-                val requestMessenger = Messenger(it)
-                val msg = Message.obtain().apply { replyTo = responseMessenger }
-                try {
-                    requestMessenger.send(msg)
-                } catch (e: RemoteException) {
+        requireContext()
+            .bindService(
+                intent = Intent(requireContext(), Service::class.java),
+                onConnected = {
+                    // 绑定成功
+                    val requestMessenger = Messenger(it)
+                    val msg = Message.obtain().apply { replyTo = responseMessenger }
+                    try {
+                        requestMessenger.send(msg)
+                    } catch (e: RemoteException) {
+                        collectionNow()
+                        e.printStackTrace()
+                    }
+                },
+                onFailed = {
+                    // 绑定失败时在主进程收集诊断信息
                     collectionNow()
-                    e.printStackTrace()
-                }
-            }, onFailed = {
-                // 绑定失败时在主进程收集诊断信息
-                collectionNow()
-            }, lifecycleOwner = this
-        )
+                },
+                lifecycleOwner = this
+            )
     }
 
     private fun collectionNow() {
         lifecycleScope.launchWhenCreated {
-            val result = withContext(Dispatchers.IO) {
-                Logic.collectionDiagnosis()
-            }
+            val result = withContext(Dispatchers.IO) { Logic.collectionDiagnosis() }
             setData(result)
         }
     }

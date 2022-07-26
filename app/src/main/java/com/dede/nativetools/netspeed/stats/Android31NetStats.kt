@@ -30,5 +30,4 @@ class Android31NetStats : NetStats {
             TrafficStats.getTxBytes(NetStats.WLAN_IFACE)
         )
     }
-
 }

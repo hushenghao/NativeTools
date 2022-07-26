@@ -20,5 +20,4 @@ class AboutViewModel : ViewModel() {
         val count = _followCount.value ?: 0
         _followCount.value = count + 1
     }
-
 }

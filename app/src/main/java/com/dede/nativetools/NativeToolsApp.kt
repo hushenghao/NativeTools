@@ -42,16 +42,19 @@ class NativeToolsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val options = DynamicColorsOptions.Builder()
-            .setThemeOverlay(R.style.ThemeOverlay_Material3_DynamicColors_DayNight)
-            .build()
+        initFirebase()
+        val options =
+            DynamicColorsOptions.Builder()
+                .setThemeOverlay(R.style.ThemeOverlay_Material3_DynamicColors_DayNight)
+                .setPrecondition { activity, _ ->
+                    activity.javaClass.packageName != "com.google.android.gms.oss.licenses"
+                }
+                .build()
         DynamicColors.applyToActivitiesIfAvailable(this, options)
         if (isMainProcess()) {
             installShortcuts()
             setNightMode(OtherPreferences.nightMode)
         }
-
-        initFirebase()
     }
 
     private fun initFirebase() {
@@ -69,5 +72,4 @@ class NativeToolsApp : Application() {
         super.onConfigurationChanged(newConfig)
         installShortcuts()
     }
-
 }

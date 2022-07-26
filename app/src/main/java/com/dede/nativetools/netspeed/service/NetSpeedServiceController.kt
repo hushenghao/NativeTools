@@ -8,13 +8,12 @@ import android.os.RemoteException
 import androidx.core.content.ContextCompat
 import com.dede.nativetools.netspeed.INetSpeedInterface
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
-import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.util.BroadcastHelper
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.toast
 
-class NetSpeedServiceController(context: Context) : INetSpeedInterface.Default(),
-    ServiceConnection {
+class NetSpeedServiceController(context: Context) :
+    INetSpeedInterface.Default(), ServiceConnection {
 
     private val appContext = context.applicationContext
 
@@ -33,9 +32,7 @@ class NetSpeedServiceController(context: Context) : INetSpeedInterface.Default()
     fun bindService() {
         val intent = NetSpeedService.createIntent(appContext)
         appContext.bindService(intent, this, Context.BIND_AUTO_CREATE)
-        broadcastHelper.register(appContext) { _, _ ->
-            unbindService()
-        }
+        broadcastHelper.register(appContext) { _, _ -> unbindService() }
     }
 
     fun stopService() {

@@ -1,8 +1,9 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.diffplug.spotless")
 }
+
+apply(from = "../gradle/spotless.gradle")
 
 android {
     compileSdk = 32
@@ -22,41 +23,17 @@ android {
                 "proguard-rules.pro"
             )
         }
-        create("beta") {
-            initWith(getByName("release"))
-        }
+        create("beta") { initWith(getByName("release")) }
     }
 
-    buildFeatures {
-        buildConfig = false
-    }
+    buildFeatures { buildConfig = false }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+    kotlinOptions { jvmTarget = "1.8" }
 }
 
-spotless {
-    java {
-        googleJavaFormat()
-    }
-    kotlin {
-        ktfmt()
-        ktlint()
-        diktat()
-        prettier()
-    }
-    kotlinGradle {
-        target("*.gradle.kts")
-        ktlint()
-    }
-}
-
-dependencies {
-    implementation(deps.androidx.annotation)
-}
+dependencies { implementation(deps.androidx.annotation) }

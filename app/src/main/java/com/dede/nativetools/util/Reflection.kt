@@ -7,7 +7,6 @@ import java.lang.reflect.Field
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 
-
 @Throws(NoSuchMethodException::class, SecurityException::class)
 fun <T> Class<T>.method(name: String, vararg parameterTypes: Class<*>): Method {
     return this.getMethod(name, *parameterTypes).apply { isAccessible = true }
@@ -18,9 +17,11 @@ fun <T> Class<T>.declaredMethod(name: String, vararg parameterTypes: Class<*>): 
     return this.getDeclaredMethod(name, *parameterTypes).apply { isAccessible = true }
 }
 
-@Throws(IllegalAccessException::class,
+@Throws(
+    IllegalAccessException::class,
     IllegalArgumentException::class,
-    InvocationTargetException::class)
+    InvocationTargetException::class
+)
 @Suppress("UNCHECKED_CAST")
 inline fun <T> Method.invokeWithReturn(obj: Any?, vararg parameters: Any?): T {
     return this.invoke(obj, *parameters) as T
@@ -51,8 +52,8 @@ inline fun <T> Field.getNullable(obj: Any?): T? {
 @Suppress("UNCHECKED_CAST")
 @Throws(NoSuchMethodException::class, SecurityException::class)
 fun <T> Class<*>.declaredConstructor(vararg parameterTypes: Class<*>): Constructor<T> {
-    return this.getDeclaredConstructor(*parameterTypes)
-        .apply { isAccessible = true } as Constructor<T>
+    return this.getDeclaredConstructor(*parameterTypes).apply { isAccessible = true }
+        as Constructor<T>
 }
 
 inline fun <reified T : Annotation> Any.annotation(): T? {

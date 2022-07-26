@@ -13,7 +13,6 @@ import android.os.Parcelable
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 
-
 inline fun <reified T> Intent(context: Context, vararg extras: Pair<String, Any>): Intent {
     return Intent(context, T::class.java).putExtras(*extras)
 }
@@ -73,8 +72,6 @@ fun IntentFilter(vararg actions: String): IntentFilter {
 // https://developer.android.google.cn/training/package-visibility/automatic
 // adb shell dumpsys package queries
 fun Intent.queryImplicitActivity(context: Context): Boolean {
-    return this.resolveActivityInfo(
-        context.packageManager,
-        PackageManager.MATCH_DEFAULT_ONLY
-    ) != null
+    return this.resolveActivityInfo(context.packageManager, PackageManager.MATCH_DEFAULT_ONLY) !=
+        null
 }

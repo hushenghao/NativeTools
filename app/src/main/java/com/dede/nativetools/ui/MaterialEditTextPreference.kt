@@ -15,9 +15,7 @@ import com.dede.nativetools.R
 import com.dede.nativetools.util.isNotEmpty
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-/**
- * 使用MaterialAlertDialog实现的EditTextPreference
- */
+/** 使用MaterialAlertDialog实现的EditTextPreference */
 class MaterialEditTextPreference(context: Context, attrs: AttributeSet? = null) :
     EditTextPreference(context, attrs), DialogInterface.OnClickListener {
 
@@ -37,11 +35,12 @@ class MaterialEditTextPreference(context: Context, attrs: AttributeSet? = null) 
     override fun onClick() {
         val view = LayoutInflater.from(context).inflate(dialogLayoutResource, null)
 
-        val builder = MaterialAlertDialogBuilder(context)
-            .setTitle(dialogTitle)
-            .setView(view)
-            .setPositiveButton(positiveButtonText, this)
-            .setNegativeButton(negativeButtonText, null)
+        val builder =
+            MaterialAlertDialogBuilder(context)
+                .setTitle(dialogTitle)
+                .setView(view)
+                .setPositiveButton(positiveButtonText, this)
+                .setNegativeButton(negativeButtonText, null)
 
         val dialogMessageView = view.findViewById<View>(android.R.id.message)
         if (dialogMessageView != null) {

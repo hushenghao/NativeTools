@@ -1,10 +1,10 @@
 package com.dede.nativetools.network
 
+import java.io.InputStream
+import java.lang.reflect.Type
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
-import java.io.InputStream
-import java.lang.reflect.Type
 
 /**
  * Created by shhu on 2022/6/30 09:42.

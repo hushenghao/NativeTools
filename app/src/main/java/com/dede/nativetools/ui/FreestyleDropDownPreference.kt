@@ -65,9 +65,7 @@ abstract class FreestyleDropDownPreference(context: Context, attrs: AttributeSet
     }
 }
 
-/**
- * 自定义字体样式
- */
+/** 自定义字体样式 */
 class TypefaceDropDownPreference(context: Context, attrs: AttributeSet?) :
     FreestyleDropDownPreference(context, attrs) {
 
@@ -92,12 +90,16 @@ class NightModeDropDownPreference(context: Context, attrs: AttributeSet?) :
         super.onBindViewHolder(view)
         val spinner =
             view.findViewById(androidx.preference.R.id.spinner) as? AppCompatSpinner ?: return
-        popupWindow = spinner.runCatching {
-            val fieldPopup = AppCompatSpinner::class.java.declaredField("mPopup")
-            val listPopupWindow = fieldPopup.get(this) as ListPopupWindow
-            val fieldPopupWindow = ListPopupWindow::class.java.declaredField("mPopup")
-            fieldPopupWindow.get(listPopupWindow) as PopupWindow
-        }.onFailure(Throwable::printStackTrace).getOrNull()
+        popupWindow =
+            spinner
+                .runCatching {
+                    val fieldPopup = AppCompatSpinner::class.java.declaredField("mPopup")
+                    val listPopupWindow = fieldPopup.get(this) as ListPopupWindow
+                    val fieldPopupWindow = ListPopupWindow::class.java.declaredField("mPopup")
+                    fieldPopupWindow.get(listPopupWindow) as PopupWindow
+                }
+                .onFailure(Throwable::printStackTrace)
+                .getOrNull()
     }
 
     @SuppressLint("ClickableViewAccessibility")

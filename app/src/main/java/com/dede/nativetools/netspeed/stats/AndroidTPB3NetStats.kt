@@ -15,8 +15,7 @@ import com.dede.nativetools.util.toast
  * For Android T Beta 3 Releases
  *
  * TrafficStats getRxBytes and getTxBytes broken in T beta 3
- * https://issuetracker.google.com/issues/235454286
- * Fixed in T beta 4, TPB4.220624.004
+ * https://issuetracker.google.com/issues/235454286 Fixed in T beta 4, TPB4.220624.004
  *
  * @since 2022/7/12
  */
@@ -27,20 +26,27 @@ class AndroidTPB3NetStats : NetStats {
     private val fixedVer = 4
 
     override fun supported(): Boolean {
-        if (Build.VERSION.SDK_INT == 33/*Build.VERSION_CODES.T*/) {
+        if (Build.VERSION.SDK_INT == 33 /*Build.VERSION_CODES.T*/) {
             val version = Build.DISPLAY
             val androidVer = Build.VERSION.RELEASE
-            Log.i("AndroidTBP3NetStats",
-                "Android %s, Build Version: %s".format(androidVer, version))
+            Log.i(
+                "AndroidTBP3NetStats",
+                "Android %s, Build Version: %s".format(androidVer, version)
+            )
             val ver = getTPBVersion()
             if (ver < fixedVer) {
-                val span = SpannableStringBuilder("May not work on ")
-                    .append("Android T Beta $ver !\n",
-                        StyleSpan(Typeface.BOLD),
-                        SPAN_INCLUSIVE_EXCLUSIVE)
-                    .append(issuesUrl,
-                        URLSpan(issuesUrl),
-                        SPAN_INCLUSIVE_EXCLUSIVE)// Can't click
+                val span =
+                    SpannableStringBuilder("May not work on ")
+                        .append(
+                            "Android T Beta $ver !\n",
+                            StyleSpan(Typeface.BOLD),
+                            SPAN_INCLUSIVE_EXCLUSIVE
+                        )
+                        .append(
+                            issuesUrl,
+                            URLSpan(issuesUrl),
+                            SPAN_INCLUSIVE_EXCLUSIVE
+                        ) // Can't click
                 globalContext.toast(span, Toast.LENGTH_LONG)
             }
         }
@@ -51,8 +57,8 @@ class AndroidTPB3NetStats : NetStats {
         // Beta Releases, like this 'TPB3.220513.017'
         // TrafficStats getRxBytes and getTxBytes broken in T beta 3.
         // Fixed in T beta 4, TPB4.220624.004
-        return regexBeta.matchEntire(Build.DISPLAY)?.groupValues
-            ?.getOrNull(1)?.toIntOrNull() ?: fixedVer
+        return regexBeta.matchEntire(Build.DISPLAY)?.groupValues?.getOrNull(1)?.toIntOrNull()
+            ?: fixedVer
     }
 
     override fun getRxBytes(): Long {

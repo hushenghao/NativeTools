@@ -8,9 +8,9 @@ import android.content.ComponentCallbacks2
 import android.content.Context
 import android.os.Build
 import android.os.Process
+import com.google.firebase.perf.metrics.AddTrace
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
-import com.google.firebase.perf.metrics.AddTrace
 
 private fun Context.runningProcesses(): List<ActivityManager.RunningAppProcessInfo> {
     val activityManager = requireSystemService<ActivityManager>()
@@ -65,9 +65,7 @@ fun Context.processName(): String? {
 
 @OptIn(ExperimentalContracts::class)
 fun ActivityManager.RunningAppProcessInfo?.isMainProcess(context: Context): Boolean {
-    contract {
-        returns(true) implies (this@isMainProcess != null)
-    }
+    contract { returns(true) implies (this@isMainProcess != null) }
     val packageName = context.packageName
     if (this == null) return false
     return packageName.isNotEmpty() && this.processName == packageName
@@ -75,16 +73,15 @@ fun ActivityManager.RunningAppProcessInfo?.isMainProcess(context: Context): Bool
 
 @OptIn(ExperimentalContracts::class)
 fun ActivityManager.RunningAppProcessInfo?.isForeground(): Boolean {
-    contract {
-        returns(true) implies (this@isForeground != null)
-    }
+    contract { returns(true) implies (this@isForeground != null) }
     if (this == null) return false
     val uiHidden = this.lastTrimLevel >= ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN
-    val cached = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        this.importance >= ActivityManager.RunningAppProcessInfo.IMPORTANCE_CACHED
-    } else {
-        @Suppress("DEPRECATION")
-        this.importance >= ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND
-    }
+    val cached =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.importance >= ActivityManager.RunningAppProcessInfo.IMPORTANCE_CACHED
+        } else {
+            @Suppress("DEPRECATION")
+            this.importance >= ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND
+        }
     return !uiHidden && !cached
 }

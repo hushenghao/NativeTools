@@ -20,11 +20,12 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-/**
- * Slider
- */
-class SliderPreference(context: Context, attrs: AttributeSet?) : Preference(context, attrs),
-    Slider.OnChangeListener, Slider.OnSliderTouchListener, View.OnKeyListener {
+/** Slider */
+class SliderPreference(context: Context, attrs: AttributeSet?) :
+    Preference(context, attrs),
+    Slider.OnChangeListener,
+    Slider.OnSliderTouchListener,
+    View.OnKeyListener {
 
     private var stepSize: Float
     private var value: Float = 0f
@@ -177,9 +178,7 @@ class SliderPreference(context: Context, attrs: AttributeSet?) : Preference(cont
         return int * stepSize
     }
 
-    @SuppressLint("RestrictedApi")
-    override fun onStartTrackingTouch(slider: Slider) {
-    }
+    @SuppressLint("RestrictedApi") override fun onStartTrackingTouch(slider: Slider) {}
 
     @SuppressLint("RestrictedApi")
     override fun onStopTrackingTouch(slider: Slider) {
@@ -266,5 +265,4 @@ class SliderPreference(context: Context, attrs: AttributeSet?) : Preference(cont
             dest.writeFloat(valueTo)
         }
     }
-
 }

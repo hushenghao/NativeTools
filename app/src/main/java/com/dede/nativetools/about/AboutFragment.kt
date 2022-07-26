@@ -26,9 +26,7 @@ import com.dede.nativetools.main.applyBarsInsets
 import com.dede.nativetools.util.*
 import kotlin.random.Random
 
-/**
- * 关于项目
- */
+/** 关于项目 */
 class AboutFragment : Fragment(R.layout.fragment_about) {
 
     companion object {
@@ -40,38 +38,40 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private val viewModel by viewModels<AboutViewModel>()
     private var toasted = false
 
-    private val colorIdNormal: IntArray = intArrayOf(
-        R.color.md_theme_secondary,
-        R.color.md_theme_secondaryContainer,
-        R.color.md_theme_primary,
-        R.color.md_theme_primaryContainer,
-        android.R.color.black,
-        android.R.color.holo_red_light,
-        android.R.color.holo_blue_light,
-        android.R.color.holo_green_light,
-        android.R.color.holo_orange_light,
-        android.R.color.holo_purple,
-        android.R.color.darker_gray,
-        com.google.android.material.R.color.material_deep_teal_200,
-        com.google.android.material.R.color.material_blue_grey_950,
-        com.google.android.material.R.color.material_grey_900,
-    )
+    private val colorIdNormal: IntArray =
+        intArrayOf(
+            R.color.md_theme_secondary,
+            R.color.md_theme_secondaryContainer,
+            R.color.md_theme_primary,
+            R.color.md_theme_primaryContainer,
+            android.R.color.black,
+            android.R.color.holo_red_light,
+            android.R.color.holo_blue_light,
+            android.R.color.holo_green_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_purple,
+            android.R.color.darker_gray,
+            com.google.android.material.R.color.material_deep_teal_200,
+            com.google.android.material.R.color.material_blue_grey_950,
+            com.google.android.material.R.color.material_grey_900,
+        )
 
     @RequiresApi(Build.VERSION_CODES.S)
-    private val colorIdsS = intArrayOf(
-        android.R.color.system_accent1_300,
-        android.R.color.system_accent1_600,
-        android.R.color.system_accent1_900,
-        android.R.color.system_accent2_300,
-        android.R.color.system_accent2_600,
-        android.R.color.system_accent2_900,
-        android.R.color.system_neutral1_300,
-        android.R.color.system_neutral1_600,
-        android.R.color.system_neutral1_900,
-        android.R.color.system_neutral2_300,
-        android.R.color.system_neutral2_600,
-        android.R.color.system_neutral2_900,
-    )
+    private val colorIdsS =
+        intArrayOf(
+            android.R.color.system_accent1_300,
+            android.R.color.system_accent1_600,
+            android.R.color.system_accent1_900,
+            android.R.color.system_accent2_300,
+            android.R.color.system_accent2_600,
+            android.R.color.system_accent2_900,
+            android.R.color.system_neutral1_300,
+            android.R.color.system_neutral1_600,
+            android.R.color.system_neutral1_900,
+            android.R.color.system_neutral2_300,
+            android.R.color.system_neutral2_600,
+            android.R.color.system_neutral2_900,
+        )
     private val colorIds =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) colorIdsS else colorIdNormal
 
@@ -84,12 +84,10 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        applyBarsInsets(view, bottom = view)// navigation bar
+        applyBarsInsets(view, bottom = view) // navigation bar
 
         binding.tvVersion.text = requireContext().getVersionSummary()
-        binding.ivGithub.setOnClickListener {
-            requireContext().browse(R.string.url_github)
-        }
+        binding.ivGithub.setOnClickListener { requireContext().browse(R.string.url_github) }
         binding.ivGithub.enableFeedback = false
         binding.tvPrivacyAgreement.setOnClickListener {
             requireContext().browse(R.string.url_privacy_agreement)
@@ -123,14 +121,16 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             }
             return
         }
-        val insert = if (count == 0) template else {
-            AppCompatImageView(requireContext()).apply {
-                setImageResource(R.mipmap.ic_launcher_round)
-                isInvisible = true
-                layoutParams = LayoutParams(template.layoutParams as LayoutParams)
-                binding.rootAbout.addView(this, binding.rootAbout.indexOfChild(template))
+        val insert =
+            if (count == 0) template
+            else {
+                AppCompatImageView(requireContext()).apply {
+                    setImageResource(R.mipmap.ic_launcher_round)
+                    isInvisible = true
+                    layoutParams = LayoutParams(template.layoutParams as LayoutParams)
+                    binding.rootAbout.addView(this, binding.rootAbout.indexOfChild(template))
+                }
             }
-        }
         followViews.add(insert.apply { outlineProvider = this@AboutFragment.outlineProvider })
         binding.ivLogo.followViews = followViews.toTypedArray()
 
@@ -140,7 +140,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             followViews[i].apply {
                 scaleX = value
                 scaleY = value
-                //alpha = value
+                // alpha = value
                 setTintColor(colorIds[Random.nextInt(colorIds.size)])
             }
         }
@@ -184,6 +184,9 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_about, menu)
+        if (!requireContext().isGooglePlayServicesAvailable()) {
+            menu.removeItem(R.id.action_open_source)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -203,5 +206,4 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }

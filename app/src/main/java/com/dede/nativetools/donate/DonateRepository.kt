@@ -5,10 +5,8 @@ import androidx.annotation.StringRes
 import com.dede.nativetools.R
 
 class Payment(
-    @DrawableRes
-    val resId: Int,
-    @StringRes
-    val textId: Int,
+    @DrawableRes val resId: Int,
+    @StringRes val textId: Int,
 )
 
 class DonateRepository {
@@ -22,5 +20,4 @@ class DonateRepository {
             Payment(R.drawable.ic_donate_history, R.string.label_donate_list)
         )
     }
-
 }

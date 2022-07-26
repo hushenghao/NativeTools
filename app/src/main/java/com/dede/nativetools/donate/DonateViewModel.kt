@@ -8,8 +8,5 @@ class DonateViewModel : ViewModel() {
 
     private val repository = DonateRepository()
 
-    val paymentList: LiveData<List<Payment>> = liveData {
-        emit(repository.getPaymentList())
-    }
-
+    val paymentList: LiveData<List<Payment>> = liveData { emit(repository.getPaymentList()) }
 }

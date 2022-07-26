@@ -21,14 +21,12 @@ import com.dede.nativetools.util.*
 import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
 import com.google.firebase.analytics.FirebaseAnalytics
-import kotlinx.coroutines.flow.firstOrNull
 import kotlin.math.roundToInt
+import kotlinx.coroutines.flow.firstOrNull
 
-/**
- * 高级设置
- */
-class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
-    Preference.OnPreferenceChangeListener, Slider.OnChangeListener {
+/** 高级设置 */
+class NetSpeedAdvancedFragment :
+    PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener, Slider.OnChangeListener {
 
     private val configuration = NetSpeedConfiguration()
     private val controller by later { NetSpeedServiceController(requireContext()) }
@@ -124,9 +122,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         if (UI.isWideSize()) {
             applyBarsInsets(view, bottom = binding.root)
         }
-        binding.ivPreview.post {
-            updatePreview(configuration)
-        }
+        binding.ivPreview.post { updatePreview(configuration) }
     }
 
     private fun updatePreview(configuration: NetSpeedConfiguration) {
@@ -134,9 +130,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         if (size <= 0) {
             size = 512
         }
-        binding.ivPreview.setImageBitmap(
-            NetTextIconFactory.create(0, 0, configuration, size, true)
-        )
+        binding.ivPreview.setImageBitmap(NetTextIconFactory.create(0, 0, configuration, size, true))
     }
 
     private var tempConfiguration: NetSpeedConfiguration? = null
@@ -144,7 +138,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
     @SuppressLint("RestrictedApi")
     override fun onValueChange(slider: Slider, value: Float, fromUser: Boolean) {
         if (!fromUser) return
-        val key = slider.tag as String? ?: return// SliderPreference内设置了tag
+        val key = slider.tag as String? ?: return // SliderPreference内设置了tag
         var config = tempConfiguration
         if (config == null) {
             config = configuration.copy()
@@ -211,8 +205,7 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_RATIO,
             NetSpeedPreferences.KEY_NET_SPEED_RELATIVE_DISTANCE,
             NetSpeedPreferences.KEY_NET_SPEED_TEXT_SCALE,
-            NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE,
-            -> {
+            NetSpeedPreferences.KEY_NET_SPEED_HORIZONTAL_SCALE, -> {
                 updateConfigurationFloatValue(preference.key, configuration, newValue as Float)
             }
             else -> return true
@@ -226,5 +219,4 @@ class NetSpeedAdvancedFragment : PreferenceFragmentCompat(),
         controller.unbindService()
         super.onDestroyView()
     }
-
 }

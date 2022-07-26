@@ -17,9 +17,9 @@ object OtherPreferences {
     private const val DEFAULT_NIGHT_MODE = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 
     val nightMode: Int
-        get() = globalDataStore.get(
-            stringPreferencesKey(KEY_NIGHT_MODE_TOGGLE),
-            DEFAULT_NIGHT_MODE.toString()
-        ).toIntOrNull() ?: DEFAULT_NIGHT_MODE
-
+        get() =
+            globalDataStore
+                .get(stringPreferencesKey(KEY_NIGHT_MODE_TOGGLE), DEFAULT_NIGHT_MODE.toString())
+                .toIntOrNull()
+                ?: DEFAULT_NIGHT_MODE
 }

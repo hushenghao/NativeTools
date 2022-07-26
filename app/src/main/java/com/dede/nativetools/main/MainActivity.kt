@@ -33,10 +33,10 @@ import com.dede.nativetools.ui.NavigatePreference
 import com.dede.nativetools.util.*
 import com.google.firebase.analytics.FirebaseAnalytics
 
-/**
- * Main
- */
-class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
+/** Main */
+class MainActivity :
+    AppCompatActivity(),
+    NavController.OnDestinationChangedListener,
     NavigatePreference.OnNavigateHandler {
 
     companion object {
@@ -71,15 +71,16 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             val decorView = window.decorView
             decorView.doOnAttach {
                 ViewAnimationUtils.createCircularReveal(
-                    decorView,
-                    circularReveal.centerX,
-                    circularReveal.centerY,
-                    circularReveal.startRadius,
-                    circularReveal.endRadius
-                ).apply {
-                    duration = 1000
-                    start()
-                }
+                        decorView,
+                        circularReveal.centerX,
+                        circularReveal.centerY,
+                        circularReveal.startRadius,
+                        circularReveal.endRadius
+                    )
+                    .apply {
+                        duration = 1000
+                        start()
+                    }
             }
         }
 
@@ -89,9 +90,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         applyBarsInsets(
             root = binding.root,
             // top status bar, android:fitsSystemWindows="true"
-            end = binding.motionLayout,   // navigation bar
+            end = binding.motionLayout, // navigation bar
             // Some devices have navigation bars on the side, when landscape.
-        ) {
+            ) {
             val insets = it.stableInsets()
             // navigation bar, Insert padding only in the toolbar
             binding.toolbar.updatePaddingRelative(
@@ -103,8 +104,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             )
         }
 
-        NavFragmentAssistant(supportFragmentManager)
-            .setupWithNavFragment(R.id.nav_host_fragment)
+        NavFragmentAssistant(supportFragmentManager).setupWithNavFragment(R.id.nav_host_fragment)
         val appBarBuilder = AppBarConfiguration.Builder(*topLevelDestinationIds)
         if (UI.isWideSize()) {
             // bind drawer
@@ -164,9 +164,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         return super.onOptionsItemSelected(item)
     }
 
-    /**
-     * 处理Action入参，需要中断后面逻辑执行时返回true，其他返回false
-     */
+    /** 处理Action入参，需要中断后面逻辑执行时返回true，其他返回false */
     private fun handleAction(intent: Intent?): Boolean {
         when (intent?.getIntExtra(EXTRA_ACTION, 0)) {
             ACTION_TOGGLE -> {
@@ -234,9 +232,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             if (name == MotionLayout::class.qualifiedName) {
                 // remove app:layoutDescription="@xml/activity_main_scene", disable scene
                 val template = MotionLayout(context, attrs)
-                return MotionLayout(context).apply {
-                    id = template.id
-                }
+                return MotionLayout(context).apply { id = template.id }
             }
             return null
         }

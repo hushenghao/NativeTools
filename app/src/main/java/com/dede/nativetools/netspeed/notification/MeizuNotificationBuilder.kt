@@ -14,11 +14,16 @@ import com.dede.nativetools.util.getNotnull
  *
  * package android.app;
  *
+ * ``` java
  * class Notification$Builder {
+ *
  *    public NotificationBuilderExt mFlymeNotificationBuilder;
  * }
+ * ```
  *
+ * ```
  * class NotificationBuilderExt {
+ *
  *    setCircleProgressBar(boolean)
  *    setCircleProgressBarColor(int)
  *    setCircleProgressRimColor(int)
@@ -31,6 +36,7 @@ import com.dede.nativetools.util.getNotnull
  *    setSimSlot(int)
  *    setSubTitle(java.lang.CharSequence)
  * }
+ * ```
  */
 class MeizuNotificationBuilder(private val builder: NotificationCompat.Builder) :
     NotificationExtension.Builder {
@@ -38,13 +44,12 @@ class MeizuNotificationBuilder(private val builder: NotificationCompat.Builder) 
     override fun build(): Notification {
         val accessor = NotificationCompatBuilderAccessor(builder)
         try {
-            Notification.Builder::class.java
+            Notification.Builder::class
+                .java
                 .field("mFlymeNotificationBuilder")
                 .getNotnull<NotificationBuilderExt>(accessor.builder)
                 .setInternalApp(1)
-        } catch (e: Throwable) {
-        }
+        } catch (e: Throwable) {}
         return accessor.build()
     }
-
 }

@@ -23,21 +23,23 @@ interface TypefaceGetter {
                 return getter
             }
             val appContext = context.applicationContext
-            getter = when (key) {
-                FONT_NORMAL -> NormalTypeface()
-                FONT_DEBUG -> DebugTypeface(appContext)
-                else -> {
-                    if (!::fontList.isInitialized) {
-                        val fontArr = context.resources.getStringArray(R.array.net_speed_font_value)
-                        fontList = fontArr.toList()
-                    }
-                    if (fontList.contains(key)) {
-                        DownloadTypefaceImpl(appContext, "$key.ttf")
-                    } else {
-                        throw IllegalStateException("Unknown font name: $key")
+            getter =
+                when (key) {
+                    FONT_NORMAL -> NormalTypeface()
+                    FONT_DEBUG -> DebugTypeface(appContext)
+                    else -> {
+                        if (!::fontList.isInitialized) {
+                            val fontArr =
+                                context.resources.getStringArray(R.array.net_speed_font_value)
+                            fontList = fontArr.toList()
+                        }
+                        if (fontList.contains(key)) {
+                            DownloadTypefaceImpl(appContext, "$key.ttf")
+                        } else {
+                            throw IllegalStateException("Unknown font name: $key")
+                        }
                     }
                 }
-            }
             caches[key] = getter
             return getter
         }
@@ -51,12 +53,12 @@ interface TypefaceGetter {
                 Typeface.BOLD -> {
                     Typeface.create(typeface, Typeface.BOLD)
                 }
-//                Typeface.ITALIC -> {
-//                    Typeface.create(typeface, Typeface.ITALIC)
-//                }
-//                Typeface.BOLD_ITALIC -> {
-//                    Typeface.create(typeface, Typeface.BOLD_ITALIC)
-//                }
+                //                Typeface.ITALIC -> {
+                //                    Typeface.create(typeface, Typeface.ITALIC)
+                //                }
+                //                Typeface.BOLD_ITALIC -> {
+                //                    Typeface.create(typeface, Typeface.BOLD_ITALIC)
+                //                }
                 else -> {
                     typeface
                 }

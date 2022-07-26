@@ -9,8 +9,9 @@ import java.lang.reflect.Method
 class ExcludeLoNetStats : NetStats {
 
     override fun supported(): Boolean {
-        return methodGetLoopbackRxBytes != null && methodGetLoopbackTxBytes != null
-                && getLoopbackRxBytes().isSupported
+        return methodGetLoopbackRxBytes != null &&
+            methodGetLoopbackTxBytes != null &&
+            getLoopbackRxBytes().isSupported
     }
 
     override fun getRxBytes(): Long {
@@ -28,8 +29,7 @@ class ExcludeLoNetStats : NetStats {
         try {
             methodGetLoopbackRxBytes = TrafficStats::class.java.method("getLoopbackRxBytes")
             methodGetLoopbackTxBytes = TrafficStats::class.java.method("getLoopbackTxBytes")
-        } catch (e: Exception) {
-        }
+        } catch (e: Exception) {}
     }
 
     private fun getLoopbackRxBytes(): Long {
@@ -48,5 +48,4 @@ class ExcludeLoNetStats : NetStats {
             NetStats.UNSUPPORTED
         }
     }
-
 }

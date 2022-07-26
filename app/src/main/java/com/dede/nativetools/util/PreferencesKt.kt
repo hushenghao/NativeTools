@@ -11,14 +11,17 @@ fun <T : Preference> PreferenceFragmentCompat.requirePreference(key: CharSequenc
 }
 
 fun Preference.onPreferenceClickListener(listener: (preference: Preference) -> Unit) {
-    this.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
-        listener.invoke(preference)
-        true
-    }
+    this.onPreferenceClickListener =
+        Preference.OnPreferenceClickListener { preference ->
+            listener.invoke(preference)
+            true
+        }
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T> Preference.onPreferenceChangeListener(listener: (preference: Preference, newValue: T) -> Boolean) {
+fun <T> Preference.onPreferenceChangeListener(
+    listener: (preference: Preference, newValue: T) -> Boolean
+) {
     this.onPreferenceChangeListener =
         Preference.OnPreferenceChangeListener { preference, newValue ->
             listener.invoke(preference, newValue as T)
