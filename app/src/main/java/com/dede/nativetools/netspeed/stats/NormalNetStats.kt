@@ -15,5 +15,4 @@ class NormalNetStats : NetStats {
     override fun getTxBytes(): Long {
         return TrafficStats.getTotalTxBytes()
     }
-
 }

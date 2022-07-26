@@ -40,8 +40,7 @@
             android:id="@android:id/edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:inputType="number" />
+            android:layout_marginHorizontal="20dp" />
 
     </LinearLayout>
 </ScrollView>

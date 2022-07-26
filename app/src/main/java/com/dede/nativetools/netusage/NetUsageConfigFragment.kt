@@ -15,11 +15,8 @@ import com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
 import com.dede.nativetools.ui.MaterialEditTextPreference
 import com.dede.nativetools.util.*
 import kotlinx.coroutines.flow.firstOrNull
-import kotlin.text.isEmpty
 
-/**
- * 配置SIM卡IMSI
- */
+/** 配置SIM卡IMSI */
 class NetUsageConfigFragment : PreferenceFragmentCompat() {
 
     private lateinit var simCardCategory: PreferenceCategory
@@ -33,28 +30,26 @@ class NetUsageConfigFragment : PreferenceFragmentCompat() {
         preferenceManager.preferenceDataStore = DataStorePreference(requireContext())
         addPreferencesFromResource(R.xml.preference_net_usage_config)
 
-        requirePreference<SwitchPreferenceCompat>(NetUsageConfigs.KEY_NET_USAGE_WIFI).let {
-            it.onPreferenceChangeListener<Boolean> { _, newValue ->
+        requirePreference<SwitchPreferenceCompat>(NetUsageConfigs.KEY_NET_USAGE_WIFI)
+            .onPreferenceChangeListener<Boolean> { _, newValue ->
                 configuration.enableWifiUsage = newValue
                 controller.updateConfiguration(configuration)
                 true
             }
-        }
-        requirePreference<SwitchPreferenceCompat>(NetUsageConfigs.KEY_NET_USAGE_MOBILE).let {
-            it.onPreferenceChangeListener<Boolean> { _, newValue ->
+        requirePreference<SwitchPreferenceCompat>(NetUsageConfigs.KEY_NET_USAGE_MOBILE)
+            .onPreferenceChangeListener<Boolean> { _, newValue ->
                 configuration.enableMobileUsage = newValue
                 controller.updateConfiguration(configuration)
                 true
             }
-        }
 
         simCardCategory = requirePreference(NetUsageConfigs.KEY_IMSI_CONFIG_GROUP)
-        addSimCardConfigPreference =
-            requirePreference(NetUsageConfigs.KEY_ADD_IMSI_CONFIG)
+        addSimCardConfigPreference = requirePreference(NetUsageConfigs.KEY_ADD_IMSI_CONFIG)
         addSimCardConfigPreference.onPreferenceChangeListener<String> { _, newValue ->
-            if (newValue.isEmpty()) return@onPreferenceChangeListener true
-            addSimCardConfigPreference(newValue)
-            return@onPreferenceChangeListener true
+            if (newValue.isNotEmpty()) {
+                addSimCardConfigPreference(newValue)
+            }
+            return@onPreferenceChangeListener false
         }
 
         if (NetSpeedPreferences.status) {
@@ -136,16 +131,14 @@ class NetUsageConfigFragment : PreferenceFragmentCompat() {
             this.bindCustomWidget = {
                 val imageView = it.findViewById(R.id.iv_preference_help) as ImageView
                 imageView.setImageResource(R.drawable.ic_baseline_remove_circle)
-                imageView.setOnClickListener {
-                    removeSimCardConfigPreference(imsi)
-                }
+                imageView.setOnClickListener { removeSimCardConfigPreference(imsi) }
             }
-            this.isPersistent = false// 不保存
+            this.isPersistent = false // 不保存
             this.title = "SIM $index"
             this.key = imsi
             this.summary = imsi.privateIMSI()
             this.setIcon(R.drawable.ic_outline_sim_card)
-            this.setDefaultValue(isChecked)// 设置默认值，这时候还未onAttachedToHierarchy
+            this.setDefaultValue(isChecked) // 设置默认值，这时候还未onAttachedToHierarchy
             this.isChecked = isChecked
             this.onPreferenceChangeListener<Boolean> { _, newValue ->
                 netUsageConfigs.setIMSIEnabled(imsi, newValue)
@@ -154,5 +147,4 @@ class NetUsageConfigFragment : PreferenceFragmentCompat() {
             }
         }
     }
-
 }

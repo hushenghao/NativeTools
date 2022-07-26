@@ -17,13 +17,6 @@
             app:defaultValue="false"
             app:icon="@drawable/ic_launcher_icon" />
 
-        <SwitchPreferenceCompat
-            android:key="net_speed_auto_start"
-            android:title="@string/label_net_speed_auto_start"
-            app:defaultValue="false"
-            app:icon="@drawable/ic_outline_restart_alt"
-            app:summary="@string/summary_net_speed_auto_start" />
-
         <DropDownPreference
             android:key="net_speed_interval"
             app:defaultValue="1000"
@@ -31,9 +24,20 @@
             app:entryValues="@array/net_speed_interval_value"
             app:icon="@drawable/ic_baseline_timer"
             app:title="@string/label_net_speed_interval"
+            tools:useSimpleSummaryProvider="true" />
+
+        <DropDownPreference
+            android:key="net_speed_min_unit"
+            app:defaultValue="-1"
+            app:entries="@array/net_speed_min_unit"
+            app:entryValues="@array/net_speed_min_unit_value"
+            app:icon="@drawable/ic_format_color_text"
+            app:title="@string/label_net_speed_min_unit"
             app:useSimpleSummaryProvider="true" />
 
+
         <com.dede.nativetools.ui.MaterialEditTextPreference
+            android:inputType="number"
             app:defaultValue="0"
             app:dialogMessage="@string/alert_msg_hide_threshold"
             app:icon="@drawable/ic_baseline_remove_circle"
@@ -56,6 +60,14 @@
         app:title="@string/label_notification">
 
         <com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
+            app:defaultValue="false"
+            app:icon="@drawable/ic_outline_data_usage"
+            app:key="net_speed_usage"
+            app:summary="@string/summary_net_speed_usage"
+            app:title="@string/label_net_speed_usage"
+            app:widgetLayout="@layout/override_preference_widget_switch_compat" />
+
+        <com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
             android:key="net_speed_locked_hide"
             android:title="@string/label_net_speed_hide_lock_notification"
             app:defaultValue="true"
@@ -63,38 +75,19 @@
             app:summary="@string/summary_net_speed_hide_lock_notification"
             app:widgetLayout="@layout/override_preference_widget_switch_compat" />
 
-        <com.dede.nativetools.ui.CustomWidgetLayoutSwitchPreference
-            app:defaultValue="false"
-            app:dependency="net_speed_hide_notification"
-            app:icon="@drawable/ic_outline_data_usage"
-            app:key="net_speed_usage"
-            app:widgetLayout="@layout/override_preference_widget_switch_compat"
-            app:summary="@string/summary_net_speed_usage"
-            app:title="@string/label_net_speed_usage" />
-
         <SwitchPreferenceCompat
             android:key="net_speed_notify_clickable"
             android:title="@string/label_net_speed_notify_clickable"
             app:defaultValue="true"
-            app:dependency="net_speed_hide_notification"
             app:icon="@drawable/ic_outline_touch"
             app:summary="@string/summary_net_speed_notify_clickable" />
 
         <SwitchPreferenceCompat
             android:title="@string/label_net_speed_notify_quick_closeable"
             app:defaultValue="false"
-            app:dependency="net_speed_hide_notification"
             app:icon="@drawable/ic_outline_cancel"
             app:key="net_speed_notify_quick_closeable"
             app:summary="@string/summary_net_speed_notify_quick_closeable" />
-
-        <com.dede.nativetools.ui.HideNotificationSwitchPreference
-            app:defaultValue="false"
-            app:disableDependentsState="true"
-            app:icon="@drawable/ic_outline_notifications_off"
-            app:key="net_speed_hide_notification"
-            app:summary="@string/summary_net_speed_hide_notification"
-            app:title="@string/label_net_speed_hide_notification" />
 
     </PreferenceCategory>
 

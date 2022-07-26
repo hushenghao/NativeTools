@@ -20,7 +20,6 @@ import com.google.android.material.color.MaterialColors
 import java.io.InputStream
 import kotlin.properties.ReadOnlyProperty
 
-
 val globalContext: Context
     get() = NativeToolsApp.getInstance()
 
@@ -74,8 +73,7 @@ private class LifecycleServiceConnection(
         onConnected.invoke(service)
     }
 
-    override fun onServiceDisconnected(name: ComponentName?) {
-    }
+    override fun onServiceDisconnected(name: ComponentName?) {}
 }
 
 fun Context.assets(fileName: String): InputStream {
@@ -115,12 +113,12 @@ fun Context.color(@AttrRes attrId: Int, @ColorInt default: Int): Int {
     return MaterialColors.getColor(this, attrId, default)
 }
 
-fun Context.toast(text: String) {
-    Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+fun Context.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
+    ToastCompat.wrapperToast(Toast.makeText(this, text, duration)).show()
 }
 
 fun Context.toast(@StringRes resId: Int) {
-    Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
+    ToastCompat.wrapperToast(Toast.makeText(this, resId, Toast.LENGTH_SHORT)).show()
 }
 
 fun Context.browse(url: String) {
@@ -132,26 +130,27 @@ fun Context.browse(@StringRes urlId: Int) {
 }
 
 fun Context.market(packageName: String) {
-    val market = Intent(Intent.ACTION_VIEW)
-        .setData("market://details?id=$packageName")
-        .newTask()
-        .toChooser(R.string.chooser_label_market)
+    val market =
+        Intent(Intent.ACTION_VIEW)
+            .setData("market://details?id=$packageName")
+            .newTask()
+            .toChooser(R.string.chooser_label_market)
     ContextCompat.startActivity(this, market, null)
 }
 
 fun Context.share(text: String) {
-    val intent = Intent(Intent.ACTION_SEND, Intent.EXTRA_TEXT to text)
-        .setType("text/plain")
-        .newTask()
-        .toChooser(R.string.action_share)
+    val intent =
+        Intent(Intent.ACTION_SEND, Intent.EXTRA_TEXT to text)
+            .setType("text/plain")
+            .newTask()
+            .toChooser(R.string.action_share)
     ContextCompat.startActivity(this, intent, null)
 }
 
 fun Context.emailTo(@StringRes addressRes: Int) {
     val uri = Uri.parse("mailto:${getString(addressRes)}")
-    val intent = Intent(Intent(Intent.ACTION_SENDTO, uri))
-        .newTask()
-        .toChooser(R.string.action_feedback)
+    val intent =
+        Intent(Intent(Intent.ACTION_SENDTO, uri)).newTask().toChooser(R.string.action_feedback)
     ContextCompat.startActivity(this, intent, null)
 }
 

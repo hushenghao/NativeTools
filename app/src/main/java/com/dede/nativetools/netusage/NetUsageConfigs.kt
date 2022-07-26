@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 
 class NetUsageConfigs(context: Context) {
 
     companion object {
-        const val PREF_NAME = "sim_card_config"
+        private const val PREF_NAME = "sim_card_config"
 
         const val KEY_ADD_IMSI_CONFIG = "key_add_imsi_config"
         const val KEY_IMSI_CONFIG_GROUP = "key_imsi_config_group"
@@ -19,24 +21,26 @@ class NetUsageConfigs(context: Context) {
         private const val KEY_ALL_IMSI = "key_all_imsi"
     }
 
-    private val sharedPreferences: SharedPreferences = EncryptedSharedPreferences(
-        context,
-        PREF_NAME,
-        MasterKey(context),
-        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-    )
+    private val sharedPreferences: SharedPreferences =
+        try {
+            EncryptedSharedPreferences(
+                context,
+                PREF_NAME,
+                MasterKey(context),
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+        } catch (e: Throwable) {
+            Firebase.crashlytics.recordException(e)
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        }
 
     private val allIMSI: LinkedHashSet<String> = LinkedHashSet()
     private val enabledIMSI: LinkedHashSet<String> = LinkedHashSet()
 
     init {
-        sharedPreferences.getStringSet(KEY_ALL_IMSI, null)?.let {
-            allIMSI.addAll(it)
-        }
-        sharedPreferences.getStringSet(KEY_ENABLED_IMSI, null)?.let {
-            enabledIMSI.addAll(it)
-        }
+        sharedPreferences.getStringSet(KEY_ALL_IMSI, null)?.let { allIMSI.addAll(it) }
+        sharedPreferences.getStringSet(KEY_ENABLED_IMSI, null)?.let { enabledIMSI.addAll(it) }
     }
 
     fun getEnabledIMSI(): Set<String> {
@@ -74,10 +78,10 @@ class NetUsageConfigs(context: Context) {
     }
 
     private fun save() {
-        sharedPreferences.edit()
+        sharedPreferences
+            .edit()
             .putStringSet(KEY_ALL_IMSI, allIMSI)
             .putStringSet(KEY_ENABLED_IMSI, enabledIMSI)
             .apply()
     }
-
 }

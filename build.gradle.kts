@@ -5,16 +5,17 @@ tasks.wrapper {
     distributionType = Wrapper.DistributionType.ALL
 }
 
+plugins {
+    id("com.android.application") version "7.2.1" apply false
+    id("com.android.library") version "7.2.1" apply false
+    id("org.jetbrains.kotlin.android") version "1.7.10" apply false
+    id("com.diffplug.spotless") version "6.7.2" apply false
+}
+
 buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
     dependencies {
-        classpath(deps.android.gradle)
-        classpath(deps.kotlin.gradle)
-        classpath(deps.diffplug.spotless)
         classpath(deps.google.services)
+        classpath(deps.google.oss.license)
         classpath(deps.bundles.firebase.gradle)
         classpath(deps.tinify)
     }

@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.annotation.IntDef
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.ViewCompat
 import androidx.core.widget.TextViewCompat
 import com.dede.nativetools.R
 import com.dede.nativetools.netspeed.NetSpeedPreferences
@@ -28,8 +29,8 @@ const val wrapContent = ViewGroup.LayoutParams.WRAP_CONTENT
 
 val Configuration.isNightMode: Boolean
     get() {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) this.isNightModeActive else
-            this.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) this.isNightModeActive
+        else this.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
 
 fun Configuration.isSmallestScreenWidthDpAtLast(swDp: Int): Boolean {
@@ -47,6 +48,10 @@ fun TextView.setCompoundDrawablesRelative(
     bottom: Drawable? = null,
 ) {
     TextViewCompat.setCompoundDrawablesRelative(this, start, top, end, bottom)
+}
+
+fun View.isRTL(): Boolean {
+    return ViewCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_RTL
 }
 
 object UI {
@@ -105,18 +110,13 @@ fun View.getRectOnFullWindow(rect: Rect): Rect {
 }
 
 val Number.dp: Int
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this.toFloat(),
-        UI.displayMetrics()
-    ).roundToInt()
+    get() =
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), UI.displayMetrics())
+            .roundToInt()
 
 val Number.dpf: Float
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this.toFloat(),
-        UI.displayMetrics()
-    )
+    get() =
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), UI.displayMetrics())
 
 typealias DialogOnClick = (dialog: DialogInterface) -> Unit
 
@@ -137,23 +137,16 @@ class AlertBuilder(private val builder: AlertDialog.Builder) {
     }
 
     fun positiveButton(@StringRes textId: Int, onClick: DialogOnClick? = null) {
-        builder.setPositiveButton(textId) { dialog, _ ->
-            onClick?.invoke(dialog)
-        }
+        builder.setPositiveButton(textId) { dialog, _ -> onClick?.invoke(dialog) }
     }
 
     fun neutralButton(@StringRes textId: Int, onClick: DialogOnClick? = null) {
-        builder.setNeutralButton(textId) { dialog, _ ->
-            onClick?.invoke(dialog)
-        }
+        builder.setNeutralButton(textId) { dialog, _ -> onClick?.invoke(dialog) }
     }
 
     fun negativeButton(@StringRes textId: Int, onClick: DialogOnClick? = null) {
-        builder.setNegativeButton(textId) { dialog, _ ->
-            onClick?.invoke(dialog)
-        }
+        builder.setNegativeButton(textId) { dialog, _ -> onClick?.invoke(dialog) }
     }
-
 }
 
 fun Context.alert(
@@ -161,8 +154,7 @@ fun Context.alert(
     @StringRes messageId: Int = -1,
     init: (AlertBuilder.() -> Unit)? = null,
 ): Dialog {
-    val builder = MaterialAlertDialogBuilder(this)
-        .setTitle(titleId)
+    val builder = MaterialAlertDialogBuilder(this).setTitle(titleId)
     if (messageId > 0) {
         builder.setMessage(messageId)
     }
@@ -185,24 +177,17 @@ fun Context.showHideLockNotificationDialog() {
             NetSpeedNotificationHelper.goLockHideNotificationSetting(context)
         }
         negativeButton(R.string.i_know)
-        neutralButton(R.string.help) {
-            context.browse(R.string.url_hide_lock_notification)
-        }
+        neutralButton(R.string.help) { context.browse(R.string.url_hide_lock_notification) }
     }
 }
 
 fun Context.showNotificationDisableDialog() {
     val context = this
-    context.alert(
-        R.string.alert_title_notification_disable,
-        R.string.alert_msg_notification_disable
-    ) {
+    context.alert(android.R.string.dialog_alert_title, R.string.alert_msg_notification_disable) {
         positiveButton(R.string.settings) {
             NetSpeedNotificationHelper.goNotificationSetting(context)
         }
-        neutralButton(R.string.dont_ask) {
-            NetSpeedPreferences.dontAskNotify = true
-        }
-        negativeButton(android.R.string.cancel, null)
+        neutralButton(R.string.dont_ask) { NetSpeedPreferences.dontAskNotify = true }
+        negativeButton(android.R.string.cancel)
     }
 }

@@ -7,8 +7,7 @@ import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
-import android.view.HapticFeedbackConstants
-import android.view.View
+import android.view.*
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.annotation.RequiresApi
@@ -19,6 +18,7 @@ import androidx.core.view.isInvisible
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentAboutBinding
@@ -26,9 +26,7 @@ import com.dede.nativetools.main.applyBarsInsets
 import com.dede.nativetools.util.*
 import kotlin.random.Random
 
-/**
- * 关于项目
- */
+/** 关于项目 */
 class AboutFragment : Fragment(R.layout.fragment_about) {
 
     companion object {
@@ -40,51 +38,56 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
     private val viewModel by viewModels<AboutViewModel>()
     private var toasted = false
 
-    private val colorIdNormal: IntArray = intArrayOf(
-        R.color.md_theme_secondary,
-        R.color.md_theme_secondaryContainer,
-        R.color.md_theme_primary,
-        R.color.md_theme_primaryContainer,
-        android.R.color.black,
-        android.R.color.holo_red_light,
-        android.R.color.holo_blue_light,
-        android.R.color.holo_green_light,
-        android.R.color.holo_orange_light,
-        android.R.color.holo_purple,
-        android.R.color.darker_gray,
-        com.google.android.material.R.color.material_deep_teal_200,
-        com.google.android.material.R.color.material_blue_grey_950,
-        com.google.android.material.R.color.material_grey_900,
-    )
+    private val colorIdNormal: IntArray =
+        intArrayOf(
+            R.color.md_theme_secondary,
+            R.color.md_theme_secondaryContainer,
+            R.color.md_theme_primary,
+            R.color.md_theme_primaryContainer,
+            android.R.color.black,
+            android.R.color.holo_red_light,
+            android.R.color.holo_blue_light,
+            android.R.color.holo_green_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_purple,
+            android.R.color.darker_gray,
+            com.google.android.material.R.color.material_deep_teal_200,
+            com.google.android.material.R.color.material_blue_grey_950,
+            com.google.android.material.R.color.material_grey_900,
+        )
 
     @RequiresApi(Build.VERSION_CODES.S)
-    private val colorIdsS = intArrayOf(
-        android.R.color.system_accent1_300,
-        android.R.color.system_accent1_600,
-        android.R.color.system_accent1_900,
-        android.R.color.system_accent2_300,
-        android.R.color.system_accent2_600,
-        android.R.color.system_accent2_900,
-        android.R.color.system_neutral1_300,
-        android.R.color.system_neutral1_600,
-        android.R.color.system_neutral1_900,
-        android.R.color.system_neutral2_300,
-        android.R.color.system_neutral2_600,
-        android.R.color.system_neutral2_900,
-    )
+    private val colorIdsS =
+        intArrayOf(
+            android.R.color.system_accent1_300,
+            android.R.color.system_accent1_600,
+            android.R.color.system_accent1_900,
+            android.R.color.system_accent2_300,
+            android.R.color.system_accent2_600,
+            android.R.color.system_accent2_900,
+            android.R.color.system_neutral1_300,
+            android.R.color.system_neutral1_600,
+            android.R.color.system_neutral1_900,
+            android.R.color.system_neutral2_300,
+            android.R.color.system_neutral2_600,
+            android.R.color.system_neutral2_900,
+        )
     private val colorIds =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) colorIdsS else colorIdNormal
 
     private val outlineProvider = ViewOvalOutlineProvider(true)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        applyBarsInsets(view, bottom = view)// navigation bar
+        applyBarsInsets(view, bottom = view) // navigation bar
 
         binding.tvVersion.text = requireContext().getVersionSummary()
-        binding.ivGithub.setOnClickListener {
-            requireContext().browse(R.string.url_github)
-        }
+        binding.ivGithub.setOnClickListener { requireContext().browse(R.string.url_github) }
         binding.ivGithub.enableFeedback = false
         binding.tvPrivacyAgreement.setOnClickListener {
             requireContext().browse(R.string.url_privacy_agreement)
@@ -118,14 +121,16 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             }
             return
         }
-        val insert = if (count == 0) template else {
-            AppCompatImageView(requireContext()).apply {
-                setImageResource(R.mipmap.ic_launcher_round)
-                isInvisible = true
-                layoutParams = LayoutParams(template.layoutParams as LayoutParams)
-                binding.rootAbout.addView(this, binding.rootAbout.indexOfChild(template))
+        val insert =
+            if (count == 0) template
+            else {
+                AppCompatImageView(requireContext()).apply {
+                    setImageResource(R.mipmap.ic_launcher_round)
+                    isInvisible = true
+                    layoutParams = LayoutParams(template.layoutParams as LayoutParams)
+                    binding.rootAbout.addView(this, binding.rootAbout.indexOfChild(template))
+                }
             }
-        }
         followViews.add(insert.apply { outlineProvider = this@AboutFragment.outlineProvider })
         binding.ivLogo.followViews = followViews.toTypedArray()
 
@@ -135,7 +140,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
             followViews[i].apply {
                 scaleX = value
                 scaleY = value
-                //alpha = value
+                // alpha = value
                 setTintColor(colorIds[Random.nextInt(colorIds.size)])
             }
         }
@@ -167,7 +172,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                     // BZZZTT!!1!
                     binding.ivLogo.performHapticFeedback(
                         HapticFeedbackConstants.CONTEXT_CLICK,
-                        HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                        HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
                     )
                 }
                 addListener(onStart = feedbackCallback, onRepeat = feedbackCallback)
@@ -176,4 +181,29 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_about, menu)
+        if (!requireContext().isGooglePlayServicesAvailable()) {
+            menu.removeItem(R.id.action_open_source)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_open_source -> {
+                findNavController().navigate(R.id.action_about_to_openSource)
+                true
+            }
+            R.id.action_feedback -> {
+                requireContext().emailTo(R.string.email)
+                true
+            }
+            R.id.action_diagnosis -> {
+                findNavController().navigate(R.id.action_about_to_diagnosisFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }

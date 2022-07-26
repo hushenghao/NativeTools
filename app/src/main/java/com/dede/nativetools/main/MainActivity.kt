@@ -15,7 +15,7 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.LayoutInflaterCompat
 import androidx.core.view.doOnAttach
 import androidx.core.view.isGone
-import androidx.core.view.updatePadding
+import androidx.core.view.updatePaddingRelative
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -33,14 +33,17 @@ import com.dede.nativetools.ui.NavigatePreference
 import com.dede.nativetools.util.*
 import com.google.firebase.analytics.FirebaseAnalytics
 
-/**
- * Main
- */
-class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
+/** Main */
+class MainActivity :
+    AppCompatActivity(),
+    NavController.OnDestinationChangedListener,
     NavigatePreference.OnNavigateHandler {
 
     companion object {
-        const val EXTRA_TOGGLE = "extra_toggle"
+        const val EXTRA_ACTION = "extra_action"
+
+        const val ACTION_TOGGLE = 1
+        const val ACTION_SHARE = 2
     }
 
     private val binding by viewBinding {
@@ -51,15 +54,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val viewModel by viewModels<MainViewModel>()
 
+    private val broadcastHelper = BroadcastHelper(NetSpeedService.ACTION_CLOSE)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val isToggle = intent.extra(EXTRA_TOGGLE, false)
-        event(FirebaseAnalytics.Event.APP_OPEN) {
-            param(FirebaseAnalytics.Param.METHOD, if (isToggle) "toggle" else "normal")
-        }
-        if (isToggle) {
-            NetSpeedService.toggle(this)
-            finish()
+        if (handleAction(intent)) {
             return
         }
 
@@ -72,15 +71,16 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             val decorView = window.decorView
             decorView.doOnAttach {
                 ViewAnimationUtils.createCircularReveal(
-                    decorView,
-                    circularReveal.centerX,
-                    circularReveal.centerY,
-                    circularReveal.startRadius,
-                    circularReveal.endRadius
-                ).apply {
-                    duration = 1000
-                    start()
-                }
+                        decorView,
+                        circularReveal.centerX,
+                        circularReveal.centerY,
+                        circularReveal.startRadius,
+                        circularReveal.endRadius
+                    )
+                    .apply {
+                        duration = 1000
+                        start()
+                    }
             }
         }
 
@@ -90,16 +90,21 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         applyBarsInsets(
             root = binding.root,
             // top status bar, android:fitsSystemWindows="true"
-            left = binding.toolbar,         // navigation bar, Insert padding only in the toolbar
-            right = binding.motionLayout,   // navigation bar
+            end = binding.motionLayout, // navigation bar
             // Some devices have navigation bars on the side, when landscape.
-        ) {
+            ) {
             val insets = it.stableInsets()
-            binding.navigationView.updatePadding(left = insets.left)
+            // navigation bar, Insert padding only in the toolbar
+            binding.toolbar.updatePaddingRelative(
+                start = insets.start(binding.toolbar),
+                end = insets.end(binding.root)
+            )
+            binding.navigationView.updatePaddingRelative(
+                start = insets.start(binding.navigationView)
+            )
         }
 
-        NavFragmentAssistant(supportFragmentManager)
-            .setupWithNavFragment(R.id.nav_host_fragment)
+        NavFragmentAssistant(supportFragmentManager).setupWithNavFragment(R.id.nav_host_fragment)
         val appBarBuilder = AppBarConfiguration.Builder(*topLevelDestinationIds)
         if (UI.isWideSize()) {
             // bind drawer
@@ -130,6 +135,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         if (!NetSpeedPreferences.privacyAgreed) {
             navController.navigate(R.id.dialogGuide)
         }
+
+        broadcastHelper.register(this) { _, _ ->
+            // Single process implementation of DataStore. This is NOT multi-process safe.
+            NetSpeedPreferences.status = false
+        }
     }
 
     override fun onDestinationChanged(
@@ -154,8 +164,26 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         return super.onOptionsItemSelected(item)
     }
 
+    /** 处理Action入参，需要中断后面逻辑执行时返回true，其他返回false */
+    private fun handleAction(intent: Intent?): Boolean {
+        when (intent?.getIntExtra(EXTRA_ACTION, 0)) {
+            ACTION_TOGGLE -> {
+                NetSpeedService.toggle(this)
+                finish()
+                return true
+            }
+            ACTION_SHARE -> {
+                Logic.shareApp(this)
+            }
+        }
+        return false
+    }
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        if (handleAction(intent)) {
+            return
+        }
         handleDeepLink(intent)
     }
 
@@ -189,6 +217,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         return cloneInflater
     }
 
+    override fun onDestroy() {
+        broadcastHelper.unregister(this)
+        super.onDestroy()
+    }
+
     private class MotionLayoutFactory : LayoutInflater.Factory2 {
         override fun onCreateView(
             parent: View?,
@@ -199,9 +232,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             if (name == MotionLayout::class.qualifiedName) {
                 // remove app:layoutDescription="@xml/activity_main_scene", disable scene
                 val template = MotionLayout(context, attrs)
-                return MotionLayout(context).apply {
-                    id = template.id
-                }
+                return MotionLayout(context).apply { id = template.id }
             }
             return null
         }

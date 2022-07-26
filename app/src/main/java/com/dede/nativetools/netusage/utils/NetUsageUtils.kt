@@ -8,10 +8,10 @@ import androidx.annotation.WorkerThread
 import com.dede.nativetools.util.Logic
 import com.dede.nativetools.util.requireSystemService
 import com.dede.nativetools.util.toZeroH
-import kotlinx.coroutines.*
 import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.atomic.AtomicReference
+import kotlinx.coroutines.*
 
 /**
  * 网络使用状态工具
@@ -21,18 +21,17 @@ import java.util.concurrent.atomic.AtomicReference
  */
 object NetUsageUtils {
 
-    @Suppress("DEPRECATION")
-    const val TYPE_WIFI = ConnectivityManager.TYPE_WIFI
+    @Suppress("DEPRECATION") const val TYPE_WIFI = ConnectivityManager.TYPE_WIFI
 
-    @Suppress("DEPRECATION")
-    const val TYPE_MOBILE = ConnectivityManager.TYPE_MOBILE
+    @Suppress("DEPRECATION") const val TYPE_MOBILE = ConnectivityManager.TYPE_MOBILE
 
     const val RANGE_TYPE_TODAY = 0
     const val RANGE_TYPE_MONTH = 1
 
     private class NetworkUsageJob<T : Comparable<T>>(data: T) : CompletionHandler {
         private val dataRef = AtomicReference<T>(data)
-        val data: T get() = dataRef.get()
+        val data: T
+            get() = dataRef.get()
 
         private var job: Job? = null
 
@@ -43,9 +42,7 @@ object NetUsageUtils {
             if (job != null && !job.isCompleted && !job.isCancelled) {
                 return
             }
-            job = coroutineScope.launch {
-                dataRef.set(block())
-            }
+            job = coroutineScope.launch { dataRef.set(block()) }
             job.invokeOnCompletion(this)
             this.job = job
         }
@@ -67,10 +64,10 @@ object NetUsageUtils {
     /**
      * 快速获取网络流量使用情况，可能数据不是最新的
      *
-     * @param   context 上下文
-     * @param   type 网络类型
-     * @param   rangeType 时间范围类型
-     * @param   subscriberId 移动网络IMSI
+     * @param context 上下文
+     * @param type 网络类型
+     * @param rangeType 时间范围类型
+     * @param subscriberId 移动网络IMSI
      */
     fun getNetUsageBytes(
         context: Context,
@@ -99,10 +96,8 @@ object NetUsageUtils {
         val start = Calendar.getInstance().toZeroH()
         start.set(Calendar.DAY_OF_MONTH, 1)
         return runBlocking {
-            val wifiUsage =
-                getNetUsageBytesInternal(context, TYPE_WIFI, null, start)
-            val mobileUsage =
-                getNetUsageBytesInternal(context, TYPE_MOBILE, null, start)
+            val wifiUsage = getNetUsageBytesInternal(context, TYPE_WIFI, null, start)
+            val mobileUsage = getNetUsageBytesInternal(context, TYPE_MOBILE, null, start)
             wifiUsage + mobileUsage
         }
     }
@@ -116,15 +111,11 @@ object NetUsageUtils {
         val networkStatsManager = context.requireSystemService<NetworkStatsManager>()
         val startTime = start.timeInMillis
         val endTime = System.currentTimeMillis()
-        val usageBytes = withContext(Dispatchers.IO) {
-            networkStatsManager.queryNetUsageBytes(
-                type,
-                subscriberId,
-                startTime,
-                endTime
-            )
-        }
-        return usageBytes shr 12 shl 12// tolerance 4096
+        val usageBytes =
+            withContext(Dispatchers.IO) {
+                networkStatsManager.queryNetUsageBytes(type, subscriberId, startTime, endTime)
+            }
+        return usageBytes shr 12 shl 12 // tolerance 4096
     }
 
     @WorkerThread
@@ -147,12 +138,8 @@ object NetUsageUtils {
         endTime: Long,
     ): NetworkStats.Bucket? {
         return this.runCatching {
-            querySummaryForDevice(
-                networkType,
-                subscriberId,
-                startTime,
-                endTime
-            )
-        }.getOrNull()
+                querySummaryForDevice(networkType, subscriberId, startTime, endTime)
+            }
+            .getOrNull()
     }
 }

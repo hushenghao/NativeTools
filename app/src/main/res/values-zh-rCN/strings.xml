@@ -3,8 +3,6 @@
     <string name="app_name">网速指示器</string>
     <string name="notify_net_speed_msg" formatted="false">上传：%s • 下载：%s</string>
     <string name="notify_net_speed_sub" formatted="false">今日：%s • 本月：%s</string>
-    <string name="label_upload">上传</string>
-    <string name="label_download">下载</string>
     <string name="switch_on">打开</string>
     <string name="switch_off">关闭</string>
     <string name="action_close">关闭</string>
@@ -33,7 +31,6 @@
 
     <string name="usage_states_title">使用情况访问授权</string>
     <string name="usage_stats_msg">统计流量使用情况时需要允许使用情况访问权限。</string>
-    <string name="alert_title_notification_disable">通知权限未开启</string>
     <string name="alert_msg_notification_disable">通知权限未开启，网速指示器将无法正常显示</string>
     <string name="settings">去设置</string>
     <string name="help">帮助</string>
@@ -49,14 +46,11 @@
     <string name="share_text" formatted="false">发现了一个好用的小工具“%s”快去下载吧！%s</string>
     <string name="action_feedback">问题反馈</string>
     <string name="toast_copyed">已复制</string>
-    <string name="toast_wx_payment_tip">微信付款码请长按保存图片后扫描</string>
     <string name="label_net_speed_toggle">切换</string>
     <string name="alert_msg_hide_lock_notification">有时候通知无法隐藏可能是锁屏设置引起的。在设置中找到“隐藏锁屏通知”，选择“仅显示敏感内容”或“隐藏所有通知”。</string>
     <string name="label_general">通用</string>
     <string name="label_notification">通知</string>
     <string name="label_other">其他</string>
-    <string name="label_net_speed_hide_notification">隐藏通知栏通知</string>
-    <string name="summary_net_speed_hide_notification">通过替换默认通知样式来隐藏通知（可能不支持所有设备）</string>
     <string name="i_know">我知道了</string>
     <string name="tip_easter_egg">彩蛋</string>
     <string name="action_rate">给个好评</string>
@@ -77,18 +71,13 @@
     <string name="summary_default">默认</string>
     <string name="summary_text_style_normal">普通</string>
     <string name="summary_text_style_bold">粗体</string>
-    <string name="summary_text_style_italic">斜体</string>
-    <string name="summary_text_style_bold_italic">粗斜体</string>
     <string name="label_net_speed_x_offset">X轴偏移</string>
     <string name="summary_mode_download">仅下载</string>
     <string name="summary_mode_all">上传和下载</string>
-    <string name="summary_mode_upload">仅上传</string>
     <string name="toast_download_font">开始字体下载</string>
     <string name="toast_download_font_succeeded">字体下载成功</string>
     <string name="toast_download_font_failed">字体下载失败</string>
     <string name="label_net_speed_horizontal_scale">X轴缩放</string>
-    <string name="label_full_net_usage">网络使用统计</string>
-    <string name="label_today">今日</string>
     <string name="label_diagnosis">诊断</string>
     <string name="label_net_speed_hide_threshold">隐藏阈值</string>
     <string name="summary_net_speed_hide_threshold" formatted="false">当速度小于%s时隐藏状态栏网速图标</string>
@@ -105,10 +94,18 @@
     <string name="label_net_speed_silence_channel">隐藏通知</string>
     <string name="label_net_speed_default_channel">活动通知</string>
     <string name="alert_msg_hide_threshold">当速度小于指定值时隐藏网速图标（单位B，1024B=1KB）</string>
-    <string name="label_font_download_source">字体下载源</string>
     <string name="label_imsi_config_tip">如果您使用多个SIM卡，可以单独配置每一张SIM卡的IMSI信息来显示详细的移动流量信息。IMSI信息可以尝试在拨号盘输入*#*#4636#*#*进行查看。</string>
     <string name="label_sim_card_config">配置SIM卡信息</string>
     <string name="alert_msg_add_imsi_config">输入您SIM卡的IMSI</string>
     <string name="label_mobile">移动网络</string>
     <string name="label_net_usage_config">网络使用情况配置</string>
+    <string name="label_donate_list">捐赠记录</string>
+    <string name="toast_network_error">网络加载失败</string>
+    <string name="toast_payment_tip">长按保存收款码</string>
+    <string name="label_net_speed_min_unit">最小显示单位</string>
+    <string name="alert_msg_miui_notification">MIUI系统需要到设置中开启“有通知时显示图标”选项，并将通知显示改为“原生样式”，才能正常显示状态网速。如果不生效可以尝试重启设备或更换主题。</string>
+    <string name="summary_share_app">将应用推荐给朋友</string>
+    <string name="summary_get_beta">获取应用的内测版本</string>
+    <string name="label_add">添加</string>
+    <string name="label_power_save_mode">省电模式</string>
 </resources>

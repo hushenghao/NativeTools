@@ -12,18 +12,14 @@ import kotlin.contracts.contract
 @OptIn(ExperimentalContracts::class)
 @kotlin.internal.InlineOnly
 inline fun String?.isEmpty(): Boolean {
-    contract {
-        returns(false) implies (this@isEmpty != null)
-    }
+    contract { returns(false) implies (this@isEmpty != null) }
     return TextUtils.isEmpty(this)
 }
 
 @OptIn(ExperimentalContracts::class)
 @kotlin.internal.InlineOnly
 inline fun String?.isNotEmpty(): Boolean {
-    contract {
-        returns(true) implies (this@isNotEmpty != null)
-    }
+    contract { returns(true) implies (this@isNotEmpty != null) }
     return !TextUtils.isEmpty(this)
 }
 
@@ -46,6 +42,5 @@ fun Closeable?.closeFinally() {
     if (this == null) return
     try {
         this.close()
-    } catch (e: IOException) {
-    }
+    } catch (e: IOException) {}
 }

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Vitesse Net</string>
+    <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">Aujourd\'hui: %s • Mois: %s</string>
+    <string name="switch_on">In</string>
+    <string name="switch_off">Coupez</string>
+    <string name="action_close">Approche</string>
+    <string name="expand_button_title">Plus de paramètres</string>
+    <string name="label_net_speed">Vitesse Net</string>
+    <string name="label_net_speed_interval">Intervalle de rafraîchissement</string>
+    <string name="label_net_speed_hide_lock_notification">Masquer la notification de l\'écran de verrouillage</string>
+    <string name="label_net_speed_notify_clickable">Les notifications peuvent être cliquées</string>
+    <string name="label_net_speed_mode">Mode d \'affichage</string>
+    <string name="label_net_speed_auto_start">Démarrage automatique</string>
+    <string name="label_net_speed_notify_quick_closeable">Fermeture du raccourci de notification</string>
+    <string name="label_night_mode">Mode nuit</string>
+    <string name="label_net_speed_usage">Afficher l\'utilisation quotidienne et mensuelle du trafic</string>
+    <string name="label_about">À propos de</string>
+    <string name="label_ignore_battery_optimize">Ignorer l\'optimisation de la batterie</string>
+    <string name="summary_net_speed">Afficher la vitesse actuelle du réseau dans la barre d\'état</string>
+    <string name="summary_net_speed_hide_lock_notification">La notification sera cachée par défaut lors du verrouillage de l\'écran. Si elle n\'est pas valide, vous devez définir la notification de l\'écran de verrouillage caché.</string>
+    <string name="summary_net_speed_notify_clickable">Cliquez sur notification pour ouvrir l\'interface de configuration de l\'application</string>
+    <string name="summary_net_speed_auto_start">Démarrer le Service de réception avec le système</string>
+    <string name="summary_net_speed_notify_quick_closeable">Ajouter un bouton d\'arrêt à la notification de vitesse réseau</string>
+    <string name="summary_night_mode_follow_system">Système de suivi</string>
+    <string name="summary_net_speed_usage">La notification affiche la somme des données mobiles et de l\'utilisation du trafic WLAN</string>
+    <string name="summary_ignore_battery_optimize">Ajouter une liste blanche d\'optimisation de la batterie pour empêcher le Service de réception de ne pas fonctionner (pour certains appareils)</string>
+    <string name="usage_states_title">Autorisation d\'accès à l\'utilisation</string>
+    <string name="usage_stats_msg">Les statistiques d’utilisation du trafic doivent permettre l’accès à l’utilisation.</string>
+    <string name="alert_msg_notification_disable">La permission de notification n\'est pas activée et l\'indicateur de vitesse du réseau ne s\'affichera pas correctement</string>
+    <string name="settings">Pour définir</string>
+    <string name="help">Aide</string>
+    <string name="access">Pour autoriser</string>
+    <string name="dont_ask">Plus de conseils</string>
+    <string name="desc_net_speed_notify">L\'indicateur de vitesse du réseau doit être affiché par notification</string>
+    <string name="chooser_label_browse">Sélectionnez le Navigateur pour ouvrir</string>
+    <string name="chooser_label_market">Sélectionner le magasin</string>
+    <string name="label_open_source">Open Source related</string>
+    <string name="action_share">Partager</string>
+    <string name="share_text" formatted="false">J\'a i trouvé un bon gadget \"%s\" à télécharger! %s</string>
+    <string name="action_feedback">Rétroaction sur les questions</string>
+    <string name="toast_copyed">Copié</string>
+    <string name="label_net_speed_toggle">Basculer</string>
+    <string name="alert_msg_hide_lock_notification">Parfois, les notifications ne peuvent pas être cachées en raison du réglage de l\'écran de verrouillage. Localisez masquer les notifications de verrouillage dans les paramètres et sélectionnez afficher uniquement le contenu sensible ou masquer toutes les notifications.</string>
+    <string name="label_general">Généralités</string>
+    <string name="label_notification">Notification</string>
+    <string name="label_other">Autres</string>
+    <string name="i_know">Je le vois</string>
+    <string name="tip_easter_egg">Oeufs de couleur</string>
+    <string name="action_rate">Donne - moi une bonne note.</string>
+    <string name="action_donate">Dons</string>
+    <string name="label_coffee">Tu m\'offres un café?</string>
+    <string name="toast_saved">Enregistré</string>
+    <string name="label_home">Page d\'accueil</string>
+    <string name="toast_open_battery_optimization">S\'il vous plaît trouver \"Vitesse Net\" et activer manuellement l\'optimisation de la batterie</string>
+    <string name="label_privacy_agreement">Accord de confidentialité</string>
+    <string name="label_net_speed_style">Style de police</string>
+    <string name="label_net_speed_text_scale">Zoom du texte</string>
+    <string name="label_net_speed_relative_distance">La distance relative</string>
+    <string name="label_net_speed_relative_ratio">La proportion relative</string>
+    <string name="label_net_speed_y_offset">Décalage de l’axe Y</string>
+    <string name="summary_net_speed_advanced">Personnaliser le style d’affichage</string>
+    <string name="label_net_speed_advanced">Les paramètres avancés</string>
+    <string name="label_net_speed_font">Caractères</string>
+    <string name="summary_default">Par défaut</string>
+    <string name="summary_text_style_normal">Normale</string>
+    <string name="summary_text_style_bold">En caractères gras</string>
+    <string name="label_net_speed_x_offset">Décalage de l’axe X</string>
+    <string name="summary_mode_download">Down</string>
+    <string name="summary_mode_all">Up and Down</string>
+    <string name="toast_download_font">Start font télécharger</string>
+    <string name="toast_download_font_succeeded">Fontes téléchargées avec succès</string>
+    <string name="toast_download_font_failed">Fail télécharger la police</string>
+    <string name="label_net_speed_horizontal_scale">Zoom sur l’axe X</string>
+    <string name="label_diagnosis">Diagnostic</string>
+    <string name="summary_threshold_error">Le seuil entré est incorrect</string>
+    <string name="label_net_speed_hide_threshold">Masquer le seuil</string>
+    <string name="summary_net_speed_hide_threshold" formatted="false">Masquer la vitesse du réseau de la colonne d’état lorsque la vitesse est inférieure à %s</string>
+    <string name="summary_net_speed_unhide">Ne pas cacher</string>
+    <string name="alert_msg_guide" formatted="false">Merci d’utiliser %s. Nous respectons et protégeons vos informations personnelles et les questions pertinentes sont détaillées dans %s, y compris les instructions sur les autorisations sensibles de l’appareil qui peuvent être nécessaires pour l’application. \nVeuillez lire attentivement l’intégralité du contenu de %s avant d’utiliser nos produits.</string>
+    <string name="label_net_speed_default_channel">Notification des activités</string>
+    <string name="label_net_speed_silence_channel">Notifications en silence</string>
+    <string name="label_net_speed_service">Service Vitesse Net</string>
+    <string name="alert_msg_hide_threshold">Masquer l’icône de vitesse internet lorsque la vitesse est inférieure à la valeur spécifiée (unité B, 1024B= 1KB)</string>
+    <string name="label_sim_card_config">Configurer les informations de la carte SIM</string>
+    <string name="alert_msg_add_imsi_config">Entrez l’imsi de votre carte SIM</string>
+    <string name="label_imsi_config_tip">Si vous utilisez plusieurs cartes SIM, les informations IMSI de chaque carte SIM peuvent être configurées individuellement pour afficher des informations détaillées sur le trafic mobile. Les informations IMSI peuvent être visualisées en tapant *#*#4636#*#* sur le cadran.</string>
+    <string name="label_net_usage_config">Configuration de l’utilisation du réseau</string>
+    <string name="label_mobile">Le réseau mobile</string>
+    <string name="label_donate_list">Enregistrement des dons</string>
+    <string name="toast_network_error">Échec du chargement du réseau</string>
+    <string name="toast_payment_tip">Appuyez longuement pour enregistrer le code de collecte</string>
+    <string name="label_net_speed_min_unit">Unité minimale d’affichage</string>
+    <string name="alert_msg_miui_notification">Le système MIUI doit aller dans les paramètres pour activer l’option \"afficher l’icône en cas de notification\" et changer l’affichage de la notification en \"style natif\" pour afficher correctement l’état de la vitesse internet. Si cela ne fonctionne pas, vous pouvez essayer de redémarrer l’appareil ou de changer de thème.</string>
+    <string name="summary_share_app">Recommander l’application à un ami</string>
+    <string name="summary_get_beta">Obtenez la version beta de l’application</string>
+    <string name="label_power_save_mode">Mode d’économie d’énergie</string>
+    <string name="label_add">L’addition de</string>
+</resources>

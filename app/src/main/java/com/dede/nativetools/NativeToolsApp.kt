@@ -9,7 +9,9 @@ import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.util.installShortcuts
 import com.dede.nativetools.util.isMainProcess
 import com.dede.nativetools.util.setNightMode
+import com.google.android.material.R
 import com.google.android.material.color.DynamicColors
+import com.google.android.material.color.DynamicColorsOptions
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -40,16 +42,19 @@ class NativeToolsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        DynamicColors.applyToActivitiesIfAvailable(
-            this,
-            com.google.android.material.R.style.ThemeOverlay_Material3_DynamicColors_DayNight
-        )
+        initFirebase()
+        val options =
+            DynamicColorsOptions.Builder()
+                .setThemeOverlay(R.style.ThemeOverlay_Material3_DynamicColors_DayNight)
+                .setPrecondition { activity, _ ->
+                    activity.javaClass.packageName != "com.google.android.gms.oss.licenses"
+                }
+                .build()
+        DynamicColors.applyToActivitiesIfAvailable(this, options)
         if (isMainProcess()) {
             installShortcuts()
             setNightMode(OtherPreferences.nightMode)
         }
-
-        initFirebase()
     }
 
     private fun initFirebase() {
@@ -67,5 +72,4 @@ class NativeToolsApp : Application() {
         super.onConfigurationChanged(newConfig)
         installShortcuts()
     }
-
 }

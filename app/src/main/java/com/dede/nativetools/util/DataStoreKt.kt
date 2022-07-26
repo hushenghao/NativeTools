@@ -3,11 +3,9 @@ package com.dede.nativetools.util
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
-import androidx.datastore.preferences.SharedPreferencesMigration
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.preference.PreferenceDataStore
-import androidx.preference.PreferenceManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -15,30 +13,25 @@ import kotlinx.coroutines.flow.map
 
 private val dataStoreScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
-    name = "settings",
-    corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-    produceMigrations = {
-        listOf(SharedPreferencesMigration(produceSharedPreferences = {
-            PreferenceManager.getDefaultSharedPreferences(globalContext)
-        }))
-    },
-    scope = dataStoreScope
-)
+private val Context.dataStore: DataStore<Preferences> by
+    preferencesDataStore(
+        name = "settings",
+        corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+        scope = dataStoreScope
+    )
 
 val globalDataStore: DataStore<Preferences>
     get() = globalContext.dataStore
 
 fun DataStore<Preferences>.load(): Preferences {
-    return runBlocking(dataStoreScope.coroutineContext) {
-        this@load.data.first()
-    }
+    return runBlocking(dataStoreScope.coroutineContext) { this@load.data.first() }
 }
 
 fun <T> DataStore<Preferences>.get(key: Preferences.Key<T>, defValue: T): T {
     return runBlocking(dataStoreScope.coroutineContext) {
         this@get.data.map { it[key] }.firstOrNull()
-    } ?: defValue
+    }
+        ?: defValue
 }
 
 fun <T> DataStore<Preferences>.get(key: Preferences.Key<T>): T? {
@@ -102,7 +95,6 @@ class DataStorePreference(context: Context) : PreferenceDataStore() {
     override fun getString(key: String, defValue: String?): String? {
         return dataStore.get(stringPreferencesKey(key)) ?: defValue
     }
-
 
     override fun putInt(key: String, value: Int) {
         dataStore.set(intPreferencesKey(key), value)

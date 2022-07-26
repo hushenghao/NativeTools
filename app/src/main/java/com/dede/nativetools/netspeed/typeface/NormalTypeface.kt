@@ -2,7 +2,6 @@ package com.dede.nativetools.netspeed.typeface
 
 import android.graphics.Typeface
 
-
 class NormalTypeface : TypefaceGetter {
 
     override fun get(style: Int): Typeface {

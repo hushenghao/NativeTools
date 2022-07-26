@@ -39,3 +39,10 @@
 -dontwarn com.google.errorprone.annotations.Immutable
 -keepnames class * extends kotlinx.coroutines.internal.MainDispatcherFactory
 -keepnames class * extends kotlinx.coroutines.CoroutineExceptionHandler
+
+-keep class com.dede.nativetools.network.Api {*;}
+
+# OkHttp
+-dontwarn org.conscrypt.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.openjsse.**

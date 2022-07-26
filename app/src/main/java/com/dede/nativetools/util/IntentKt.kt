@@ -13,7 +13,6 @@ import android.os.Parcelable
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 
-
 inline fun <reified T> Intent(context: Context, vararg extras: Pair<String, Any>): Intent {
     return Intent(context, T::class.java).putExtras(*extras)
 }
@@ -41,31 +40,6 @@ fun Intent.putExtras(vararg extras: Pair<String, Any>): Intent {
     return this
 }
 
-inline fun <reified T : Any> Intent.extra(name: String, default: T): T {
-    val tClass = T::class
-    return when {
-        tClass == Int::class -> this.getIntExtra(name, default as Int) as T
-        tClass == Boolean::class -> this.getBooleanExtra(name, default as Boolean) as T
-        tClass == String::class -> (this.getStringExtra(name) as? T) ?: default
-        Parcelable::class.java.isAssignableFrom(tClass.java) ->
-            (this.getParcelableExtra(name) as? T) ?: default
-        else -> {
-            throw IllegalArgumentException("IntentKt: get $tClass don`t impl")
-        }
-    }
-}
-
-inline fun <reified T : Any> Intent.extra(name: String): T? {
-    val tClass = T::class.java
-    return when {
-        tClass == String::class.java -> this.getStringExtra(name) as? T
-        Parcelable::class.java.isAssignableFrom(tClass) -> this.getParcelableExtra(name) as? T
-        else -> {
-            throw IllegalArgumentException("IntentKt: get $tClass don`t impl")
-        }
-    }
-}
-
 fun Intent.newTask(): Intent = this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
 fun Intent.newClearTask(): Intent = this.newTask().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -81,6 +55,9 @@ inline fun Intent.launchActivity(context: Context) = context.launchActivity(this
 fun Intent.toPendingBroadcast(context: Context, flags: Int): PendingIntent =
     PendingIntent.getBroadcast(context, 0, this, flags)
 
+fun Intent.toPendingActivity(context: Context, flags: Int): PendingIntent =
+    PendingIntent.getActivity(context, 0, this, flags)
+
 fun PendingIntent.toNotificationCompatAction(@StringRes titleId: Int): NotificationCompat.Action =
     NotificationCompat.Action.Builder(null, globalContext.getString(titleId), this).build()
 
@@ -92,9 +69,9 @@ fun IntentFilter(vararg actions: String): IntentFilter {
     return intentFilter
 }
 
+// https://developer.android.google.cn/training/package-visibility/automatic
+// adb shell dumpsys package queries
 fun Intent.queryImplicitActivity(context: Context): Boolean {
-    return this.resolveActivityInfo(
-        context.packageManager,
-        PackageManager.MATCH_DEFAULT_ONLY
-    ) != null
+    return this.resolveActivityInfo(context.packageManager, PackageManager.MATCH_DEFAULT_ONLY) !=
+        null
 }

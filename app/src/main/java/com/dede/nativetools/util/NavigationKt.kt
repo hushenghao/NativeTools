@@ -19,14 +19,14 @@ import com.google.android.material.navigationrail.NavigationRailView
 import kotlin.properties.ReadOnlyProperty
 
 /** NavController */
-
-fun FragmentActivity.navController(@IdRes viewId: Int): ReadOnlyProperty<FragmentActivity, NavController> {
+fun FragmentActivity.navController(
+    @IdRes viewId: Int
+): ReadOnlyProperty<FragmentActivity, NavController> {
     return ReadOnlyProperty { _, _ -> this.findNavControllerCompat(viewId) }
 }
 
 private fun FragmentActivity.findNavControllerCompat(@IdRes viewId: Int): NavController {
-    val navHostFragment =
-        this.supportFragmentManager.findFragmentById(viewId) as? NavHostFragment
+    val navHostFragment = this.supportFragmentManager.findFragmentById(viewId) as? NavHostFragment
     if (navHostFragment != null) {
         return navHostFragment.navController
     }
@@ -41,7 +41,6 @@ internal inline fun <reified T : Navigator<*>> NavController.getNavigator(): T {
 }
 
 /** NavigationBars */
-
 object NavigationBars {
 
     fun setupWithNavController(

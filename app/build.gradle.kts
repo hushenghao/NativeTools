@@ -1,49 +1,40 @@
-import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.util.Date
 import java.util.Properties
+import org.json.JSONObject
 
-val keystoreProperties = Properties().apply {
-    rootProject.file("key.properties")
-        .takeIf { it.exists() }?.inputStream()?.use(this::load)
-}
+val keystoreProperties =
+    Properties().apply {
+        rootProject.file("key.properties").takeIf { it.exists() }?.inputStream()?.use(this::load)
+    }
 
 plugins {
     id("com.android.application")
-    id("kotlin-android")
+    id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
+
     id("com.google.gms.google-services")
+    id("com.google.android.gms.oss-licenses-plugin")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
     id("com.google.firebase.appdistribution")
-    id("com.diffplug.spotless")
 }
 
+apply(from = "../gradle/spotless.gradle")
+
 android {
-    compileSdk = 31
-//    compileSdkPreview = "Tiramisu"
-    buildToolsVersion = "32.0.0"
+    compileSdk = 33
+    buildToolsVersion = "33.0.0"
     defaultConfig {
         applicationId = "com.dede.nativetools"
         minSdk = 23
-        targetSdk = 30
-        versionCode = 59
-        versionName = "3.9.0"
+        targetSdk = 33
+        versionCode = 63
+        versionName = "4.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(
-            listOf(
-                "zh-rCN",
-                "zh-rHK",
-                "ja-rJP",
-                "en-rUS",
-                "ko-rKR",
-                "ru-rRU",
-                "de-rDE",
-                "fr-rFR",
-                "es",
-                "pt-rPT"
-            )
+            listOf("zh-rCN", "zh-rHK", "ja", "en", "ko", "ru", "de", "fr", "es", "pt")
         )
 
         // rename output file name
@@ -89,9 +80,7 @@ android {
         }
     }
 
-    viewBinding {
-        isEnabled = true
-    }
+    viewBinding { isEnabled = true }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -105,7 +94,7 @@ android {
 }
 
 dependencies {
-    implementation(deps.kotlin.stdlib)
+    compileOnly(project(":systemApi"))
     implementation(deps.androidx.appcompat)
     implementation(deps.androidx.core.ktx)
     implementation(deps.androidx.preference.ktx)
@@ -121,7 +110,13 @@ dependencies {
 
     implementation(deps.free.reflection)
     implementation(deps.viewbinding.property.delegate)
+    implementation(deps.bumptech.glide)
+    implementation(deps.squareup.okhttp)
+    implementation(deps.squareup.retrofit)
+    implementation(deps.squareup.retrofit.converter.moshi)
+    implementation(deps.squareup.moshi)
 
+    implementation(deps.play.services.oss.licenses)
     implementation(platform(deps.firebase.bom))
     implementation(deps.bundles.firebase.ktx)
 
@@ -131,67 +126,35 @@ dependencies {
     androidTestImplementation(deps.bundles.androidx.test)
 }
 
-spotless {
-    java {
-        googleJavaFormat()
-    }
-    kotlin {
-        ktfmt()
-        ktlint()
-        diktat()
-        prettier()
-    }
-    kotlinGradle {
-        target("*.gradle.kts")
-        ktlint()
-    }
-}
-
-configurations.all {
-    exclude("androidx.viewpager2", "viewpager2")
-    exclude("androidx.viewpager", "viewpager")
-    exclude("androidx.slidingpanelayout", "slidingpanelayout")
-    exclude("androidx.swiperefreshlayout", "swiperefreshlayout")
-    exclude("androidx.dynamicanimation", "dynamicanimation")
-    exclude("androidx.localbroadcastmanager", "localbroadcastmanager")
-    exclude("androidx.documentfile", "documentfile")
-    exclude("androidx.print", "print")
-    exclude("androidx.cursoradapter", "cursoradapter")
-    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
-    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk7")
-}
-
 tasks.register<Exec>("pgyer") {
     val assemble = tasks.named("assembleBeta").get()
     dependsOn(assemble)
 
-    val tree = fileTree("build") {
-        include("outputs/apk/beta/*.apk", "intermediates/apk/beta/*.apk")
-    }
+    val tree =
+        fileTree("build") { include("outputs/apk/beta/*.apk", "intermediates/apk/beta/*.apk") }
     doFirst {
-        val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) {
-            "pgyer.api_key not found"
-        }
+        val apiKey = checkNotNull(keystoreProperties["pgyer.api_key"]) { "pgyer.api_key not found" }
         val apkPath = tree.first().absolutePath
         println("Upload Apk: $apkPath")
         val nodes = file("beta-distribution-nodes.txt").readText().trim()
 
         commandLine(
-            "curl", "-F", "file=@$apkPath",
-            "-F", "_api_key=$apiKey",
-            "-F", "buildUpdateDescription=${nodes}",
+            "curl",
+            "-F",
+            "file=@$apkPath",
+            "-F",
+            "_api_key=$apiKey",
+            "-F",
+            "buildUpdateDescription=$nodes",
             "https://www.pgyer.com/apiv2/app/upload"
         )
     }
-    val output = ByteArrayOutputStream().apply {
-        standardOutput = this
-    }
+    val output = ByteArrayOutputStream().apply { standardOutput = this }
     doLast {
         val result = output.toString()
         val obj = JSONObject(result)
         if (obj.getInt("code") == 0) {
-            val path = obj.getJSONObject("data")
-                .getString("buildShortcutUrl")
+            val path = obj.getJSONObject("data").getString("buildShortcutUrl")
             println("Upload succeeded: https://www.pgyer.com/$path")
         } else {
             val message = obj.getString("message")

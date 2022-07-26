@@ -7,16 +7,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialFadeThrough
 
-/**
- * NavFragment管理扩展
- */
+/** NavFragment管理扩展 */
 class NavFragmentAssistant(private val fragmentManager: FragmentManager) :
     FragmentManager.FragmentLifecycleCallbacks() {
 
     fun setupWithNavFragment(resId: Int) {
         val navHostFragment = fragmentManager.findFragmentById(resId) ?: return
-        navHostFragment.childFragmentManager
-            .registerFragmentLifecycleCallbacks(this, true)
+        navHostFragment.childFragmentManager.registerFragmentLifecycleCallbacks(this, true)
     }
 
     private val materialFadeThrough = MaterialFadeThrough()

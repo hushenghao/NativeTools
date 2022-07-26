@@ -18,7 +18,6 @@ import com.dede.nativetools.util.splicing
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -27,9 +26,7 @@ class NetTileService : TileService() {
 
     private val configuration = NetSpeedConfiguration()
 
-    private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed ->
-        update(rxSpeed, txSpeed)
-    }
+    private val netSpeedCompute = NetSpeedCompute { rxSpeed, txSpeed -> update(rxSpeed, txSpeed) }
     private val lifecycleJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + lifecycleJob)
 
@@ -46,8 +43,7 @@ class NetTileService : TileService() {
     }
 
     private fun startMain() {
-        val intent = Intent<MainActivity>(baseContext)
-            .newTask()
+        val intent = Intent<MainActivity>(baseContext).newTask()
         startActivityAndCollapse(intent)
     }
 
@@ -68,15 +64,17 @@ class NetTileService : TileService() {
             NetFormatter.format(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
                 .splicing()
 
-        qsTile.apply {
-            state = Tile.STATE_ACTIVE
-            val bitmap = NetTextIconFactory.create(rxSpeed, txSpeed, configuration)
-            icon = Icon.createWithBitmap(bitmap)
-            label = getString(R.string.tile_net_speed_label, uploadSpeedStr, downloadSpeedStr)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                subtitle = getString(R.string.label_net_speed)
+        qsTile
+            .apply {
+                state = Tile.STATE_ACTIVE
+                val bitmap = NetTextIconFactory.create(rxSpeed, txSpeed, configuration)
+                icon = Icon.createWithBitmap(bitmap)
+                label = getString(R.string.tile_net_speed_label, uploadSpeedStr, downloadSpeedStr)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    subtitle = getString(R.string.label_net_speed)
+                }
             }
-        }.updateTile()
+            .updateTile()
     }
 
     override fun onDestroy() {

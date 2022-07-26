@@ -10,11 +10,8 @@ typealias OnTick = () -> Unit
  * @author hsh
  * @since 2021/5/31 1:59 下午
  */
-class HandlerTicker(
-    interval: Long,
-    private val handler: Handler = uiHandler,
-    onTick: OnTick
-) : Runnable {
+class HandlerTicker(interval: Long, private val handler: Handler = uiHandler, onTick: OnTick) :
+    Runnable {
 
     var interval: Long = interval
         set(value) {
@@ -60,5 +57,4 @@ class HandlerTicker(
         workHandler.removeCallbacks(this)
         workHandler.looper.quitSafely()
     }
-
 }

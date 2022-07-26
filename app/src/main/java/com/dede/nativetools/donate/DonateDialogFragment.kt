@@ -14,6 +14,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.ItemBottomSheetListBinding
 import com.dede.nativetools.ui.BottomSheetListFragment
@@ -22,9 +23,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-/**
- * 捐赠页
- */
+/** 捐赠页 */
 class DonateDialogFragment : BottomSheetListFragment<Payment>() {
 
     private val viewModel by viewModels<DonateViewModel>()
@@ -32,9 +31,7 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.paymentList.observe(this) {
-            setData(it)
-        }
+        viewModel.paymentList.observe(this) { setData(it) }
         binding.tvTitle.isGone = true
         binding.tvMessage.isGone = true
     }
@@ -43,11 +40,9 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
     override fun onBindViewHolder(
         binding: ItemBottomSheetListBinding,
         position: Int,
-        payment: Payment
+        payment: Payment,
     ) {
-        binding.root.setOnClickListener {
-            clickHandler.handleClick(payment)
-        }
+        binding.root.setOnClickListener { clickHandler.handleClick(payment) }
         binding.root.setOnLongClickListener(clickHandler.createOnLongClickListener(payment))
         binding.ivLogo.setImageResource(payment.resId)
         binding.tvTitle.setText(payment.textId)
@@ -68,6 +63,7 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
                 }
                 R.drawable.ic_logo_alipay -> {
                     context.browse(R.string.url_alipay_payment_code)
+                    context.toast(R.string.toast_payment_tip)
                     name = "支付宝"
                 }
                 R.drawable.ic_logo_paypal -> {
@@ -75,8 +71,12 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
                     name = "PayPal"
                 }
                 R.drawable.ic_logo_wxpay -> {
-                    context.toast(R.string.toast_wx_payment_tip)
+                    context.toast(R.string.toast_payment_tip)
                     name = "微信"
+                }
+                R.drawable.ic_donate_history -> {
+                    host.findNavController().navigate(R.id.action_dialogDonate_to_dialogDonateList)
+                    return
                 }
             }
             event(FirebaseAnalytics.Event.SELECT_ITEM) {
@@ -89,11 +89,15 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
             return when (payment.resId) {
                 R.drawable.ic_logo_wxpay ->
                     createOnLongClickSaveQrCodeListener(R.drawable.layer_wx_payment_code)
+                R.drawable.ic_logo_alipay ->
+                    createOnLongClickSaveQrCodeListener(R.drawable.layer_alipay_code)
                 else -> null
             }
         }
 
-        private fun createOnLongClickSaveQrCodeListener(@DrawableRes resId: Int): View.OnLongClickListener {
+        private fun createOnLongClickSaveQrCodeListener(
+            @DrawableRes resId: Int
+        ): View.OnLongClickListener {
 
             fun save() {
                 host.lifecycleScope.launchWhenStarted {
@@ -109,10 +113,11 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
                     save()
                     return@OnLongClickListener true
                 }
-                val permissions = arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
+                val permissions =
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
                 if (host.checkPermissions(*permissions)) {
                     save()
                     return@OnLongClickListener true
@@ -129,7 +134,8 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
 
         private suspend fun saveToAlbum(context: Context, @DrawableRes resId: Int): Uri? =
             withContext(Dispatchers.IO) {
-                context.requireDrawable<Drawable>(resId)
+                context
+                    .requireDrawable<Drawable>(resId)
                     .toBitmap()
                     .saveToAlbum(context, "QrCode_${resId}.jpeg", "Net Monitor")
             }

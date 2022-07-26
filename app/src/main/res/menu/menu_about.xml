@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/action_feedback"
+        android:icon="@drawable/ic_outline_feedback"
+        android:title="@string/action_feedback"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_diagnosis"
+        android:icon="@drawable/ic_outline_pest_control"
+        android:title="@string/label_diagnosis"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_open_source"
+        android:icon="@drawable/ic_open_source_line"
+        android:title="@string/label_open_source"
+        app:showAsAction="ifRoom" />
+
+</menu>

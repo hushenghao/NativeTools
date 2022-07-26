@@ -6,8 +6,8 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dede.nativetools.util.dpf
-import kotlinx.parcelize.Parcelize
 import kotlin.math.hypot
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CircularReveal(
@@ -40,5 +40,4 @@ class MainViewModel : ViewModel() {
         circularReveal.value = null
         return value
     }
-
 }

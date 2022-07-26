@@ -14,12 +14,9 @@ import com.dede.nativetools.util.copy
 class BetaFragment : BottomSheetListFragment<BetaFragment.Beta>() {
 
     data class Beta(
-        @DrawableRes
-        val resId: Int,
-        @StringRes
-        val textId: Int,
-        @StringRes
-        val urlId: Int
+        @DrawableRes val resId: Int,
+        @StringRes val textId: Int,
+        @StringRes val urlId: Int
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,13 +39,10 @@ class BetaFragment : BottomSheetListFragment<BetaFragment.Beta>() {
     override fun onBindViewHolder(binding: ItemBottomSheetListBinding, position: Int, beta: Beta) {
         binding.ivLogo.setImageResource(beta.resId)
         binding.tvTitle.setText(beta.textId)
-        binding.root.setOnClickListener {
-            requireContext().browse(beta.urlId)
-        }
+        binding.root.setOnClickListener { requireContext().browse(beta.urlId) }
         binding.root.setOnLongClickListener {
             requireContext().copy(beta.urlId)
             return@setOnLongClickListener true
         }
     }
-
 }

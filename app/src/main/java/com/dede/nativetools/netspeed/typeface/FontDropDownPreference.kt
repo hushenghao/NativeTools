@@ -15,9 +15,7 @@ import com.dede.nativetools.util.requireDrawable
 import com.dede.nativetools.util.setCompoundDrawablesRelative
 import com.dede.nativetools.util.toast
 
-/**
- * 自定义字体
- */
+/** 自定义字体 */
 class FontDropDownPreference(context: Context, attrs: AttributeSet?) :
     FreestyleDropDownPreference(context, attrs), Observer<WorkInfo> {
 
@@ -47,11 +45,11 @@ class FontDropDownPreference(context: Context, attrs: AttributeSet?) :
             if (!canApply) {
                 // 下载字体
                 downloadFont(fontKey)
-                notifyChanged()// fix Spinner.OnItemSelectedListener cannot recall
+                notifyChanged() // fix Spinner.OnItemSelectedListener cannot recall
             } else {
                 preferenceChangeListener?.onPreferenceChange(this, newValue)
             }
-            return@setOnPreferenceChangeListener canApply// 下载过的字体才应用
+            return@setOnPreferenceChangeListener canApply // 下载过的字体才应用
         }
         if (BuildConfig.DEBUG) {
             // 添加debug字体
@@ -71,8 +69,8 @@ class FontDropDownPreference(context: Context, attrs: AttributeSet?) :
 
     private fun downloadFont(fontKey: String) {
         downloadLiveData?.removeObserver(this)
-        downloadLiveData = DownloadFontWork.downloadFont(context, fontKey)
-            ?.also { it.observeForever(this) }
+        downloadLiveData =
+            DownloadFontWork.downloadFont(context, fontKey)?.also { it.observeForever(this) }
     }
 
     override fun onChanged(workInfo: WorkInfo) {
@@ -80,7 +78,7 @@ class FontDropDownPreference(context: Context, attrs: AttributeSet?) :
             WorkInfo.State.SUCCEEDED -> {
                 context.toast(com.dede.nativetools.R.string.toast_download_font_succeeded)
                 val fontKey = workInfo.outputData.getString(DownloadFontWork.EXTRA_FONT_KEY)
-                value = fontKey// 更新下载
+                value = fontKey // 更新下载
                 preferenceChangeListener?.onPreferenceChange(this, value)
             }
             WorkInfo.State.FAILED -> {
@@ -89,9 +87,7 @@ class FontDropDownPreference(context: Context, attrs: AttributeSet?) :
             WorkInfo.State.RUNNING -> {
                 context.toast(com.dede.nativetools.R.string.toast_download_font)
             }
-            else -> {
-
-            }
+            else -> {}
         }
     }
 
@@ -102,7 +98,9 @@ class FontDropDownPreference(context: Context, attrs: AttributeSet?) :
 
     private var preferenceChangeListener: OnPreferenceChangeListener? = null
 
-    override fun setOnPreferenceChangeListener(onPreferenceChangeListener: OnPreferenceChangeListener?) {
+    override fun setOnPreferenceChangeListener(
+        onPreferenceChangeListener: OnPreferenceChangeListener?
+    ) {
         this.preferenceChangeListener = onPreferenceChangeListener
     }
 }

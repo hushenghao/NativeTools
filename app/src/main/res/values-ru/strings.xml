@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Указатель скорости сети</string>
+    <string name="notify_net_speed_msg" formatted="false">Up: %s • Down: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">Today: %s • Month: %s</string>
+    <string name="switch_on">откр</string>
+    <string name="switch_off">закр</string>
+    <string name="action_close">закр</string>
+    <string name="expand_button_title">Больше настроек</string>
+    <string name="label_net_speed">Указатель скорости сети</string>
+    <string name="label_net_speed_interval">Обновить интервал</string>
+    <string name="label_net_speed_hide_lock_notification">Скрытое предупреждение</string>
+    <string name="label_net_speed_notify_clickable">Уведомление может быть получено</string>
+    <string name="label_net_speed_mode">Режим индикации</string>
+    <string name="label_net_speed_auto_start">включай</string>
+    <string name="label_net_speed_notify_quick_closeable">Сообщите о закрытии</string>
+    <string name="label_night_mode">Ночной режим</string>
+    <string name="label_net_speed_usage">Показывает ежедневное и ежемесячное использование трафика</string>
+    <string name="label_about">О</string>
+    <string name="label_ignore_battery_optimize">Не обращай внимания на оптимизацию батареи</string>
+    <string name="summary_net_speed">Покажи текущую скорость сети в барьерах состояния</string>
+    <string name="summary_net_speed_hide_lock_notification">Закрытый экран по умолчанию скрывает уведомление, и только если оно не работает, оно должно быть установлено</string>
+    <string name="summary_net_speed_notify_clickable">Нажмите на уведомление, чтобы открыть интерфейс приложения</string>
+    <string name="summary_net_speed_auto_start">Следуйте за системой и активируйте службу регистрации</string>
+    <string name="summary_net_speed_notify_quick_closeable">Добавьте кнопку выключения к уведомлению о скорости сети</string>
+    <string name="summary_night_mode_follow_system">Система слежения</string>
+    <string name="summary_net_speed_usage">Уведомления показывают мобильные данные и суммарное использование потока WLAN</string>
+    <string name="summary_ignore_battery_optimize">Добавьте оптимизированный белый список батареек, чтобы предотвратить нежизнеспособные услуги на ресепшене.</string>
+    <string name="usage_states_title">Доступ к ситуации разрешен</string>
+    <string name="usage_stats_msg">При использовании статистического трафика требуется разрешение доступа к ситуации использования.</string>
+    <string name="alert_msg_notification_disable">Система оповещения не включена, и индикатор скорости сети не сможет нормально отображаться</string>
+    <string name="settings">Устанавливай</string>
+    <string name="help">помощ</string>
+    <string name="access">Разрешение</string>
+    <string name="dont_ask">Никаких подсказок</string>
+    <string name="desc_net_speed_notify">Индикатор скорости интернета должен быть показан уведомлением</string>
+    <string name="chooser_label_browse">Выбери браузер и открой его</string>
+    <string name="chooser_label_market">Выбирать магазин приложений</string>
+    <string name="label_open_source">Открытая корреляция</string>
+    <string name="action_share">подел</string>
+    <string name="share_text" formatted="false">Нашел маленький рабочий инструмент \"%s\". %s</string>
+    <string name="action_feedback">Обратная связь с вопросом</string>
+    <string name="toast_copyed">Скопировано</string>
+    <string name="label_net_speed_toggle">переключа</string>
+    <string name="alert_msg_hide_lock_notification">Иногда уведомление не может быть скрыто, может быть вызвано настройкой блокирующего экрана. Найти «скрытое уведомление о блокировке экрана» в настройках и выбрать «только показывающее деликатное содержание» или «скрывающее все уведомления».</string>
+    <string name="label_general">универсальн</string>
+    <string name="label_notification">сообщ</string>
+    <string name="label_other">друг</string>
+    <string name="i_know">Понятно</string>
+    <string name="tip_easter_egg">яйц</string>
+    <string name="action_rate">Дай хороший отзыв</string>
+    <string name="action_donate">пожертвова</string>
+    <string name="label_coffee">Купишь мне чашку кофе?</string>
+    <string name="toast_saved">Сохранена</string>
+    <string name="label_home">Главн страниц</string>
+    <string name="toast_open_battery_optimization">Пожалуйста, найдите \"сетевой указатель скорости\" и вручную включите оптимизацию батареи</string>
+    <string name="label_privacy_agreement">Соглашение о конфиденциальности.</string>
+    <string name="label_net_speed_style">Стиль шрифта</string>
+    <string name="label_net_speed_text_scale">Сокращение слова</string>
+    <string name="label_net_speed_relative_distance">Относительное расстояние</string>
+    <string name="label_net_speed_relative_ratio">Относительная пропорция</string>
+    <string name="label_net_speed_y_offset">Смещение оси Y</string>
+    <string name="summary_net_speed_advanced">Самоопределение показывает стиль</string>
+    <string name="label_net_speed_advanced">Установка высшего уровня</string>
+    <string name="summary_text_style_bold">жирн</string>
+    <string name="summary_text_style_normal">обычн</string>
+    <string name="summary_default">По умолчан</string>
+    <string name="label_net_speed_font">шрифт</string>
+    <string name="label_net_speed_x_offset">Смещение оси X</string>
+    <string name="summary_mode_download">Down</string>
+    <string name="summary_mode_all">Up and Down</string>
+    <string name="toast_download_font">Начинай загрузку шрифта</string>
+    <string name="toast_download_font_succeeded">Загрузка шрифта завершена</string>
+    <string name="toast_download_font_failed">Загрузка шрифта провалилась</string>
+    <string name="label_net_speed_horizontal_scale">Икс-осевой зум</string>
+    <string name="label_diagnosis">диагноз</string>
+    <string name="summary_threshold_error">Входной порог неправильный</string>
+    <string name="label_net_speed_hide_threshold">Скрытый порог</string>
+    <string name="summary_net_speed_hide_threshold" formatted="false">Скорость скрытой сетки, когда скорость меньше %s</string>
+    <string name="summary_net_speed_unhide">Нет</string>
+    <string name="alert_msg_guide" formatted="false">Спасибо за использование %s, мы уважаем и защищаем вашу личную информацию, и в %s мы подробно изучим соответствующие вопросы, включая конфиденциальные инструкции по использованию оборудования, которые могут потребоваться для применения. \nПеред тем, как использовать наш продукт, вы должны внимательно прочитать весь %s.</string>
+    <string name="label_net_speed_service">Сервис по индикатору скорости сети</string>
+    <string name="label_net_speed_silence_channel">Тишина в эфире</string>
+    <string name="label_net_speed_default_channel">Уведомление о деятельности</string>
+    <string name="alert_msg_hide_threshold">Скрытая икона скорости меньше указанного значения (единица B, 1024B=1KB)</string>
+    <string name="label_mobile">Мобильная сеть</string>
+    <string name="label_net_usage_config">Конфигурация ситуации в сети</string>
+    <string name="label_imsi_config_tip">Если вы используете несколько Сим-карт, вы можете настроить информацию IMSI на одну симку для отображения детальной информации о движении. Информация IMSI может быть использована для просмотра с помощью набора *#*#4636#*#*.</string>
+    <string name="alert_msg_add_imsi_config">Введите IMSI на SIM-карте</string>
+    <string name="label_sim_card_config">Конфигурация Сим-карт</string>
+    <string name="alert_msg_miui_notification">Система MIUI должна включать в настройки опцию \"отображать иконку при уведомлении\", а также изменить представление на \"оригинальный стиль\", чтобы нормально показать скорость сети в режиме. В случае невступления в силу можно попытаться перезапустить устройство или сменить тему.</string>
+    <string name="label_net_speed_min_unit">Наименьшая единица индикации</string>
+    <string name="toast_payment_tip">Длинный код по сохранению</string>
+    <string name="toast_network_error">Загрузка сети не удалась</string>
+    <string name="label_donate_list">Донорские записи</string>
+    <string name="summary_get_beta">Найди внутреннюю версию приложения</string>
+    <string name="summary_share_app">Рекомендуй приложение другу</string>
+    <string name="label_add">добавля</string>
+    <string name="label_power_save_mode">Экономный режим</string>
+</resources>

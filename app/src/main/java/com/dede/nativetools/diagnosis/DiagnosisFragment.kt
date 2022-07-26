@@ -2,6 +2,9 @@ package com.dede.nativetools.diagnosis
 
 import android.content.Intent
 import android.os.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
@@ -11,16 +14,11 @@ import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
 import com.dede.nativetools.databinding.FragmentDiagnosisBinding
-import com.dede.nativetools.util.HandlerCallback
-import com.dede.nativetools.util.LifecycleHandler
-import com.dede.nativetools.util.Logic
-import com.dede.nativetools.util.bindService
+import com.dede.nativetools.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-/**
- * 诊断页
- */
+/** 诊断页 */
 class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
 
     // 诊断服务，进程 netspeed
@@ -29,13 +27,11 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
         private lateinit var messenger: Messenger
 
         override fun onHandleMessage(msg: Message) {
-            val rMsg = Message.obtain().apply {
-                data = bundleOf("data" to Logic.collectionDiagnosis())
-            }
+            val rMsg =
+                Message.obtain().apply { data = bundleOf("data" to Logic.collectionDiagnosis()) }
             try {
                 msg.replyTo.send(rMsg)
-            } catch (ignore: RemoteException) {
-            }
+            } catch (ignore: RemoteException) {}
         }
 
         override fun onCreate() {
@@ -53,38 +49,50 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
 
     private val binding by viewBinding(FragmentDiagnosisBinding::bind)
 
-    private val handler = LifecycleHandler(Looper.getMainLooper(), this, handlerMessage = {
-        val data = data.getString("data")
-        setData(data)
-    })
+    private val handler =
+        LifecycleHandler(
+            Looper.getMainLooper(),
+            this,
+            handlerMessage = {
+                val data = data.getString("data")
+                setData(data)
+            }
+        )
     private val responseMessenger = Messenger(handler)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.progressCircular.isVisible = true
-        requireContext().bindService(
-            intent = Intent(requireContext(), Service::class.java),
-            onConnected = {
-                // 绑定成功
-                val requestMessenger = Messenger(it)
-                val msg = Message.obtain().apply { replyTo = responseMessenger }
-                try {
-                    requestMessenger.send(msg)
-                } catch (e: RemoteException) {
+        requireContext()
+            .bindService(
+                intent = Intent(requireContext(), Service::class.java),
+                onConnected = {
+                    // 绑定成功
+                    val requestMessenger = Messenger(it)
+                    val msg = Message.obtain().apply { replyTo = responseMessenger }
+                    try {
+                        requestMessenger.send(msg)
+                    } catch (e: RemoteException) {
+                        collectionNow()
+                        e.printStackTrace()
+                    }
+                },
+                onFailed = {
+                    // 绑定失败时在主进程收集诊断信息
                     collectionNow()
-                    e.printStackTrace()
-                }
-            }, onFailed = {
-                // 绑定失败时在主进程收集诊断信息
-                collectionNow()
-            }, lifecycleOwner = this)
+                },
+                lifecycleOwner = this
+            )
     }
 
     private fun collectionNow() {
         lifecycleScope.launchWhenCreated {
-            val result = withContext(Dispatchers.IO) {
-                Logic.collectionDiagnosis()
-            }
+            val result = withContext(Dispatchers.IO) { Logic.collectionDiagnosis() }
             setData(result)
         }
     }
@@ -94,4 +102,27 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
         binding.progressCircular.isGone = true
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_diagnosis, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val result = binding.tvDiagnosisMsg.text.toString()
+        return when (item.itemId) {
+            R.id.action_copy -> {
+                if (result.isNotEmpty()) {
+                    requireContext().copy(result)
+                }
+                true
+            }
+            R.id.action_share -> {
+                if (result.isNotEmpty()) {
+                    requireContext().share(result)
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }

@@ -1,7 +1,15 @@
-include("app")
 rootProject.name = "NativeTools"
+include(":app")
 
 enableFeaturePreview("VERSION_CATALOGS")
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
 
 dependencyResolutionManagement {
     versionCatalogs {
@@ -16,6 +24,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
-        maven { setUrl("https://plugins.gradle.org/m2/") }
     }
 }
+include(":systemApi")

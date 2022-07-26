@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">네트워크 속도 표시기</string>
+    <string name="notify_net_speed_msg" formatted="false">업로드: %s • 다운로드: %s</string>
+    <string name="notify_net_speed_sub" formatted="false">오늘: %s • 지난: %s</string>
+    <string name="switch_on">열어</string>
+    <string name="switch_off">닫기</string>
+    <string name="action_close">닫기</string>
+    <string name="expand_button_title">더 많은 설정</string>
+    <string name="label_net_speed">네트워크 속도 표시기</string>
+    <string name="label_net_speed_interval">간격 새로 고침</string>
+    <string name="label_net_speed_hide_lock_notification">잠금화면 알림을 숨깁니다</string>
+    <string name="label_net_speed_notify_clickable">알림을 클릭할 수 있습니다</string>
+    <string name="label_net_speed_mode">디스플레이 모드</string>
+    <string name="label_net_speed_auto_start">자동 시동</string>
+    <string name="label_net_speed_notify_quick_closeable">알림 단축기 닫기</string>
+    <string name="label_net_speed_usage">일일 및 월별 데이터 사용량을 표시합니다</string>
+    <string name="label_night_mode">야간 모드</string>
+    <string name="label_about">정보</string>
+    <string name="label_ignore_battery_optimize">배터리 최적화 무시</string>
+    <string name="summary_net_speed">상태 표시줄에 현재 네트워크 속도를 표시합니다</string>
+    <string name="summary_net_speed_hide_lock_notification">알림은 잠글 때 기본적으로 숨깁니다. 알림이 유효하지 않으면 잠글 알림을 숨깁니다</string>
+    <string name="summary_net_speed_notify_clickable">응용 프로그램 설정 화면을 열려면 통지를 누르십시오</string>
+    <string name="summary_net_speed_auto_start">시스템을 따라 프런트 서비스를 시작합니다</string>
+    <string name="summary_net_speed_notify_quick_closeable">인터넷 속도 알림에 닫기 단추를 추가하십시오</string>
+    <string name="summary_night_mode_follow_system">추적시스템</string>
+    <string name="summary_net_speed_usage">알림은 모바일 데이터와 WLAN 사용량의 합계를 표시합니다</string>
+    <string name="summary_ignore_battery_optimize">배터리 최적화 화이트리스트를 추가하여 프런트 서비스가 보증되지 않는 것을 방지합니다</string>
+    <string name="usage_states_title">상태 접근 인증</string>
+    <string name="usage_stats_msg">데이터 사용량을 집계하기 위해 데이터 사용 권한이 필요합니다.</string>
+    <string name="alert_msg_notification_disable">알림 권한이 켜져 있지 않습니다. 네트워크 속도 표시기를 표시할 수 없습니다</string>
+    <string name="settings">설정하기</string>
+    <string name="help">도움</string>
+    <string name="access">권한 부여</string>
+    <string name="dont_ask">다시 묻지 않기</string>
+    <string name="desc_net_speed_notify">인터넷 속도 표시기는 알림으로 표시해야 합니다</string>
+    <string name="chooser_label_browse">브라우저 열기 선택</string>
+    <string name="chooser_label_market">앱스토어 선택</string>
+    <string name="label_open_source">오픈소스 관련</string>
+    <string name="action_share">나누기</string>
+    <string name="share_text" formatted="false">사용하기 좋은 작은 도구\"%s\"를 발견했으니, 가서 다운로드하세요! %s</string>
+    <string name="action_feedback">문제 피드백</string>
+    <string name="toast_copyed">복사됨</string>
+    <string name="label_net_speed_toggle">켬/끔</string>
+    <string name="alert_msg_hide_lock_notification">알림을 숨길 수 없는 경우 잠금 화면 설정 때문일 수 있습니다.설정에서 잠금화면 알림 숨기기를 찾고, 민감한 내용만 보이거나 모든 알림 숨기기를 선택합니다.</string>
+    <string name="label_general">gm</string>
+    <string name="label_notification">통지</string>
+    <string name="label_other">기타</string>
+    <string name="i_know">알겠어요</string>
+    <string name="tip_easter_egg">에그</string>
+    <string name="action_rate">호평을하다.</string>
+    <string name="action_donate">기부</string>
+    <string name="label_coffee">커피 한잔 사줄래요?</string>
+    <string name="toast_saved">저장됨</string>
+    <string name="label_home">첫 페이지</string>
+    <string name="toast_open_battery_optimization">네트워크 속도 표시기를 찾아 수동으로 배터리 최적화를 켜십시오</string>
+    <string name="label_privacy_agreement">프라이버시 규약</string>
+    <string name="label_net_speed_style">글꼴 스타일</string>
+    <string name="label_net_speed_advanced">고급 설정</string>
+    <string name="summary_net_speed_advanced">디스플레이 스타일 사용자 정의</string>
+    <string name="label_net_speed_y_offset">Y 축 오프셋</string>
+    <string name="label_net_speed_relative_ratio">상대적 비율</string>
+    <string name="label_net_speed_relative_distance">상대적 거리</string>
+    <string name="label_net_speed_text_scale">텍스트 크기 조정</string>
+    <string name="label_net_speed_font">글꼴</string>
+    <string name="summary_default">묵인</string>
+    <string name="summary_text_style_normal">일반</string>
+    <string name="summary_text_style_bold">진하게</string>
+    <string name="label_net_speed_x_offset">X 축 오프셋</string>
+    <string name="summary_mode_download">다운로드만</string>
+    <string name="summary_mode_all">업로드 및 다운로드</string>
+    <string name="toast_download_font">글꼴 다운로드 시작</string>
+    <string name="toast_download_font_succeeded">글꼴 다운로드 성공</string>
+    <string name="toast_download_font_failed">글꼴 다운로드 실패</string>
+    <string name="label_net_speed_horizontal_scale">X 축 크기 조정</string>
+    <string name="label_diagnosis">진단</string>
+    <string name="summary_threshold_error">입력한 문턱값이 올바르지 않습니다</string>
+    <string name="label_net_speed_hide_threshold">임계값 숨기기</string>
+    <string name="summary_net_speed_hide_threshold" formatted="false">속도가%s보다 작으면 사육 속도를 숨긴다</string>
+    <string name="summary_net_speed_unhide">숨기기 않음</string>
+    <string name="alert_msg_guide" formatted="false">%s을 (를) 사용해 주셔서 감사합니다. 당사는 귀하의 개인 정보를 존중하고 보호하며,%s에서 어플리케이션에 필요한 장치별 권한 설명을 포함한 자세한 정보를 제공합니다. \n저희 제품을 사용하기 전에%s의 모든 내용을 주의 깊게 읽어 주시기 바랍니다.</string>
+    <string name="label_net_speed_service">인터넷 속도 표시기 서비스</string>
+    <string name="label_net_speed_silence_channel">묵시적 통지</string>
+    <string name="label_net_speed_default_channel">행사 알림</string>
+    <string name="alert_msg_hide_threshold">속도가 지정된 값보다 작을 때 네트워크 속도 아이콘 숨기기 (단위 B, 1024B = 1KB)</string>
+    <string name="label_mobile">모바일 네트워크</string>
+    <string name="label_net_usage_config">네트워크 사용 상황 설정</string>
+    <string name="label_imsi_config_tip">여러 개의 sim 카드를 사용하면 각 sim 카드의 imsi 정보를 별도로 구성하여 자세한 이동통신 정보를 표시할 수 있다.*#*#4636#*#*를 입력한 다이얼을 통해 imsi 정보를 확인할 수 있다.</string>
+    <string name="alert_msg_add_imsi_config">SIM 카드의 imsi를 입력하십시오</string>
+    <string name="label_sim_card_config">SIM 카드 정보를 설정합니다</string>
+    <string name="alert_msg_miui_notification">miui 설정에서\'알림 표시 아이콘\'옵션을 열고, 알림 표시를\'기본 스타일\'로 변경해야만 정상적인 네트워크 속도가 나타난다.유효하지 않은 경우 장치를 다시 시작하거나 테마를 변경하십시오.</string>
+    <string name="label_net_speed_min_unit">최소 표시 단위</string>
+    <string name="toast_payment_tip">수금번호를 길게 누르다</string>
+    <string name="toast_network_error">네트워크 로드 실패</string>
+    <string name="label_donate_list">기부 기록</string>
+    <string name="summary_get_beta">앱의 내부 테스트 버전을 가져옵니다</string>
+    <string name="summary_share_app">앱을 친구에게 추천하기</string>
+    <string name="label_add">추가</string>
+    <string name="label_power_save_mode">절전모드</string>
+</resources>

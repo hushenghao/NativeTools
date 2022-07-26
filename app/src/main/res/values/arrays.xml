@@ -20,25 +20,19 @@
     <string-array name="net_speed_mode">
         <item>@string/summary_mode_download</item>
         <item>@string/summary_mode_all</item>
-        <item>@string/summary_mode_upload</item>
     </string-array>
     <string-array name="net_speed_mode_value">
         <item>0</item>
         <item>1</item>
-        <item>2</item>
     </string-array>
 
     <string-array name="net_speed_text_style_value">
         <item>0</item>
         <item>1</item>
-        <item>2</item>
-        <item>3</item>
     </string-array>
     <string-array name="net_speed_text_style">
         <item>@string/summary_text_style_normal</item>
         <item>@string/summary_text_style_bold</item>
-        <item>@string/summary_text_style_italic</item>
-        <item>@string/summary_text_style_bold_italic</item>
     </string-array>
 
     <string-array name="net_speed_font_value">
@@ -60,16 +54,6 @@
         <item>Google Sans</item>
     </string-array>
 
-    <string-array name="font_download_url">
-        <item>https://gitlab.com/hushenghao/fonts/-/raw/master/%s</item>
-        <item>https://github.com/hushenghao/fonts/raw/master/%s</item>
-    </string-array>
-
-    <string-array name="font_download_source">
-        <item>Gitlab</item>
-        <item>Github</item>
-    </string-array>
-
     <string-array name="night_mode_toggle">
         <item>@string/summary_night_mode_follow_system</item>
         <item>@string/switch_on</item>
@@ -79,6 +63,17 @@
         <item>-1</item><!-- AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -->
         <item>2</item><!-- AppCompatDelegate.MODE_NIGHT_YES -->
         <item>1</item><!-- AppCompatDelegate.MODE_NIGHT_NO -->
+    </string-array>
+
+    <string-array name="net_speed_min_unit">
+        <item>B/s</item>
+        <item>KB/s</item>
+        <item>MB/s</item>
+    </string-array>
+    <string-array name="net_speed_min_unit_value">
+        <item>-1</item><!-- NetFormatter.MIN_UNIT_BYTE -->
+        <item>0</item><!-- NetFormatter.MIN_UNIT_KB -->
+        <item>1</item><!-- NetFormatter.MIN_UNIT_MB-->
     </string-array>
 
 </resources>

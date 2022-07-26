@@ -3,28 +3,29 @@ package com.dede.nativetools.netspeed.service
 import android.app.KeyguardManager
 import android.app.Notification
 import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
-import android.widget.RemoteViews
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationChannelGroupCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.graphics.drawable.IconCompat
-import androidx.navigation.NavDeepLinkBuilder
 import com.dede.nativetools.R
+import com.dede.nativetools.main.MainActivity
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
+import com.dede.nativetools.netspeed.notification.NotificationExtension
 import com.dede.nativetools.netspeed.utils.NetFormatter
 import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.netusage.utils.NetUsageUtils
 import com.dede.nativetools.util.*
 
-/**
- * 网速通知
- */
+/** 网速通知 */
 object NetSpeedNotificationHelper {
+
+    const val NOTIFICATION_ID = 10
 
     private const val CHANNEL_GROUP_ID = "net_speed_channel_group"
 
@@ -36,34 +37,34 @@ object NetSpeedNotificationHelper {
         return keyguardManager.isDeviceSecure || keyguardManager.isKeyguardSecure
     }
 
-    /**
-     * 锁屏通知显示设置
-     */
+    /** 锁屏通知显示设置 */
     fun goLockHideNotificationSetting(context: Context) {
-        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && isSecure(context)) {
-            Intent(
-                Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
-                Settings.EXTRA_APP_PACKAGE to context.packageName,
-                Settings.EXTRA_CHANNEL_ID to CHANNEL_ID_DEFAULT
-            )
-        } else {
-            // Settings.ACTION_NOTIFICATION_SETTINGS
-            Intent("android.settings.NOTIFICATION_SETTINGS")
-        }
+        val intent =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && isSecure(context)) {
+                Intent(
+                    Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
+                    Settings.EXTRA_APP_PACKAGE to context.packageName,
+                    Settings.EXTRA_CHANNEL_ID to CHANNEL_ID_DEFAULT
+                )
+            } else {
+                // Settings.ACTION_NOTIFICATION_SETTINGS
+                Intent("android.settings.NOTIFICATION_SETTINGS")
+            }
         intent.newTask().launchActivity(context)
     }
 
     fun goNotificationSetting(context: Context) {
         val packageName = context.packageName
-        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Intent(
-                Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
-                Settings.EXTRA_APP_PACKAGE to packageName,
-                Settings.EXTRA_CHANNEL_ID to CHANNEL_ID_DEFAULT
-            )
-        } else {
-            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:$packageName")
-        }
+        val intent =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Intent(
+                    Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS,
+                    Settings.EXTRA_APP_PACKAGE to packageName,
+                    Settings.EXTRA_CHANNEL_ID to CHANNEL_ID_DEFAULT
+                )
+            } else {
+                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:$packageName")
+            }
         intent.newTask().launchActivity(context)
     }
 
@@ -83,9 +84,7 @@ object NetSpeedNotificationHelper {
         return areNotificationsEnabled && !channelDisabled
     }
 
-    /**
-     * 获取数据使用量
-     */
+    /** 获取数据使用量 */
     private fun getUsageText(context: Context, configuration: NetSpeedConfiguration): String? {
         if (!Logic.checkAppOps(context)) {
             return null
@@ -94,19 +93,49 @@ object NetSpeedNotificationHelper {
         var todayBytes: Long
         var monthBytes: Long
         val sb = StringBuilder()
+        if (!configuration.enableWifiUsage && !configuration.enableMobileUsage) {
+            // wifi和移动流量都关闭，显示全部
+            todayBytes =
+                NetUsageUtils.getNetUsageBytes(
+                    context,
+                    NetUsageUtils.TYPE_WIFI,
+                    NetUsageUtils.RANGE_TYPE_TODAY
+                ) +
+                    NetUsageUtils.getNetUsageBytes(
+                        context,
+                        NetUsageUtils.TYPE_MOBILE,
+                        NetUsageUtils.RANGE_TYPE_TODAY
+                    )
+            monthBytes =
+                NetUsageUtils.getNetUsageBytes(
+                    context,
+                    NetUsageUtils.TYPE_WIFI,
+                    NetUsageUtils.RANGE_TYPE_MONTH
+                ) +
+                    NetUsageUtils.getNetUsageBytes(
+                        context,
+                        NetUsageUtils.TYPE_MOBILE,
+                        NetUsageUtils.RANGE_TYPE_MONTH
+                    )
+            sb.append(getUsageText(context, todayBytes, monthBytes))
+            return sb.toString()
+        }
+
         if (configuration.enableWifiUsage) {
             // wifi 流量
             sb.append("WLAN • ")
-            todayBytes = NetUsageUtils.getNetUsageBytes(
-                context,
-                NetUsageUtils.TYPE_WIFI,
-                NetUsageUtils.RANGE_TYPE_TODAY
-            )
-            monthBytes = NetUsageUtils.getNetUsageBytes(
-                context,
-                NetUsageUtils.TYPE_WIFI,
-                NetUsageUtils.RANGE_TYPE_MONTH
-            )
+            todayBytes =
+                NetUsageUtils.getNetUsageBytes(
+                    context,
+                    NetUsageUtils.TYPE_WIFI,
+                    NetUsageUtils.RANGE_TYPE_TODAY
+                )
+            monthBytes =
+                NetUsageUtils.getNetUsageBytes(
+                    context,
+                    NetUsageUtils.TYPE_WIFI,
+                    NetUsageUtils.RANGE_TYPE_MONTH
+                )
             sb.append(getUsageText(context, todayBytes, monthBytes))
         }
 
@@ -125,20 +154,25 @@ object NetSpeedNotificationHelper {
         val size = imsiSet.size
         var index = 1
         for (imsi in imsiSet) {
-            todayBytes = NetUsageUtils.getNetUsageBytes(
-                context,
-                NetUsageUtils.TYPE_MOBILE, NetUsageUtils.RANGE_TYPE_TODAY, imsi
-            )
-            monthBytes = NetUsageUtils.getNetUsageBytes(
-                context,
-                NetUsageUtils.TYPE_MOBILE, NetUsageUtils.RANGE_TYPE_MONTH, imsi
-            )
+            todayBytes =
+                NetUsageUtils.getNetUsageBytes(
+                    context,
+                    NetUsageUtils.TYPE_MOBILE,
+                    NetUsageUtils.RANGE_TYPE_TODAY,
+                    imsi
+                )
+            monthBytes =
+                NetUsageUtils.getNetUsageBytes(
+                    context,
+                    NetUsageUtils.TYPE_MOBILE,
+                    NetUsageUtils.RANGE_TYPE_MONTH,
+                    imsi
+                )
             sb.append("SIM")
             if (size > 1) {
                 sb.append(index)
             }
-            sb.append(" • ")
-                .append(getUsageText(context, todayBytes, monthBytes))
+            sb.append(" • ").append(getUsageText(context, todayBytes, monthBytes))
             if (index++ < size) {
                 sb.appendLine()
             }
@@ -149,20 +183,44 @@ object NetSpeedNotificationHelper {
     private fun getUsageText(context: Context, todayBytes: Long, monthBytes: Long): String {
         return context.getString(
             R.string.notify_net_speed_sub,
-            NetFormatter.format(todayBytes, NetFormatter.FLAG_NULL, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.format(todayBytes, NetFormatter.FLAG_BYTE, NetFormatter.ACCURACY_EXACT)
                 .splicing(),
-            NetFormatter.format(monthBytes, NetFormatter.FLAG_NULL, NetFormatter.ACCURACY_EXACT)
+            NetFormatter.format(monthBytes, NetFormatter.FLAG_BYTE, NetFormatter.ACCURACY_EXACT)
                 .splicing()
         )
     }
 
-    /**
-     * 系统版本>=S 且 targetVersion>=S 时，返回true
-     */
-    fun itSSAbove(context: Context): Boolean {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-                // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
-                context.applicationInfo.targetSdkVersion >= Build.VERSION_CODES.S
+    fun notification(
+        context: Context,
+        configuration: NetSpeedConfiguration,
+        rxSpeed: Long,
+        txSpeed: Long,
+    ) {
+        val smileIcon = createSmileIcon(configuration, rxSpeed, txSpeed)
+        val notification = createNotification(context, configuration, smileIcon, rxSpeed, txSpeed)
+        NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, notification)
+        BitmapPoolAccessor.recycle(smileIcon.bitmap)
+    }
+
+    fun startForeground(context: Service, configuration: NetSpeedConfiguration) {
+        val smileIcon = createSmileIcon(configuration, 0, 0)
+        val notification = createNotification(context, configuration, smileIcon, 0, 0)
+        context.startForeground(NOTIFICATION_ID, notification)
+        BitmapPoolAccessor.recycle(smileIcon.bitmap)
+    }
+
+    private fun createSmileIcon(
+        configuration: NetSpeedConfiguration,
+        rxSpeed: Long,
+        txSpeed: Long,
+    ): IconCompat {
+        val bitmap =
+            if (configuration.showBlankNotification) {
+                NetTextIconFactory.createBlank()
+            } else {
+                NetTextIconFactory.create(rxSpeed, txSpeed, configuration)
+            }
+        return IconCompat.createWithBitmap(bitmap)
     }
 
     /**
@@ -170,30 +228,33 @@ object NetSpeedNotificationHelper {
      *
      * @param context 上下文
      * @param configuration 配置
+     * @param smileIcon 小图标
      * @param rxSpeed 下行网速
      * @param txSpeed 上行网速
      */
-    fun createNotification(
+    private fun createNotification(
         context: Context,
         configuration: NetSpeedConfiguration,
+        smileIcon: IconCompat,
         rxSpeed: Long = 0L,
         txSpeed: Long = 0L,
     ): Notification {
+        val silence = configuration.showBlankNotification
+        createChannels(context, silence)
 
-        createChannels(context)
+        val builder =
+            if (silence) {
+                // 显示透明图标，并降低通知优先级
+                NotificationCompat.Builder(context, CHANNEL_ID_SILENCE)
+                    .setPriority(NotificationCompat.PRIORITY_LOW)
+            } else {
+                NotificationCompat.Builder(context, CHANNEL_ID_DEFAULT)
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+            }
 
-        val builder = if (configuration.showBlankNotification) {
-            // 显示透明图标，并降低通知优先级
-            NotificationCompat.Builder(context, CHANNEL_ID_SILENCE)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setSmallIcon(createBlankIcon(configuration))
-        } else {
-            NotificationCompat.Builder(context, CHANNEL_ID_DEFAULT)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setSmallIcon(createIconCompat(configuration, rxSpeed, txSpeed))
-        }
-
-        builder.setOnlyAlertOnce(false)
+        builder
+            .setSmallIcon(smileIcon)
+            .setOnlyAlertOnce(true)
             .setOngoing(true)
             .setLocalOnly(true)
             .setShowWhen(false)
@@ -211,96 +272,84 @@ object NetSpeedNotificationHelper {
         var pendingFlag = PendingIntent.FLAG_UPDATE_CURRENT
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             // https://developer.android.com/about/versions/12/behavior-changes-all#foreground-service-notification-delay
-            @Suppress("WrongConstant")
             builder.foregroundServiceBehavior = NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
             // https://developer.android.com/about/versions/12/behavior-changes-12#pending-intent-mutability
-            pendingFlag = PendingIntent.FLAG_MUTABLE
+            pendingFlag = pendingFlag or PendingIntent.FLAG_MUTABLE
         }
 
-        if (configuration.hideNotification && !itSSAbove(context)) {
-            // context.applicationInfo.targetSdkVersion < Build.VERSION_CODES.S
-            // https://developer.android.google.cn/about/versions/12/behavior-changes-12#custom-notifications
-            val remoteViews = RemoteViews(context.packageName, R.layout.notification_empty_view)
-            builder.setCustomContentView(remoteViews)
-        } else {
-            val downloadSpeedStr: String =
-                NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
-                    .splicing()
-            val uploadSpeedStr: String =
-                NetFormatter.format(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
-                    .splicing()
+        val downloadSpeedStr: String =
+            NetFormatter.format(rxSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+                .splicing()
+        val uploadSpeedStr: String =
+            NetFormatter.format(txSpeed, NetFormatter.FLAG_FULL, NetFormatter.ACCURACY_EXACT)
+                .splicing()
+        val contentStr =
+            context.getString(R.string.notify_net_speed_msg, uploadSpeedStr, downloadSpeedStr)
+        builder.setContentTitle(contentStr)
 
-            val contentStr =
-                context.getString(R.string.notify_net_speed_msg, uploadSpeedStr, downloadSpeedStr)
-            builder.setContentTitle(contentStr)
-            if (configuration.usage) {
-                val usageText = getUsageText(context, configuration)
-                builder.setContentText(usageText)
-                // big text
-                if (usageText != null && usageText.lines().size > 1) {
-                    // 多行文字
-                    val bigTextStyle = NotificationCompat.BigTextStyle()
+        if (configuration.usage) {
+            val usageText = getUsageText(context, configuration)
+            builder.setContentText(usageText)
+            // big text
+            if (usageText != null && usageText.lines().size > 1) {
+                // 多行文字
+                val bigTextStyle =
+                    NotificationCompat.BigTextStyle()
                         .setBigContentTitle(contentStr)
                         .bigText(usageText)
-                    builder.setStyle(bigTextStyle)
-                }
+                builder.setStyle(bigTextStyle)
             }
+        }
 
-            if (configuration.quickCloseable) {
-                val closePending = Intent(NetSpeedService.ACTION_CLOSE)
-                    .toPendingBroadcast(context, pendingFlag)
-                builder.addAction(closePending.toNotificationCompatAction(R.string.action_close))
-            }
+        if (configuration.quickCloseable) {
+            val closePending =
+                Intent(NetSpeedService.ACTION_CLOSE).toPendingBroadcast(context, pendingFlag)
+            builder.addAction(closePending.toNotificationCompatAction(R.string.action_close))
         }
 
         if (configuration.notifyClickable) {
             // 默认启动应用首页
-            val pendingIntent = NavDeepLinkBuilder(context)
-                .setGraph(R.navigation.nav_graph)
-                .setDestination(R.id.netSpeed)
-                .createPendingIntent()
+            val pendingIntent =
+                Intent(context, MainActivity::class.java)
+                    .newTask()
+                    .toPendingActivity(context, pendingFlag)
             builder.setContentIntent(pendingIntent)
         }
 
-        return builder.build()
+        return NotificationExtension.build(builder)
     }
 
-    private var notificationChannelCreated = false
-
-    private fun createChannels(context: Context) {
-        if (notificationChannelCreated) {
-            return
-        }
+    private fun createChannels(context: Context, silence: Boolean) {
         val manager = NotificationManagerCompat.from(context)
 
-        val channelGroup = NotificationChannelGroupCompat.Builder(CHANNEL_GROUP_ID)
-            .setName(context.getString(R.string.label_net_speed_service))
-            .setDescription(context.getString(R.string.desc_net_speed_notify))
-            .build()
+        val channelGroup =
+            NotificationChannelGroupCompat.Builder(CHANNEL_GROUP_ID)
+                .setName(context.getString(R.string.label_net_speed_service))
+                .setDescription(context.getString(R.string.desc_net_speed_notify))
+                .build()
         manager.createNotificationChannelGroup(channelGroup)
 
-        val channelSilence = context.createChannel(true)
-        manager.createNotificationChannel(channelSilence)
-
-        val channelDefault = context.createChannel(false)
-        manager.createNotificationChannel(channelDefault)
-
-        notificationChannelCreated = true
+        val channel = context.createChannel(silence)
+        manager.createNotificationChannel(channel)
     }
 
-    private fun Context.createChannel(isSilence: Boolean): NotificationChannelCompat {
-        val builder = if (isSilence) {
-            NotificationChannelCompat.Builder(
-                CHANNEL_ID_SILENCE,
-                NotificationManagerCompat.IMPORTANCE_LOW
-            ).setName(this.getString(R.string.label_net_speed_silence_channel))
-        } else {
-            NotificationChannelCompat.Builder(
-                CHANNEL_ID_DEFAULT,
-                NotificationManagerCompat.IMPORTANCE_DEFAULT
-            ).setName(this.getString(R.string.label_net_speed_default_channel))
-        }
-        return builder.setDescription(this.getString(R.string.desc_net_speed_notify))
+    private fun Context.createChannel(silence: Boolean): NotificationChannelCompat {
+        val builder =
+            if (silence) {
+                NotificationChannelCompat.Builder(
+                        CHANNEL_ID_SILENCE,
+                        NotificationManagerCompat.IMPORTANCE_LOW
+                    )
+                    .setName(this.getString(R.string.label_net_speed_silence_channel))
+            } else {
+                NotificationChannelCompat.Builder(
+                        CHANNEL_ID_DEFAULT,
+                        NotificationManagerCompat.IMPORTANCE_MAX
+                    )
+                    .setName(this.getString(R.string.label_net_speed_default_channel))
+            }
+        return builder
+            .setDescription(this.getString(R.string.desc_net_speed_notify))
             .setShowBadge(false)
             .setGroup(CHANNEL_GROUP_ID)
             .setVibrationEnabled(false)
@@ -308,19 +357,4 @@ object NetSpeedNotificationHelper {
             .setSound(null, null)
             .build()
     }
-
-    private fun createIconCompat(
-        configuration: NetSpeedConfiguration,
-        rxSpeed: Long,
-        txSpeed: Long,
-    ): IconCompat {
-        val bitmap = NetTextIconFactory.create(rxSpeed, txSpeed, configuration)
-        return IconCompat.createWithBitmap(bitmap)
-    }
-
-    private fun createBlankIcon(configuration: NetSpeedConfiguration): IconCompat {
-        val bitmap = NetTextIconFactory.createBlank(configuration)
-        return IconCompat.createWithBitmap(bitmap)
-    }
-
 }

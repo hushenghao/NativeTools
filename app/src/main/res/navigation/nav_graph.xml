@@ -24,19 +24,32 @@
         android:label="@string/label_about"
         tools:layout="@layout/fragment_about">
         <deepLink app:uri="https://dede.nativetools/about" />
+        <action
+            android:id="@+id/action_about_to_openSource"
+            app:destination="@id/openSource" />
+        <action
+            android:id="@+id/action_about_to_diagnosisFragment"
+            app:destination="@id/diagnosisFragment" />
     </fragment>
 
-    <dialog
+    <activity
         android:id="@+id/openSource"
-        android:name="com.dede.nativetools.open_source.OpenSourceFragment"
-        android:label="@string/label_open_source"
-        tools:layout="@layout/fragment_open_source" />
+        android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
 
     <dialog
         android:id="@+id/dialogDonate"
         android:name="com.dede.nativetools.donate.DonateDialogFragment"
         android:label="@string/action_donate"
-        tools:layout="@layout/fragment_bottom_sheet_list" />
+        tools:layout="@layout/fragment_bottom_sheet_list">
+        <action
+            android:id="@+id/action_dialogDonate_to_dialogDonateList"
+            app:destination="@id/dialogDonateList" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/dialogDonateList"
+        android:name="com.dede.nativetools.donate.DonateListFragment"
+        android:label="@string/label_donate_list" />
 
     <fragment
         android:id="@+id/other"
@@ -53,15 +66,6 @@
             android:id="@+id/action_other_to_dialogDonate"
             app:destination="@id/dialogDonate" />
         <action
-            android:id="@+id/action_other_to_openSource"
-            app:destination="@id/openSource" />
-        <action
-            android:id="@+id/action_other_to_netUsage"
-            app:destination="@id/netUsageFragment" />
-        <action
-            android:id="@+id/action_other_to_diagnosis"
-            app:destination="@id/diagnosisFragment" />
-        <action
             android:id="@+id/action_other_to_dialogBeta"
             app:destination="@id/dialogBeta" />
     </fragment>
@@ -72,18 +76,10 @@
         android:label="@string/label_net_speed_advanced" />
 
     <fragment
-        android:id="@+id/netUsageFragment"
-        android:name="com.dede.nativetools.netusage.NetUsageFragment"
-        android:label="@string/label_full_net_usage"
-        tools:layout="@layout/fragment_net_usage" />
-
-    <fragment
         android:id="@+id/diagnosisFragment"
         android:name="com.dede.nativetools.diagnosis.DiagnosisFragment"
         android:label="@string/label_diagnosis"
-        tools:layout="@layout/fragment_diagnosis">
-        <deepLink app:uri="https://dede.nativetools/diagnosis" />
-    </fragment>
+        tools:layout="@layout/fragment_diagnosis" />
 
     <fragment
         android:id="@+id/netUsageConfigFragment"

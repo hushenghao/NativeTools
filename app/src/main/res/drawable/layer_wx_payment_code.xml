@@ -3,7 +3,7 @@
     <item
         android:width="521px"
         android:height="521px"
-        android:drawable="@drawable/img_wx_payment_code" />
+        android:drawable="@drawable/img_qrcode_wxpay" />
     <item
         android:width="100px"
         android:height="100px"

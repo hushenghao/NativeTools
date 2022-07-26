@@ -18,10 +18,8 @@ fun Fragment.toast(@StringRes resId: Int) {
 fun Fragment.checkPermissions(vararg permissions: String): Boolean {
     val context = requireContext()
     for (permission in permissions) {
-        if (ContextCompat.checkSelfPermission(
-                context,
-                permission
-            ) != PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(context, permission) !=
+                PackageManager.PERMISSION_GRANTED
         ) {
             return false
         }
