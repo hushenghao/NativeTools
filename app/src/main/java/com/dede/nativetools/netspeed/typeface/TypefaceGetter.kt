@@ -36,7 +36,8 @@ interface TypefaceGetter {
                         if (fontList.contains(key)) {
                             DownloadTypefaceImpl(appContext, "$key.ttf")
                         } else {
-                            throw IllegalStateException("Unknown font name: $key")
+                            NormalTypeface()
+                            //throw IllegalStateException("Unknown font name: $key")
                         }
                     }
                 }
