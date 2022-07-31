@@ -1,6 +1,8 @@
 package com.dede.nativetools.netspeed.utils
 
+import android.content.res.Configuration
 import android.graphics.*
+import android.graphics.fonts.FontStyle
 import android.text.TextPaint
 import android.util.DisplayMetrics
 import android.util.Log
@@ -9,6 +11,7 @@ import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.typeface.TypefaceGetter
 import com.dede.nativetools.util.*
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 /** Created by hsh on 2017/5/11 011 下午 05:17. 通知栏网速图标工厂 */
@@ -23,13 +26,13 @@ object NetTextIconFactory {
 
     private val paint =
         TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-            // isFakeBoldText = true
             textAlign = Paint.Align.CENTER
             color = Color.WHITE
             style = Paint.Style.FILL
         }
 
     private val iconSize: Int
+    private var fontWeightAdjustment: Int
 
     init {
         val resources = UI.resources
@@ -53,6 +56,11 @@ object NetTextIconFactory {
 
         iconSize = max(statusBarIconSize, default)
         Log.i("NetTextIconFactory", "status_bar_icon_size: $iconSize")
+        fontWeightAdjustment = resources.configuration.fontWeightAdjustment
+    }
+
+    fun updateConfiguration(newConfig: Configuration) {
+        fontWeightAdjustment = newConfig.fontWeightAdjustment
     }
 
     private fun createBitmapInternal(size: Int): Bitmap {
@@ -136,7 +144,24 @@ object NetTextIconFactory {
 
         val bitmap = createBitmapInternal(size)
         val canvas = Canvas(bitmap)
-        paint.typeface = TypefaceGetter.getOrDefault(configuration.font, configuration.textStyle)
+
+        var tf = TypefaceGetter.getOrDefault(configuration.font, configuration.textStyle)
+        val typefaceStyle = tf.style
+        if (fontWeightAdjustment != 0 &&
+            fontWeightAdjustment != Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
+        ) {
+            val newWeight = min(
+                max(tf.weight + fontWeightAdjustment, FontStyle.FONT_WEIGHT_MIN),
+                FontStyle.FONT_WEIGHT_MAX
+            )
+            tf = Typeface.create(tf, newWeight, false)
+        }
+        if (paint.typeface != tf) {
+            paint.typeface = tf
+        }
+        val need: Int = configuration.textStyle and typefaceStyle.inv()
+        paint.isFakeBoldText = need and Typeface.BOLD != 0
+
         resetPaint()
 
         val yOffset = hf * verticalOffset

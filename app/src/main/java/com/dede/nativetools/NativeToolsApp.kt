@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.util.Log
 import com.dede.nativetools.netspeed.NetSpeedPreferences
+import com.dede.nativetools.netspeed.utils.NetTextIconFactory
 import com.dede.nativetools.other.OtherPreferences
 import com.dede.nativetools.util.installShortcuts
 import com.dede.nativetools.util.isMainProcess
@@ -70,6 +71,7 @@ class NativeToolsApp : Application() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        NetTextIconFactory.updateConfiguration(newConfig)
         installShortcuts()
     }
 }
