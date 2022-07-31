@@ -20,7 +20,7 @@ import com.dede.nativetools.netusage.utils.NetUsageUtils
 import com.dede.nativetools.other.OtherPreferences
 import com.google.android.material.internal.ManufacturerUtils
 import com.google.firebase.analytics.FirebaseAnalytics
-import java.text.SimpleDateFormat
+import android.icu.text.SimpleDateFormat
 import java.util.*
 
 fun isNightMode(): Boolean {

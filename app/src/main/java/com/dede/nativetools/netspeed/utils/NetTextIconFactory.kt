@@ -3,6 +3,7 @@ package com.dede.nativetools.netspeed.utils
 import android.content.res.Configuration
 import android.graphics.*
 import android.graphics.fonts.FontStyle
+import android.os.Build
 import android.text.TextPaint
 import android.util.DisplayMetrics
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
@@ -31,7 +32,7 @@ object NetTextIconFactory {
         }
 
     private val iconSize: Int
-    private var fontWeightAdjustment: Int
+    private var fontWeightAdjustment: Int = 0
 
     private const val TAG = "NetTextIconFactory"
 
@@ -56,11 +57,15 @@ object NetTextIconFactory {
                 .getOrDefault(default)
 
         iconSize = max(statusBarIconSize, default)
-        fontWeightAdjustment = resources.configuration.fontWeightAdjustment
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            fontWeightAdjustment = resources.configuration.fontWeightAdjustment
+        }
     }
 
     fun updateConfiguration(newConfig: Configuration) {
-        fontWeightAdjustment = newConfig.fontWeightAdjustment
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            fontWeightAdjustment = newConfig.fontWeightAdjustment
+        }
     }
 
     private fun createBitmapInternal(size: Int): Bitmap {
@@ -147,14 +152,16 @@ object NetTextIconFactory {
 
         var tf = TypefaceGetter.getOrDefault(configuration.font, configuration.textStyle)
         val typefaceStyle = tf.style
-        if (fontWeightAdjustment > 0 &&
-            fontWeightAdjustment < Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
-        ) {
-            val newWeight = min(
-                max(tf.weight + fontWeightAdjustment, FontStyle.FONT_WEIGHT_MIN),
-                FontStyle.FONT_WEIGHT_MAX
-            )
-            tf = Typeface.create(tf, newWeight, false)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (fontWeightAdjustment > 0 &&
+                fontWeightAdjustment < Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
+            ) {
+                val newWeight = min(
+                    max(tf.weight + fontWeightAdjustment, FontStyle.FONT_WEIGHT_MIN),
+                    FontStyle.FONT_WEIGHT_MAX
+                )
+                tf = Typeface.create(tf, newWeight, false)
+            }
         }
         if (paint.typeface != tf) {
             paint.typeface = tf
