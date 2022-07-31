@@ -5,7 +5,6 @@ import android.graphics.*
 import android.graphics.fonts.FontStyle
 import android.text.TextPaint
 import android.util.DisplayMetrics
-import android.util.Log
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.netspeed.NetSpeedPreferences
 import com.dede.nativetools.netspeed.typeface.TypefaceGetter
@@ -34,6 +33,8 @@ object NetTextIconFactory {
     private val iconSize: Int
     private var fontWeightAdjustment: Int
 
+    private const val TAG = "NetTextIconFactory"
+
     init {
         val resources = UI.resources
         val dpi = resources.displayMetrics.densityDpi
@@ -55,7 +56,6 @@ object NetTextIconFactory {
                 .getOrDefault(default)
 
         iconSize = max(statusBarIconSize, default)
-        Log.i("NetTextIconFactory", "status_bar_icon_size: $iconSize")
         fontWeightAdjustment = resources.configuration.fontWeightAdjustment
     }
 
@@ -147,8 +147,8 @@ object NetTextIconFactory {
 
         var tf = TypefaceGetter.getOrDefault(configuration.font, configuration.textStyle)
         val typefaceStyle = tf.style
-        if (fontWeightAdjustment != 0 &&
-            fontWeightAdjustment != Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
+        if (fontWeightAdjustment > 0 &&
+            fontWeightAdjustment < Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
         ) {
             val newWeight = min(
                 max(tf.weight + fontWeightAdjustment, FontStyle.FONT_WEIGHT_MIN),

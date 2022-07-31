@@ -17,7 +17,7 @@ interface TypefaceGetter {
 
         private lateinit var fontList: List<String>
 
-        fun create(context: Context, key: String): TypefaceGetter {
+        private fun create(context: Context, key: String): TypefaceGetter {
             var getter = caches[key]
             if (getter != null) {
                 return getter
