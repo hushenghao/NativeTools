@@ -204,6 +204,10 @@ class MainActivity :
      * @see NavigatePreference.OnNavigateHandler
      */
     override fun handleNavigate(id: Int) {
+        val dest = navController.currentDestination
+        if (dest != null && dest.getAction(id) == null) {
+            return
+        }
         navController.navigate(id)
     }
 
