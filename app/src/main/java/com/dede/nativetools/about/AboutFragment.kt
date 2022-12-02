@@ -14,10 +14,12 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.animation.addListener
+import androidx.core.view.MenuProvider
 import androidx.core.view.isInvisible
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
@@ -27,7 +29,7 @@ import com.dede.nativetools.util.*
 import kotlin.random.Random
 
 /** 关于项目 */
-class AboutFragment : Fragment(R.layout.fragment_about) {
+class AboutFragment : Fragment(R.layout.fragment_about), MenuProvider {
 
     companion object {
         private const val MAX_FOLLOW_COUNT = 8
@@ -79,7 +81,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+        requireActivity().addMenuProvider(this, this, Lifecycle.State.STARTED)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -181,16 +183,15 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_about, menu)
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.menu_about, menu)
         if (!requireContext().isGooglePlayServicesAvailable()) {
             menu.removeItem(R.id.action_open_source)
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
             R.id.action_open_source -> {
                 findNavController().navigate(R.id.action_about_to_openSource)
                 true
@@ -203,7 +204,7 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
                 findNavController().navigate(R.id.action_about_to_diagnosisFragment)
                 true
             }
-            else -> super.onOptionsItemSelected(item)
+            else -> false
         }
     }
 }

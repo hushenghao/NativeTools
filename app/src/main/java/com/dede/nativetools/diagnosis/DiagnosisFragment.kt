@@ -7,9 +7,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dede.nativetools.R
@@ -19,7 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /** 诊断页 */
-class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
+class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis), MenuProvider {
 
     // 诊断服务，进程 netspeed
     class Service : android.app.Service(), HandlerCallback {
@@ -62,7 +64,7 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+        requireActivity().addMenuProvider(this, this, Lifecycle.State.STARTED)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -102,14 +104,13 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
         binding.progressCircular.isGone = true
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_diagnosis, menu)
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.menu_diagnosis, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         val result = binding.tvDiagnosisMsg.text.toString()
-        return when (item.itemId) {
+        return when (menuItem.itemId) {
             R.id.action_copy -> {
                 if (result.isNotEmpty()) {
                     requireContext().copy(result)
@@ -122,7 +123,7 @@ class DiagnosisFragment : Fragment(R.layout.fragment_diagnosis) {
                 }
                 true
             }
-            else -> super.onOptionsItemSelected(item)
+            else -> false
         }
     }
 }

@@ -80,7 +80,7 @@ android {
         }
     }
 
-    viewBinding { isEnabled = true }
+    viewBinding { enable = true }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
