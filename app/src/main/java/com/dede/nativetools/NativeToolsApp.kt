@@ -21,6 +21,7 @@ import me.weishu.reflection.Reflection
 class NativeToolsApp : Application() {
 
     companion object {
+        @Volatile
         private var instance: NativeToolsApp? = null
 
         fun getInstance(): NativeToolsApp {

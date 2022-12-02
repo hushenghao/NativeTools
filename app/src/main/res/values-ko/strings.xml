@@ -97,4 +97,5 @@
     <string name="summary_share_app">앱을 친구에게 추천하기</string>
     <string name="label_add">추가</string>
     <string name="label_power_save_mode">절전모드</string>
+    <string name="message_donate_not_fount">기부 기록을 찾을 수 없습니까?</string>
 </resources>

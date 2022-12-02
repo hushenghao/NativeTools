@@ -1,10 +1,13 @@
 package com.dede.nativetools.donate
 
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,12 +17,13 @@ import com.dede.nativetools.databinding.ItemDonateListInfoBinding
 import com.dede.nativetools.ui.AbsBottomSheetListFragment
 import com.dede.nativetools.ui.GridItemDecoration
 import com.dede.nativetools.util.dp
+import com.dede.nativetools.util.emailTo
 import com.dede.nativetools.util.isEmpty
 import java.text.DateFormat
 import java.util.*
 
 /**
- * Created by shhu on 2022/7/1 13:42.
+ * 捐助列表
  *
  * @since 2022/7/1
  */
@@ -29,7 +33,17 @@ class DonateListFragment : AbsBottomSheetListFragment<DonateInfo, DonateListFrag
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvMessage.isGone = true
+        val span = SpannableStringBuilder()
+            .append(requireContext().getText(R.string.message_donate_not_fount),
+                object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        requireContext().emailTo(R.string.email)
+                    }
+                },
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        binding.tvMessage.text = span
+        binding.tvMessage.movementMethod = LinkMovementMethod.getInstance()
+
         binding.tvTitle.setText(R.string.label_donate_list)
         binding.recyclerView.addItemDecoration(GridItemDecoration(12.dp))
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())

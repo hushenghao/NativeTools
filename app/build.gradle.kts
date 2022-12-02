@@ -29,8 +29,8 @@ android {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 33
-        versionCode = 64
-        versionName = "4.0.1"
+        versionCode = 65
+        versionName = "4.0.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(

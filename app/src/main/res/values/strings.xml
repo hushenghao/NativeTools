@@ -128,4 +128,5 @@
     <string name="summary_get_beta">获取应用的内测版本</string>
     <string name="label_add">添加</string>
     <string name="label_power_save_mode">省电模式</string>
+    <string name="message_donate_not_fount">未找到你的捐赠记录？</string>
 </resources>

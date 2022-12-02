@@ -97,4 +97,5 @@
     <string name="summary_get_beta">アプリケーションのプライベートバージョンを取得する</string>
     <string name="label_add">添加</string>
     <string name="label_power_save_mode">省電力モード</string>
+    <string name="message_donate_not_fount">あなたの寄付記録が見つからない?</string>
 </resources>

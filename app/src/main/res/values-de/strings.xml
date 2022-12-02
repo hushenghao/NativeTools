@@ -97,4 +97,5 @@
     <string name="summary_share_app">Empfehlen sie die anwendung beim freund</string>
     <string name="label_add">Hinzufügen</string>
     <string name="label_power_save_mode">Strom sparen</string>
+    <string name="message_donate_not_fount">Es wurden keine spenden gefunden?</string>
 </resources>

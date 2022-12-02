@@ -97,4 +97,5 @@
     <string name="summary_get_beta">Obtenga la versión beta privada de la aplicación</string>
     <string name="label_add">Añadir</string>
     <string name="label_power_save_mode">Modo de ahorro de energía</string>
+    <string name="message_donate_not_fount">¿No encuentras tu historial de donación?</string>
 </resources>
