@@ -37,7 +37,7 @@ interface TypefaceGetter {
                             DownloadTypefaceImpl(appContext, "$key.ttf")
                         } else {
                             NormalTypeface()
-                            //throw IllegalStateException("Unknown font name: $key")
+                            // throw IllegalStateException("Unknown font name: $key")
                         }
                     }
                 }
@@ -54,12 +54,12 @@ interface TypefaceGetter {
                 Typeface.BOLD -> {
                     Typeface.create(typeface, Typeface.BOLD)
                 }
-                //Typeface.ITALIC -> {
+                // Typeface.ITALIC -> {
                 //    Typeface.create(typeface, Typeface.ITALIC)
-                //}
-                //Typeface.BOLD_ITALIC -> {
+                // }
+                // Typeface.BOLD_ITALIC -> {
                 //    Typeface.create(typeface, Typeface.BOLD_ITALIC)
-                //}
+                // }
                 else -> {
                     typeface
                 }

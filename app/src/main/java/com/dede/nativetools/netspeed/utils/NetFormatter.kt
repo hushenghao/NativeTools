@@ -1,7 +1,7 @@
 package com.dede.nativetools.netspeed.utils
 
-import androidx.annotation.IntDef
 import android.icu.text.DecimalFormat
+import androidx.annotation.IntDef
 import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min

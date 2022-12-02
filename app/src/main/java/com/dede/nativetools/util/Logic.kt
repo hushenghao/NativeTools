@@ -3,6 +3,7 @@ package com.dede.nativetools.util
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import android.net.TrafficStats
 import android.os.Build
 import android.os.PowerManager
@@ -20,7 +21,6 @@ import com.dede.nativetools.netusage.utils.NetUsageUtils
 import com.dede.nativetools.other.OtherPreferences
 import com.google.android.material.internal.ManufacturerUtils
 import com.google.firebase.analytics.FirebaseAnalytics
-import android.icu.text.SimpleDateFormat
 import java.util.*
 
 fun isNightMode(): Boolean {

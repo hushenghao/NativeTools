@@ -153,13 +153,15 @@ object NetTextIconFactory {
         var tf = TypefaceGetter.getOrDefault(configuration.font, configuration.textStyle)
         val typefaceStyle = tf.style
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (fontWeightAdjustment > 0 &&
-                fontWeightAdjustment < Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
+            if (
+                fontWeightAdjustment > 0 &&
+                    fontWeightAdjustment < Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
             ) {
-                val newWeight = min(
-                    max(tf.weight + fontWeightAdjustment, FontStyle.FONT_WEIGHT_MIN),
-                    FontStyle.FONT_WEIGHT_MAX
-                )
+                val newWeight =
+                    min(
+                        max(tf.weight + fontWeightAdjustment, FontStyle.FONT_WEIGHT_MIN),
+                        FontStyle.FONT_WEIGHT_MAX
+                    )
                 tf = Typeface.create(tf, newWeight, false)
             }
         }

@@ -9,12 +9,12 @@ class NormalTypeface : TypefaceGetter {
             Typeface.BOLD -> {
                 Typeface.defaultFromStyle(Typeface.BOLD)
             }
-            //Typeface.ITALIC -> {
+            // Typeface.ITALIC -> {
             //    Typeface.defaultFromStyle(Typeface.ITALIC)
-            //}
-            //Typeface.BOLD_ITALIC -> {
+            // }
+            // Typeface.BOLD_ITALIC -> {
             //    Typeface.defaultFromStyle(Typeface.BOLD_ITALIC)
-            //}
+            // }
             else -> {
                 Typeface.defaultFromStyle(Typeface.NORMAL)
             }

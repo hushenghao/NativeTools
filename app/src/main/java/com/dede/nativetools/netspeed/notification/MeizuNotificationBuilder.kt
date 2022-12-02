@@ -14,7 +14,10 @@ import com.dede.nativetools.util.getNotnull
  *
  * package android.app;
  *
- * ``` java
+ * ```
+ * ```
+ * java
+ * ```
  * class Notification$Builder {
  *
  *    public NotificationBuilderExt mFlymeNotificationBuilder;

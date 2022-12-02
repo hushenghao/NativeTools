@@ -33,14 +33,17 @@ class DonateListFragment : AbsBottomSheetListFragment<DonateInfo, DonateListFrag
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val span = SpannableStringBuilder()
-            .append(requireContext().getText(R.string.message_donate_not_fount),
-                object : ClickableSpan() {
-                    override fun onClick(widget: View) {
-                        requireContext().emailTo(R.string.email)
-                    }
-                },
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val span =
+            SpannableStringBuilder()
+                .append(
+                    requireContext().getText(R.string.message_donate_not_fount),
+                    object : ClickableSpan() {
+                        override fun onClick(widget: View) {
+                            requireContext().emailTo(R.string.email)
+                        }
+                    },
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
         binding.tvMessage.text = span
         binding.tvMessage.movementMethod = LinkMovementMethod.getInstance()
 

@@ -10,8 +10,8 @@ import com.google.firebase.ktx.Firebase
 
 fun Context.isGooglePlayServicesAvailable(): Boolean {
     return try {
-        GoogleApiAvailability.getInstance()
-            .isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS
+        GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) ==
+            ConnectionResult.SUCCESS
     } catch (e: Exception) {
         Firebase.crashlytics.recordException(e)
         false
