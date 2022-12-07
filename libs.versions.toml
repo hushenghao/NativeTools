@@ -6,7 +6,7 @@ google-services = "com.google.gms:google-services:4.3.14"
 firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.2"
 firebase-perf-gradle = "com.google.firebase:perf-plugin:1.4.2"
 firebase-appdistribution-gradle = "com.google.firebase:firebase-appdistribution-gradle:3.1.1"
-google-oss-license = "com.google.android.gms:oss-licenses-plugin:0.10.5"
+google-oss-license = "com.google.android.gms:oss-licenses-plugin:0.10.6"
 
 androidx-annotation = "androidx.annotation:annotation:1.5.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.5.1"
