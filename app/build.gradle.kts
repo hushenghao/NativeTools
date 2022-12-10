@@ -24,7 +24,7 @@ apply(from = "../gradle/spotless.gradle")
 
 android {
     compileSdk = 33
-    buildToolsVersion = "33.0.0"
+    buildToolsVersion = "33.0.1"
     defaultConfig {
         applicationId = "com.dede.nativetools"
         minSdk = 23
