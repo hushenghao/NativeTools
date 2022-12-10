@@ -17,7 +17,6 @@
     <string name="label_night_mode">ナイトモード</string>
     <string name="label_net_speed_usage">毎日と毎月の交通量を表示します</string>
     <string name="label_about">について</string>
-    <string name="label_ignore_battery_optimize">バッテリーの最適化を無視する</string>
     <string name="summary_net_speed">ステータスバーに現在の通信速度を表示する</string>
     <string name="summary_net_speed_hide_lock_notification">ロック画面をロックする時、デフォルトで通知を隠すことができ(ありえ)て、もし無効な時にやっと設定して隠しロック画面をロックして通知します</string>
     <string name="summary_net_speed_notify_clickable">通知をクリックしてアプリの設定画面を開く</string>
@@ -25,7 +24,6 @@
     <string name="summary_net_speed_notify_quick_closeable">通信速度の通知に「off」ボタンを追加する</string>
     <string name="summary_night_mode_follow_system">システムに従う</string>
     <string name="summary_net_speed_usage">通知はモバイルデータとWLANトラフィックの合計使用量を示します</string>
-    <string name="summary_ignore_battery_optimize">フロントサービスが作動しないことを防止するためにホワイトリストを最適化するバッテリーを追加(一部の機器向け)</string>
     <string name="usage_states_title">使用状況アクセス許可</string>
     <string name="usage_stats_msg">トラフィックの使用状況を集計するには、使用状況へのアクセスを許可する必要がある。</string>
     <string name="alert_msg_notification_disable">通知権限がオンになっていない場合、通信速度表示器が正常に表示されません。</string>
@@ -53,7 +51,6 @@
     <string name="label_notification">通知</string>
     <string name="toast_saved">保存済み</string>
     <string name="label_home">トップページ</string>
-    <string name="toast_open_battery_optimization">「网速指示器」を見つけて、手動でバッテリーを開けて最適化してください</string>
     <string name="label_privacy_agreement">プライバシー協定</string>
     <string name="label_net_speed_style">書体様式</string>
     <string name="label_net_speed_text_scale">文字スケーリング</string>

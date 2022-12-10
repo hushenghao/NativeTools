@@ -21,7 +21,6 @@
     <string name="label_diagnosis">O diagnóstico</string>
     <string name="label_general">geral</string>
     <string name="label_home">Ficha técnica</string>
-    <string name="label_ignore_battery_optimize">Ignorando a otimização da bateria</string>
     <string name="label_net_speed">Indicador de velocidade de internet</string>
     <string name="label_net_speed_advanced">Configurações avançadas para</string>
     <string name="label_net_speed_auto_start">Inicialização e auto arranque</string>
@@ -50,7 +49,6 @@
     <string name="settings">Ir para configurações</string>
     <string name="share_text" formatted="false">Encontrei um gadget fácil de usar \'%s\'Ir para download! %s</string>
     <string name="summary_default">Por omissão</string>
-    <string name="summary_ignore_battery_optimize">Adicionada lista branca de otimização de bateria para evitar que o serviço de frente não possa ser mantido (para alguns dispositivos)</string>
     <string name="summary_mode_all">Upload e download</string>
     <string name="summary_mode_download">Apenas para download</string>
     <string name="summary_net_speed">Exibe a velocidade atual da internet na barra de status</string>
@@ -70,7 +68,6 @@
     <string name="toast_download_font">Start baixar da fonte</string>
     <string name="toast_download_font_failed">Baixar da fonte falhou</string>
     <string name="toast_download_font_succeeded">Baixar da fonte success</string>
-    <string name="toast_open_battery_optimization">Encontre o \"Indicador de velocidade da internet\" e ative manualmente a otimização da bateria</string>
     <string name="toast_saved">Já foi salvo</string>
     <string name="usage_states_title">Condições de uso autorização de acesso</string>
     <string name="usage_stats_msg">É necessário permitir o acesso ao uso de estatísticas de tráfego.</string>

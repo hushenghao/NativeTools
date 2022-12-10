@@ -17,7 +17,6 @@
     <string name="label_net_speed_usage">일일 및 월별 데이터 사용량을 표시합니다</string>
     <string name="label_night_mode">야간 모드</string>
     <string name="label_about">정보</string>
-    <string name="label_ignore_battery_optimize">배터리 최적화 무시</string>
     <string name="summary_net_speed">상태 표시줄에 현재 네트워크 속도를 표시합니다</string>
     <string name="summary_net_speed_hide_lock_notification">알림은 잠글 때 기본적으로 숨깁니다. 알림이 유효하지 않으면 잠글 알림을 숨깁니다</string>
     <string name="summary_net_speed_notify_clickable">응용 프로그램 설정 화면을 열려면 통지를 누르십시오</string>
@@ -25,7 +24,6 @@
     <string name="summary_net_speed_notify_quick_closeable">인터넷 속도 알림에 닫기 단추를 추가하십시오</string>
     <string name="summary_night_mode_follow_system">추적시스템</string>
     <string name="summary_net_speed_usage">알림은 모바일 데이터와 WLAN 사용량의 합계를 표시합니다</string>
-    <string name="summary_ignore_battery_optimize">배터리 최적화 화이트리스트를 추가하여 프런트 서비스가 보증되지 않는 것을 방지합니다</string>
     <string name="usage_states_title">상태 접근 인증</string>
     <string name="usage_stats_msg">데이터 사용량을 집계하기 위해 데이터 사용 권한이 필요합니다.</string>
     <string name="alert_msg_notification_disable">알림 권한이 켜져 있지 않습니다. 네트워크 속도 표시기를 표시할 수 없습니다</string>
@@ -53,7 +51,6 @@
     <string name="label_coffee">커피 한잔 사줄래요?</string>
     <string name="toast_saved">저장됨</string>
     <string name="label_home">첫 페이지</string>
-    <string name="toast_open_battery_optimization">네트워크 속도 표시기를 찾아 수동으로 배터리 최적화를 켜십시오</string>
     <string name="label_privacy_agreement">프라이버시 규약</string>
     <string name="label_net_speed_style">글꼴 스타일</string>
     <string name="label_net_speed_advanced">고급 설정</string>

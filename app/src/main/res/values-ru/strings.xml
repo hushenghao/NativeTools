@@ -49,11 +49,8 @@
     <string name="action_donate">Пожертвование</string>
     <string name="action_rate">Поставьте высокую оценку</string>
     <string name="label_coffee">Купишь мне чашку кофе?</string>
-    <string name="label_ignore_battery_optimize">Игнорировать оптимизацию батареи</string>
-    <string name="summary_ignore_battery_optimize">Добавьте белый список оптимизации батареи, чтобы предотвратить сбой службы переднего плана (для некоторых устройств).</string>
     <string name="toast_saved">Сохранено</string>
     <string name="label_home">Главная</string>
-    <string name="toast_open_battery_optimization">Пожалуйста, найдите \"Указатель скорости сети\" и включите оптимизацию батареи вручную</string>
     <string name="label_privacy_agreement">Соглашение о конфиденциальности.</string>
     <string name="label_net_speed_style">Стиль шрифта</string>
     <string name="label_net_speed_advanced">Расширенные настройки</string>

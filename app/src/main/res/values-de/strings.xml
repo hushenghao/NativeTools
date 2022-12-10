@@ -17,7 +17,6 @@
     <string name="label_night_mode">Nachtmodus</string>
     <string name="label_net_speed_usage">Anzeige der täglichen und monatlichen Verkehrsnutzung</string>
     <string name="label_about">Über</string>
-    <string name="label_ignore_battery_optimize">Optimierung der Akkus ignorieren</string>
     <string name="summary_net_speed">Zeigt die aktuelle Netzwerkgeschwindigkeit in der Statusleiste an</string>
     <string name="summary_net_speed_hide_lock_notification">Wenn Sie den Bildschirm sperren, wird die Benachrichtigung standardmäßig ausgeblendet. Wenn sie ungültig ist, müssen Sie die Benachrichtigung über den versteckten Sperrbildschirm einstellen.</string>
     <string name="summary_net_speed_notify_clickable">Klicken Sie auf Benachrichtigung, um die Anwendungseinstellung Schnittstelle zu öffnen</string>
@@ -25,7 +24,6 @@
     <string name="summary_net_speed_notify_quick_closeable">Hinzufügen eines Close Buttons zur Netzwerkgeschwindigkeit</string>
     <string name="summary_night_mode_follow_system">Folgen des Systems</string>
     <string name="summary_net_speed_usage">Die Meldung zeigt die Summe der mobilen Daten und der WLAN-Datenverwendung an</string>
-    <string name="summary_ignore_battery_optimize">Fügen Sie die weiße Liste der Batterieoptimierung hinzu, um zu verhindern, dass der Vordergrund-Service nicht am Leben bleibt (für einige Geräte)</string>
     <string name="usage_states_title">Berechtigung zur Nutzung</string>
     <string name="usage_stats_msg">Die nutzung der zugekürzten datenströme muss erlaubt sein.</string>
     <string name="alert_msg_notification_disable">Ist die Anmeldeerlaubnis nicht aktiviert, wird die Netzwerkgeschwindigkeit nicht normal angezeigt</string>
@@ -53,7 +51,6 @@
     <string name="label_coffee">Gibst du mir eine Tasse Kaffee?</string>
     <string name="toast_saved">Gespeichert</string>
     <string name="label_home">Home</string>
-    <string name="toast_open_battery_optimization">Bitte finden Sie die \"Anzeige der Net\" und schalten Sie die Batterieoptimierung manuell ein</string>
     <string name="label_privacy_agreement">Es ist ein datengeschäft.</string>
     <string name="label_net_speed_style">Kann nicht einstecken</string>
     <string name="label_net_speed_advanced">Nicht ideal</string>

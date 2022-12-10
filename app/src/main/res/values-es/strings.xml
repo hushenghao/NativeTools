@@ -49,11 +49,8 @@
     <string name="action_donate">Las donaciones</string>
     <string name="action_rate">Dar una reseña</string>
     <string name="label_coffee">¿Me ofrecen un café?</string>
-    <string name="label_ignore_battery_optimize">Ignorar la optimización de la batería</string>
-    <string name="summary_ignore_battery_optimize">Agregar la lista blanca de optimización de la batería para evitar que los servicios frontales no se puedan mantener activos (para algunos dispositivos)</string>
     <string name="toast_saved">Ha sido guardado</string>
     <string name="label_home">En la primera página</string>
-    <string name="toast_open_battery_optimization">Encuentre el \"Indicador de velocidad de internet\" y active manualmente la optimización de la batería</string>
     <string name="label_privacy_agreement">Acuerdo de privacidad</string>
     <string name="label_net_speed_style">Estilo de fuente</string>
     <string name="label_net_speed_advanced">Configuración avanzada</string>
