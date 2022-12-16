@@ -1,16 +1,21 @@
 package com.dede.nativetools.netspeed.service
 
+import android.app.ActivityManager
+import android.app.Service
 import android.content.ComponentName
 import android.content.Context
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.RemoteException
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
+import androidx.work.*
 import com.dede.nativetools.netspeed.INetSpeedInterface
 import com.dede.nativetools.netspeed.NetSpeedConfiguration
 import com.dede.nativetools.util.BroadcastHelper
 import com.dede.nativetools.util.Intent
 import com.dede.nativetools.util.toast
+import java.util.concurrent.TimeUnit
 
 class NetSpeedServiceController(context: Context) :
     INetSpeedInterface.Default(), ServiceConnection {
@@ -27,6 +32,8 @@ class NetSpeedServiceController(context: Context) :
         if (bind) {
             bindService()
         }
+
+        HeartbeatWork.daemon(appContext)
     }
 
     fun bindService() {
@@ -39,6 +46,8 @@ class NetSpeedServiceController(context: Context) :
         val intent = Intent<NetSpeedService>(appContext)
         unbindService()
         appContext.stopService(intent)
+
+        HeartbeatWork.stop(appContext)
     }
 
     fun unbindService() {
