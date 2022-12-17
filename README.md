@@ -5,7 +5,7 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/hushenghao/NativeTools)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/hushenghao/NativeTools)
 ![GitHub](https://img.shields.io/github/license/hushenghao/NativeTools)
-[![gradle-assembleRelease](https://img.shields.io/github/workflow/status/hushenghao/NativeTools/gradle-assembleRelease)](https://github.com/hushenghao/NativeTools/actions/workflows/gradle-assembleRelease.yml)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/hushenghao/NativeTools/gradle-assembleRelease.yml?branch=master)
 ![GitHub release (release name instead of tag name)](https://img.shields.io/github/v/release/hushenghao/NativeTools?include_prereleases)
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/hushenghao/NativeTools)
 
@@ -32,8 +32,8 @@
 
 ## 应用下载
 
-[<img height="56px" src="https://static.coolapk.com/static/web/v8/images/header-logo.png"/>](https://www.coolapk.com/apk/com.dede.nativetools)
-[<img height="56px" src="https://assets.che300.com/wiki/2021-07-22/16269394073576500.png"/>](https://play.google.com/store/apps/details?id=com.dede.nativetools)
+[<img height="66px" src="https://static.coolapk.com/static/web/v8/img/icon.png"/>](https://www.coolapk.com/apk/com.dede.nativetools)
+<a href='https://play.google.com/store/apps/details?id=com.dede.nativetools&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height='70px' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 
 ## 感谢
 [Татьяна Юрина](mailto:urinatatana57@gmail.com) 提供的俄语翻译
