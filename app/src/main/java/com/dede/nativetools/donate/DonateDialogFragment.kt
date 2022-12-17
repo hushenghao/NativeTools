@@ -57,10 +57,6 @@ class DonateDialogFragment : BottomSheetListFragment<Payment>() {
             val context = host.requireContext()
             var name = ""
             when (payment.resId) {
-                R.drawable.ic_logo_eth -> {
-                    context.copy(R.string.payment_eth_address)
-                    name = "ETH"
-                }
                 R.drawable.ic_logo_alipay -> {
                     context.browse(R.string.url_alipay_payment_code)
                     context.toast(R.string.toast_payment_tip)

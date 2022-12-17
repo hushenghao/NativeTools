@@ -1,5 +1,6 @@
 package com.dede.nativetools.netspeed
 
+import android.Manifest
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
@@ -174,12 +175,12 @@ class NetSpeedFragment :
             }
         }
 
-        if (Build.VERSION.SDK_INT < 33 /*Build.VERSION_CODES.T*/) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             startServiceInternal()
-        } else if (checkPermissions("android.permission.POST_NOTIFICATIONS")) {
+        } else if (checkPermissions(Manifest.permission.POST_NOTIFICATIONS)) {
             startServiceInternal()
         } else {
-            permissionLauncherCompat.launch("android.permission.POST_NOTIFICATIONS") {
+            permissionLauncherCompat.launch(Manifest.permission.POST_NOTIFICATIONS) {
                 startServiceInternal(!it)
             }
         }

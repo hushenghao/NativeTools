@@ -46,7 +46,6 @@
     <string name="url_alipay_payment_code" translatable="false">https://qr.alipay.com/fkx102121bvcoglww05av58</string>
     <string name="url_wx_payment_code" translatable="false">wxp://f2f0HUx189brtInq9P5t6f8ei40cJnbCmh6DdC9gVai6cHBPAb40fxNLfCQBMZCGvxQP</string>
     <string name="url_paypal_payment_code" translatable="false">https://paypal.me/dede2233?country.x=C2&amp;locale.x=zh_XC</string>
-    <string name="payment_eth_address" translatable="false">0xd6Cbe7E6C6eD7E3DeA3D733D29f4f3884C6211c2</string>
     <string name="github" translatable="false">Github</string>
     <string name="chooser_label_market">选择应用商店</string>
     <string name="label_open_source">开源相关</string>
@@ -104,7 +103,6 @@
     <string name="label_firebase" tools:ignore="MissingTranslation">Firebase</string>
     <string name="label_payment_wxpay" tools:ignore="MissingTranslation">WeChat Pay</string>
     <string name="label_payment_alipay" tools:ignore="MissingTranslation">Alipay</string>
-    <string name="label_payment_eth" tools:ignore="MissingTranslation">ETH</string>
     <string name="label_payment_paypal" translatable="false">Paypal</string>
     <string name="label_net_speed_service">网速指示器服务</string>
     <string name="label_net_speed_silence_channel">静默通知</string>

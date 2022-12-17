@@ -3,6 +3,7 @@ package com.dede.nativetools.netspeed.service
 import android.app.ActivityManager
 import android.app.Service
 import android.content.Context
+import android.util.Log
 import androidx.core.content.getSystemService
 import androidx.work.*
 import com.dede.nativetools.util.event
@@ -57,6 +58,7 @@ class HeartbeatWork(context: Context, workerParams: WorkerParameters) :
 
     override fun doWork(): Result {
         if (applicationContext.isServiceRunning(NetSpeedService::class.java)) {
+            Log.i(WORK_NAME, "Service isRunning.")
             return Result.success()
         }
         event("Heartbeat awaken")

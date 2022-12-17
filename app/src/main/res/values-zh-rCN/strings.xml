@@ -86,7 +86,6 @@
     <string name="label_firebase">Firebase🪜</string>
     <string name="label_payment_wxpay">微信</string>
     <string name="label_payment_alipay">支付宝</string>
-    <string name="label_payment_eth">以太坊</string>
     <string name="label_net_speed_service">网速指示器服务</string>
     <string name="label_net_speed_silence_channel">隐藏通知</string>
     <string name="label_net_speed_default_channel">活动通知</string>

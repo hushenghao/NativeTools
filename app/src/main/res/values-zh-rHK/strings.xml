@@ -96,7 +96,6 @@
     <string name="label_power_save_mode">省電模式</string>
     <string name="message_donate_not_fount">未找到你的捐贈記錄？</string>
     <string name="label_payment_alipay">支付寶</string>
-    <string name="label_payment_eth">乙太坊</string>
     <string name="label_payment_wxpay">微信</string>
     <string name="label_pgyer">蒲公英</string>
 </resources>
