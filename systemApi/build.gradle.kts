@@ -34,6 +34,7 @@ android {
     }
 
     kotlinOptions { jvmTarget = "1.8" }
+    namespace = "com.dede.systemapi"
 }
 
 dependencies { implementation(deps.androidx.annotation) }

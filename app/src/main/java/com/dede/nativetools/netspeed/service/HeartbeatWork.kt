@@ -47,6 +47,7 @@ class HeartbeatWork(context: Context, workerParams: WorkerParameters) :
 
     private fun Context.isServiceRunning(clazz: Class<out Service>): Boolean {
         val activityManager = this.getSystemService<ActivityManager>() ?: return false
+        @Suppress("DEPRECATION")
         val runningServices = activityManager.getRunningServices(10) ?: return false
         for (serviceInfo in runningServices) {
             if (serviceInfo.service.className == clazz.name) {

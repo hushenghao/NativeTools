@@ -25,12 +25,13 @@ apply(from = "../gradle/spotless.gradle")
 android {
     compileSdk = 33
     buildToolsVersion = "33.0.1"
+    namespace = "com.dede.nativetools"
     defaultConfig {
         applicationId = "com.dede.nativetools"
         minSdk = 23
         targetSdk = 33
-        versionCode = 65
-        versionName = "4.0.2"
+        versionCode = 66
+        versionName = "4.1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resourceConfigurations.addAll(

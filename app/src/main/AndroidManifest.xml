@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:only="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.dede.nativetools"
     only:name="XXWHCA">
 
     <uses-permission android:name="android.permission.INTERNET" />
